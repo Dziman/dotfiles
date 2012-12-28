@@ -138,7 +138,7 @@ bindkey '\e[3~' delete-char
 ################################################################################
 
 ################################################################################
-# Test settings
+# Completions
 ################################################################################
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
@@ -172,18 +172,6 @@ zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' word true
 
+source .zsh_git_flow
+
 ################################################################################
-
-#########Old(to be removed)#####################################################
-# completion
-#zstyle ':completion:*' completer _complete _match _approximate
-#zstyle ':completion:*:match:*' original only
-#zstyle ':completion:*:approximate:*' max-errors 1 numeric
-
-#zstyle ':completion:*:*:kill:*' menu yes select
-#zstyle ':completion:*:kill:*' force-list always
-
-#zstyle ':completion:*:cd:*' ignore-parents parent pwd
-
-# dump cores
-#ulimit -c unlimited
