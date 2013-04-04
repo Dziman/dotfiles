@@ -123,6 +123,13 @@ alias blc='mvn clean install -P dev -projects lc-ui --also-make'
 
 alias tools_start='/Users/dziman/Development/libs/bin/tools-tomcat/bin/catalina.sh start'
 alias tools_stop='/Users/dziman/Development/libs/bin/tools-tomcat/bin/catalina.sh stop'
+
+alias tomcat_start='/Users/dziman/Development/libs/bin/apache-tomcat-6.0.26/bin/catalina.sh start'
+alias tomcat_stop='/Users/dziman/Development/libs/bin/apache-tomcat-6.0.26/bin/catalina.sh stop'
+
+alias start_amq='/Users/dziman/Development/libs/bin/activemq/bin/macosx/activemq start'
+alias stop_amq='/Users/dziman/Development/libs/bin/activemq/bin/macosx/activemq stop'
+
 ################################################################################
 
 ################################################################################
