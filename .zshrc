@@ -5,6 +5,10 @@
 ################################################################################
 # Set options
 ################################################################################
+
+# add custom completion scripts
+fpath=(~/.zsh/completion $fpath)
+
 setopt localoptions
 setopt localtraps
 setopt promptsubst
@@ -17,7 +21,7 @@ setopt notify
 setopt correct
 unsetopt extendedglob
 
-HISTFILE=~/.histfile
+HISTFILE=~/.zsh/_histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt HIST_IGNORE_SPACE
@@ -53,7 +57,9 @@ zstyle ':vcs_info:*' formats       \
     '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 zstyle ':vcs_info:*' enable git cvs svn
-
+precmd() {
+    vcs_info
+}
 
 # set formats
 # %b - branchname
@@ -69,14 +75,13 @@ vcs_info_wrapper() {
     echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
 }
-RPS1=$'$(vcs_info_wrapper)'
+#RPS1=$'$(vcs_info_wrapper)'
 
 autoload colors
 colors
-PS1="${fg_bold[white]}.(%{${fg[green]}%n%}%{${fg_bold[white]}@%}%{${fg[grey]}%m%}${fg_bold[white]})-in-(\
-${fg[cyan]}%~\
-${fg[white]})-
-${fg[yellow]}-->%{${fg[default]}%}"
+setopt prompt_subst
+PS1=$'${fg_bold[white]}.(%{${fg[green]}%n%}%{${fg_bold[white]}@%}%{${fg[grey]}%m%}${fg_bold[white]})-in-(${fg[cyan]}%~${fg[white]})-$(vcs_info_wrapper)${fg[yellow]}\
+-->%{${fg[default]}%}'
 #RPS1="%{${bg[default]}%}%{${fg[grey]}%}<%*>%{$fg[default]%}"
 PS2="${fg[red]}%_${fg[default]}"
 PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
@@ -147,6 +152,7 @@ bindkey '\e[3~' delete-char
 ################################################################################
 # Completions
 ################################################################################
+
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
 zstyle ':completion:*:default' list-colors 'no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;31:'
@@ -179,6 +185,6 @@ zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' word true
 
-source .zsh_git_flow
+source ~/.zsh/_zsh_git_flow
 
 ################################################################################
