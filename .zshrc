@@ -89,6 +89,8 @@ PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
 
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export EDITOR=mate
+export ANDROID_HOME=/Users/dziman/Development/libs/bin/android
+export JAVA_HOME=$(/usr/libexec/java_home)
 
 ################################################################################
 # Directory aliases
@@ -134,7 +136,16 @@ alias tomcat_stop='/Users/dziman/Development/libs/bin/apache-tomcat-6.0.26/bin/c
 
 alias start_amq='/Users/dziman/Development/libs/bin/activemq/bin/macosx/activemq start'
 alias stop_amq='/Users/dziman/Development/libs/bin/activemq/bin/macosx/activemq stop'
+################################################################################
 
+################################################################################
+# GIT aliases
+################################################################################
+alias gmm='git merge origin/master'
+alias gmd='git merge origin/develop'
+alias gpom='git push origin master'
+alias gpod='git push origin develop'
+alias gca='git commit -a'
 ################################################################################
 
 ################################################################################
