@@ -20,6 +20,7 @@ setopt nomatch
 setopt notify
 setopt correct
 unsetopt extendedglob
+setopt AUTO_PUSHD
 
 HISTFILE=~/.zsh/_histfile
 HISTSIZE=1000
