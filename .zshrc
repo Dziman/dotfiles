@@ -1,12 +1,18 @@
 #!/bin/zsh
 # Author: Dziman <dziman.by@gmail.com>
 
+################################################################################
+# System settings
+################################################################################
+#ulimit -n 10000
+################################################################################
 
 ################################################################################
 # Set options
 ################################################################################
 
 # add custom completion scripts
+fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=(~/.zsh/completion $fpath)
 
 setopt localoptions
@@ -88,7 +94,6 @@ PS2="${fg[red]}%_${fg[default]}"
 PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
 ################################################################################
 
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export EDITOR=mate
 export ANDROID_HOME=/Users/dziman/Development/libs/bin/android
 export JAVA_HOME=$(/usr/libexec/java_home)
@@ -197,6 +202,7 @@ zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' word true
 
-source ~/.zsh/_zsh_git_flow
+# Completion for git-flow-avh from Homebrew
+source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 
 ################################################################################
