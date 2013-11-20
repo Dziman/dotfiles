@@ -95,14 +95,17 @@ PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
 ################################################################################
 
 export EDITOR=mate
-export ANDROID_HOME=/Users/dziman/Development/libs/bin/android
 export JAVA_HOME=$(/usr/libexec/java_home)
+#disable annoying java icons in doc
+export OSX_JAVAOPTS='-Dapple.awt.UIElement=true -Djava.awt.headless=true'
+export HOMEBREW_GITHUB_API_TOKEN='e80a9e8846522129ddedae42eedd2f81af214cc1'
+export ANDROID_HOME=/usr/local/opt/android-sdk
 
 ################################################################################
 # Directory aliases
 ################################################################################
 
-hash -d jsrc=~/Development/src/java/
+hash -d src=~/Development/src/
 
 ################################################################################
 
@@ -119,29 +122,31 @@ alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
 # Java aliases
 ################################################################################
-alias hadoop='/Users/dziman/Development/libs/bin/hadoop/bin/hadoop'
-alias start_hadoop='/Users/dziman/Development/libs/bin/hadoop/bin/start-all.sh'
-alias stop_hadoop='/Users/dziman/Development/libs/bin/hadoop/bin/stop-all.sh'
+alias hadoop='/Users/dziman/Development/tools/hadoop/bin/hadoop'
+alias start_hadoop='/Users/dziman/Development/tools/hadoop/bin/start-all.sh'
+alias stop_hadoop='/Users/dziman/Development/tools/hadoop/bin/stop-all.sh'
 
-alias hbase='/Users/dziman/Development/libs/bin/hbase/bin/hbase'
-alias start_hbase='/Users/dziman/Development/libs/bin/hbase/bin/start-hbase.sh'
-alias stop_hbase='/Users/dziman/Development/libs/bin/hbase/bin/stop-hbase.sh'
+alias hbase='/Users/dziman/Development/tools/hbase/bin/hbase'
+alias start_hbase='/Users/dziman/Development/tools/hbase/bin/start-hbase.sh'
+alias stop_hbase='/Users/dziman/Development/tools/hbase/bin/stop-hbase.sh'
 
-alias start_zoo='/Users/dziman/Development/libs/bin/zookeeper/bin/zkServer.sh start'
-alias stop_zoo='/Users/dziman/Development/libs/bin/zookeeper/bin/zkServer.sh stop'
+alias start_zoo='/Users/dziman/Development/tools/zookeeper/bin/zkServer.sh start'
+alias stop_zoo='/Users/dziman/Development/tools/zookeeper/bin/zkServer.sh stop'
 
-alias play='/Users/dziman/Development/libs/bin/play/play'
+alias play='/Users/dziman/Development/tools/play/play'
 
 alias blc='mvn clean install -P dev -projects lc-ui --also-make'
 
-alias tools_start='/Users/dziman/Development/libs/bin/tools-tomcat/bin/catalina.sh start'
-alias tools_stop='/Users/dziman/Development/libs/bin/tools-tomcat/bin/catalina.sh stop'
+alias tools_start='/Users/dziman/Development/tools/tools-tomcat/bin/catalina.sh start'
+alias tools_stop='/Users/dziman/Development/tools/tools-tomcat/bin/catalina.sh stop'
 
-alias tomcat_start='/Users/dziman/Development/libs/bin/apache-tomcat-6.0.26/bin/catalina.sh start'
-alias tomcat_stop='/Users/dziman/Development/libs/bin/apache-tomcat-6.0.26/bin/catalina.sh stop'
+alias tomcat_start='/Users/dziman/Development/tools/apache-tomcat-6.0.26/bin/catalina.sh start'
+alias tomcat_stop='/Users/dziman/Development/tools/apache-tomcat-6.0.26/bin/catalina.sh stop'
 
-alias start_amq='/Users/dziman/Development/libs/bin/activemq/bin/macosx/activemq start'
-alias stop_amq='/Users/dziman/Development/libs/bin/activemq/bin/macosx/activemq stop'
+alias start_amq='/Users/dziman/Development/tools/activemq/bin/macosx/activemq start'
+alias stop_amq='/Users/dziman/Development/tools/activemq/bin/macosx/activemq stop'
+
+alias redis_start='redis-server /usr/local/etc/redis.conf'
 ################################################################################
 
 ################################################################################
