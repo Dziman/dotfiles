@@ -95,11 +95,13 @@ PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
 ################################################################################
 
 export EDITOR=mate
+
 export JAVA_HOME=$(/usr/libexec/java_home)
+
 #disable annoying java icons in doc
 export OSX_JAVAOPTS='-Dapple.awt.UIElement=true -Djava.awt.headless=true'
+
 export HOMEBREW_GITHUB_API_TOKEN='e80a9e8846522129ddedae42eedd2f81af214cc1'
-export ANDROID_HOME=/usr/local/opt/android-sdk
 
 ################################################################################
 # Directory aliases
@@ -147,6 +149,9 @@ alias start_amq='/Users/dziman/Development/tools/activemq/bin/macosx/activemq st
 alias stop_amq='/Users/dziman/Development/tools/activemq/bin/macosx/activemq stop'
 
 alias redis_start='redis-server /usr/local/etc/redis.conf'
+
+alias use_jdk_7='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home'
+alias use_default_jdk='export JAVA_HOME=$(/usr/libexec/java_home)'
 ################################################################################
 
 ################################################################################
@@ -211,3 +216,7 @@ zstyle ':completion:*' word true
 source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 
 ################################################################################
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+source ~/.rvm/scripts/rvm
+rvm use 1.9.3 > /dev/null
