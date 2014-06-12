@@ -94,6 +94,9 @@ PS2="${fg[red]}%_${fg[default]}"
 PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
 ################################################################################
 
+################################################################################
+# Directory aliases
+################################################################################
 export EDITOR=mate
 
 export JAVA_HOME=$(/usr/libexec/java_home)
@@ -102,6 +105,10 @@ export JAVA_HOME=$(/usr/libexec/java_home)
 export OSX_JAVAOPTS='-Dapple.awt.UIElement=true -Djava.awt.headless=true'
 
 export HOMEBREW_GITHUB_API_TOKEN='e80a9e8846522129ddedae42eedd2f81af214cc1'
+
+export ANDROID_HOME='/Users/dziman/Development/tools/android'
+export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+################################################################################
 
 ################################################################################
 # Directory aliases
@@ -217,6 +224,6 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 
 ################################################################################
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 source ~/.rvm/scripts/rvm
 rvm use 1.9.3 > /dev/null
