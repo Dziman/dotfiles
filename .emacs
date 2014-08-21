@@ -16,7 +16,6 @@
 (cask-initialize)
 
 ;; Load Go support mode and customization for it
-(add-to-list 'load-path "~/.emacs.d/go-mode.el")
 (require 'go-mode)
 (defun custom-go-mode-hook ()
   (setq tab-width 4)
@@ -25,7 +24,6 @@
 (add-hook 'go-mode-hook (lambda() (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
 (add-hook 'go-mode-hook (lambda() (local-set-key (kbd "C-c i") 'go-goto-imports)))
 ;; Autocomplete
-(add-to-list 'load-path "~/.emacs.d/go-autocomplete.el")
 (require 'go-autocomplete)
 (require 'auto-complete-config)
 (global-auto-complete-mode 1)
@@ -34,7 +32,6 @@
 (require 'go-flymake)
 (require 'go-flycheck)
 ;; Finding unchecked errors
-(add-to-list 'load-path "~/.emacs.d/go-errcheck.el")
 (require 'go-errcheck)
 ;; Show params info
 (require 'go-eldoc)
