@@ -106,6 +106,11 @@
 (require 'smartparens-config)
 (smartparens-global-mode 1)
 
+;; Highlite TODOs
+(require 'fic-mode)
+(define-globalized-minor-mode global-fic-mode fic-mode (lambda () (fic-mode 1)))
+(global-fic-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; M-x enhancer

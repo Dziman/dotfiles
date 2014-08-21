@@ -50,3 +50,4 @@
 (depends-on "color-theme-solarized")
 (depends-on "highlight-parentheses")
 (depends-on "undo-tree")
+(depends-on "fic-mode")
