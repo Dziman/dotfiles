@@ -157,7 +157,9 @@ alias stop_amq='/Users/dziman/Development/tools/activemq/bin/macosx/activemq sto
 
 alias redis_start='redis-server /usr/local/etc/redis.conf'
 
+alias use_jdk_6='export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0_26-b03-383.jdk/Contents/Home'
 alias use_jdk_7='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home'
+alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_11.jdk/Contents/Home'
 alias use_default_jdk='export JAVA_HOME=$(/usr/libexec/java_home)'
 ################################################################################
 
@@ -224,6 +226,22 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 
 ################################################################################
 
-export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-source ~/.rvm/scripts/rvm
-rvm use 1.9.3 > /dev/null
+################################################################################
+# Ruby specific
+################################################################################
+
+# export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# source ~/.rvm/scripts/rvm
+# rvm use 1.9.3 > /dev/null
+
+################################################################################
+
+################################################################################
+# Go specific
+################################################################################
+
+export GOROOT=/usr/local/go
+export GOPATH=/Users/dziman/.go
+export PATH=$PATH:$GOPATH/bin
+
+################################################################################
