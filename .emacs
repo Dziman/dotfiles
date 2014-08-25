@@ -3,7 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "0c311fb22e6197daba9123f43da98f273d2bfaeeaeb653007ad1ee77f0003037" "0e121ff9bef6937edad8dfcff7d88ac9219b5b4f1570fd1702e546a80dba0832" "7ed6913f96c43796aa524e9ae506b0a3a50bfca061eed73b66766d14adfa86d1" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" default))))
+ '(custom-safe-themes (quote ("3b819bba57a676edf6e4881bd38c777f96d1aa3b3b5bc21d8266fa5b0d0f1ebf" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "0c311fb22e6197daba9123f43da98f273d2bfaeeaeb653007ad1ee77f0003037" "0e121ff9bef6937edad8dfcff7d88ac9219b5b4f1570fd1702e546a80dba0832" "7ed6913f96c43796aa524e9ae506b0a3a50bfca061eed73b66766d14adfa86d1" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -28,7 +28,7 @@
 (require 'auto-complete-config)
 (global-auto-complete-mode 1)
 ;; Compile and check on fly
-(add-to-list 'load-path "~/.go/src/github.com/dougm/goflymake")
+(add-to-list 'load-path "~/Development/src/go/src/github.com/dougm/goflymake")
 (require 'go-flymake)
 (require 'go-flycheck)
 ;; Finding unchecked errors
@@ -54,7 +54,6 @@
 (global-hl-line-mode 1)
 
 ;; Show line numbers
-(require 'linum)
 (global-linum-mode 1)
 (setq linum-format "%4d \u2502 ")
 
@@ -131,11 +130,6 @@
 (setq ido-use-faces nil)
 
 ;; Customize status line
-(require 'smart-mode-line)
-(sml/setup)
-(sml/apply-theme 'dark)
-
-;; Customize status line
 ;(require 'powerline)
 ;(require 'powerline-separators)
 ;(powerline-default-theme)
@@ -147,5 +141,12 @@
 ;(load-theme 'grandshell)
 ;(load-theme 'molokai)
 ;(load-theme 'noctilux)
+;(load-theme 'zenburn)
 ;(require 'moe-theme)
 ;(moe-dark)
+
+;; Customize status line
+(require 'smart-mode-line)
+(sml/setup)
+(sml/apply-theme 'dark)
+(setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake"))

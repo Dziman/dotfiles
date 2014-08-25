@@ -241,7 +241,7 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 ################################################################################
 
 export GOROOT=/usr/local/go
-export GOPATH=/Users/dziman/.go
+export GOPATH=/Users/dziman/Development/src/go
 export PATH=$PATH:$GOPATH/bin
 
 ################################################################################
