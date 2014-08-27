@@ -16,7 +16,6 @@
 (cask-initialize)
 
 ;; Load Go support mode and customization for it
-(require 'go-mode)
 (defun custom-go-mode-hook ()
   (setq tab-width 4)
 )
@@ -24,23 +23,15 @@
 (add-hook 'go-mode-hook (lambda() (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
 (add-hook 'go-mode-hook (lambda() (local-set-key (kbd "C-c i") 'go-goto-imports)))
 ;; Autocomplete
-(require 'go-autocomplete)
-(require 'auto-complete-config)
 (global-auto-complete-mode 1)
 ;; Compile and check on fly
 (add-to-list 'load-path "~/Development/src/go/src/github.com/dougm/goflymake")
 (require 'go-flymake)
 (require 'go-flycheck)
-;; Finding unchecked errors
-(require 'go-errcheck)
 ;; Show params info
-(require 'go-eldoc)
 (add-hook 'go-mode-hook 'go-eldoc-setup)
-;; Show error message in mini buffer
-(require 'flymake-cursor)
 
 ;; Projectile
-(require 'projectile)
 (projectile-global-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -61,17 +52,13 @@
 (global-anzu-mode 1)
 
 ;; Move selected text by M-Up M-Down
-(require 'move-text)
 (move-text-default-bindings)
 
 ;; Undo tree
-(require 'undo-tree)
 (global-undo-tree-mode)
 
 ;; rainbow parentheses
-(require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-(require 'highlight-parentheses)
 (add-hook 'prog-mode-hook 'highlight-parentheses-mode)
 
 ;; Use spaces for indent
@@ -84,69 +71,58 @@
 ;(setq-default whitespace-line-column 120)
 ;(global-whitespace-mode 1)
 
-;; Show right margin
-(require 'fill-column-indicator)
-(setq fci-rule-use-dashes nil)
-(setq fci-rule-column 140)
-(setq fci-rule-width 1)
-(setq fci-rule-color "black")
-(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode 1)
+;; Show right margin [Disabled due to empty line jump bug]
+;(setq fci-rule-use-dashes nil)
+;(setq fci-rule-column 140)
+;(setq fci-rule-width 1)
+;(setq fci-rule-color "black")
+;(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
+;(global-fci-mode 1)
 
 ;; Highlite word under caret
 (define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode 1)))
 (global-idle-highlite-mode 1)
 
 ;; Autoclose parentheses
-(require 'smartparens)
-(require 'smartparens-config)
 (smartparens-global-mode 1)
 
 ;; Highlite TODOs
-(require 'fic-mode)
 (define-globalized-minor-mode global-fic-mode fic-mode (lambda () (fic-mode 1)))
 (global-fic-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;  Custom keybindings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(global-set-key (kbd "C-c l") 'goto-line)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;change default shell to zsh
+(setq shell-file-name "zsh")
+
 ;; M-x enhancer
-(require 'smex)
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is old M-x
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-;; Git extended integration
-(require 'magit)
-
 ;; IDO customization
-(require 'flx-ido)
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
-
-;; Customize status line
-;(require 'powerline)
-;(require 'powerline-separators)
-;(powerline-default-theme)
-;(powerline-center-theme)
+(ido-vertical-mode)
 
 ;; Themes
 (load-theme 'solarized-dark)
-;(load-theme 'ample)
-;(load-theme 'grandshell)
-;(load-theme 'molokai)
-;(load-theme 'noctilux)
-;(load-theme 'zenburn)
-;(require 'moe-theme)
-;(moe-dark)
 
 ;; Customize status line
-(require 'smart-mode-line)
 (sml/setup)
 (sml/apply-theme 'dark)
 (setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake"))
