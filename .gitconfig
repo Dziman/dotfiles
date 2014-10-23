@@ -6,14 +6,17 @@
 	status = auto
 	branch = auto
 [core]
-#	editor = /Applications/TextMate.app/Contents/Resources/mate -w
-	editor = emacs
+	editor = /Applications/TextMate.app/Contents/Resources/mate -w
+#	editor = emacs
 	excludesfile = /Users/dziman/.gitignore
 	autocrlf = false
 [alias]
+	# edit last commit message
 	ed = commit --amend
+	# show log in pretty view
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-	
+	# show files changed in commit
+	df = diff-tree --no-commit-id --name-only -r
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
