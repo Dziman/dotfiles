@@ -59,11 +59,12 @@ zmodload -ap zsh/mapfile mapfile
 ################################################################################
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' actionformats \
-    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f %c%u'
 zstyle ':vcs_info:*' formats       \
-    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f %c%u'
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 zstyle ':vcs_info:*' enable git cvs svn
+zstyle ':vcs_info:*' check-for-changes true
 precmd() {
     vcs_info
 }
@@ -97,7 +98,7 @@ PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
 ################################################################################
 # Directory aliases
 ################################################################################
-export EDITOR=mate
+export EDITOR=emacs
 
 export JAVA_HOME=$(/usr/libexec/java_home)
 
@@ -108,6 +109,9 @@ export HOMEBREW_GITHUB_API_TOKEN='e80a9e8846522129ddedae42eedd2f81af214cc1'
 
 export ANDROID_HOME='/Users/dziman/Development/tools/android'
 export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+
+#add play to PATH
+export PATH=/Users/dziman/Development/tools/play:$PATH
 ################################################################################
 
 ################################################################################
@@ -131,35 +135,9 @@ alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
 # Java aliases
 ################################################################################
-alias hadoop='/Users/dziman/Development/tools/hadoop/bin/hadoop'
-alias start_hadoop='/Users/dziman/Development/tools/hadoop/bin/start-all.sh'
-alias stop_hadoop='/Users/dziman/Development/tools/hadoop/bin/stop-all.sh'
-
-alias hbase='/Users/dziman/Development/tools/hbase/bin/hbase'
-alias start_hbase='/Users/dziman/Development/tools/hbase/bin/start-hbase.sh'
-alias stop_hbase='/Users/dziman/Development/tools/hbase/bin/stop-hbase.sh'
-
-alias start_zoo='/Users/dziman/Development/tools/zookeeper/bin/zkServer.sh start'
-alias stop_zoo='/Users/dziman/Development/tools/zookeeper/bin/zkServer.sh stop'
-
-alias play='/Users/dziman/Development/tools/play/play'
-
-alias blc='mvn clean install -P dev -projects lc-ui --also-make'
-
-alias tools_start='/Users/dziman/Development/tools/tools-tomcat/bin/catalina.sh start'
-alias tools_stop='/Users/dziman/Development/tools/tools-tomcat/bin/catalina.sh stop'
-
-alias tomcat_start='/Users/dziman/Development/tools/apache-tomcat-6.0.26/bin/catalina.sh start'
-alias tomcat_stop='/Users/dziman/Development/tools/apache-tomcat-6.0.26/bin/catalina.sh stop'
-
-alias start_amq='/Users/dziman/Development/tools/activemq/bin/macosx/activemq start'
-alias stop_amq='/Users/dziman/Development/tools/activemq/bin/macosx/activemq stop'
-
-alias redis_start='redis-server /usr/local/etc/redis.conf'
-
 alias use_jdk_6='export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0_26-b03-383.jdk/Contents/Home'
 alias use_jdk_7='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home'
-alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_11.jdk/Contents/Home'
+alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home'
 alias use_default_jdk='export JAVA_HOME=$(/usr/libexec/java_home)'
 ################################################################################
 
@@ -240,8 +218,8 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 # Go specific
 ################################################################################
 
-export GOROOT=/usr/local/go
-export GOPATH=/Users/dziman/Development/src/go
-export PATH=$PATH:$GOPATH/bin
+#export GOROOT=/usr/local/go
+#export GOPATH=/Users/dziman/Development/src/go
+#export PATH=$PATH:$GOPATH/bin
 
 ################################################################################
