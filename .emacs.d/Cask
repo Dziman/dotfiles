@@ -52,3 +52,6 @@
 (depends-on "browse-kill-ring")
 (depends-on "markdown-mode")
 (depends-on "ido-vertical-mode")
+
+(depends-on "scala-mode2")
+(depends-on "ensime")
