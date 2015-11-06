@@ -96,7 +96,7 @@ PROMPT3="${fg[red]}Make your choice: ${fg[default]}"
 ################################################################################
 
 ################################################################################
-# Directory aliases
+# General Env variables
 ################################################################################
 export EDITOR=emacs
 
@@ -106,20 +106,12 @@ export JAVA_HOME=$(/usr/libexec/java_home)
 export OSX_JAVAOPTS='-Dapple.awt.UIElement=true -Djava.awt.headless=true'
 
 export HOMEBREW_GITHUB_API_TOKEN='e80a9e8846522129ddedae42eedd2f81af214cc1'
-
-export ANDROID_HOME='/Users/dziman/Development/tools/android'
-export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
-
-#add play to PATH
-export PATH=/Users/dziman/Development/tools/play:$PATH
 ################################################################################
 
 ################################################################################
 # Directory aliases
 ################################################################################
-
 hash -d src=~/Development/src/
-
 ################################################################################
 
 ################################################################################
@@ -137,7 +129,7 @@ alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
 alias use_jdk_6='export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0_26-b03-383.jdk/Contents/Home'
 alias use_jdk_7='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home'
-alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home'
+alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home'
 alias use_default_jdk='export JAVA_HOME=$(/usr/libexec/java_home)'
 ################################################################################
 
@@ -205,21 +197,58 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 ################################################################################
 
 ################################################################################
-# Ruby specific
+# Fix Homebrew for El Capitan
+################################################################################
+export PATH=/usr/local/bin:$PATH
 ################################################################################
 
-# export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-# source ~/.rvm/scripts/rvm
-# rvm use 1.9.3 > /dev/null
+################################################################################
+# Android
+################################################################################
+#export ANDROID_HOME='/Users/dziman/Development/tools/android'
+#export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+################################################################################
 
+################################################################################
+# Play framework
+################################################################################
+#add play to PATH
+#export PATH=/Users/dziman/Development/tools/play:$PATH
+################################################################################
+
+################################################################################
+# Ruby specific
+################################################################################
+#export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+#source ~/.rvm/scripts/rvm
+#rvm use 1.9.3 > /dev/null
+#export RBENV_ROOT=/usr/local/var/rbenv
+#if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+#export PATH="/Users/dziman/.rbenv/shims:${PATH}"
 ################################################################################
 
 ################################################################################
 # Go specific
 ################################################################################
-
 #export GOROOT=/usr/local/go
 #export GOPATH=/Users/dziman/Development/src/go
 #export PATH=$PATH:$GOPATH/bin
+################################################################################
 
+################################################################################
+# C.T.Co
+################################################################################
+export APPS_ROOT="/Users/dziman/Development/src/ctco/ev_svn"
+export BS_DIR="Build.System"
+export BS_ROOT="$APPS_ROOT/$BS_DIR"
+export JAVA7_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home"
+export JAVA8_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home"
+
+export BS_VER="1.0.0"
+# ${BS_ROOT} is defined in setenv-custom
+export ANT_HOME="$BS_ROOT/System/$BS_VER/ant"
+export PATH="$BS_ROOT/System/$BS_VER/bin:$ANT_HOME/bin:$PATH"
+export BS_REPO="$BS_ROOT/Repository"
+export ivy_local_default_root="$BS_REPO"
+export ivy_local_default_cache_dir="$BS_ROOT/Cache"
 ################################################################################
