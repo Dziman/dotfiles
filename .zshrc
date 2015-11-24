@@ -13,7 +13,6 @@
 
 # add custom completion scripts
 fpath=(/usr/local/share/zsh-completions $fpath)
-fpath=(~/.zsh/completion $fpath)
 
 setopt localoptions
 setopt localtraps
@@ -102,10 +101,19 @@ export EDITOR=emacs
 
 export JAVA_HOME=$(/usr/libexec/java_home)
 
-#disable annoying java icons in doc
+# disable annoying java icons in doc
 export OSX_JAVAOPTS='-Dapple.awt.UIElement=true -Djava.awt.headless=true'
 
 export HOMEBREW_GITHUB_API_TOKEN='e80a9e8846522129ddedae42eedd2f81af214cc1'
+
+# start emacs server automatically
+export ALTERNATE_EDITOR=""
+
+# Fix Homebrew in El Capitan
+export PATH=/usr/local/bin:$PATH
+
+# Add Dotfiles(https://github.com/jbernard/dotfiles) to PATH
+export PATH=$PATH:/Users/dziman/Development/src/oss/dotfiles/bin
 ################################################################################
 
 ################################################################################
@@ -119,7 +127,7 @@ hash -d src=~/Development/src/
 ################################################################################
 alias cls='clear'
 alias ls='ls -F -G'
-alias ee='emacs'
+alias ee='emacsclient -t'
 alias mv='mv -i'
 alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
@@ -194,12 +202,6 @@ zstyle ':completion:*' word true
 # Completion for git-flow-avh from Homebrew
 source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 
-################################################################################
-
-################################################################################
-# Fix Homebrew for El Capitan
-################################################################################
-export PATH=/usr/local/bin:$PATH
 ################################################################################
 
 ################################################################################

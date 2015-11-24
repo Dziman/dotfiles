@@ -14,12 +14,24 @@
  )
 
 ;; Cask
-(require 'cask "/usr/local/Cellar/cask/0.7.3/cask.el")
+(require 'cask "/usr/local/Cellar/cask/0.7.4/cask.el")
 (cask-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;  Global settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Set up mouse selection
+(unless window-system
+  (require 'mouse)
+  (xterm-mouse-mode t)
+  (global-set-key [mouse-4] (lambda ()
+			      (interactive)
+			      (scroll-down 1)))
+  (global-set-key [mouse-5] (lambda ()
+			      (interactive)
+			      (scroll-up 1)))
+)
 
 ;; Projectile
 (projectile-global-mode)
@@ -97,6 +109,10 @@
 
 ;; Git settings
 (setq magit-last-seen-setup-instructions "1.4.0")
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . global-magit-file-mode))
+
+;; Check spelling in text edit modes
+(add-hook 'text-mode-hook 'flyspell-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

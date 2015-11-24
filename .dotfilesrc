@@ -1,0 +1,5 @@
+[dotfiles]
+repository = ~/.Dotfiles
+ignore = ['.git', '.DS_Store', 'idea', 'customize_os_x.sh', '*~']
+prefix = .
+packages = ['emacs.d']

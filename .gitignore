@@ -1,0 +1,9 @@
+.DS_Store
+*.iml
+.idea
+xcuserdata/
+project.xcworkspace/xcuserdata/
+override-inadco.properties
+*~
+\#*#
+.#*

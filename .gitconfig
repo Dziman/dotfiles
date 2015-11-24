@@ -6,15 +6,20 @@
 	status = auto
 	branch = auto
 [core]
-	editor = /Applications/TextMate.app/Contents/Resources/mate -w
-#	editor = emacs
+#	editor = /Applications/TextMate.app/Contents/Resources/mate -w
+	editor = emacsclient -t
 	excludesfile = /Users/dziman/.gitignore
-	autocrlf = false
+	autocrlf = input
 [alias]
 	# edit last commit message
 	ed = commit --amend
 	# show log in pretty view
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	lg = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
+	lgs = "!git lg -10"
+	lgl = "!git lg -30"
+	lgf = "!git lg --numstat"
+	lgsf = "!git lgs --numstat"
+	lglf = "!git lgl --numstat"
 	# show files changed in commit
 	df = diff-tree --no-commit-id --name-only -r
 [difftool "sourcetree"]
