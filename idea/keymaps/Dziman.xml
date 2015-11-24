@@ -1,0 +1,17 @@
+<keymap version="1" name="Dziman" parent="$default">
+  <action id="Compare.LastVersion">
+    <keyboard-shortcut first-keystroke="ctrl alt z" />
+  </action>
+  <action id="QuickList.Plagins">
+    <keyboard-shortcut first-keystroke="shift ctrl alt p" />
+  </action>
+  <action id="QuickList.Subversion">
+    <keyboard-shortcut first-keystroke="ctrl alt w" />
+  </action>
+  <action id="QuickList.Window(s) actions">
+    <keyboard-shortcut first-keystroke="ctrl alt q" />
+  </action>
+  <action id="Subversion.Resolve">
+    <keyboard-shortcut first-keystroke="ctrl alt x" />
+  </action>
+</keymap>
