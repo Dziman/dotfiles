@@ -128,6 +128,7 @@ hash -d src=~/Development/src/
 alias cls='clear'
 alias ls='ls -F -G'
 alias ee='emacsclient -t'
+alias emacs='emacsclient -t'
 alias mv='mv -i'
 alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
@@ -235,6 +236,12 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 #export GOROOT=/usr/local/go
 #export GOPATH=/Users/dziman/Development/src/go
 #export PATH=$PATH:$GOPATH/bin
+################################################################################
+
+################################################################################
+# Rust specific
+################################################################################
+export PATH="${PATH}:/Users/dziman/.cargo/bin"
 ################################################################################
 
 ################################################################################

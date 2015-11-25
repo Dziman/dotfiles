@@ -49,6 +49,12 @@
 (depends-on "go-errcheck")
 (depends-on "go-eldoc")
 
+;; Rust
+(depends-on "rust-mode")
+(depends-on "racer")
+(depends-on "ac-racer")
+;; (depends-on "company")
+
 ;; Themes
 (depends-on "darcula-theme")
 (depends-on "zerodark-theme")
