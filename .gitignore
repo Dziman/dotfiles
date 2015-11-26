@@ -7,3 +7,5 @@ override-inadco.properties
 *~
 \#*#
 .#*
+.ensime
+.ensime_cache
