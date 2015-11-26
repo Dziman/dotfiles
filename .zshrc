@@ -138,7 +138,7 @@ alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
 alias use_jdk_6='export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0_26-b03-383.jdk/Contents/Home'
 alias use_jdk_7='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home'
-alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home'
+alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home'
 alias use_default_jdk='export JAVA_HOME=$(/usr/libexec/java_home)'
 ################################################################################
 
@@ -251,7 +251,7 @@ export APPS_ROOT="/Users/dziman/Development/src/ctco/ev_svn"
 export BS_DIR="Build.System"
 export BS_ROOT="$APPS_ROOT/$BS_DIR"
 export JAVA7_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home"
-export JAVA8_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home"
+export JAVA8_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home"
 
 export BS_VER="1.0.0"
 # ${BS_ROOT} is defined in setenv-custom
