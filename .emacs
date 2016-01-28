@@ -33,23 +33,8 @@
 			      (scroll-up 1)))
 )
 
-;; Projectile
-(projectile-global-mode)
-
-;change default shell to zsh
+;; change default shell to zsh
 (setq shell-file-name "zsh")
-
-;; M-x enhancer
-(smex-initialize)
-
-;; IDO customization
-(ido-mode 1)
-(ido-everywhere 1)
-(flx-ido-mode 1)
-;; disable ido faces to see flx highlights.
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
-(ido-vertical-mode)
 
 ;; Themes
 ;;(load-theme 'darcula t)
@@ -59,74 +44,105 @@
 ;; Customize status line
 (sml/setup)
 (sml/apply-theme 'respectful)
-(setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake"))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;  Editor tweaks
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Do not show top menu
-(menu-bar-mode 0)
+(setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company"))
 
 ;; Show column position
 (column-number-mode 1)
 
-;; Highlite current line
-(global-hl-line-mode 1)
-(set-face-background 'hl-line "#3e4446")
-
-;; Show line numbers
-(global-linum-mode 1)
-(setq linum-format "%4d \u2502 ")
-
 ;; Show number of search result
 (global-anzu-mode 1)
 
-;; Undo tree
-(global-undo-tree-mode)
+;; Do not show top menu
+(menu-bar-mode 0)
+
+;; Highlight current line
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#3e4446")
+
+;; Highlight word under caret
+(define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode 1)))
+(global-idle-highlite-mode 1)
+
+;; Highlight TODOs
+(define-globalized-minor-mode global-fic-mode fic-mode (lambda () (fic-mode 1)))
+(global-fic-mode 1)
 
 ;; rainbow parentheses
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-;;(add-hook 'prog-mode-hook 'highlight-parentheses-mode)
+;; Emacs can't start properly with this mode so disabled for now
+;; (add-hook 'prog-mode-hook 'highlight-parentheses-mode)
+
+;; Show line numbers
+;; (global-linum-mode 1)
+;; (setq linum-format "%4d \u2502 ")
+
+;; M-x enhancer
+;; (smex-initialize)
+
+;; helm
+(setq helm-ff-transformer-show-only-basename nil
+      helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
+      helm-yank-symbol-first                 t
+      helm-move-to-line-cycle-in-source      t
+      helm-buffers-fuzzy-matching            t
+      helm-recentf-fuzzy-match               t
+      helm-M-x-fuzzy-match                   t
+      helm-semantic-fuzzy-match              t
+      helm-ff-auto-update-initial-value      t
+      helm-split-window-in-side-p            t
+      helm-autoresize-min-height             25
+      helm-autoresize-max-height             25
+      )
+(helm-mode 1)
+(helm-autoresize-mode 1)
+
+;; helm-swoop (search improvement)
+(setq helm-swoop-split-direction 'split-window-horizontally)
+(setq helm-swoop-move-to-line-cycle t)
+
+;; Projectile
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+
+;; Files tree
+(setq neo-smart-open t)
+(setq projectile-switch-project-action 'neotree-projectile-action)
+
+;; Undo tree
+(global-undo-tree-mode)
 
 ;; Use spaces for indent
 (setq indent-tabs-mode nil)
 (setq tab-width 4)
 (setq tab-stop-list (number-sequence 4 120 4))
 
-;; Highlite word under caret
-(define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode 1)))
-(global-idle-highlite-mode 1)
-
 ;; Autoclose parentheses
 (smartparens-global-mode 1)
 
-;; Highlite TODOs
-(define-globalized-minor-mode global-fic-mode fic-mode (lambda () (fic-mode 1)))
-(global-fic-mode 1)
-
-;; Git settings
-(setq magit-last-seen-setup-instructions "1.4.0")
-(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . global-magit-file-mode))
+;; Completion
+(add-hook 'after-init-hook 'global-company-mode)
+;; (company-mode)
+(setq company-tooltip-align-annotations t)
 
 ;; Check spelling in text edit modes
 (add-hook 'text-mode-hook 'flyspell-mode)
 
+;; do not follow symlinks
+(setq vc-follow-symlinks t)
+
+;; Help to learn keys
+(which-key-mode)
+(which-key-setup-side-window-bottom)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;  Rust
+;;;;; Git
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq racer-cmd "/Users/dziman/.cargo/bin/racer")
-(setq racer-rust-src-path "/Users/dziman/Development/src/oss/rust/src/")
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
-(global-set-key (kbd "C-c c") #'company-indent-or-complete-common)
-(setq company-tooltip-align-annotations t)
+(setq magit-last-seen-setup-instructions "1.4.0")
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . global-magit-file-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -142,13 +158,16 @@
 (add-hook 'go-mode-hook (lambda() (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
 (add-hook 'go-mode-hook (lambda() (local-set-key (kbd "C-c i") 'go-goto-imports)))
 
-;; Autocomplete
-;;(global-auto-complete-mode 1)
-
 ;; Compile and check on fly
 (add-to-list 'load-path "~/Development/src/go/src/github.com/dougm/goflymake")
 (require 'go-flymake)
 (require 'go-flycheck)
+
+;; Completion
+(add-hook 'go-mode-hook 'company-mode)
+(add-hook 'go-mode-hook (lambda ()
+			  (set (make-local-variable 'company-backends) '(company-go))
+			    (company-mode)))
 
 ;; Show params info
 (add-hook 'go-mode-hook 'go-eldoc-setup)
@@ -170,10 +189,49 @@
 
 (bind-key "C-c l" 'goto-line)
 (bind-key "C-c e" 'er/expand-region)
-(bind-key "M-x" 'smex)
-(bind-key "M-X" 'smex-major-mode-commands)
-;; This is old M-x
-(bind-key "C-c C-c M-x" 'execute-extended-command)
 
+;;;;;;;;;;;;;;;
+;;; smex keys
+;; (bind-key "C-c M-x" 'smex)
+;; (bind-key "C-c M-X" 'smex-major-mode-commands)
+
+;;;;;;;;;;;;;;;
+;;; Helm keys
+(bind-key "M-x" 'helm-M-x)
+;;; This is old M-x
+(bind-key "C-c C-c M-x" 'execute-extended-command)
+(bind-key "C-x b" 'helm-mini)
+(bind-key "C-x C-b" 'helm-buffers-list)
+(bind-key "C-x C-f" 'helm-find-files)
+(bind-key "C-x C-r" 'helm-recentf)
+(bind-key "C-x r l" 'helm-filtered-bookmarks)
+(bind-key "M-y" 'helm-show-kill-ring)
+(bind-key "C-x C-d" 'helm-browse-project)
+
+;;;;;;;;;;;;;;;
+;;; helm-swoop (improved search)
+(bind-key "M-i" 'helm-swoop)
+(bind-key "M-s o" 'helm-swoop)
+(bind-key "M-I" 'helm-swoop-back-to-last-point)
+(bind-key "C-c M-i" 'helm-multi-swoop)
+(bind-key "M-s /" 'helm-multi-swoop)
+(bind-key "C-x M-i" 'helm-multi-swoop-all)
+(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+
+;;;;;;;;;;;;;;;
+;;; Completion
+;; (bind-key "C-c c" 'company-indent-or-complete-common)
+(eval-after-load 'company
+  '(progn
+     (define-key company-mode-map (kbd "C-c c") 'helm-company)
+          (define-key company-active-map (kbd "C-c c") 'helm-company)))
+
+;;;;;;;;;;;;;;;
+;;; Duplicate current line
+(bind-key "C-c C-d" "\C-a\C- \C-n\M-w\C-y\C-b")
+
+;;;;;;;;;;;;;;;
+;;; Toggle files tree
+(bind-key "C-x t" 'neotree-toggle)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
