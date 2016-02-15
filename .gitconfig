@@ -7,7 +7,7 @@
 	branch = auto
 [core]
 #	editor = /Applications/TextMate.app/Contents/Resources/mate -w
-	editor = emacsclient -t
+	editor = emacs
 	excludesfile = /Users/dziman/.gitignore
 	autocrlf = input
 [alias]
