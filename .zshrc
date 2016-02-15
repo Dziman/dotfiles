@@ -149,6 +149,7 @@ alias gmd='git merge origin/develop'
 alias gpom='git push origin master'
 alias gpod='git push origin develop'
 alias gca='git commit -a'
+alias gf='git-flow'
 ################################################################################
 
 ################################################################################
