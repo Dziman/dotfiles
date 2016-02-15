@@ -17,6 +17,8 @@
 (depends-on "smartparens")
 (depends-on "projectile")
 (depends-on "org-projectile")
+(depends-on "perspective")
+(depends-on "persp-projectile")
 (depends-on "rainbow-delimiters")
 (depends-on "smart-mode-line")
 (depends-on "undo-tree")
@@ -44,6 +46,7 @@
 (depends-on "json-reformat")
 (depends-on "markdown-mode")
 (depends-on "web-mode")
+(depends-on "tide")
 
 ;; Go
 (depends-on "go-mode")
