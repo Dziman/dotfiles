@@ -127,8 +127,7 @@ hash -d src=~/Development/src/
 ################################################################################
 alias cls='clear'
 alias ls='ls -F -G'
-alias ee='emacsclient -t'
-alias emacs='emacsclient -t'
+alias ec='emacsclient -t'
 alias mv='mv -i'
 alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
@@ -200,9 +199,6 @@ zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' word true
 
-# Completion for git-flow-avh from Homebrew
-source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
-
 ################################################################################
 
 ################################################################################
@@ -241,7 +237,7 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 ################################################################################
 # Rust specific
 ################################################################################
-export PATH="${PATH}:/Users/dziman/.cargo/bin"
+# export PATH="${PATH}:/Users/dziman/.cargo/bin"
 ################################################################################
 
 ################################################################################
