@@ -1,6 +1,8 @@
 #!/bin/zsh
 # Author: Dziman <dziman.by@gmail.com>
 
+## TODO Extract programming language, tools, env specific settings to external files.
+
 ################################################################################
 # System settings
 ################################################################################
