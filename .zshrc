@@ -53,6 +53,8 @@ zmodload -a zsh/zpty zpty
 zmodload -a zsh/zprof zprof
 zmodload -ap zsh/mapfile mapfile
 
+source ~/.zsh/.iterm2_shell_integration.zsh
+
 ################################################################################
 
 ################################################################################
