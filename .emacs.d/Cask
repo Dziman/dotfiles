@@ -24,6 +24,7 @@
 (depends-on "undo-tree")
 (depends-on "neotree")
 (depends-on "which-key")
+(depends-on "editorconfig")
 
 ;; Check buffer on the fly
 (depends-on "flycheck")
