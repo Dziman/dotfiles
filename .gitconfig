@@ -20,14 +20,21 @@
 	lgf = "!git lg --numstat"
 	lgsf = "!git lgs --numstat"
 	lglf = "!git lgl --numstat"
+	# show pretty log with author date additionally to commit date
+	lga = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08%Creset@%C(green)%ai%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
+	lgas = "!git lga -10"
+	lgal = "!git lga -30"
+	lgaf = "!git lga --numstat"
+	lgasf = "!git lgas --numstat"
+	lgalf = "!git lgal --numstat"
 	# show files changed in commit
 	df = diff-tree --no-commit-id --name-only -r
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+	# interactive rebase
+	ri = rebase --interactive
+	rih2 = rebase --interactive HEAD~2
+	rih3 = rebase --interactive HEAD~3
+	rih4 = rebase --interactive HEAD~4
+	rih5 = rebase --interactive HEAD~5	
 [credential]
 	helper = osxkeychain
 [pager]
