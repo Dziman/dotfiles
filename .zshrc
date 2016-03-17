@@ -137,15 +137,6 @@ alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
 
 ################################################################################
-# Java aliases
-################################################################################
-alias use_jdk_6='export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0_26-b03-383.jdk/Contents/Home'
-alias use_jdk_7='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home'
-alias use_jdk_8='export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home'
-alias use_default_jdk='export JAVA_HOME=$(/usr/libexec/java_home)'
-################################################################################
-
-################################################################################
 # GIT aliases
 ################################################################################
 alias gmm='git merge origin/master'
@@ -207,17 +198,16 @@ zstyle ':completion:*' word true
 ################################################################################
 
 ################################################################################
+# Java
+################################################################################
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
+################################################################################
+
+################################################################################
 # Android
 ################################################################################
 #export ANDROID_HOME='/Users/dziman/Development/tools/android'
 #export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
-################################################################################
-
-################################################################################
-# Play framework
-################################################################################
-#add play to PATH
-#export PATH=/Users/dziman/Development/tools/play:$PATH
 ################################################################################
 
 ################################################################################
@@ -243,22 +233,4 @@ zstyle ':completion:*' word true
 # Rust specific
 ################################################################################
 # export PATH="${PATH}:/Users/dziman/.cargo/bin"
-################################################################################
-
-################################################################################
-# C.T.Co
-################################################################################
-export APPS_ROOT="/Users/dziman/Development/src/ctco/ev_svn"
-export BS_DIR="Build.System"
-export BS_ROOT="$APPS_ROOT/$BS_DIR"
-export JAVA7_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home"
-export JAVA8_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home"
-
-export BS_VER="1.0.0"
-# ${BS_ROOT} is defined in setenv-custom
-export ANT_HOME="$BS_ROOT/System/$BS_VER/ant"
-export PATH="$BS_ROOT/System/$BS_VER/bin:$ANT_HOME/bin:$PATH"
-export BS_REPO="$BS_ROOT/Repository"
-export ivy_local_default_root="$BS_REPO"
-export ivy_local_default_cache_dir="$BS_ROOT/Cache"
 ################################################################################
