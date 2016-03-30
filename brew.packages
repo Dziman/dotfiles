@@ -1,4 +1,6 @@
+ammonite-repl
 ant
+arangodb
 aspell
 autoconf
 automake
@@ -10,6 +12,9 @@ cask
 cloog-ppl015
 cloog018
 cmake
+cscope
+diff-so-fancy
+docker
 emacs
 emacs-mac
 freetype
@@ -20,12 +25,14 @@ git
 git-flow-avh
 gmp4
 gnu-getopt
+gnu-sed
 go
 gradle
 grunt-completion
-htop-osx
+htop
 imagemagick
 isl011
+jenv
 jpeg
 libevent
 libgpg-error
@@ -45,6 +52,7 @@ mycli
 mysql
 neo4j
 node
+noti
 openssl
 pcre
 pkg-config
@@ -61,6 +69,7 @@ scons
 sqlite
 ssh-copy-id
 subversion
+tig
 tmux
 typesafe-activator
 wget
