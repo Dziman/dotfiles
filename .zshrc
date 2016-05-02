@@ -131,6 +131,7 @@ hash -d src=~/Development/src/
 ################################################################################
 alias cls='clear'
 alias ls='ls -F -G'
+alias emacs='emacs -nw'
 alias ec='emacsclient -t'
 alias mv='mv -i'
 alias mate='/Applications/TextMate.app/Contents/Resources/mate'
