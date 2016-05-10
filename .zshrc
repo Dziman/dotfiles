@@ -74,16 +74,16 @@ zstyle ':vcs_info:*' check-for-changes true
 prompt_vcs_info() {
   vcs_info
   if [ -n "$vcs_info_msg_0_" ]; then
-    echo "$vcs_info_msg_0_$reset_color"
+    echo "$vcs_info_msg_0_"
   fi
 }
 
 user_host() {
-    echo "$fg_bold[white].($fg[green]%n$fg_bold[white]@$fg[grey]%m$fg_bold[white])"
+    echo "%{$fg_bold[white]%}.(%{$fg[green]%}%n%{$fg_bold[white]%}@%{$fg[grey]%}%m%{$fg_bold[white]%})"
 }
 
 current_dir() {
-    echo "$fg[white]($fg[cyan]%~$fg[white])"
+    echo "%{$fg[white]%}(%{$fg[cyan]%}%~%{$fg[white]%})"
 }
 
 custom_git() {
@@ -95,7 +95,7 @@ custom_git() {
 
 	git_status+=$branch
 
-	local ahead behind
+	local ahead behind stashes changenum
 	local -a remotestatus
 
 	ahead=$(git rev-list @{upstream}..HEAD 1>/dev/null 2>/dev/null)
@@ -104,42 +104,38 @@ custom_git() {
 	    behind=$(git rev-list HEAD..@{upstream} 2>/dev/null | wc -l | tr -d ' ')
 
 	    if [[ "$ahead" -ge 1 ]]; then
-		remotestatus+="$fg_bold[green]↑$ahead"
+		    remotestatus+="%{$fg_bold[green]%}↑$ahead"
 	    fi
 	    if [[ "$behind" -ge 1 ]]; then
-		remotestatus+="$fg_bold[red]↓$behind"
+		    remotestatus+="%{$fg_bold[red]%}↓$behind"
 	    fi
 
 	    if [ -z "$remotestatus" ]; then
-		remotestatus="$fg_bold[cyan]≡"
+		    remotestatus="%{$fg_bold[cyan]%}≡"
 	    fi
 
-	    #git_status+=" "
 	    git_status+=$remotestatus
 	fi
 
-	local stashes
 	stashes=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
 	if [[ "$stashes" -ge 1 ]]; then
-	    #git_status+=" "
-	    git_status+="$fg_bold[blue]●$stashes"
+	    git_status+="%{$fg_bold[blue]%}●$stashes"
 	fi
 
-	local changes
-	changes=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
-	if [[ $changes -ge 1 ]]; then
-	    git_status+="$fg_bold[white]✏︎ $changes"
+	changesnum=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+	if [[ $changesnum -ge 1 ]]; then
+        git_status+="%{$fg_bold[white]%}✏ $changesnum"
 	fi
 
-	echo "$fg_bold[magenta][$fg_bold[cyan]$git_status$fg_bold[magenta]]$reset_color"
+	echo "%{$fg_bold[magenta]%}[%{$fg_bold[cyan]%}$git_status%{$fg_bold[magenta]%}]%{$reset_color%}"
 
     fi
 }
 
-PS1=$'$(user_host)$fg_bold[white]-in-$(current_dir)$fg[white]-$(prompt_vcs_info)\
-$(custom_git)$fg[yellow]-->$reset_color'
-PS2="$fg[red]%_$fg[default]"
-PROMPT3="$fg[red]Make your choice: $fg[default]"
+PS1=$'$(user_host)%{$fg_bold[white]%}-in-$(current_dir)%{$fg_bold[white]%}-
+$(prompt_vcs_info)$(custom_git)%{$fg[yellow]%}➤%{$reset_color%} '
+PS2="%{$fg[red]%}%_%{$reset_color%}"
+PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
 ################################################################################
 
 ################################################################################
