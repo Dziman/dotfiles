@@ -134,6 +134,7 @@ custom_git() {
 
 PS1=$'$(user_host)%{$fg_bold[white]%}-in-$(current_dir)%{$fg_bold[white]%}-
 $(prompt_vcs_info)$(custom_git)%{$fg[yellow]%}➤%{$reset_color%} '
+RPS1="%{$fg[grey]%}<%*>%{$reset_color%}"
 PS2="%{$fg[red]%}%_%{$reset_color%}"
 PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
 ################################################################################
