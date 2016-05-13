@@ -12,9 +12,9 @@ cask
 cloog-ppl015
 cloog018
 cmake
+coreutils
 cscope
 diff-so-fancy
-docker
 emacs
 emacs-mac
 freetype
@@ -34,6 +34,7 @@ imagemagick
 isl011
 jenv
 jpeg
+karn
 libevent
 libgpg-error
 libksba
