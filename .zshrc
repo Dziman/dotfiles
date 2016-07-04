@@ -1,14 +1,6 @@
 #!/bin/zsh
 # Author: Dziman <dziman.by@gmail.com>
 
-## TODO Extract programming language, tools, env specific settings to external files.
-
-################################################################################
-# System settings
-################################################################################
-#ulimit -n 10000
-################################################################################
-
 ################################################################################
 # Set options
 ################################################################################
@@ -55,6 +47,12 @@ zmodload -ap zsh/mapfile mapfile
 
 source ~/.zsh/.iterm2_shell_integration.zsh
 
+# Fuzzy search
+source ~/.zsh/.fzf.zsh
+
+# Colors for man pages
+source ~/.zsh/solarized-man.plugin.zsh 
+
 ################################################################################
 
 ################################################################################
@@ -88,7 +86,7 @@ current_dir() {
 
 custom_git() {
     local -a git_status
-    local -a branch
+    local branch
     branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
 
     if [[ $? == 0 ]]; then
@@ -98,7 +96,7 @@ custom_git() {
 	local ahead behind stashes changenum
 	local -a remotestatus
 
-	ahead=$(git rev-list @{upstream}..HEAD 1>/dev/null 2>/dev/null)
+	ahead=$(git rev-list @{upstream}..HEAD &>/dev/null)
 	if [[ $? == 0 ]]; then
 	    ahead=$(git rev-list @{upstream}..HEAD 2>/dev/null | wc -l | tr -d ' ')
 	    behind=$(git rev-list HEAD..@{upstream} 2>/dev/null | wc -l | tr -d ' ')
@@ -124,7 +122,7 @@ custom_git() {
 
 	changesnum=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
 	if [[ $changesnum -ge 1 ]]; then
-        git_status+="%{$fg_bold[white]%}✏ $changesnum"
+            git_status+="%{$fg_bold[white]%}✏ $changesnum"
 	fi
 
 	echo "%{$fg_bold[magenta]%}[%{$fg_bold[cyan]%}$git_status%{$fg_bold[magenta]%}]%{$reset_color%}"
@@ -132,8 +130,15 @@ custom_git() {
     fi
 }
 
-PS1=$'$(user_host)%{$fg_bold[white]%}-in-$(current_dir)%{$fg_bold[white]%}-
-$(prompt_vcs_info)$(custom_git)%{$fg[yellow]%}➤%{$reset_color%} '
+jenv_status() {
+    if which jenv &>/dev/null; then
+	local_java=$(jenv local 2>/dev/null)
+	[[ -n "$local_java" ]] && echo -n "%{$fg_bold[red]%}[Local java $local_java]%{$reset_color%} "
+    fi    
+}
+
+PS1=$'$(user_host)%{$fg_bold[white]%}-in-$(current_dir)%{$fg_bold[white]%}-%{$reset_color%}
+$(jenv_status)$(prompt_vcs_info)$(custom_git)%{$fg[yellow]%}➤%{$reset_color%} '
 RPS1="%{$fg[grey]%}<%*>%{$reset_color%}"
 PS2="%{$fg[red]%}%_%{$reset_color%}"
 PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
@@ -144,15 +149,12 @@ PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
 ################################################################################
 export EDITOR=emacs
 
-export JAVA_HOME=$(/usr/libexec/java_home)
-
-# disable annoying java icons in doc
+# disable annoying java icons in doc TODO It seems Java ignores this
 export OSX_JAVAOPTS='-Dapple.awt.UIElement=true -Djava.awt.headless=true'
 
 export HOMEBREW_GITHUB_API_TOKEN='e80a9e8846522129ddedae42eedd2f81af214cc1'
 
-# start emacs server automatically
-export ALTERNATE_EDITOR=""
+export ALTERNATE_EDITOR="vim"
 
 # Fix Homebrew in El Capitan
 export PATH=/usr/local/bin:$PATH
@@ -204,7 +206,6 @@ bindkey '\e[3~' delete-char
 ################################################################################
 # Completions
 ################################################################################
-
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
 zstyle ':completion:*:default' list-colors 'no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;31:'
@@ -245,34 +246,3 @@ zstyle ':completion:*' word true
 if which jenv > /dev/null; then eval "$(jenv init -)"; fi
 ################################################################################
 
-################################################################################
-# Android
-################################################################################
-#export ANDROID_HOME='/Users/dziman/Development/tools/android'
-#export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
-################################################################################
-
-################################################################################
-# Ruby specific
-################################################################################
-#export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-#source ~/.rvm/scripts/rvm
-#rvm use 1.9.3 > /dev/null
-#export RBENV_ROOT=/usr/local/var/rbenv
-#if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-#export PATH="/Users/dziman/.rbenv/shims:${PATH}"
-################################################################################
-
-################################################################################
-# Go specific
-################################################################################
-#export GOROOT=/usr/local/go
-#export GOPATH=/Users/dziman/Development/src/go
-#export PATH=$PATH:$GOPATH/bin
-################################################################################
-
-################################################################################
-# Rust specific
-################################################################################
-# export PATH="${PATH}:/Users/dziman/.cargo/bin"
-################################################################################
