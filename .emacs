@@ -1,3 +1,4 @@
+(package-initialize)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -5,7 +6,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))))
+    ("84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,13 +38,13 @@
 (setq shell-file-name "zsh")
 
 ;; Themes
-;;(load-theme 'darcula t)
-;;(load-theme 'zerodark t)
-(load-theme 'zenburn t)
+;;(load-theme 'zenburn t)
+(load-theme 'gray30 t)
+(enable-theme 'gray30)
 
 ;; Customize status line
+(setq sml/theme 'powerline)
 (sml/setup)
-(sml/apply-theme 'respectful)
 (setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company" " Helm" " yas"))
 
 ;; Show column position
@@ -135,6 +136,9 @@
 (which-key-mode)
 (which-key-setup-side-window-bottom)
 
+;; quick jump to windows
+(setq aw-scope 'frame)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -204,6 +208,7 @@
 
 (bind-key "C-c l" 'goto-line)
 (bind-key "C-c e" 'er/expand-region)
+(bind-key "M-p" 'ace-window)
 
 ;;;;;;;;;;;;;;;
 ;;; smex keys
