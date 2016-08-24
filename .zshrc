@@ -132,8 +132,9 @@ custom_git() {
 
 jenv_status() {
     if which jenv &>/dev/null; then
-	local_java=$(jenv local 2>/dev/null)
-	[[ -n "$local_java" ]] && echo -n "%{$fg_bold[red]%}[Local java $local_java]%{$reset_color%} "
+	local_java=$(jenv version-name 2>/dev/null)
+	global_java=$(jenv global 2>/dev/null)
+	[[ "$local_java" == "$global_java" ]] || echo -n "%{$fg_bold[red]%}[Local java $local_java]%{$reset_color%} "
     fi    
 }
 
@@ -158,9 +159,6 @@ export ALTERNATE_EDITOR="vim"
 
 # Fix Homebrew in El Capitan
 export PATH=/usr/local/bin:$PATH
-
-# Add Dotfiles(https://github.com/jbernard/dotfiles) to PATH
-export PATH=$PATH:/Users/dziman/Development/src/oss/dotfiles/bin
 ################################################################################
 
 ################################################################################
@@ -177,7 +175,6 @@ alias ls='ls -F -G'
 alias emacs='emacs -nw'
 alias ec='emacsclient -t'
 alias mv='mv -i'
-alias mate='/Applications/TextMate.app/Contents/Resources/mate'
 ################################################################################
 
 ################################################################################
@@ -245,4 +242,3 @@ zstyle ':completion:*' word true
 ################################################################################
 if which jenv > /dev/null; then eval "$(jenv init -)"; fi
 ################################################################################
-
