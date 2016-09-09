@@ -61,6 +61,7 @@
 
 (depends-on "gradle-mode")
 (depends-on "groovy-mode")
+(depends-on "dockerfile-mode")
 
 ;; Themes
 (depends-on "darcula-theme")
