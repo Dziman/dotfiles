@@ -6,9 +6,8 @@
 	status = auto
 	branch = auto
 [core]
-#	editor = /Applications/TextMate.app/Contents/Resources/mate -w
 	editor = emacs -nw
-	excludesfile = /Users/dziman/.gitignore
+	excludesfile = ~/.gitignore
 	autocrlf = input
 [alias]
 	# edit last commit message
@@ -34,7 +33,8 @@
 	rih2 = rebase --interactive HEAD~2
 	rih3 = rebase --interactive HEAD~3
 	rih4 = rebase --interactive HEAD~4
-	rih5 = rebase --interactive HEAD~5	
+	rih5 = rebase --interactive HEAD~5
+	fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
 [credential]
 	helper = osxkeychain
 [pager]
