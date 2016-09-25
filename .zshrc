@@ -52,7 +52,7 @@ bindkey '\e[3~' delete-char
 ################################################################################
 
 # Include all enabled extensions
-for extension_file in ~/.zsh-dziman/*.enabled.zsh; do
+for extension_file in ~/.dziman-zsh/*.enabled.zsh; do
     source "$extension_file"
 done
 ################################################################################

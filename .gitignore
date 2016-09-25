@@ -1,9 +1,18 @@
+# Dotfiles git repo
+~/.dziman-dotfiles
+
+# macOS
 .DS_Store
+
+# IDEA
 *.iml
 .idea
+
+# Xcode
 xcuserdata/
 project.xcworkspace/xcuserdata/
-override-inadco.properties
+
+# Emacs specific
 *~
 \#*#
 .#*

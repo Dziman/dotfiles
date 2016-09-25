@@ -20,3 +20,6 @@ alias gmd='git merge origin/develop'
 alias gpom='git push origin master'
 alias gpod='git push origin develop'
 alias gca='git commit -a'
+
+# command to track dotfiles by git
+alias config='git --git-dir=$HOME/.dziman-dotfiles/ --work-tree=$HOME'
