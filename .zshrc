@@ -4,7 +4,6 @@
 ################################################################################
 # Set options
 ################################################################################
-
 setopt localoptions
 setopt localtraps
 setopt promptsubst
@@ -35,6 +34,9 @@ zle -N insert-files
 
 autoload -U predict-on
 zle -N predict-on
+
+autoload colors
+colors
 
 bindkey -e
 
