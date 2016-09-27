@@ -1,5 +1,0 @@
-[dotfiles]
-repository = ~/.Dotfiles
-ignore = ['.git', '.DS_Store', 'idea', 'customize_os_x.sh', 'improvements.sh', 'brew.packages', '*~', '#*']
-prefix = .
-packages = ['emacs.d', 'zsh-dziman']
