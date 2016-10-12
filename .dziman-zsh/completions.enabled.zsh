@@ -36,5 +36,7 @@ zstyle ':completion:*' word true
 
 # custom completion scripts
 fpath=(/usr/local/share/zsh-completions $fpath)
+compinit
+
 source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 

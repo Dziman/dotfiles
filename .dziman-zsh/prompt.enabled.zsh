@@ -61,14 +61,14 @@ custom_git() {
 	    git_status+=$remotestatus
 	fi
 
-	stashes=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
-	if [[ "$stashes" -ge 1 ]]; then
-	    git_status+="%{$fg_bold[blue]%}●$stashes"
-	fi
-
 	changesnum=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
 	if [[ $changesnum -ge 1 ]]; then
-            git_status+="%{$fg_bold[white]%}✏ $changesnum"
+            git_status+="%{$fg_bold[yellow]%}✱ $changesnum"
+	fi
+
+	stashes=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
+	if [[ "$stashes" -ge 1 ]]; then
+	    git_status+="%{$fg_bold[blue]%}$stashes➜ "
 	fi
 
 	echo "%{$fg_bold[magenta]%}[%{$fg_bold[cyan]%}$git_status%{$fg_bold[magenta]%}]%{$reset_color%}"
