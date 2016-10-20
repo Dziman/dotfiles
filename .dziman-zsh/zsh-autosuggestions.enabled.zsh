@@ -1,8 +1,8 @@
 #!/bin/zsh
 # Author: Dziman <dziman.by@gmail.com>
 ################################################################################
-# Java specific
+# Autosuggest commands
 ################################################################################
 
-# jenv initialization
-if which jenv > /dev/null; then eval "$(jenv init -)"; fi
+# git://github.com/zsh-users/zsh-autosuggestions
+source ~/.dziman-zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
