@@ -11,7 +11,9 @@ hash -d src=~/Development/src/
 alias cls='clear'
 alias ls='gls -Fh --color=always'
 alias emacs='emacs -nw'
+alias edit='emacsclient -t'
 alias ec='emacsclient -t'
+alias ke='emacsclient -e "(save-buffers-kill-emacs)"'
 alias mv='mv -i'
 alias k='k -h'
 

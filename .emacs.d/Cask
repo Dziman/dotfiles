@@ -52,6 +52,7 @@
 (depends-on "web-mode")
 (depends-on "tide")
 (depends-on "yaml-mode")
+(depends-on "ember-mode")
 
 ;; Go
 (depends-on "go-mode")

@@ -15,7 +15,7 @@
  )
 
 ;; Cask
-(require 'cask "/usr/local/Cellar/cask/0.8.0/cask.el")
+(require 'cask "/usr/local/Cellar/cask/0.8.1/cask.el")
 (cask-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
