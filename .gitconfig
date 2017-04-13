@@ -35,6 +35,8 @@
 	rih4 = rebase --interactive HEAD~4
 	rih5 = rebase --interactive HEAD~5
 	fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
+	# list conflicted files
+	show-conflicts = diff --name-only --diff-filter=U
 [credential]
 	helper = osxkeychain
 [pager]
