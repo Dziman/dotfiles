@@ -128,3 +128,10 @@ if [[ -o login ]]; then
   fi
 fi
 alias imgcat=~/.iterm2/imgcat; alias it2dl=~/.iterm2/it2dl
+
+if [ $ITERM_SESSION_ID ]; then
+    precmd() {
+	# sets the tab title to current dir
+	echo -ne "\e]1;${PWD##*/}\a"
+    }
+fi
