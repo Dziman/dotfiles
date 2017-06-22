@@ -61,11 +61,26 @@ custom_git() {
 	    git_status+=$remotestatus
 	fi
 
-	changesnum=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+	temp_file_for_git_status=$(mktemp)
+	git status --porcelain 2>/dev/null 1>$temp_file_for_git_status
+	changesnum=$(count_lines_in_git_status "$temp_file_for_git_status" ".")
 	if [[ $changesnum -ge 1 ]]; then
-            git_status+="%{$fg_bold[yellow]%}✱ $changesnum"
+	    staged_added=$(count_lines_in_git_status "$temp_file_for_git_status" "^A")
+	    staged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^M")
+	    staged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^D")
+	    unstaged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^.M")
+	    unstaged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^.D")
+	    untracked=$(count_lines_in_git_status "$temp_file_for_git_status" "^\?")
+	    conflicts=$(count_lines_in_git_status "$temp_file_for_git_status" "^UU")
+	    if [[ "$conflicts" != "0" ]]; then
+		conflicts=" !$conflicts"
+	    else
+		conflicts=""
+	    fi	    
+            git_status+="%{$fg_bold[green]%}+$staged_added *$staged_modified -$staged_deleted %{$fg_bold[magenta]%}| %{$fg_bold[red]%}+$untracked *$unstaged_modified -$unstaged_deleted$conflicts"
 	fi
-
+	rm $temp_file_for_git_status
+	
 	stashes=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
 	if [[ "$stashes" -ge 1 ]]; then
 	    git_status+="%{$fg_bold[blue]%}$stashes➜ "
@@ -74,6 +89,10 @@ custom_git() {
 	echo "%{$fg_bold[magenta]%}[%{$fg_bold[cyan]%}$git_status%{$fg_bold[magenta]%}]%{$reset_color%}"
 
     fi
+}
+
+function count_lines_in_git_status() {
+    echo -n $(cat $1 | grep "$2" | wc -l | tr -d ' ')
 }
 
 # TODO Move to java extension?
