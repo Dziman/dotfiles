@@ -2,13 +2,15 @@
 	name = Dzmitry Rusak
 	email = dzmitry.rusak@gmail.com
 [color]
-	diff = auto
+#	diff = auto
 	status = auto
 	branch = auto
+	ui = true
 [core]
 	editor = emacsclient -t
 	excludesfile = ~/.gitignore
 	autocrlf = input
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
 	# edit last commit message
 	ed = commit --amend
@@ -39,6 +41,20 @@
 	show-conflicts = diff --name-only --diff-filter=U
 [credential]
 	helper = osxkeychain
+[diff-so-fancy]
+	first-run = false
 [pager]
 	diff = diff-so-fancy | less --tabs=1,5 -RFX
 	show = diff-so-fancy | less --tabs=1,5 -RFX
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green
+	newHighlight = green 22
+[color "diff"]
+	meta = 227
+	frag = magenta bold
+	commit = 227 bold
+	old = red bold
+	new = green
+	whitespace = red reverse
