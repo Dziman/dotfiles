@@ -66,7 +66,7 @@ custom_git() {
 	changesnum=$(count_lines_in_git_status "$temp_file_for_git_status" ".")
 	if [[ $changesnum -ge 1 ]]; then
 	    staged_added=$(count_lines_in_git_status "$temp_file_for_git_status" "^A")
-	    staged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^M")
+	    staged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^[MR]")
 	    staged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^D")
 	    unstaged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^.M")
 	    unstaged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^.D")
