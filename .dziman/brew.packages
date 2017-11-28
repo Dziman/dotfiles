@@ -24,6 +24,7 @@ diff-so-fancy
 docker
 docker-compose
 docker-machine
+elasticsearch@2.4
 emacs-mac
 fontconfig
 freetype
@@ -43,6 +44,7 @@ gnu-sed
 go
 gobject-introspection
 gradle
+graphite2
 groovysdk
 grunt-completion
 harfbuzz
@@ -65,6 +67,7 @@ libksba
 libmpc08
 libmpc@0.8
 libpng
+libpq
 librsvg
 libssh2
 libtiff
@@ -86,10 +89,10 @@ openssl
 openssl@1.1
 pango
 pcre
+perl
 pgcli
 pixman
 pkg-config
-postgresql
 ppl011
 ppl@0.11
 python
@@ -107,6 +110,7 @@ sphinx-doc
 sqlite
 ssh-copy-id
 subversion
+terminal-notifier
 texinfo
 tig
 tmux
