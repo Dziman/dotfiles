@@ -26,9 +26,8 @@
 (setq shell-file-name "zsh")
 
 ;; Themes
-;;(load-theme 'zenburn t)
-(load-theme 'gray30 t)
-(enable-theme 'gray30)
+;;(load-theme 'gray30 t)
+(load-theme 'labburn t)
 
 ;; Customize status line
 (setq sml/theme 'powerline)
@@ -59,7 +58,7 @@
 ;; rainbow parentheses
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 ;; Emacs can't start properly with this mode so disabled for now
-;; (add-hook 'prog-mode-hook 'highlight-parentheses-mode)
+;;(add-hook 'prog-mode-hook 'highlight-parentheses-mode)
 
 ;; Show line numbers
 (global-linum-mode 1)

@@ -14,6 +14,7 @@
 (depends-on "helm-swoop")
 (depends-on "helm-projectile")
 (depends-on "helm-company")
+(depends-on "helm-mode-manager")
 (depends-on "smartparens")
 (depends-on "projectile")
 (depends-on "org-projectile")
@@ -39,6 +40,8 @@
 (depends-on "magit-gerrit")
 (depends-on "gitconfig-mode")
 (depends-on "gitignore-mode")
+(depends-on "git-timemachine")
+(depends-on "git-gutter-fringe+")
 
 ;; Scala
 (depends-on "ensime")
@@ -62,11 +65,17 @@
 
 (depends-on "gradle-mode")
 (depends-on "groovy-mode")
+(depends-on "grails-mode")
 (depends-on "dockerfile-mode")
+(depends-on "terraform-mode")
+(depends-on "swift-mode")
 
 ;; Themes
 (depends-on "darcula-theme")
 (depends-on "zerodark-theme")
 (depends-on "zenburn-theme")
 (depends-on "suscolors-theme")
+(depends-on "labburn-theme")
+;; (depends-on "kaolin-theme")
+
 (depends-on "color-theme-modern")
