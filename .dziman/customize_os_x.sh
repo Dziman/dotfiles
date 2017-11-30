@@ -9,15 +9,9 @@ sudo tmutil disablelocal
 # Set sleep time delay to 24 hours(86400 secs). http://www.ewal.net/2012/09/09/slow-wake-for-macbook-pro-retina/
 sudo pmset -a standbydelay 86400
 
-# Need to update /etc/paths to support Homebrew 
-# /usr/local/bin
-# /usr/local/sbin
-# /usr/bin
-# /bin
-# /usr/sbin
-# /sbin
-tput bel # beep
-tput bel # beep
-echo "Update /etc/paths and or $PATH in .zshrc if you want to use Homebrew"
-tput bel # beep
-tput bel # beep
+# Set zsh installed by brew as default shell
+# sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
+
+# Use Touch ID for sudo
+# sudo nano /etc/pam.d/sudo
+# Add first line `auth sufficient pam_tid.so`
