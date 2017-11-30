@@ -1,6 +1,5 @@
-alias docker-refresh='eval "$(docker-machine env adfury)"'
+alias docker-refresh='eval "$(docker-machine env main-docker)"'
 
-#local adfury-machine-status=$(docker-machine status adfury)
-if [[ $(docker-machine status adfury) = "Running" ]]; then
-    eval "$(docker-machine env adfury)"
+if [[ $(docker-machine status main-docker 2>/dev/null) = "Running" ]]; then
+    eval "$(docker-machine env main-docker)"
 fi
