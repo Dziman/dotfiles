@@ -57,12 +57,6 @@
 (depends-on "yaml-mode")
 (depends-on "ember-mode")
 
-;; Go
-(depends-on "go-mode")
-(depends-on "company-go")
-(depends-on "go-errcheck")
-(depends-on "go-eldoc")
-
 (depends-on "gradle-mode")
 (depends-on "groovy-mode")
 (depends-on "grails-mode")
