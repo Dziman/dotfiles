@@ -17,6 +17,7 @@ setopt correct
 unsetopt extendedglob
 setopt AUTO_PUSHD
 
+mkdir ~/.zsh/ 2>/dev/null
 HISTFILE=~/.zsh/_histfile
 HISTSIZE=1000
 SAVEHIST=1000
