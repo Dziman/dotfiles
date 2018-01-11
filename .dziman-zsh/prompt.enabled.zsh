@@ -6,31 +6,19 @@
 autoload colors
 colors
 
-autoload -Uz vcs_info
-
-zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f %c%u'
-zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f %c%u'
-zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
-zstyle ':vcs_info:*' enable svn hg
-zstyle ':vcs_info:*' check-for-changes true
-
-prompt_vcs_info() {
-  vcs_info
-  if [ -n "$vcs_info_msg_0_" ]; then
-    echo "$vcs_info_msg_0_"
-  fi
-}
-
-user_host() {
+function user_host() {
     echo "%{$fg_bold[white]%}.(%{$fg[green]%}%n%{$fg_bold[white]%}@%{$fg[grey]%}%m%{$fg_bold[white]%})"
 }
 
-current_dir() {
+function current_dir() {
     echo "%{$fg[white]%}(%{$fg[cyan]%}%~%{$fg[white]%})"
 }
 
+################################################################################
+# Git status information
+################################################################################
 # TODO Move to git extension?
-custom_git() {
+function custom_git() {
     local -a git_status
     local branch
     branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
@@ -94,18 +82,50 @@ custom_git() {
 function count_lines_in_git_status() {
     echo -n $(cat $1 | grep "$2" | wc -l | tr -d ' ')
 }
+################################################################################
 
+################################################################################
+# Info about java version for current location
+################################################################################
 # TODO Move to java extension?
-jenv_status() {
+function jenv_status() {
     if which jenv &>/dev/null; then
 	local_java=$(jenv version-name 2>/dev/null)
 	global_java=$(jenv global 2>/dev/null)
 	[[ "$local_java" == "$global_java" ]] || echo -n "%{$fg_bold[red]%}[Local java $local_java]%{$reset_color%} "
     fi    
 }
+################################################################################
+
+################################################################################
+# Show last command execution time
+################################################################################
+function preexec() {
+    timer=$(($(gdate +%s%N)/1000000))
+}
+
+function precmd() {
+    RPS1=""
+
+    if [ $timer ]; then
+        now=$(($(gdate +%s%N)/1000000))
+        elapsed=$(($now-$timer))
+
+        export RPS1="$RPS1%{$fg[cyan]%}%F{104}${elapsed}ms %{$reset_color%}"
+        unset timer
+    fi
+}
+################################################################################
+
+################################################################################
+# Highlight syntax in prompt
+################################################################################
+if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+################################################################################
 
 PS1=$'$(user_host)%{$fg_bold[white]%}-in-$(current_dir)%{$fg_bold[white]%}-%{$reset_color%}
-$(jenv_status)$(prompt_vcs_info)$(custom_git)%{$fg[yellow]%}➤%{$reset_color%} '
-RPS1="%{$fg_bold[grey]%}<%*>%{$reset_color%}"
+$(jenv_status)$(custom_git)%{$fg[yellow]%}➤%{$reset_color%} '
 PS2="%{$fg[red]%}%_%{$reset_color%}"
 PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
