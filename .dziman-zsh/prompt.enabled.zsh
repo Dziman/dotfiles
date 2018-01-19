@@ -100,11 +100,11 @@ function jenv_status() {
 ################################################################################
 # Show last command execution time
 ################################################################################
-function preexec() {
+function perf_preexec() {
     timer=$(($(gdate +%s%N)/1000000))
 }
 
-function precmd() {
+function perf_precmd() {
     RPS1=""
 
     if [ $timer ]; then
@@ -115,6 +115,12 @@ function precmd() {
         unset timer
     fi
 }
+
+[[ -z $precmd_functions ]] && precmd_functions=()
+precmd_functions=($precmd_functions perf_precmd)
+
+[[ -z $preexec_functions ]] && preexec_functions=()
+preexec_functions=($preexec_functions perf_preexec)
 ################################################################################
 
 ################################################################################
