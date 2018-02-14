@@ -3,6 +3,7 @@ bash
 bash-completion
 brew-cask-completion
 cask
+cocoapods
 coreutils
 diff-so-fancy
 docker
@@ -15,7 +16,9 @@ gettext
 git
 git-flow-avh
 gnu-getopt
+go
 htop
+httpie
 jenv
 kotlin
 libevent
