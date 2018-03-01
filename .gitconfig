@@ -10,7 +10,6 @@
 	editor = emacsclient -t
 	excludesfile = ~/.gitignore
 	autocrlf = input
-	pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
 	# edit last commit message
 	ed = commit --amend
@@ -44,6 +43,7 @@
 	helper = osxkeychain
 [diff-so-fancy]
 	first-run = false
+	markEmptyLines = false
 [pager]
 	diff = diff-so-fancy | less --tabs=1,5 -RFX
 	show = diff-so-fancy | less --tabs=1,5 -RFX
