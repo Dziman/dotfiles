@@ -26,3 +26,5 @@ alias gca='git commit -a'
 
 # command to track dotfiles by git
 alias config='git --git-dir=$HOME/.dziman-dotfiles/ --work-tree=$HOME'
+
+alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
