@@ -1,0 +1,40 @@
+{
+    "workbench.colorTheme": "Zenburn",
+    "workbench.colorCustomizations": {
+        "[Zenburn]": {
+            "statusBar.background": "#424242",
+            "statusBar.debuggingBackground": "#de3322",
+            "statusBar.noFolderBackground": "#234567"
+        }
+    },
+    "editor.cursorStyle": "block",
+    "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 16,
+    "editor.rulers": [
+        120,
+        200
+    ],
+    "editor.tabCompletion": true,
+    "editor.minimap.enabled": false,
+    "editor.cursorBlinking": "blink",
+    "editor.fontLigatures": true,
+    "editor.renderWhitespace": "boundary",
+    "git.autofetch": false,
+    "files.autoSave": "onFocusChange",
+    "debug.inlineValues": true,
+    "workbench.activityBar.visible": true,
+    "workbench.sideBar.location": "right",
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": false,
+        "suppressCommitNotFoundWarning": false,
+        "suppressFileNotUnderSourceControlWarning": false,
+        "suppressGitVersionWarning": false,
+        "suppressLineUncommittedWarning": false,
+        "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressUpdateNotice": false,
+        "suppressWelcomeNotice": true
+    },
+    "java.home": "/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home",
+    "terminal.integrated.macOptionIsMeta": true
+}
