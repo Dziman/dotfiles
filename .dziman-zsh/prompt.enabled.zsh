@@ -3,8 +3,10 @@
 ################################################################################
 # Prompt settings
 ################################################################################
-autoload colors
+autoload -U colors
 colors
+
+autoload -Uz add-zsh-hook
 
 function user_host() {
     echo "%{$fg_bold[white]%}.(%{$fg[green]%}%n%{$fg_bold[white]%}@%{$fg[grey]%}%m%{$fg_bold[white]%})"
@@ -116,11 +118,8 @@ function perf_precmd() {
     fi
 }
 
-[[ -z $precmd_functions ]] && precmd_functions=()
-precmd_functions=($precmd_functions perf_precmd)
-
-[[ -z $preexec_functions ]] && preexec_functions=()
-preexec_functions=($preexec_functions perf_preexec)
+add-zsh-hook precmd perf_precmd
+add-zsh-hook preexec perf_preexec
 ################################################################################
 
 ################################################################################
