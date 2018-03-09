@@ -2,7 +2,7 @@
 # Author: Dziman <dziman.by@gmail.com>
 
 ################################################################################
-# List all intalled packages, extensions
+# List all installed packages, extensions
 ################################################################################
 
 brew list > brew.packages

@@ -25,6 +25,7 @@ libevent
 libidn2
 libunistring
 libyaml
+libzip
 maven
 maven-completion
 mycli
@@ -44,6 +45,7 @@ terraform
 terraform-docs
 terragrunt
 tig
+tldr
 tmux
 tree
 wget
