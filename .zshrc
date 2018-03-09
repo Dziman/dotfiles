@@ -36,7 +36,7 @@ zle -N insert-files
 autoload -U predict-on
 zle -N predict-on
 
-autoload colors
+autoload -U colors
 colors
 
 bindkey -e
