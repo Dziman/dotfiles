@@ -1,26 +1,109 @@
 #!/bin/zsh
 # Author: Dziman <dziman.by@gmail.com>
 ################################################################################
-# Prompt settings
+# Prompt settings # TODO Improve
 ################################################################################
 autoload -U colors
 colors
 
 autoload -Uz add-zsh-hook
 
-function user_host() {
-    echo "%{$fg_bold[white]%}.(%{$fg[green]%}%n%{$fg_bold[white]%}@%{$fg[grey]%}%m%{$fg_bold[white]%})"
+
+PREVIOUS_SEGMENT_COLOR='NONE'
+
+LEFT_PROMPT_START_SEPARATOR='\uE0B6'
+LEFT_PROMPT_SEPARATOR="$icons[LEFT_SEGMENT_SEPARATOR]"
+
+RIGHT_PROMPT_END_SEPARATOR='\uE0B4'
+RIGHT_PROMPT_SEPARATOR="$icons[RIGHT_SEGMENT_SEPARATOR]"
+
+function print-segment() {
+    local segment_fg=$1
+    local segment_bg=$2
+    local content=$3
+
+    if [[ $content != "" ]]; then
+	if [[ "$PREVIOUS_SEGMENT_COLOR" == "NONE" ]]; then
+	    echo -n "%k%F{$segment_bg}$LEFT_PROMPT_START_SEPARATOR%K{$segment_bg}%F{$segment_fg}"
+	else
+	    echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%K{$segment_bg}$LEFT_PROMPT_SEPARATOR%F{$segment_fg}"
+	fi
+
+	echo -n " $content"
+
+	PREVIOUS_SEGMENT_COLOR=$segment_bg
+    fi
 }
 
-function current_dir() {
-    echo "%{$fg[white]%}(%{$fg[cyan]%}%~%{$fg[white]%})"
+function print-left-prompt-end() {
+    echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%k$LEFT_PROMPT_SEPARATOR%f"
+    PREVIOUS_SEGMENT_COLOR='NONE'
+}
+
+function print-right-segment() {
+    local segment_fg=$1
+    local segment_bg=$2
+    local content=$3
+
+    if [[ $content != "" ]]; then
+	if [[ "$PREVIOUS_SEGMENT_COLOR" == "NONE" ]]; then
+	    echo -n "%k%F{$segment_bg}$RIGHT_PROMPT_SEPARATOR%K{$segment_bg}%F{$segment_fg}"
+	else
+	    echo -n " %F{$segment_bg}$RIGHT_PROMPT_SEPARATOR%F{$segment_fg}%K{$segment_bg}"
+	fi
+
+	echo -n " $content"
+
+	PREVIOUS_SEGMENT_COLOR=$segment_bg
+    fi
+}
+
+function print-right-prompt-end() {
+    if [[ "$PREVIOUS_SEGMENT_COLOR" != "NONE" ]]; then
+	echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%k$RIGHT_PROMPT_END_SEPARATOR%f"
+	PREVIOUS_SEGMENT_COLOR='NONE'
+    fi
+}
+
+# TODO Implement
+function user-host() {
+    # if ssh then show server icon and host name, show current username
+    if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+	echo -n "$icons[SERVER_ICON]"
+    else # if local then show laptop icon, show username only if su was used
+	echo -n "$icons[LAPTOP_ICON]"
+    fi
+}
+
+# TODO Use variables for colors
+function left-prompt() {
+    print-segment 10 246 "$(user-host)"
+    print-segment 10 66 "$(current-dir)"
+    print-left-prompt-end
+}
+
+# TODO Use variables for colors
+function right-prompt() {
+    print-right-segment 10 136 "$(jenv-status)"
+    print-right-segment 10 103 "$(git-prompt-status)"
+    print-right-prompt-end
+}
+
+function update-right-prompt() {
+    RPS1="$(right-prompt)"
+}
+
+# TODO Parse and butify
+function current-dir() {
+    echo "%~"
 }
 
 ################################################################################
 # Git status information
 ################################################################################
 # TODO Move to git extension?
-function custom_git() {
+# TODO Use icons and prompt background color
+function git-prompt-status() {
     local -a git_status
     local branch
     branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
@@ -76,7 +159,7 @@ function custom_git() {
 	    git_status+="%{$fg_bold[blue]%}$stashes➜ "
 	fi
 
-	echo "%{$fg_bold[magenta]%}[%{$fg_bold[cyan]%}$git_status%{$fg_bold[magenta]%}]%{$reset_color%}"
+	echo "%{$fg_bold[magenta]%}[%{$fg_bold[cyan]%}$git_status%{$fg_bold[magenta]%}]%f"
 
     fi
 }
@@ -90,23 +173,24 @@ function count_lines_in_git_status() {
 # Info about java version for current location
 ################################################################################
 # TODO Move to java extension?
-function jenv_status() {
+# TODO Handle shell settings
+function jenv-status() {
     if which jenv &>/dev/null; then
 	local_java=$(jenv version-name 2>/dev/null)
 	global_java=$(jenv global 2>/dev/null)
-	[[ "$local_java" == "$global_java" ]] || echo -n "%{$fg_bold[red]%}[Local java $local_java]%{$reset_color%} "
+	[[ "$local_java" == "$global_java" ]] || echo -n "%{$fg_bold[red]%}[Local java $local_java]%f"
     fi    
 }
 ################################################################################
 
 ################################################################################
-# Show last command execution time
+# Show last command execution time # TODO Review
 ################################################################################
-function perf_preexec() {
+function perf-preexec() {
     timer=$(($(gdate +%s%N)/1000000))
 }
 
-function perf_precmd() {
+function perf-precmd() {
     RPS1=""
 
     if [ $timer ]; then
@@ -118,8 +202,8 @@ function perf_precmd() {
     fi
 }
 
-add-zsh-hook precmd perf_precmd
-add-zsh-hook preexec perf_preexec
+#add-zsh-hook precmd perf-precmd
+#add-zsh-hook preexec perf-preexec
 ################################################################################
 
 ################################################################################
@@ -130,7 +214,9 @@ if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; 
 fi
 ################################################################################
 
-PS1=$'$(user_host)%{$fg_bold[white]%}-in-$(current_dir)%{$fg_bold[white]%}-%{$reset_color%}
-$(jenv_status)$(custom_git)%{$fg[yellow]%}➤%{$reset_color%} '
+add-zsh-hook precmd update-right-prompt
+
+PS1=$'$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)
+$icons[MULTILINE_LAST_PROMPT_PREFIX]'
 PS2="%{$fg[red]%}%_%{$reset_color%}"
 PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
