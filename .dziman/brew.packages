@@ -37,9 +37,11 @@ pcre
 pkg-config
 python
 python3
+python@2
 readline
 sbt
 scala
+sphinx-doc
 sqlite
 terraform
 terraform-docs
