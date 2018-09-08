@@ -4,15 +4,113 @@ zmodload -F zsh/stat b:zstat
 typeset numfmt_command=""
 typeset numfmt_options=""
 
-if [[ $+commands[numfmt] == 1 ]]; then
-  numfmt_command="numfmt"
-elif [[ $+commands[gnumfmt] == 1 ]]; then
-  numfmt_command="gnumfmt"
-fi
+typeset -i LARGE_FILE_COLOR=196
+typeset -a SIZELIMITS_TO_COLOR
+
+typeset -i ANCIENT_TIME_COLOR=236  # > more than 2 years old
+typeset -a FILEAGES_TO_COLOR
 
 # Create numfmt private function
 function __numfmt_k () {
   eval "${numfmt_command} ${numfmt_options} $1"
+}
+
+function __k_bsd_to_ansi() {
+  local foreground=$1 background=$2 foreground_ansi background_ansi
+  case $foreground in
+    a) foreground_ansi=30;;
+    b) foreground_ansi=31;;
+    c) foreground_ansi=32;;
+    d) foreground_ansi=33;;
+    e) foreground_ansi=34;;
+    f) foreground_ansi=35;;
+    g) foreground_ansi=36;;
+    h) foreground_ansi=37;;
+    x) foreground_ansi=0;;
+  esac
+  case $background in
+    a) background_ansi=40;;
+    b) background_ansi=41;;
+    c) background_ansi=42;;
+    d) background_ansi=43;;
+    e) background_ansi=44;;
+    f) background_ansi=45;;
+    g) background_ansi=46;;
+    h) background_ansi=47;;
+    x) background_ansi=0;;
+  esac
+  printf "%s;%s" $background_ansi $foreground_ansi
+}
+
+function __k_init() {
+  if [[ $+commands[numfmt] == 1 ]]; then
+    numfmt_command="numfmt"
+  elif [[ $+commands[gnumfmt] == 1 ]]; then
+    numfmt_command="gnumfmt"
+  fi
+
+  # Colors
+  # ----------------------------------------------------------------------------
+  # default colors
+  K_COLOR_DI="0;34"  # di:directory
+  K_COLOR_LN="0;35"  # ln:symlink
+  K_COLOR_SO="0;32"  # so:socket
+  K_COLOR_PI="0;33"  # pi:pipe
+  K_COLOR_EX="0;31"  # ex:executable
+  K_COLOR_BD="34;46" # bd:block special
+  K_COLOR_CD="34;43" # cd:character special
+  K_COLOR_SU="30;41" # su:executable with setuid bit set
+  K_COLOR_SG="30;46" # sg:executable with setgid bit set
+  K_COLOR_TW="30;42" # tw:directory writable to others, with sticky bit
+  K_COLOR_OW="30;43" # ow:directory writable to others, without sticky bit
+  K_COLOR_BR="0;30"  # branch
+
+  # read colors if osx and $LSCOLORS is defined
+  if [[ $(uname) == 'Darwin' && -n $LSCOLORS ]]; then
+    # Translate OSX/BSD's LSCOLORS so we can use the same here
+    K_COLOR_DI=$(__k_bsd_to_ansi $LSCOLORS[1]  $LSCOLORS[2])
+    K_COLOR_LN=$(__k_bsd_to_ansi $LSCOLORS[3]  $LSCOLORS[4])
+    K_COLOR_SO=$(__k_bsd_to_ansi $LSCOLORS[5]  $LSCOLORS[6])
+    K_COLOR_PI=$(__k_bsd_to_ansi $LSCOLORS[7]  $LSCOLORS[8])
+    K_COLOR_EX=$(__k_bsd_to_ansi $LSCOLORS[9]  $LSCOLORS[10])
+    K_COLOR_BD=$(__k_bsd_to_ansi $LSCOLORS[11] $LSCOLORS[12])
+    K_COLOR_CD=$(__k_bsd_to_ansi $LSCOLORS[13] $LSCOLORS[14])
+    K_COLOR_SU=$(__k_bsd_to_ansi $LSCOLORS[15] $LSCOLORS[16])
+    K_COLOR_SG=$(__k_bsd_to_ansi $LSCOLORS[17] $LSCOLORS[18])
+    K_COLOR_TW=$(__k_bsd_to_ansi $LSCOLORS[19] $LSCOLORS[20])
+    K_COLOR_OW=$(__k_bsd_to_ansi $LSCOLORS[21] $LSCOLORS[22])
+  fi
+
+  # read colors if linux and $LS_COLORS is defined
+  # if [[ $(uname) == 'Linux' && -n $LS_COLORS ]]; then
+
+  # fi
+
+  SIZELIMITS_TO_COLOR=(
+    1024  46    # <= 1kb
+    2048  82    # <= 2kb
+    3072  118   # <= 3kb
+    5120  154   # <= 5kb
+   10240  190   # <= 10kb
+   20480  226   # <= 20kb
+   40960  220   # <= 40kb
+  102400  214   # <= 100kb
+  262144  208   # <= 0.25mb || 256kb
+  524288  202   # <= 0.5mb || 512kb
+  )
+
+  FILEAGES_TO_COLOR=(
+         0 196  # < in the future, #spooky
+        60 255  # < less than a min old
+      3600 252  # < less than an hour old
+     86400 250  # < less than 1 day old
+    604800 244  # < less than 1 week old
+   2419200 244  # < less than 28 days (4 weeks) old
+  15724800 242  # < less than 26 weeks (6 months) old
+  31449600 240  # < less than 1 year old
+  62899200 238  # < less than 2 years old
+  )
+
 }
 
 function k () {
@@ -90,44 +188,6 @@ function k () {
     base_dirs=($@)
   fi
 
-
-  # Colors
-  # ----------------------------------------------------------------------------
-  # default colors
-  K_COLOR_DI="0;34"  # di:directory
-  K_COLOR_LN="0;35"  # ln:symlink
-  K_COLOR_SO="0;32"  # so:socket
-  K_COLOR_PI="0;33"  # pi:pipe
-  K_COLOR_EX="0;31"  # ex:executable
-  K_COLOR_BD="34;46" # bd:block special
-  K_COLOR_CD="34;43" # cd:character special
-  K_COLOR_SU="30;41" # su:executable with setuid bit set
-  K_COLOR_SG="30;46" # sg:executable with setgid bit set
-  K_COLOR_TW="30;42" # tw:directory writable to others, with sticky bit
-  K_COLOR_OW="30;43" # ow:directory writable to others, without sticky bit
-  K_COLOR_BR="0;30"  # branch
-
-  # read colors if osx and $LSCOLORS is defined
-  if [[ $(uname) == 'Darwin' && -n $LSCOLORS ]]; then
-    # Translate OSX/BSD's LSCOLORS so we can use the same here
-    K_COLOR_DI=$(_k_bsd_to_ansi $LSCOLORS[1]  $LSCOLORS[2])
-    K_COLOR_LN=$(_k_bsd_to_ansi $LSCOLORS[3]  $LSCOLORS[4])
-    K_COLOR_SO=$(_k_bsd_to_ansi $LSCOLORS[5]  $LSCOLORS[6])
-    K_COLOR_PI=$(_k_bsd_to_ansi $LSCOLORS[7]  $LSCOLORS[8])
-    K_COLOR_EX=$(_k_bsd_to_ansi $LSCOLORS[9]  $LSCOLORS[10])
-    K_COLOR_BD=$(_k_bsd_to_ansi $LSCOLORS[11] $LSCOLORS[12])
-    K_COLOR_CD=$(_k_bsd_to_ansi $LSCOLORS[13] $LSCOLORS[14])
-    K_COLOR_SU=$(_k_bsd_to_ansi $LSCOLORS[15] $LSCOLORS[16])
-    K_COLOR_SG=$(_k_bsd_to_ansi $LSCOLORS[17] $LSCOLORS[18])
-    K_COLOR_TW=$(_k_bsd_to_ansi $LSCOLORS[19] $LSCOLORS[20])
-    K_COLOR_OW=$(_k_bsd_to_ansi $LSCOLORS[21] $LSCOLORS[22])
-  fi
-
-  # read colors if linux and $LS_COLORS is defined
-  # if [[ $(uname) == 'Linux' && -n $LS_COLORS ]]; then
-
-  # fi
-
   # ----------------------------------------------------------------------------
   # Loop over passed directories and files to display
   # ----------------------------------------------------------------------------
@@ -148,12 +208,9 @@ function k () {
     # ----------------------------------------------------------------------------
 
     typeset -a MAX_LEN A RESULTS STAT_RESULTS
-    typeset TOTAL_BLOCKS
 
     # Get now
     typeset K_EPOCH="${EPOCHSECONDS:?}"
-
-    typeset -i TOTAL_BLOCKS=0
 
     MAX_LEN=(0 0 0 0 0 0)
 
@@ -163,34 +220,6 @@ function k () {
     # only set once per directory so must be out of the main loop
     typeset -i IS_GIT_REPO=0
     typeset GIT_TOPLEVEL
-
-    typeset -i LARGE_FILE_COLOR=196
-    typeset -a SIZELIMITS_TO_COLOR
-    SIZELIMITS_TO_COLOR=(
-        1024  46    # <= 1kb
-        2048  82    # <= 2kb
-        3072  118   # <= 3kb
-        5120  154   # <= 5kb
-       10240  190   # <= 10kb
-       20480  226   # <= 20kb
-       40960  220   # <= 40kb
-      102400  214   # <= 100kb
-      262144  208   # <= 0.25mb || 256kb
-      524288  202   # <= 0.5mb || 512kb
-      )
-    typeset -i ANCIENT_TIME_COLOR=236  # > more than 2 years old
-    typeset -a FILEAGES_TO_COLOR
-    FILEAGES_TO_COLOR=(
-             0 196  # < in the future, #spooky
-            60 255  # < less than a min old
-          3600 252  # < less than an hour old
-         86400 250  # < less than 1 day old
-        604800 244  # < less than 1 week old
-       2419200 244  # < less than 28 days (4 weeks) old
-      15724800 242  # < less than 26 weeks (6 months) old
-      31449600 240  # < less than 1 year old
-      62899200 238  # < less than 2 years old
-      )
 
     # ----------------------------------------------------------------------------
     # Build up list of files/directories to show
@@ -270,12 +299,7 @@ function k () {
       else
         if [[ ${#sv[size]} -gt $MAX_LEN[5] ]]; then MAX_LEN[5]=${#sv[size]}; fi
       fi
-
-      TOTAL_BLOCKS+=$sv[blocks]
     done
-
-    # Print total block before listing
-    echo "total $TOTAL_BLOCKS"
 
     # ----------------------------------------------------------------------------
     # Loop through each line of stat, pad where appropriate and do git dirty checking
@@ -515,32 +539,4 @@ function k () {
   done
 }
 
-_k_bsd_to_ansi() {
-  local foreground=$1 background=$2 foreground_ansi background_ansi
-  case $foreground in
-    a) foreground_ansi=30;;
-    b) foreground_ansi=31;;
-    c) foreground_ansi=32;;
-    d) foreground_ansi=33;;
-    e) foreground_ansi=34;;
-    f) foreground_ansi=35;;
-    g) foreground_ansi=36;;
-    h) foreground_ansi=37;;
-    x) foreground_ansi=0;;
-  esac
-  case $background in
-    a) background_ansi=40;;
-    b) background_ansi=41;;
-    c) background_ansi=42;;
-    d) background_ansi=43;;
-    e) background_ansi=44;;
-    f) background_ansi=45;;
-    g) background_ansi=46;;
-    h) background_ansi=47;;
-    x) background_ansi=0;;
-  esac
-  printf "%s;%s" $background_ansi $foreground_ansi
-}
-
-# http://upload.wikimedia.org/wikipedia/en/1/15/Xterm_256color_chart.svg
-# vim: set ts=2 sw=2 ft=zsh et :
+__k_init
