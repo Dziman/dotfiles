@@ -1,7 +1,21 @@
 zmodload zsh/datetime
 zmodload -F zsh/stat b:zstat
 
-function k() {
+typeset numfmt_command=""
+typeset numfmt_options=""
+
+if [[ $+commands[numfmt] == 1 ]]; then
+  numfmt_command="numfmt"
+elif [[ $+commands[gnumfmt] == 1 ]]; then
+  numfmt_command="gnumfmt"
+fi
+
+# Create numfmt private function
+function __numfmt_k () {
+  eval "${numfmt_command} ${numfmt_options} $1"
+}
+
+function k () {
   # ----------------------------------------------------------------------------
   # Setup
   # ----------------------------------------------------------------------------
@@ -44,38 +58,21 @@ function k() {
     return 1
   fi
 
-  # Check which numfmt available (if any), warn user if not available
-  typeset -i numfmt_available=0
-  typeset -i gnumfmt_available=0
   if [[ "$o_human" != "" ]]; then
-    if [[ $+commands[numfmt] == 1 ]]; then
-      numfmt_available=1
-    elif [[ $+commands[gnumfmt] == 1 ]]; then
-      gnumfmt_available=1
-    else
+    # Check which numfmt available (if any), warn user if not available
+    if [[ "$numfmt_command" == "" ]]; then
       print -u2 "'numfmt' or 'gnumfmt' command not found, human readable output will not work."
       print -u2 "\tFalling back to normal file size output"
       # Set o_human to off
       o_human=""
+    else
+      if [[ "$o_si" != "" ]]; then
+        numfmt_options="--to=si"
+      else
+        numfmt_options="--to=iec"
+      fi
     fi
   fi
-
-  # Create numfmt local function
-  numfmt_local () {
-    if [[ "$o_si" != "" ]]; then
-      if (( $numfmt_available )); then
-        numfmt --to=si $1
-      elif (( $gnumfmt_available )); then
-        gnumfmt --to=si $1
-      fi
-    else
-      if (( $numfmt_available )); then
-        numfmt --to=iec $1
-      elif (( $gnumfmt_available )); then
-        gnumfmt --to=iec $1
-      fi
-    fi
-  }
 
   # Set if we're in a repo or not
   typeset -i INSIDE_WORK_TREE=0
@@ -268,7 +265,7 @@ function k() {
       if [[ ${#sv[gid]}   -gt $MAX_LEN[4] ]]; then MAX_LEN[4]=${#sv[gid]}   ; fi
 
       if [[ "$o_human" != "" ]]; then
-        h=$(numfmt_local ${sv[size]})
+        h=$(__numfmt_k ${sv[size]})
         if (( ${#h} > $MAX_LEN[5] )); then MAX_LEN[5]=${#h}; fi
       else
         if [[ ${#sv[size]} -gt $MAX_LEN[5] ]]; then MAX_LEN[5]=${#sv[size]}; fi
@@ -359,7 +356,7 @@ function k() {
       if [[ "$o_human" != "" ]]; then
         # I hate making this call twice, but its either that, or do a bunch
         # of calculations much earlier.
-        FILESIZE_OUT=$(numfmt_local $FILESIZE)
+        FILESIZE_OUT=$(__numfmt_k $FILESIZE)
       else
         FILESIZE_OUT=$FILESIZE
       fi
