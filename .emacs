@@ -15,7 +15,7 @@
  )
 
 ;; Cask
-(require 'cask "/usr/local/Cellar/cask/0.8.3/cask.el")
+(require 'cask "/usr/local/Cellar/cask/0.8.4/cask.el")
 (cask-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -89,7 +89,7 @@
 (setq helm-swoop-move-to-line-cycle t)
 
 ;; Projectile
-(projectile-global-mode)
+(projectile-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 
