@@ -244,25 +244,21 @@ function k () {
         show_list+=($base_dir/..)
       fi
 
+      local show_hidden_flag=""
+
       if [[ "$o_all" != "" || "$o_almost_all" != "" ]]; then
-        if [[ "$o_directory" != "" ]]; then
-          show_list+=($base_dir/*(D/))
-        elif [[ "$o_no_directory" != "" ]]; then
-          #Use (^/) instead of (.) so sockets and symlinks get displayed
-          show_list+=($base_dir/*(D^/))
-        else
-          show_list+=($base_dir/*(D))
-        fi
-      else
-        if [[ "$o_directory" != "" ]]; then
-          show_list+=($base_dir/*(/))
-        elif [[ "$o_no_directory" != "" ]]; then
-          #Use (^/) instead of (.) so sockets and symlinks get displayed
-          show_list+=($base_dir/*(^/))
-        else
-          show_list+=($base_dir/*)
-        fi
+        show_hidden_flag="D"
       fi
+
+      if [[ "$o_directory" != "" ]]; then
+        glob_expr="$base_dir/*($show_hidden_flag/)"
+      elif [[ "$o_no_directory" != "" ]]; then
+	glob_expr="$base_dir/*($show_hidden_flag^/)"
+      else
+        glob_expr="$base_dir/*${show_hidden_flag:gs/D/(D)}" # need to add parenthesеs if both hidden files and directories should be shown
+      fi
+
+      show_list+=($~glob_expr)
     fi
 
     # ----------------------------------------------------------------------------
