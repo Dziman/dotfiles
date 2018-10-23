@@ -1,8 +1,14 @@
 #!/bin/zsh
 # Author: Dziman <dziman.by@gmail.com>
 ################################################################################
-# GIT specific
+# GIT specific aliases and functions
 ################################################################################
+
+alias gmm='git merge origin/master'
+alias gmd='git merge origin/develop'
+alias gpom='git push origin master'
+alias gpod='git push origin develop'
+alias gca='git commit --all'
 
 function check-git-completion() {
     if [ -f /usr/local/share/zsh/site-functions/_git ]; then
