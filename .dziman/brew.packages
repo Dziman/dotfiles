@@ -1,3 +1,4 @@
+anyenv
 awscli
 bash
 bash-completion
@@ -35,6 +36,7 @@ libtasn1
 libunistring
 libyaml
 libzip
+lsd
 maven
 maven-completion
 mycli
@@ -52,6 +54,7 @@ python
 python3
 python@2
 readline
+rustup-init
 sbt
 scala
 sphinx-doc
