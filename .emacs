@@ -92,6 +92,7 @@
 (projectile-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; Files tree
 (setq neo-smart-open t)
