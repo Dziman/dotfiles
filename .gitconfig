@@ -28,7 +28,7 @@
 	lgasf = "!git lgas --numstat"
 	lgalf = "!git lgal --numstat"
 	# show files changed in commit
-	df = diff-tree --no-commit-id --name-only -r
+	df = !sh -c 'git diff-tree --no-commit-id --name-only -r ${1:-HEAD}'
 	# interactive rebase
 	ri = rebase --interactive
 	rih2 = rebase --interactive HEAD~2
@@ -39,6 +39,16 @@
 	fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
 	# list conflicted files
 	show-conflicts = diff --name-only --diff-filter=U
+	# fetch with prune
+	fp = fetch --prune
+	# show changes in stash
+	st = !sh -c 'git stash show -p stash@{${1:-0}}' -
+	# push to origin and track current branch
+	put = !sh -c 'git push ${2:-origin} --set-upstream ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+	# show N recent tags. By default N=10
+	recent-tags = !sh -c 'git tag --sort=-taggerdate | head -n ${1:-10}' -
+	configure-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --tags' -
+	configure-stop-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --no-tags' -
 [credential]
 	helper = osxkeychain
 [diff-so-fancy]

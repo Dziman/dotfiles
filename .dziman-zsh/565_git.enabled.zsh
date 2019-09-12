@@ -37,4 +37,32 @@ function fix-git-completion() {
     fi
 }
 
+function add-tags-fetching() {
+    local remote_name=${1:-origin}
+
+    git config "remote.${remote_name}.tagopt" --tags
+}
+
+function stop-tags-fetching() {
+    local remote_name=${1:-origin}
+
+    git config "remote.${remote_name}.tagopt" --no-tags
+}
+
+function check-tags-config() {
+    if [[ -f ".git/config" ]]; then # it seems we are in git repo folder
+	local -a remotes=($(git remote))
+	if [[ $! == 0 ]]; then
+	    for remote in $remotes; do
+		tags_config=$(git config remote.$remote.tagopt)
+		if [[ -z $tags_config ]]; then
+		    echo "$fg_bold[yellow]Tags fetching is not configured for remote ${remote}$reset_color"
+		fi
+	    done
+	fi
+    fi
+}
+
+add-zsh-hook chpwd check-tags-config
+
 check-git-completion
