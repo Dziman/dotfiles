@@ -4,7 +4,7 @@
 # General development tools
 ################################################################################
 
-# jenv initialization
+# anyenv initialization
 if which anyenv > /dev/null; then eval "$(anyenv init - zsh)"; fi
 
 # node env

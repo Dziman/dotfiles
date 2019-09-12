@@ -16,4 +16,6 @@ alias k='k --human'
 # command to track dotfiles by git
 alias config='git --git-dir=$HOME/.dziman-dotfiles/ --work-tree=$HOME'
 
-alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
+if [[ -a '/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code' ]]; then
+    alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
+fi

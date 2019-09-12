@@ -5,8 +5,8 @@
 ################################################################################
 
 alias emacs='emacs --no-window-system'
-alias edit='emacsclient -t'
-alias ec='emacsclient -t'
+alias edit='emacsclient --tty'
+alias ec='emacsclient --tty'
 
 function ke() {
     if pgrep 'emacs' &>/dev/null; then
