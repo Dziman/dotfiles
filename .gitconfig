@@ -1,6 +1,10 @@
 [user]
 	name = Dzmitry Rusak
 	email = dzmitry.rusak@gmail.com
+[includeIf "gitdir:~/src/ta/"]
+	path = ~/.gitconfig-ta
+[includeIf "gitdir:~/src/oss/"]
+	path = ~/.gitconfig-oss
 [color]
 #	diff = auto
 	status = auto
@@ -35,6 +39,7 @@
 	rih3 = rebase --interactive HEAD~3
 	rih4 = rebase --interactive HEAD~4
 	rih5 = rebase --interactive HEAD~5
+	rih = !sh -c 'git rebase --interactive HEAD~${1:-3}' -
 	# show commits where file was changed. Usage `git fh <file name>`
 	fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
 	# list conflicted files
