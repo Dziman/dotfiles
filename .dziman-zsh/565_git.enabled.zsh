@@ -56,7 +56,7 @@ function check-tags-config() {
 	    for remote in $remotes; do
 		tags_config=$(git config remote.$remote.tagopt)
 		if [[ -z $tags_config ]]; then
-		    echo "$fg_bold[yellow]Tags fetching is not configured for remote ${remote}$reset_color"
+		    echo "$fg_bold[yellow]Tags fetching is not configured for remote $fg_bold[magenta]${remote}$fg_bold[yellow]. Run $fg_bold[cyan]git configure-fetch-tags ${remote} $fg_bold[yellow]to fetch all tags automatically$reset_color"
 		fi
 	    done
 	fi
