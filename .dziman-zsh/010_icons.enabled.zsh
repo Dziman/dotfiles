@@ -62,6 +62,7 @@ icons=( # TODO Rename and remove unused
       PYTHON_ICON                    $'\UE73C '             # 
       SWIFT_ICON                     $'\uE755'              # 
       GO_ICON                        $'\uE626'              # 
+      JAVA_ICON                      $'\uE738'              # 
       PUBLIC_IP_ICON                 $'\UF0AC'              # 
       LOCK_ICON                      $'\UF023'              # 
       EXECUTION_TIME_ICON            $'\uF252'              # 

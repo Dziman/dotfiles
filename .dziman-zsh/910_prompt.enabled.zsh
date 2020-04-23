@@ -84,13 +84,13 @@ function left-prompt() {
 
 # TODO Use variables for colors
 function right-prompt() {
-    print-right-segment 10 136 "$(jenv-status)"
+    print-right-segment 10 111 "$(jenv-status)"
     print-right-segment 10 103 "$(git-prompt-status)"
     print-right-prompt-end
 }
 
 function update-right-prompt() {
-    RPS1="$(right-prompt)"
+    RPS1="$(right-prompt)%{$reset_color%}"
 }
 
 # TODO Parse and butify
@@ -178,7 +178,7 @@ function jenv-status() {
     if which jenv &>/dev/null; then
 	local_java=$(jenv version-name 2>/dev/null)
 	global_java=$(jenv global 2>/dev/null)
-	[[ "$local_java" == "$global_java" ]] || echo -n "%{$fg_bold[red]%}[Local java $local_java]%f"
+	[[ "$local_java" == "$global_java" ]] || echo -n "%{$fg[white]%}$icons[JAVA_ICON] $local_java%f"
     fi    
 }
 ################################################################################
