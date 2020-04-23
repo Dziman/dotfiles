@@ -39,5 +39,7 @@
     },
     "java.home": "/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home",
     "terminal.integrated.macOptionIsMeta": true,
-    "gitlens.keymap": "chorded"
+    "gitlens.keymap": "chorded",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
 }
