@@ -33,13 +33,20 @@
 	lgalf = "!git lgal --numstat"
 	# show files changed in commit
 	df = !sh -c 'git diff-tree --no-commit-id --name-only -r ${1:-HEAD}'
-	# interactive rebase
+
+	### rebase related
+        # interactive
 	ri = rebase --interactive
 	rih2 = rebase --interactive HEAD~2
 	rih3 = rebase --interactive HEAD~3
 	rih4 = rebase --interactive HEAD~4
 	rih5 = rebase --interactive HEAD~5
 	rih = !sh -c 'git rebase --interactive HEAD~${1:-3}' -
+	#
+	rom = rebas origin/master
+	rc = rebase --continue
+	###
+
 	# show commits where file was changed. Usage `git fh <file name>`
 	fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
 	# list conflicted files
@@ -48,8 +55,13 @@
 	fp = fetch --prune
 	# show changes in stash
 	st = !sh -c 'git stash show --patch stash@{${1:-0}}' -
+	### push related
 	# push to origin and track current branch
 	put = !sh -c 'git push ${2:-origin} --set-upstream ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+	pushf = !sh -c 'git push --force ${1:-origin} ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+	pushfo = !sh -c 'git pushf origin ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+	###
+
 	# show N recent tags. By default N=10
 	recent-tags = !sh -c 'git tag --sort=-taggerdate | head -n ${1:-10}' -
 	configure-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --tags' -
