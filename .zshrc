@@ -46,6 +46,8 @@ zle -N incremental-complete-word
 bindkey "^Xi" incremental-complete-word ## C-x-i
 
 bindkey '\e[3~' delete-char
+
+source /opt/brew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ################################################################################
 
 ################################################################################

@@ -5,6 +5,8 @@
 	path = ~/.gitconfig-ta
 [includeIf "gitdir:~/src/oss/"]
 	path = ~/.gitconfig-oss
+[includeIf "gitdir:~/src/apple/"]
+	path = ~/.gitconfig-apple
 [color]
 #	diff = auto
 	status = auto

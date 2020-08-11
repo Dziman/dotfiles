@@ -35,6 +35,8 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*' word true
 
 # custom completion scripts
+fpath=(/opt/brew/share/zsh/site-functions/ $fpath)
+fpath=(/opt/brew/share/zsh-completions $fpath)
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=(/usr/local/share/zsh/site-functions $fpath)
 compinit
