@@ -1,4 +1,3 @@
-(package-initialize)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -135,16 +134,6 @@
 
 (setq magit-last-seen-setup-instructions "1.4.0")
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . global-magit-file-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;  Scala
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-(add-to-list 'auto-mode-alist '("\\.scala\\.html\\'" . web-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
