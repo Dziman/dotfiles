@@ -88,3 +88,5 @@
 	old = red bold
 	new = green
 	whitespace = red reverse
+[pull]
+	rebase = true
