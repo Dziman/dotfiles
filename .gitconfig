@@ -45,7 +45,8 @@
 	rih5 = rebase --interactive HEAD~5
 	rih = !sh -c 'git rebase --interactive HEAD~${1:-3}' -
 	#
-	rom = rebas origin/master
+	rom = rebase origin/master
+	rod = rebase origin/develop
 	rc = rebase --continue
 	###
 
