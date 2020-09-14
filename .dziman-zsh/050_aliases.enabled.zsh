@@ -19,3 +19,7 @@ alias config='git --git-dir=$HOME/.dziman-dotfiles/ --work-tree=$HOME'
 if [[ -a '/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code' ]]; then
     alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
 fi
+
+if [[ -a '/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code' ]]; then
+    alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
+fi
