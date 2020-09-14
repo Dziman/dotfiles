@@ -63,6 +63,13 @@ function check-tags-config() {
     fi
 }
 
+function execute-git-command-in() {
+    local directory=$2
+    local command=$1
+
+    git -C ${directory} ${command}
+}
+
 add-zsh-hook chpwd check-tags-config
 
 check-git-completion
