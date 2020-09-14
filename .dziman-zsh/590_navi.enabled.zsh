@@ -56,4 +56,6 @@ EOF
     bindkey '^n' _call_navi
 }
 
-init-navi-shell-widget
+if [[ -o interactive ]] && which navi &>/dev/null; then
+    init-navi-shell-widget
+fi

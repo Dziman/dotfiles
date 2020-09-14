@@ -72,4 +72,4 @@ function execute-git-command-in() {
 
 add-zsh-hook chpwd check-tags-config
 
-check-git-completion
+[[ -o interactive ]] && check-git-completion

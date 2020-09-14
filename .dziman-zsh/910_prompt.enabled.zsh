@@ -206,17 +206,20 @@ function perf-precmd() {
 #add-zsh-hook preexec perf-preexec
 ################################################################################
 
-################################################################################
-# Highlight syntax in prompt
-################################################################################
-if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-################################################################################
+if [[ -o interactive ]]; then
+    ################################################################################
+    # Highlight syntax in prompt
+    ################################################################################
+    if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+	source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    fi
+    ################################################################################
 
-add-zsh-hook precmd update-right-prompt
 
-PS1="$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)
+    add-zsh-hook precmd update-right-prompt
+
+    PS1="$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)
 $icons[MULTILINE_LAST_PROMPT_PREFIX]%{$reset_color%}"
-PS2="%{$fg[red]%}%_%{$reset_color%}"
-PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
+    PS2="%{$fg[red]%}%_%{$reset_color%}"
+    PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
+fi
