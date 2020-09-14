@@ -24,7 +24,6 @@
 (depends-on "smart-mode-line")
 (depends-on "smart-mode-line-powerline-theme")
 (depends-on "undo-tree")
-(depends-on "neotree")
 (depends-on "which-key")
 (depends-on "editorconfig")
 (depends-on "ace-window")
@@ -43,10 +42,6 @@
 (depends-on "git-timemachine")
 (depends-on "git-gutter-fringe+")
 
-;; Scala
-(depends-on "ensime")
-(depends-on "scala-mode")
-
 ;; Modes for web related files like css, json etc
 (depends-on "less-css-mode")
 (depends-on "json-mode")
@@ -64,13 +59,8 @@
 (depends-on "terraform-mode")
 (depends-on "company-terraform")
 (depends-on "swift-mode")
+(depends-on "vue-mode")
 
 ;; Themes
-(depends-on "darcula-theme")
-(depends-on "zerodark-theme")
 (depends-on "zenburn-theme")
-(depends-on "suscolors-theme")
 (depends-on "labburn-theme")
-;; (depends-on "kaolin-theme")
-
-(depends-on "color-theme-modern")

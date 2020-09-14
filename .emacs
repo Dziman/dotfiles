@@ -1,4 +1,3 @@
-(package-initialize)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -26,7 +25,6 @@
 (setq shell-file-name "zsh")
 
 ;; Themes
-;;(load-theme 'gray30 t)
 (load-theme 'labburn t)
 
 ;; Customize status line
@@ -57,15 +55,10 @@
 
 ;; rainbow parentheses
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-;; Emacs can't start properly with this mode so disabled for now
-;;(add-hook 'prog-mode-hook 'highlight-parentheses-mode)
 
 ;; Show line numbers
 (global-linum-mode 1)
 (setq linum-format "%4d \u2502 ")
-
-;; M-x enhancer
-;; (smex-initialize)
 
 ;; helm
 (setq helm-ff-transformer-show-only-basename nil
@@ -94,10 +87,6 @@
 (helm-projectile-on)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-;; Files tree
-(setq neo-smart-open t)
-(setq projectile-switch-project-action 'neotree-projectile-action)
-
 ;; Undo tree
 (global-undo-tree-mode)
 
@@ -111,7 +100,6 @@
 
 ;; Completion
 (add-hook 'after-init-hook 'global-company-mode)
-;; (company-mode)
 (setq company-tooltip-align-annotations t)
 
 ;; Check spelling in text edit modes
@@ -139,16 +127,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;  Scala
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-(add-to-list 'auto-mode-alist '("\\.scala\\.html\\'" . web-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; TypeScript
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -169,11 +147,6 @@
 (bind-key "C-c l" 'goto-line)
 (bind-key "C-c e" 'er/expand-region)
 (bind-key "M-p" 'ace-window)
-
-;;;;;;;;;;;;;;;
-;;; smex keys
-;; (bind-key "C-c M-x" 'smex)
-;; (bind-key "C-c M-X" 'smex-major-mode-commands)
 
 ;;;;;;;;;;;;;;;
 ;;; Helm keys
@@ -200,7 +173,6 @@
 
 ;;;;;;;;;;;;;;;
 ;;; Completion
-;; (bind-key "C-c c" 'company-indent-or-complete-common)
 (eval-after-load 'company
   '(progn
      (define-key company-mode-map (kbd "C-c c") 'helm-company)
@@ -209,9 +181,5 @@
 ;;;;;;;;;;;;;;;
 ;;; Duplicate current line
 (bind-key "C-c C-d" "\C-a\C- \C-n\M-w\C-y\C-b")
-
-;;;;;;;;;;;;;;;
-;;; Toggle files tree
-(bind-key "C-x t" 'neotree-toggle)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
