@@ -41,5 +41,9 @@
     "terminal.integrated.macOptionIsMeta": true,
     "gitlens.keymap": "chorded",
     "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "go.useLanguageServer": true,
+    "java.semanticHighlighting.enabled": true,
+    "python.jediEnabled": false,
+    "python.languageServer": "Microsoft"
 }
