@@ -19,18 +19,18 @@
 	ed = commit --amend
 	# show log in pretty view
 	lg = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
-	lgs = "!git lg -10"
-	lgl = "!git lg -30"
-	lgf = "!git lg --numstat"
-	lgsf = "!git lgs --numstat"
-	lglf = "!git lgl --numstat"
+	lgs = !git lg -10
+	lgl = !git lg -30
+	lgf = !git lg --numstat
+	lgsf = !git lgs --numstat
+	lglf = !git lgl --numstat
 	# show pretty log with author date additionally to commit date
 	lga = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08%Creset@%C(green)%ai%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
-	lgas = "!git lga -10"
-	lgal = "!git lga -30"
-	lgaf = "!git lga --numstat"
-	lgasf = "!git lgas --numstat"
-	lgalf = "!git lgal --numstat"
+	lgas = !git lga -10
+	lgal = !git lga -30
+	lgaf = !git lga --numstat
+	lgasf = !git lgas --numstat
+	lgalf = !git lgal --numstat
 	# show files changed in commit
 	df = !sh -c 'git diff-tree --no-commit-id --name-only -r ${1:-HEAD}'
 
@@ -43,7 +43,8 @@
 	rih5 = rebase --interactive HEAD~5
 	rih = !sh -c 'git rebase --interactive HEAD~${1:-3}' -
 	#
-	rom = rebas origin/master
+	rom = rebase origin/master
+	rod = rebase origin/develop
 	rc = rebase --continue
 	###
 
