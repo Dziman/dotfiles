@@ -4,7 +4,7 @@
 # Autosuggest commands
 ################################################################################
 
-if [[ -a ~/.dziman-zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+if [[ -o interactive && -a ~/.dziman-zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
    source ~/.dziman-zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 else
    # TODO Add git clone?
