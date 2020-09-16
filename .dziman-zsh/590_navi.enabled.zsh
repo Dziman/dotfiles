@@ -22,7 +22,7 @@ function _call_navi() {
 }
 
 function init-navi-shell-widget() {
-    # TODO check if std widget changed
+    # check if std widget changed (need custom widget to customize keybinding)
     local current_std_widget=$(navi widget zsh)
     local known_std_widget=$(cat <<\EOF
 #!/usr/bin/env zsh
@@ -30,7 +30,7 @@ function init-navi-shell-widget() {
 _call_navi() {
   local selected
   if [ -n "$LBUFFER" ]; then
-    if selected="$(printf "%s" "$(navi --print --no-autoselect query "${LBUFFER}" </dev/tty)")"; then
+    if selected="$(printf "%s" "$(navi --print --fzf-overrides '--no-select-1' --query "${LBUFFER}" </dev/tty)")"; then
       LBUFFER="$selected"
     fi
   else
@@ -48,7 +48,7 @@ EOF
 )
 
     if [[ ${current_std_widget} !=  ${known_std_widget} ]]; then
-      echo "navi widget changed. Please check ~/.dziman-zsh/590_navi.enabled.zsh"
+      echo "$fg_bold[yellow]navi widget changed. Please check ~/.dziman-zsh/590_navi.enabled.zsh$reset_color"
     fi
 
     zle -N _call_navi
