@@ -64,10 +64,10 @@ function check-tags-config() {
 }
 
 function execute-git-command-in() {
-    local directory=$2
-    local command=$1
+    local directory=$1
+    shift
 
-    git -C ${directory} ${command}
+    git -C ${directory} $@
 }
 
 add-zsh-hook chpwd check-tags-config
