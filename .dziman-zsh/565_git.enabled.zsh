@@ -11,13 +11,13 @@ alias gpod='git push origin develop'
 alias gca='git commit --all'
 
 function check-git-completion() {
-    if [ -f /opt/brew/share/zsh/site-functions/_git ]; then
+    if [ -f /usr/local/share/zsh/site-functions/_git ]; then
         echo "$fg_bold[yellow]git completion detected while better alternative exists$reset_color"
     fi
 }
 
 function fix-git-completion() {
-    if [ -f /opt/brew/share/zsh/site-functions/_git ]; then
+    if [ -f /usr/local/share/zsh/site-functions/_git ]; then
         echo "git completion detected while better alternative exists"
         PS3="Do you want delete it? "
         answers=("Yes" "No")
@@ -25,7 +25,7 @@ function fix-git-completion() {
         do
             case $answer in
             "Yes")
-                 rm /opt/brew/share/zsh/site-functions/_git
+                 rm /usr/local/share/zsh/site-functions/_git
                  break
                  ;;
             "No")
