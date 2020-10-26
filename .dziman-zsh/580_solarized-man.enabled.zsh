@@ -13,7 +13,7 @@ fi
 exec /usr/bin/nroff "\$@"
 EOF
 chmod +x ${HOME}/bin/nroff
-        fi
+    fi
 fi
 
 man() {

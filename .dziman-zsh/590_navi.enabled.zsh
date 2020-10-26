@@ -8,17 +8,17 @@
 export NAVI_PATH="$HOME/.local/share/navi"
 
 function _call_navi() {
-  local selected
-  if [ -n "$LBUFFER" ]; then
-    if selected="$(printf "%s" "$(navi --print --fzf-overrides '--no-select-1' --query "${LBUFFER}" </dev/tty)")"; then
-      LBUFFER="$selected"
+    local selected
+    if [ -n "$LBUFFER" ]; then
+        if selected="$(printf "%s" "$(navi --print --fzf-overrides '--no-select-1' --query "${LBUFFER}" </dev/tty)")"; then
+            LBUFFER="$selected"
+        fi
+    else
+        if selected="$(printf "%s" "$(navi --print </dev/tty)")"; then
+            LBUFFER="$selected"
+        fi
     fi
-  else
-    if selected="$(printf "%s" "$(navi --print </dev/tty)")"; then
-      LBUFFER="$selected"
-    fi
-  fi
-  zle redisplay
+    zle redisplay
 }
 
 function init-navi-shell-widget() {
@@ -48,7 +48,7 @@ EOF
 )
 
     if [[ ${current_std_widget} !=  ${known_std_widget} ]]; then
-      echo "$fg_bold[yellow]navi widget changed. Please check ~/.dziman-zsh/590_navi.enabled.zsh$reset_color"
+        echo "$fg_bold[yellow]navi widget changed. Please check ~/.dziman-zsh/590_navi.enabled.zsh$reset_color"
     fi
 
     zle -N _call_navi
