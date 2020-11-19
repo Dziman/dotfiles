@@ -92,6 +92,7 @@ python@3.8
 python@3.9
 re2c
 readline
+ripgrep
 rustup-init
 sbt
 scala
@@ -99,11 +100,11 @@ screenfetch
 shellcheck
 sphinx-doc
 sqlite
+tealdeer
 terraform
 terraform-docs
 terragrunt
 tig
-tldr
 tmux
 tree
 unbound
@@ -115,8 +116,10 @@ wget
 xz
 yarn
 yarn-completion
+yh
 yq
 zenith
+zoxide
 zsh
 zsh-completions
 zsh-syntax-highlighting
