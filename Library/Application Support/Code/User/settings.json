@@ -19,7 +19,7 @@
     "editor.minimap.enabled": false,
     "editor.cursorBlinking": "blink",
     "editor.fontLigatures": true,
-    "editor.renderWhitespace": "boundary",
+    "editor.renderWhitespace": "all",
     "git.autofetch": false,
     "files.autoSave": "onFocusChange",
     "debug.inlineValues": true,
@@ -45,5 +45,10 @@
     "go.useLanguageServer": true,
     "java.semanticHighlighting.enabled": true,
     "python.jediEnabled": false,
-    "python.languageServer": "Microsoft"
+    "python.languageServer": "Microsoft",
+    "files.watcherExclude": {
+        "**/.bloop": true,
+        "**/.metals": true,
+        "**/.ammonite": true
+    }
 }
