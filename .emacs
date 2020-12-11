@@ -56,6 +56,9 @@
 ;; rainbow parentheses
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
+;; Show whitespaces in programming mode
+(add-hook 'prog-mode-hook 'whitespace-mode)
+
 ;; Show line numbers
 (global-linum-mode 1)
 (setq linum-format "%4d \u2502 ")
