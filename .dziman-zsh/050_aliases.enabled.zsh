@@ -17,4 +17,4 @@ alias k='k --human'
 alias config='git --git-dir=$HOME/.dziman-dotfiles/ --work-tree=$HOME'
 
 # x86 arch brew alias
-alias xbrew='/usr/local/Homebrew/bin/brew'
+alias xbrew='arch -x86_64 /usr/local/Homebrew/bin/brew'
