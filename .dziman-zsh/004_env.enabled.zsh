@@ -10,6 +10,9 @@ export EDITOR=emacsclient
 # Homebrew configuration
 export HOMEBREW_NO_AUTO_UPDATE="true"
 export HOMEBREW_NO_GITHUB_API="true"
+export HOMEBREW_PREFIX=$(brew --prefix)
 
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
+# ripgrep config file definition
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"

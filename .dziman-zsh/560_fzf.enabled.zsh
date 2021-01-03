@@ -1,9 +1,9 @@
 if [[ -o interactive ]] && which fzf &>/dev/null; then
     ## Auto-completion
     # ---------------
-    source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+    source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.zsh" 2> /dev/null
 
     # Key bindings
     # ------------
-    source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+    source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
 fi
