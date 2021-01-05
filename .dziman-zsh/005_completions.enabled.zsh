@@ -37,4 +37,5 @@ zstyle ':completion:*' word true
 # custom completion scripts
 fpath=($HOMEBREW_PREFIX/share/zsh-completions $fpath)
 fpath=($HOMEBREW_PREFIX/zsh/site-functions $fpath)
+fpath=($HOME/.dziman-zsh/completions $fpath)
 compinit
