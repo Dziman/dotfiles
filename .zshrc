@@ -9,9 +9,9 @@ setopt localtraps
 setopt promptsubst
 setopt histignorealldups
 setopt autocd
-setopt appendhistory 
-setopt beep 
-setopt nomatch 
+setopt appendhistory
+setopt beep
+setopt nomatch
 setopt notify
 setopt correct
 unsetopt extendedglob
