@@ -13,3 +13,11 @@ export HOMEBREW_NO_GITHUB_API="true"
 export PATH="/opt/brew/bin:/opt/brew/sbin:$PATH"
 
 export LSCOLORS=GxFxCxDxBxegedabagaced
+
+GREP_TOOL="grep"
+
+if [ -x "$(command -v rg)" ]; then
+    GREP_TOOL="rg"
+fi
+
+export GREP_TOOL

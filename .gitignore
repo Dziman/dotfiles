@@ -21,6 +21,7 @@ project.xcworkspace/xcuserdata/
 
 # Python virtual environment
 venv/
+test-env/
 
 # jenv
 .java-version

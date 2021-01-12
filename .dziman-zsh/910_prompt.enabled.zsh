@@ -165,7 +165,7 @@ function git-prompt-status() {
 }
 
 function count_lines_in_git_status() {
-    echo -n $(cat $1 | grep "$2" | wc -l | tr -d ' ')
+    echo -n $(cat $1 | $GREP_TOOL "$2" | wc -l | tr -d ' ')
 }
 ################################################################################
 
