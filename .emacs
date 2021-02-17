@@ -134,12 +134,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-hook 'typescript-mode-hook
-	  (lambda ()
-	    (tide-setup)
-	    (flycheck-mode +1)
-	    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-	    (eldoc-mode +1)
-	    (company-mode-on)))
+  (lambda ()
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (company-mode-on)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -179,7 +179,7 @@
 (eval-after-load 'company
   '(progn
      (define-key company-mode-map (kbd "C-c c") 'helm-company)
-          (define-key company-active-map (kbd "C-c c") 'helm-company)))
+       (define-key company-active-map (kbd "C-c c") 'helm-company)))
 
 ;;;;;;;;;;;;;;;
 ;;; Duplicate current line
