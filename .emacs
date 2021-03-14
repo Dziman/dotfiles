@@ -14,7 +14,7 @@
  )
 
 ;; Cask
-(require 'cask "$HOMEBREW_PREFIX/Cellar/cask/0.8.5/cask.el")
+(require 'cask "$HOMEBREW_PREFIX/Cellar/cask/0.8.6/cask.el")
 (cask-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
