@@ -28,6 +28,8 @@
 (depends-on "editorconfig")
 (depends-on "ace-window")
 (depends-on "ace-jump-mode")
+(depends-on "hydra")
+(depends-on "ibuffer-vc")
 
 ;; Check buffer on the fly
 (depends-on "flycheck")
