@@ -13,7 +13,7 @@ icons=( # TODO Rename and remove unused
       CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
       ROOT_ICON                      $'\uE614 '             # 
       RUBY_ICON                      $'\uF219 '             # 
-      AWS_ICON                       $'\uF270'              # 
+      AMAZON_ICON                    $'\uF270'              # 
       AWS_EB_ICON                    $'\UF1BD  '            # 
       BACKGROUND_JOBS_ICON           $'\uF013 '             # 
       TEST_ICON                      $'\uF188'              # 
@@ -72,5 +72,8 @@ icons=( # TODO Rename and remove unused
 
       ################# Added #################
       LAPTOP_ICON                    $'\uF109'              # 
-    )  
+      AWS_ICON                       $'\uF375'              # 
+      CLOUD_ICON                     $'\uF0C2'              # 
+      BADGE_ICON                     $'\uF2C1'              # 
+    )
 ################################################################################

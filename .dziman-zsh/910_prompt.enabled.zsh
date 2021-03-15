@@ -84,6 +84,7 @@ function left-prompt() {
 
 # TODO Use variables for colors
 function right-prompt() {
+    print-right-segment 10 216 "$(aws-status)"
     print-right-segment 10 111 "$(jenv-status)"
     print-right-segment 10 103 "$(git-prompt-status)"
     print-right-prompt-end
@@ -179,6 +180,24 @@ function jenv-status() {
         local_java=$(jenv version-name 2>/dev/null)
         global_java=$(jenv global 2>/dev/null)
         [[ "$local_java" == "$global_java" ]] || echo -n "%{$fg[white]%}$icons[JAVA_ICON] $local_java%f"
+    fi
+}
+################################################################################
+
+################################################################################
+# Info about AWS profile and role
+################################################################################
+# TODO Move to AWS extension?
+# TODO Handle shell settings
+function aws-status() {
+    # TODO Use AWS icon when it'll be available in font
+    if [[ -v AWS_PROFILE ]]; then
+        local assumed_role_part=""
+        if [[ -v AWS_ASSUMED_ROLE ]]; then
+            assumed_role_part=" %{$fg[red]%}($icons[BADGE_ICON] $AWS_ASSUMED_ROLE)%f"
+        fi
+
+        echo -n "%{$fg[black]%}$icons[AMAZON_ICON] $AWS_PROFILE%f$assumed_role_part"
     fi
 }
 ################################################################################
