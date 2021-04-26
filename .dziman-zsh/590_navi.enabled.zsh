@@ -7,53 +7,13 @@
 # custom cheatsheets location
 export NAVI_PATH="$HOME/.local/share/navi"
 
-function _call_navi() {
-    local selected
-    if [ -n "$LBUFFER" ]; then
-        if selected="$(printf "%s" "$(navi --print --fzf-overrides '--no-select-1' --query "${LBUFFER}" </dev/tty)")"; then
-            LBUFFER="$selected"
-        fi
-    else
-        if selected="$(printf "%s" "$(navi --print </dev/tty)")"; then
-            LBUFFER="$selected"
-        fi
-    fi
-    zle redisplay
-}
-
 function init-navi-shell-widget() {
-    # check if std widget changed (need custom widget to customize keybinding)
-    local current_std_widget=$(navi widget zsh)
-    local known_std_widget=$(cat <<\EOF
-#!/usr/bin/env zsh
+    eval "$(navi widget zsh)"
 
-_call_navi() {
-  local selected
-  if [ -n "$LBUFFER" ]; then
-    if selected="$(printf "%s" "$(navi --print --fzf-overrides '--no-select-1' --query "${LBUFFER}" </dev/tty)")"; then
-      LBUFFER="$selected"
-    fi
-  else
-    if selected="$(printf "%s" "$(navi --print </dev/tty)")"; then
-      LBUFFER="$selected"
-    fi
-  fi
-  zle redisplay
-}
+    zle -N _navi_call
 
-zle -N _call_navi
-
-bindkey '^g' _call_navi
-EOF
-)
-
-    if [[ ${current_std_widget} !=  ${known_std_widget} ]]; then
-        echo "$fg_bold[yellow]navi widget changed. Please check ~/.dziman-zsh/590_navi.enabled.zsh$reset_color"
-    fi
-
-    zle -N _call_navi
-
-    bindkey '^n' _call_navi
+    bindkey '^n' _navi_call
+    bindkey '^g' send-break
 }
 
 if [[ -o interactive ]] && which navi &>/dev/null; then
