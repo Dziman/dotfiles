@@ -41,4 +41,4 @@ fpath=($HOME/.dziman-zsh/completions $fpath)
 compinit
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform # TODO Move to Terraform specific file?
+complete -o nospace -C $HOMEBREW_PREFIX/bin/terraform terraform # TODO Move to Terraform specific file?
