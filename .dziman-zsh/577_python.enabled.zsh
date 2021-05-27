@@ -5,4 +5,7 @@
 ################################################################################
 
 # jenv initialization
-if [[ -o interactive ]] && which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+if [[ -o interactive ]] && which pyenv > /dev/null; then
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+fi
