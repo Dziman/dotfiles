@@ -85,6 +85,20 @@ function git-delete-branch() {
     git branch -D $branch
 }
 
+function enable-forgit() {
+    if [[ -o interactive ]]; then
+	if [[ -a ~/.dziman-zsh/forgit/forgit.plugin.zsh ]]; then
+            source ~/.dziman-zsh/forgit/forgit.plugin.zsh
+	else
+	    # TODO Add git clone?
+	    # git://github.com/zsh-users/zsh-autosuggestions
+	    echo "forgit not found. Clone from git://github.com/wfxr/forgit to ~/.dziman-zsh/forgit/"
+	fi
+    fi
+}
+
 add-zsh-hook chpwd check-tags-config
 
 [[ -o interactive ]] && check-git-completion
+
+enable-forgit
