@@ -70,6 +70,21 @@ function execute-git-command-in() {
     git -C ${directory} $@
 }
 
+function git-delete-branch() {
+    local branch=$1
+    local remote=${2:-origin}
+    local current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
+
+    git push $remote :$branch
+
+    if [[ "$branch" == "$current_branch" ]]; then
+	# TODO Use function param or get default branch??
+	git checkout develop || git checkout master
+    fi
+
+    git branch -D $branch
+}
+
 add-zsh-hook chpwd check-tags-config
 
 [[ -o interactive ]] && check-git-completion
