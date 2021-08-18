@@ -14,7 +14,7 @@
  )
 
 ;; Cask
-(require 'cask "/opt/brew/Cellar/cask/0.8.5/cask.el")
+(require 'cask "/opt/brew/Cellar/cask/0.8.7/cask.el")
 (cask-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -29,9 +29,9 @@
 (load-theme 'labburn t)
 
 ;; Customize status line
-(setq sml/theme 'powerline)
-(sml/setup)
-(setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company" " Helm" " yas"))
+;;(setq sml/theme 'powerline)
+;;(sml/setup)
+;;(setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company" " Helm" " yas"))
 
 ;; Show column position
 (column-number-mode 1)
