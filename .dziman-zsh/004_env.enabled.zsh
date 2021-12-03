@@ -10,7 +10,7 @@ export EDITOR=emacsclient
 # Homebrew configuration
 export HOMEBREW_NO_AUTO_UPDATE="true"
 export HOMEBREW_NO_GITHUB_API="true"
-export HOMEBREW_PREFIX=$(brew --prefix)
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
