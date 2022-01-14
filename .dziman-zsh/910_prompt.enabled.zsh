@@ -86,6 +86,7 @@ function left-prompt() {
 function right-prompt() {
     print-right-segment 10 216 "$(aws-status)"
     print-right-segment 10 111 "$(jenv-status)"
+    print-right-segment 10 151 "$(pyenv-status)"
     print-right-segment 10 103 "$(git-prompt-status)"
     print-right-prompt-end
 }
@@ -185,6 +186,20 @@ function jenv-status() {
 ################################################################################
 
 ################################################################################
+# Info about python version for current location
+################################################################################
+# TODO Move to python extension?
+# TODO Handle shell settings
+function pyenv-status() {
+    if which pyenv &>/dev/null; then
+        local_py=$(pyenv version-name 2>/dev/null)
+        global_py=$(pyenv global 2>/dev/null)
+        [[ "$local_py" == "$global_py" ]] || echo -n "%{$fg[black]%}$icons[PYTHON_ICON]$local_py%f"
+    fi
+}
+################################################################################
+
+################################################################################
 # Info about AWS profile and role
 ################################################################################
 # TODO Move to AWS extension?
@@ -202,29 +217,6 @@ function aws-status() {
 }
 ################################################################################
 
-################################################################################
-# Show last command execution time # TODO Review
-################################################################################
-function perf-preexec() {
-    timer=$(($(gdate +%s%N)/1000000))
-}
-
-function perf-precmd() {
-    RPS1=""
-
-    if [ $timer ]; then
-        now=$(($(gdate +%s%N)/1000000))
-        elapsed=$(($now-$timer))
-
-        export RPS1="$RPS1%{$fg[cyan]%}%F{104}${elapsed}ms %{$reset_color%}"
-        unset timer
-    fi
-}
-
-#add-zsh-hook precmd perf-precmd
-#add-zsh-hook preexec perf-preexec
-################################################################################
-
 if [[ -o interactive ]]; then
     ################################################################################
     # Highlight syntax in prompt
@@ -232,6 +224,10 @@ if [[ -o interactive ]]; then
     if [ -f $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
         source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     fi
+# TODO Revisit fast syntax highlight later: at the moment it adds some delays in shell (for example when type `man date` there are delays after `man` typed and after `da` typed)
+#    if [ -f $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]; then
+#        source $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+#    fi
     ################################################################################
 
 
