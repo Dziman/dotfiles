@@ -113,3 +113,5 @@
 	old = red bold
 	new = green
 	whitespace = red reverse
+[init]
+	defaultBranch = develop
