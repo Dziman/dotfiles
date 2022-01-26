@@ -21,10 +21,13 @@ gmp
 gnu-sed
 gnutls
 go
+gradle
+gradle-completion
 guile
 htop
 httpie
 hugo
+icu4c
 ispell
 jansson
 jenv
@@ -47,6 +50,8 @@ m4
 maven
 maven-completion
 mpdecimal
+mycli
+mysql
 navi
 ncurses
 nettle
@@ -62,6 +67,7 @@ pkg-config
 procs
 protobuf
 pyenv
+python-tabulate
 python@3.10
 python@3.9
 readline
@@ -70,7 +76,6 @@ rustup-init
 shellcheck
 six
 sqlite
-starship
 tealdeer
 tig
 tmux
