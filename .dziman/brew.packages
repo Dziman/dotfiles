@@ -32,12 +32,15 @@ ispell
 jansson
 jenv
 jid
+jless
 jo
 jq
 libarchive
 libb2
+libcbor
 libevent
 libffi
+libfido2
 libidn2
 libnghttp2
 libtasn1
