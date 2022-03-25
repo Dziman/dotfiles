@@ -57,7 +57,7 @@
 	st = !sh -c 'git stash show --patch stash@{${1:-0}}' -
 	### push related
 	# push to origin and track current branch
-	put = !sh -c 'git push ${2:-origin} --set-upstream ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+	put = !sh -c 'git push ${1:-origin} --set-upstream ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
 	pushf = !sh -c 'git push --force ${1:-origin} ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
 	pushfo = !sh -c 'git pushf origin ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
 	###
@@ -101,6 +101,7 @@
 	whitespace-error-style = "#280050" reverse
 	zero-style = syntax
 	syntax-theme = zenburn
+	max-line-length = 0
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
