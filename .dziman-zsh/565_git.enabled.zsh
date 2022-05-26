@@ -92,7 +92,6 @@ function enable-forgit() {
             source ~/.dziman-zsh/forgit/forgit.plugin.zsh
 	else
 	    # TODO Add git clone?
-	    # git://github.com/zsh-users/zsh-autosuggestions
 	    echo "forgit not found. Clone from git://github.com/wfxr/forgit to ~/.dziman-zsh/forgit/"
 	fi
     fi
