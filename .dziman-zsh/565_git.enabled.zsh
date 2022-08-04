@@ -89,6 +89,8 @@ function git-delete-branch() {
 function enable-forgit() {
     if [[ -o interactive ]]; then
 	if [[ -a ~/.dziman-zsh/forgit/forgit.plugin.zsh ]]; then
+            export FORGIT_LOG_FORMAT="%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s"
+	    export FORGIT_FZF_DEFAULT_OPTS="--reverse --preview-window bottom"
             source ~/.dziman-zsh/forgit/forgit.plugin.zsh
 	else
 	    # TODO Add git clone?

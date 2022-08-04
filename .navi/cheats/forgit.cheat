@@ -1,0 +1,52 @@
+% git, forgit
+
+# add file(s)
+ga
+
+# log
+glo
+
+# generate .gitignore
+gi
+
+# diff
+gd
+
+# reset head
+grh
+
+# checkout file
+gcf
+
+# checkout branch
+gcb
+
+# delete branch
+gbd
+
+# checkout tag
+gct
+
+# checkout commit
+gco
+
+# revert commit
+grc
+
+# browse stash
+gss
+
+# clean
+gclean
+
+# rebase
+grb
+
+# blame
+gbl
+
+# fixup
+gfu
+
+# cherry pick
+gcp
