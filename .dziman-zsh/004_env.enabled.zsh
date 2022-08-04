@@ -14,7 +14,8 @@ export HOMEBREW_NO_ANALYTICS="true"
 export HOMEBREW_NO_ENV_HINTS="true"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export LSCOLORS=GxFxCxDxBxegedabagaced
+# Colors are set in 591_vivid_ls.enabled.zsh
+# export LSCOLORS=GxFxCxDxBxegedabagaced
 
 # ripgrep config file definition
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
