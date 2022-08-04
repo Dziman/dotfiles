@@ -12,7 +12,7 @@ alias gca='git commit --all'
 
 function check-git-completion() {
     if [ -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git ]; then
-        echo "$fg_bold[yellow]git completion detected while better alternative exists$reset_color"
+        echo "${fg_bold[yellow]}git completion detected while better alternative exists$reset_color"
     fi
 }
 
@@ -78,8 +78,8 @@ function git-delete-branch() {
     git push $remote :$branch
 
     if [[ "$branch" == "$current_branch" ]]; then
-	# TODO Use function param or get default branch??
-	git checkout develop || git checkout master
+        # TODO Use function param or get default branch??
+        git checkout develop || git checkout master
     fi
 
     git branch -D $branch
@@ -88,14 +88,14 @@ function git-delete-branch() {
 
 function enable-forgit() {
     if [[ -o interactive ]]; then
-	if [[ -a ~/.dziman-zsh/forgit/forgit.plugin.zsh ]]; then
+        if [[ -a ~/.dziman-zsh/forgit/forgit.plugin.zsh ]]; then
             export FORGIT_LOG_FORMAT="%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s"
-	    export FORGIT_FZF_DEFAULT_OPTS="--reverse --preview-window bottom"
+            export FORGIT_FZF_DEFAULT_OPTS="--reverse --preview-window bottom"
             source ~/.dziman-zsh/forgit/forgit.plugin.zsh
-	else
-	    # TODO Add git clone?
-	    echo "forgit not found. Clone from git://github.com/wfxr/forgit to ~/.dziman-zsh/forgit/"
-	fi
+        else
+            # TODO Add git clone?
+            echo "forgit not found. Clone from git://github.com/wfxr/forgit to ~/.dziman-zsh/forgit/"
+        fi
     fi
 }
 

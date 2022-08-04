@@ -44,8 +44,8 @@ function aws-switch-role() {
     local profile=$AWS_PROFILE
 
     if [ -z "$profile" ]; then
-	echo "No current AWS profile selected"
-	return 1
+        echo "No current AWS profile selected"
+        return 1
     fi
 
     if ! (($profiles[(Ie)$profile])); then
@@ -59,17 +59,17 @@ function aws-switch-role() {
     local role=$1
 
     if [ -z $role ]; then
-	if [[ -o interactive ]]; then
-	    # TODO If only one role in`roles` then just use it without prompt
-	    role=$(printf "%s\n" "${roles[@]}" | fzf)
-	    if [ -z $role ]; then
-		echo "Role wasn't selected"
-		return 3
-	    fi
-	else
-	    echo "No role provided"
-	    return 4
-	fi
+    if [[ -o interactive ]]; then
+        # TODO If only one role in`roles` then just use it without prompt
+        role=$(printf "%s\n" "${roles[@]}" | fzf)
+        if [ -z $role ]; then
+            echo "Role wasn't selected"
+            return 3
+        fi
+    else
+        echo "No role provided"
+        return 4
+    fi
     fi
 
     # Validate if role exists
