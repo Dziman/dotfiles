@@ -9,3 +9,4 @@ function open-idea() {
 }
 
 alias idea=open-idea
+alias ideal='idea --line'
