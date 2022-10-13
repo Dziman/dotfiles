@@ -64,6 +64,8 @@
 (depends-on "terraform-mode")
 (depends-on "company-terraform")
 (depends-on "swift-mode")
+(depends-on "mustache")
+(depends-on "mustache-mode")
 
 ;; Themes
 (depends-on "darcula-theme")
