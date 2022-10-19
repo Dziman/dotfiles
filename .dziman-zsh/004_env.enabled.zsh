@@ -17,7 +17,7 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 GREP_TOOL="grep"
 
 if [ -x "$(command -v rg)" ]; then
-    GREP_TOOL="rg"
+  GREP_TOOL="rg"
 fi
 
 export GREP_TOOL

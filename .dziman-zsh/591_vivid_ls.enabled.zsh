@@ -5,5 +5,5 @@
 ################################################################################
 
 if [[ -o interactive ]] && which vivid &>/dev/null; then
-    export LS_COLORS="$(vivid generate solarized-dark)"
+  export LS_COLORS="$(vivid generate solarized-dark)"
 fi
