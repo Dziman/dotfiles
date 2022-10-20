@@ -8,7 +8,6 @@ colors
 
 autoload -Uz add-zsh-hook
 
-
 PREVIOUS_SEGMENT_COLOR='NONE'
 
 LEFT_PROMPT_START_SEPARATOR='\uE0B6'
@@ -18,86 +17,86 @@ RIGHT_PROMPT_END_SEPARATOR='\uE0B4'
 RIGHT_PROMPT_SEPARATOR="$icons[RIGHT_SEGMENT_SEPARATOR]"
 
 function print-segment() {
-    local segment_fg=$1
-    local segment_bg=$2
-    local content=$3
+  local segment_fg=$1
+  local segment_bg=$2
+  local content=$3
 
-    if [[ $content != "" ]]; then
-        if [[ "$PREVIOUS_SEGMENT_COLOR" == "NONE" ]]; then
-            echo -n "%k%F{$segment_bg}$LEFT_PROMPT_START_SEPARATOR%K{$segment_bg}%F{$segment_fg}"
-        else
-            echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%K{$segment_bg}$LEFT_PROMPT_SEPARATOR%F{$segment_fg}"
-        fi
-
-        echo -n " $content"
-
-        PREVIOUS_SEGMENT_COLOR=$segment_bg
+  if [[ $content != "" ]]; then
+    if [[ "$PREVIOUS_SEGMENT_COLOR" == "NONE" ]]; then
+      echo -n "%k%F{$segment_bg}$LEFT_PROMPT_START_SEPARATOR%K{$segment_bg}%F{$segment_fg}"
+    else
+      echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%K{$segment_bg}$LEFT_PROMPT_SEPARATOR%F{$segment_fg}"
     fi
+
+    echo -n " $content"
+
+    PREVIOUS_SEGMENT_COLOR=$segment_bg
+  fi
 }
 
 function print-left-prompt-end() {
-    echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%k$LEFT_PROMPT_SEPARATOR%f"
-    PREVIOUS_SEGMENT_COLOR='NONE'
+  echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%k$LEFT_PROMPT_SEPARATOR%f"
+  PREVIOUS_SEGMENT_COLOR='NONE'
 }
 
 function print-right-segment() {
-    local segment_fg=$1
-    local segment_bg=$2
-    local content=$3
+  local segment_fg=$1
+  local segment_bg=$2
+  local content=$3
 
-    if [[ $content != "" ]]; then
-        if [[ "$PREVIOUS_SEGMENT_COLOR" == "NONE" ]]; then
-            echo -n "%k%F{$segment_bg}$RIGHT_PROMPT_SEPARATOR%K{$segment_bg}%F{$segment_fg}"
-        else
-            echo -n " %F{$segment_bg}$RIGHT_PROMPT_SEPARATOR%F{$segment_fg}%K{$segment_bg}"
-        fi
-
-        echo -n " $content"
-
-        PREVIOUS_SEGMENT_COLOR=$segment_bg
+  if [[ $content != "" ]]; then
+    if [[ "$PREVIOUS_SEGMENT_COLOR" == "NONE" ]]; then
+      echo -n "%k%F{$segment_bg}$RIGHT_PROMPT_SEPARATOR%K{$segment_bg}%F{$segment_fg}"
+    else
+      echo -n " %F{$segment_bg}$RIGHT_PROMPT_SEPARATOR%F{$segment_fg}%K{$segment_bg}"
     fi
+
+    echo -n " $content"
+
+    PREVIOUS_SEGMENT_COLOR=$segment_bg
+  fi
 }
 
 function print-right-prompt-end() {
-    if [[ "$PREVIOUS_SEGMENT_COLOR" != "NONE" ]]; then
-        echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%k$RIGHT_PROMPT_END_SEPARATOR%f"
-        PREVIOUS_SEGMENT_COLOR='NONE'
-    fi
+  if [[ "$PREVIOUS_SEGMENT_COLOR" != "NONE" ]]; then
+    echo -n " %F{$PREVIOUS_SEGMENT_COLOR}%k$RIGHT_PROMPT_END_SEPARATOR%f"
+    PREVIOUS_SEGMENT_COLOR='NONE'
+  fi
 }
 
 # TODO Implement
 function user-host() {
-    # if ssh then show server icon and host name, show current username
-    if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-        echo -n "$icons[SERVER_ICON]"
-    else # if local then show laptop icon, show username only if su was used
-        echo -n "$icons[LAPTOP_ICON]"
-    fi
+  # if ssh then show server icon and host name, show current username
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    echo -n "$icons[SERVER_ICON]"
+  else # if local then show laptop icon, show username only if su was used
+    echo -n "$icons[LAPTOP_ICON]"
+  fi
 }
 
 # TODO Use variables for colors
 function left-prompt() {
-    print-segment 10 246 "$(user-host)"
-    print-segment 10 66 "$(current-dir)"
-    print-left-prompt-end
+  print-segment 10 246 "$(user-host)"
+  print-segment 10 66 "$(current-dir)"
+  print-left-prompt-end
 }
 
 # TODO Use variables for colors
 function right-prompt() {
-    print-right-segment 10 216 "$(aws-status)"
-    print-right-segment 10 111 "$(jenv-status)"
-    print-right-segment 10 151 "$(pyenv-status)"
-    print-right-segment 10 103 "$(git-prompt-status)"
-    print-right-prompt-end
+  print-right-segment 10 216 "$(aws-status)"
+  print-right-segment 10 111 "$(jenv-status)"
+  print-right-segment 10 151 "$(pyenv-status)"
+  print-right-segment 10 103 "$(git-prompt-status)"
+  print-right-prompt-end
 }
 
 function update-right-prompt() {
-    RPS1="$(right-prompt)%{$reset_color%}"
+  RPS1="$(right-prompt)%{$reset_color%}"
 }
 
 # TODO Parse and butify
 function current-dir() {
-    echo "%~"
+  echo "%~"
 }
 
 ################################################################################
@@ -106,11 +105,11 @@ function current-dir() {
 # TODO Move to git extension?
 # TODO Use icons and prompt background color
 function git-prompt-status() {
-    local -a git_status
-    local branch
-    branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
+  local -a git_status
+  local branch
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
 
-    if [[ $? == 0 ]]; then
+  if [[ $? == 0 ]]; then
 
     git_status+=$branch
 
@@ -119,55 +118,55 @@ function git-prompt-status() {
 
     ahead=$(git rev-list @{upstream}..HEAD &>/dev/null)
     if [[ $? == 0 ]]; then
-        ahead=$(git rev-list @{upstream}..HEAD 2>/dev/null | wc -l | tr -d ' ')
-        behind=$(git rev-list HEAD..@{upstream} 2>/dev/null | wc -l | tr -d ' ')
+      ahead=$(git rev-list @{upstream}..HEAD 2>/dev/null | wc -l | tr -d ' ')
+      behind=$(git rev-list HEAD..@{upstream} 2>/dev/null | wc -l | tr -d ' ')
 
-        if [[ "$ahead" -ge 1 ]]; then
-            remotestatus+="%{$fg_bold[green]%}↑$ahead"
-        fi
-        if [[ "$behind" -ge 1 ]]; then
-            remotestatus+="%{$fg_bold[red]%}↓$behind"
-        fi
+      if [[ "$ahead" -ge 1 ]]; then
+        remotestatus+="%{$fg_bold[green]%}↑$ahead"
+      fi
+      if [[ "$behind" -ge 1 ]]; then
+        remotestatus+="%{$fg_bold[red]%}↓$behind"
+      fi
 
-        if [ -z "$remotestatus" ]; then
-            remotestatus="%{$fg_bold[cyan]%}≡"
-        fi
+      if [ -z "$remotestatus" ]; then
+        remotestatus="%{$fg_bold[cyan]%}≡"
+      fi
 
-        git_status+=$remotestatus
+      git_status+=$remotestatus
     fi
 
     temp_file_for_git_status=$(mktemp)
     git status --porcelain 2>/dev/null 1>$temp_file_for_git_status
     changesnum=$(count_lines_in_git_status "$temp_file_for_git_status" ".")
     if [[ $changesnum -ge 1 ]]; then
-        staged_added=$(count_lines_in_git_status "$temp_file_for_git_status" "^A")
-        staged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^[MR]")
-        staged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^D")
-        unstaged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^.M")
-        unstaged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^.D")
-        untracked=$(count_lines_in_git_status "$temp_file_for_git_status" "^\?")
-        conflicts=$(count_lines_in_git_status "$temp_file_for_git_status" "^UU")
-        if [[ "$conflicts" != "0" ]]; then
-            conflicts=" !$conflicts"
-        else
-            conflicts=""
-        fi
-        git_status+="%{$fg_bold[green]%}+$staged_added *$staged_modified -$staged_deleted %{$fg_bold[magenta]%}| %{$fg_bold[red]%}+$untracked *$unstaged_modified -$unstaged_deleted$conflicts"
+      staged_added=$(count_lines_in_git_status "$temp_file_for_git_status" "^A")
+      staged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^[MR]")
+      staged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^D")
+      unstaged_modified=$(count_lines_in_git_status "$temp_file_for_git_status" "^.M")
+      unstaged_deleted=$(count_lines_in_git_status "$temp_file_for_git_status" "^.D")
+      untracked=$(count_lines_in_git_status "$temp_file_for_git_status" "^\?")
+      conflicts=$(count_lines_in_git_status "$temp_file_for_git_status" "^UU")
+      if [[ "$conflicts" != "0" ]]; then
+        conflicts=" !$conflicts"
+      else
+        conflicts=""
+      fi
+      git_status+="%{$fg_bold[green]%}+$staged_added *$staged_modified -$staged_deleted %{$fg_bold[magenta]%}| %{$fg_bold[red]%}+$untracked *$unstaged_modified -$unstaged_deleted$conflicts"
     fi
     rm $temp_file_for_git_status
 
     stashes=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
     if [[ "$stashes" -ge 1 ]]; then
-        git_status+="%{$fg_bold[blue]%}$stashes➜ "
+      git_status+="%{$fg_bold[blue]%}$stashes➜ "
     fi
 
     echo "%{$fg_bold[magenta]%}[%{$fg_bold[cyan]%}$git_status%{$fg_bold[magenta]%}]%f"
 
-    fi
+  fi
 }
 
 function count_lines_in_git_status() {
-    echo -n $(cat $1 | grep "$2" | wc -l | tr -d ' ')
+  echo -n $(cat $1 | grep "$2" | wc -l | tr -d ' ')
 }
 ################################################################################
 
@@ -177,11 +176,11 @@ function count_lines_in_git_status() {
 # TODO Move to java extension?
 # TODO Handle shell settings
 function jenv-status() {
-    if which jenv &>/dev/null; then
-        local_java=$(jenv version-name 2>/dev/null)
-        global_java=$(jenv global 2>/dev/null)
-        [[ "$local_java" == "$global_java" ]] || echo -n "%{$fg[white]%}$icons[JAVA_ICON] $local_java%f"
-    fi
+  if which jenv &>/dev/null; then
+    local_java=$(jenv version-name 2>/dev/null)
+    global_java=$(jenv global 2>/dev/null)
+    [[ "$local_java" == "$global_java" ]] || echo -n "%{$fg[white]%}$icons[JAVA_ICON] $local_java%f"
+  fi
 }
 ################################################################################
 
@@ -191,11 +190,11 @@ function jenv-status() {
 # TODO Move to python extension?
 # TODO Handle shell settings
 function pyenv-status() {
-    if which pyenv &>/dev/null; then
-        local_py=$(pyenv version-name 2>/dev/null)
-        global_py=$(pyenv global 2>/dev/null)
-        [[ "$local_py" == "$global_py" ]] || echo -n "%{$fg[black]%}$icons[PYTHON_ICON]$local_py%f"
-    fi
+  if which pyenv &>/dev/null; then
+    local_py=$(pyenv version-name 2>/dev/null)
+    global_py=$(pyenv global 2>/dev/null)
+    [[ "$local_py" == "$global_py" ]] || echo -n "%{$fg[black]%}$icons[PYTHON_ICON]$local_py%f"
+  fi
 }
 ################################################################################
 
@@ -205,36 +204,35 @@ function pyenv-status() {
 # TODO Move to AWS extension?
 # TODO Handle shell settings
 function aws-status() {
-    # TODO Use AWS icon when it'll be available in font
-    if [[ -v AWS_PROFILE ]]; then
-        local assumed_role_part=""
-        if [[ -v AWS_ASSUMED_ROLE ]]; then
-            assumed_role_part=" %{$fg[red]%}($icons[BADGE_ICON] $AWS_ASSUMED_ROLE)%f"
-        fi
-
-        echo -n "%{$fg[black]%}$icons[AMAZON_ICON] $AWS_PROFILE%f$assumed_role_part"
+  # TODO Use AWS icon when it'll be available in font
+  if [[ -v AWS_PROFILE ]]; then
+    local assumed_role_part=""
+    if [[ -v AWS_ASSUMED_ROLE ]]; then
+      assumed_role_part=" %{$fg[red]%}($icons[BADGE_ICON] $AWS_ASSUMED_ROLE)%f"
     fi
+
+    echo -n "%{$fg[black]%}$icons[AMAZON_ICON] $AWS_PROFILE%f$assumed_role_part"
+  fi
 }
 ################################################################################
 
 if [[ -o interactive ]]; then
-    ################################################################################
-    # Highlight syntax in prompt
-    ################################################################################
-    if [ -f $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-        source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    fi
-# TODO Revisit fast syntax highlight later: at the moment it adds some delays in shell (for example when type `man date` there are delays after `man` typed and after `da` typed)
-#    if [ -f $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]; then
-#        source $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-#    fi
-    ################################################################################
+  ################################################################################
+  # Highlight syntax in prompt
+  ################################################################################
+  if [ -f $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  fi
+  # TODO Revisit fast syntax highlight later: at the moment it adds some delays in shell (for example when type `man date` there are delays after `man` typed and after `da` typed)
+  #    if [ -f $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]; then
+  #        source $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+  #    fi
+  ################################################################################
 
+  add-zsh-hook precmd update-right-prompt
 
-    add-zsh-hook precmd update-right-prompt
-
-    PS1="$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)
+  PS1="$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)
 $icons[MULTILINE_LAST_PROMPT_PREFIX]%{$reset_color%}"
-    PS2="%{$fg[red]%}%_%{$reset_color%}"
-    PROMPT3="%{$fg[red]%}Make your choice:%{$reset_color%}"
+  PS2="%{$fg[red]%}%_%{$reset_color%}"
+  PROMPT3="%{$fg[red]%}Make your choice:%{$reset_color%}"
 fi

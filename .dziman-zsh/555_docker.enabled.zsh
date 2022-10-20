@@ -8,5 +8,5 @@ alias docker-clean-images='docker images --quiet --filter=dangling=true | xargs 
 alias docker-start='docker-machine start main-docker && docker-refresh'
 
 if [[ $(docker-machine status main-docker 2>/dev/null) = "Running" ]]; then
-    eval "$(docker-machine env main-docker)"
+  eval "$(docker-machine env main-docker)"
 fi

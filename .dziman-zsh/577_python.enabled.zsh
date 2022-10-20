@@ -5,7 +5,7 @@
 ################################################################################
 
 # pyenv initialization
-if [[ -o interactive ]] && which pyenv > /dev/null; then
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
+if [[ -o interactive ]] && which pyenv >/dev/null; then
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
 fi
