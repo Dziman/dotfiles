@@ -58,7 +58,7 @@
 	### push related
 	# push to origin and track current branch
 	put = !sh -c 'git push ${1:-origin} --set-upstream ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
-	pushf = !sh -c 'git push --force ${1:-origin} ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+	pushf = !sh -c 'git push --force-with-lease ${1:-origin} ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
 	pushfo = !sh -c 'git pushf origin ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
 	###
 
