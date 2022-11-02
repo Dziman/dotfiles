@@ -79,6 +79,7 @@
       )
 (helm-mode 1)
 (helm-autoresize-mode 1)
+(setq helm-ff-skip-boring-files t)
 
 ;; helm-swoop (search improvement)
 (setq helm-swoop-split-direction 'split-window-horizontally)
