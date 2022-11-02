@@ -8,15 +8,15 @@
 alias cls='clear'
 
 if command-exists gls; then
-    alias ls='gls --classify --human-readable --color=auto'
+  alias ls='gls --classify --human-readable --color=auto'
 else
-    alias ls='ls -C -p --color=auto'
+  alias ls='ls -C -p --color=auto'
 fi
 
 if command-exists gmv; then
-    alias mv='gmv --interactive'
-else    
-    alias mv='mv -i'
+  alias mv='gmv --interactive'
+else
+  alias mv='mv -i'
 fi
 
 # command to track dotfiles by git
