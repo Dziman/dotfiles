@@ -5,7 +5,7 @@
 ################################################################################
 
 # anyenv initialization
-if [[ -o interactive ]] && which anyenv > /dev/null; then eval "$(anyenv init - zsh)"; fi
+if [[ -o interactive ]] && command-exists anyenv; then eval "$(anyenv init - zsh)"; fi
 
 # node env
 export NVM_DIR="$HOME/.nvm"

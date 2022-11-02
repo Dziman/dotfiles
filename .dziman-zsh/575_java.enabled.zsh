@@ -5,10 +5,10 @@
 ################################################################################
 
 # jenv initialization
-if [[ -o interactive ]] && command -v jenv > /dev/null; then eval "$(jenv init - zsh)"; fi
+if [[ -o interactive ]] && command-exists jenv; then eval "$(jenv init - zsh)"; fi
 
 function refresh-jenv() {
-  command -v jenv > /dev/null || return 1
+  command-exists jenv || return 1
 
   local -a jenv_versions=($(jenv completions local))
   jenv_versions=("${(@)jenv_versions:#system}") # remove 'system' entry from versions list

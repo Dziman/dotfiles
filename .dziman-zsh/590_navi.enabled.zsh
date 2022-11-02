@@ -16,6 +16,6 @@ function init-navi-shell-widget() {
   bindkey '^g' send-break
 }
 
-if [[ -o interactive ]] && which navi &>/dev/null; then
+if [[ -o interactive ]] && command-exists navi; then
   init-navi-shell-widget
 fi

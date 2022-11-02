@@ -7,8 +7,15 @@
 profiles_file=~/.aws/profiles
 
 function calculate-s3-bucket-size() {
-    # TODO Add checks for AWS CLI, gnumfmt presence?
-    aws s3api list-object-versions --bucket $1 --query 'Versions[*].[Size,Size]' --output text  | awk '{s+=$1} END {printf "%.0f\n", s}' | gnumfmt --to=iec-i --suffix=B --padding=7
+    if command-exists aws; then
+	if command-exists gnumfmt; then
+	    aws s3api list-object-versions --bucket $1 --query 'Versions[*].[Size,Size]' --output text  | awk '{s+=$1} END {printf "%.0f\n", s}' | gnumfmt --to=iec-i --suffix=B --padding=7
+	else
+	    echo "gnumfmt is not found"
+	fi
+    else
+	echo "AWS CLI is not found"
+    fi
 }
 
 function aws-assume-role() {

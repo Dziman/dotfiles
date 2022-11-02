@@ -176,7 +176,7 @@ function count_lines_in_git_status() {
 # TODO Move to java extension?
 # TODO Handle shell settings
 function jenv-status() {
-  if which jenv &>/dev/null; then
+  if command-exists jenv; then
     local_java=$(jenv version-name 2>/dev/null)
     global_java=$(jenv global 2>/dev/null)
     [[ "$local_java" == "$global_java" ]] || echo -n "%{$fg[white]%}$icons[JAVA_ICON] $local_java%f"
@@ -190,7 +190,7 @@ function jenv-status() {
 # TODO Move to python extension?
 # TODO Handle shell settings
 function pyenv-status() {
-  if which pyenv &>/dev/null; then
+  if command-exists pyenv; then
     local_py=$(pyenv version-name 2>/dev/null)
     global_py=$(pyenv global 2>/dev/null)
     [[ "$local_py" == "$global_py" ]] || echo -n "%{$fg[black]%}$icons[PYTHON_ICON]$local_py%f"
