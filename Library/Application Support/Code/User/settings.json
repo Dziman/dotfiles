@@ -1,5 +1,5 @@
 {
-    "workbench.colorTheme": "Zenburn",
+    "workbench.colorTheme": "Higher Contrast Zenburn",
     "workbench.colorCustomizations": {
         "[Zenburn]": {
             "editorActiveLineNumber.foreground": "#bbbbbb",
@@ -15,7 +15,7 @@
         120,
         200
     ],
-    "editor.tabCompletion": true,
+    "editor.tabCompletion": "onlySnippets",
     "editor.minimap.enabled": false,
     "editor.cursorBlinking": "blink",
     "editor.fontLigatures": true,
@@ -45,7 +45,7 @@
     "go.useLanguageServer": true,
     "java.semanticHighlighting.enabled": true,
     "python.jediEnabled": false,
-    "python.languageServer": "Microsoft",
+    "python.languageServer": "Default",
     "files.watcherExclude": {
         "**/.bloop": true,
         "**/.metals": true,
