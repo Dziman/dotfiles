@@ -1,0 +1,13 @@
+{
+  META = {
+    contextScope = {
+      "user" = "dziman";
+      "layer" = "all.dev.integration.dv01aws";
+      "app" = "blockwordservice";
+      "container" = "jetty";
+    };
+  };
+  adminPortSecure = "false";
+  requiresAuth = "false";
+  enableServerConfig = "false";
+}

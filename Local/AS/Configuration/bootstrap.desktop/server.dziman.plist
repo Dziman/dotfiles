@@ -1,0 +1,18 @@
+{
+	META = {
+		contextScope = {
+			app = "/.*/";
+			host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+		};
+	};
+
+	"connectors+" = {
+		"secure+" = {
+		  clientAuthLevel = 1;
+		  secure = false;
+		};
+		"primary+" = {
+		  secure = false;
+		};
+	};
+}

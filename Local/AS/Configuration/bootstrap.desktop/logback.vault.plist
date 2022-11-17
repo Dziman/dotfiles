@@ -1,0 +1,14 @@
+{
+    META = { 
+		contextScope = {
+			app = "/.*/";
+			host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+		};
+    };
+
+    "com.apple.store.toolkit.config.secrets.vault.VaultSecretsResolver" = OFF;
+    "com.apple.ist.retailos.secret.vault.impl.VaultAccessorImpl" = OFF;
+    "com.apple.ist.retailos.secret.vault.impl.VaultTokenAuthNProvider" = OFF;
+    "com.apple.ist.retailos.secret.vault.impl.VaultSslContextFromCert" = OFF;
+    "com.apple.ist.retailos.secret.vault.impl.VaultKvSecretsProvider" = OFF;
+}

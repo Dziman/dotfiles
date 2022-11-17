@@ -1,0 +1,130 @@
+{
+    META = {
+        contextScope = {
+            app = "ASPEN";
+            user = "dziman";
+        };
+    };
+
+    "STOREFRONT_HOST+" = {
+      "parameter+" = {
+        value = "dziman.apple.com";
+      };
+    };
+
+PICKUP_PARAMETERS = {
+        parameters = (
+            {
+                name = location;
+                type = String;
+                form = location;
+            },
+            {
+                name = store;
+                type = String;
+                form = store;
+            },
+            {
+                name = lineItemId;
+                type = List;
+                form = id;
+            },
+            {
+                name = purchaseOptions;
+                type = List;
+                form = purchaseOption;
+            },
+            {
+                name = options;
+                type = List;
+                form = option;
+            },
+            {
+                name = cppart;
+                type = List;
+                form = cppart;
+            },
+            {
+                name = storeSearch;
+                type = Boolean;
+                form = search;
+                value = false;
+            },
+            {
+                name = gifting;
+                type = Boolean;
+                form = gifting;
+                value = false;
+            },
+            {
+                name = searchNearby;
+                type = Boolean;
+                form = searchNearby;
+                value = false;
+            },
+            {
+                name = little;
+                type = Boolean;
+                form = little;
+                value = false;
+            },
+        );
+    };
+
+    // Store Pickup Availability of a product(s) on retail stores
+    pickupMessage = {
+        url = "<PREFIX>/retail/pickup-message";
+
+        parameters = (
+           "<PICKUP_PARAMETERS>",
+            {
+                name = partNumbers;
+                type = List;
+                form = parts;
+            },
+            {
+                name = pl;
+                type = Boolean;
+                form = pl;
+                value = false;
+            },
+           "<PURCHASE_OPTION>",
+        );
+
+        dispatch = {
+            controller = "applePickupController";
+            method = getPickupMessage;
+        };
+    };
+
+        contentPersonalization = {
+            url = "<PREFIX>/personalization";
+            parameters = (
+                {
+                    name = "mZones";
+                    type = "List";
+                    form = "mz";
+                },
+                {
+                    name = "product";
+                    type = "List";
+                    form = "pr";
+                },
+                {
+                    name = "acs";
+                    type = "Integer";
+                    form = "acs";
+                },
+                {
+                    name = "acins";
+                    type = "Boolean";
+                    form = "acins";
+                }
+            );
+            dispatch = {
+                controller = mZonePersonalizationController;
+                method = getPersonalizationForMZones;
+            };
+        };
+
+}

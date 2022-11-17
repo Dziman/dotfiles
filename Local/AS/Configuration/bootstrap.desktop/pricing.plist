@@ -1,0 +1,10 @@
+{
+  META = {
+    contextScope = {
+    };
+  };
+
+  enabled = "false";
+
+  marcomPriceEnabled = "false";
+}

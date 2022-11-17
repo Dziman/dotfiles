@@ -1,0 +1,32 @@
+// Provided/managed by AOS Helpers. Any edits may be lost in subsequent AOS Helpers updates.
+
+/**
+Enable / disable the user of Maven Local for retrieving artifacts in Gradle builds.
+
+Usage: uncomment / comment the mavenLocal() line below.
+*/
+allprojects {
+    repositories {
+        // mavenLocal(); System.out.println("WARNING: Maven local is active");
+        maven {
+            url System.getenv('ARTIFACTORY_URL')
+            credentials {
+                username System.getenv('ARTIFACTORY_USR')
+                password System.getenv('ARTIFACTORY_PSW')
+            }
+        }
+    }
+}
+
+settingsEvaluated { settings ->
+    settings.pluginManagement {
+        repositories {
+            maven {
+                url 'https://artifacts.apple.com/plugins-release'
+            }
+            maven {
+                url 'https://jfrog-cit01aws.ucp.apple.com/artifactory/ci-plugins-virtual'
+            }
+        }
+    }
+}

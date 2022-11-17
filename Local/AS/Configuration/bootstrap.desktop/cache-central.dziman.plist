@@ -1,0 +1,10 @@
+{
+	META = {
+		contextScope = {
+			app = "/.*/";
+			host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+		};
+	};
+
+	cacheCentralEnabled = false;
+}

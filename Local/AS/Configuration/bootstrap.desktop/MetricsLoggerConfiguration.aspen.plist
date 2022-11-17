@@ -1,0 +1,10 @@
+{
+
+    META = {
+        contextScope = {
+	    app = "/ASPEN|Willow/";
+        };
+    };
+
+    metricsLoggerEnabled = false;
+}
