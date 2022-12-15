@@ -1,0 +1,11 @@
+% apple, src
+
+# Go to project src directory
+cd <project_dir>
+
+$ project_dir: cat ${AGGREGATE_POM_DIR}/pom.xml 2>/dev/null | oq -ixml -ojson '.project.modules.module' | jq -r '.[]' | xargs -I {} realpath "${AGGREGATE_POM_DIR}/{}"
+
+# Go to project src directory (.module based)
+cd <project_dir>
+
+$ project_dir: cat ${SRC_ROOT}/.modules | xargs -I {} realpath "${SRC_ROOT}/{}"

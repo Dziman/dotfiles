@@ -1,0 +1,6 @@
+cheats:
+  paths:
+    - ~/.navi/cheats
+
+shell:
+  command: zsh
