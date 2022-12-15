@@ -6,6 +6,20 @@ Enable / disable the user of Maven Local for retrieving artifacts in Gradle buil
 Usage: uncomment / comment the mavenLocal() line below.
 */
 allprojects {
+    buildscript {
+        repositories {
+            maven {
+                url 'https://artifacts.apple.com/plugins-release'
+            }
+	    maven {
+		credentials {
+                    username System.getenv('ARTIFACTORY_USR')
+                    password System.getenv('ARTIFACTORY_PSW')
+		}
+		url System.getenv('ARTIFACTORY_URL')
+            }
+        }
+    }
     repositories {
         // mavenLocal(); System.out.println("WARNING: Maven local is active");
         maven {
@@ -24,8 +38,12 @@ settingsEvaluated { settings ->
             maven {
                 url 'https://artifacts.apple.com/plugins-release'
             }
-            maven {
-                url 'https://jfrog-cit01aws.ucp.apple.com/artifactory/ci-plugins-virtual'
+	    maven {
+		credentials {
+                    username System.getenv('ARTIFACTORY_USR')
+                    password System.getenv('ARTIFACTORY_PSW')
+		}
+		url System.getenv('ARTIFACTORY_URL')
             }
         }
     }
