@@ -6,7 +6,7 @@
 
 export NVM_DIR="$HOME/.nvm"
 
-[ -s "/opt/brew/opt/nvm/nvm.sh" ] && \. "/opt/brew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
 
 # Completions from zsh-completions package provide better info so this is disabled for now
-## [ -s "/opt/brew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/brew/opt/nvm/etc/bash_completion.d/nvm"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"

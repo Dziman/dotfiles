@@ -10,7 +10,7 @@ export EDITOR=emacsclient
 # Homebrew configuration
 export HOMEBREW_NO_AUTO_UPDATE="true"
 export HOMEBREW_NO_GITHUB_API="true"
-export PATH="/opt/brew/bin:/opt/brew/sbin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
