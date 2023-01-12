@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(depends-on "cask")
+(depends-on "cask-mode")
 
 ;; Packages for general improvements
 (depends-on "anzu")
@@ -38,8 +38,6 @@
 ;; Git extended support
 (depends-on "magit")
 (depends-on "magit-gerrit")
-(depends-on "gitconfig-mode")
-(depends-on "gitignore-mode")
 (depends-on "git-timemachine")
 (depends-on "git-gutter-fringe+")
 
