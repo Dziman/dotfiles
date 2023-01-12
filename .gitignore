@@ -6,8 +6,9 @@
 
 # IDEA
 *.iml
-.idea
+.idea/
 out/
+.run/
 
 # Xcode
 xcuserdata/

@@ -108,6 +108,8 @@
 	syntax-theme = zenburn
 	max-line-length = 0
 	hyperlinks = true
+	blame-timestamp-output-format = "%Y-%m-%d %H:%M:%S %z"
+	blame-palette = "#4B6C5A #88816D #576F71"
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
