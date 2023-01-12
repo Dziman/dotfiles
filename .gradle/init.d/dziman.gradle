@@ -1,0 +1,11 @@
+settingsEvaluated { settings ->
+    boolean skipLocal = getProperties().getOrDefault("local.settings.skip", false)
+
+    if (!skipLocal) {
+        File localSettings = new File(settings.rootDir, 'local-settings.gradle')
+        if (localSettings.exists()) {
+            settings.apply from: localSettings
+        }
+    }
+
+}

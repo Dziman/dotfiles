@@ -1,27 +1,27 @@
 // Provided/managed by AOS Helpers. Any edits may be lost in subsequent AOS Helpers updates.
 
 /**
-Enable / disable the user of Maven Local for retrieving artifacts in Gradle builds.
+ Enable / disable the user of Maven Local for retrieving artifacts in Gradle builds.
 
-Usage: uncomment / comment the mavenLocal() line below.
-*/
+ Usage: uncomment / comment the mavenLocal() line below.
+ */
 allprojects {
     buildscript {
         repositories {
             maven {
                 url 'https://artifacts.apple.com/plugins-release'
             }
-	    maven {
-		credentials {
+            maven {
+                credentials {
                     username System.getenv('ARTIFACTORY_USR')
                     password System.getenv('ARTIFACTORY_PSW')
-		}
-		url System.getenv('ARTIFACTORY_URL')
+                }
+                url System.getenv('ARTIFACTORY_URL')
             }
         }
     }
     repositories {
-        // mavenLocal(); System.out.println("WARNING: Maven local is active");
+//        mavenLocal(); System.out.println("WARNING: Maven local is active");
         maven {
             url System.getenv('ARTIFACTORY_URL')
             credentials {
@@ -38,13 +38,23 @@ settingsEvaluated { settings ->
             maven {
                 url 'https://artifacts.apple.com/plugins-release'
             }
-	    maven {
-		credentials {
+            maven {
+                credentials {
                     username System.getenv('ARTIFACTORY_USR')
                     password System.getenv('ARTIFACTORY_PSW')
-		}
-		url System.getenv('ARTIFACTORY_URL')
+                }
+                url System.getenv('ARTIFACTORY_URL')
             }
         }
     }
+
+    boolean skipLocal = getProperties().getOrDefault("local.settings.skip", false)
+
+    if (!skipLocal) {
+        File localSettings = new File(settings.rootDir, 'local-settings.gradle')
+        if (localSettings.exists()) {
+            settings.apply from: localSettings
+        }
+    }
+
 }
