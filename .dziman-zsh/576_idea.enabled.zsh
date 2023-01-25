@@ -5,8 +5,8 @@
 ################################################################################
 
 function open-idea() {
-    if [ -d "/Applications/IntelliJ IDEA 2021.x EAP.app" ]; then
-	open -na "IntelliJ IDEA 2021.x EAP.app" --args "$@"
+    if [ -d "/Applications/IntelliJ IDEA 2023.x EAP.app" ]; then
+	open -na "IntelliJ IDEA 2023.x EAP.app" --args "$@"
     else
 	if [ -d "/Applications/IntelliJ IDEA.app" ]; then
 	    open -na "IntelliJ IDEA.app" --args "$@"
