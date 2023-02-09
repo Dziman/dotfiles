@@ -30,6 +30,7 @@
 (depends-on "ace-jump-mode")
 (depends-on "hydra")
 (depends-on "ibuffer-vc")
+(depends-on "org-roam")
 
 ;; Check buffer on the fly
 (depends-on "flycheck")
@@ -63,6 +64,7 @@
 (depends-on "swift-mode")
 (depends-on "vue-mode")
 (depends-on "kotlin-mode")
+(depends-on "cask-mode")
 
 ;; Themes
 (depends-on "zenburn-theme")
