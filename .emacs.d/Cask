@@ -4,7 +4,6 @@
 (depends-on "cask")
 
 ;; Packages for general improvements
-(depends-on "anzu")
 (depends-on "bind-key")
 (depends-on "expand-region")
 (depends-on "fic-mode")

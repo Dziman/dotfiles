@@ -30,13 +30,10 @@
 ;; Customize status line
 (setq sml/theme 'powerline)
 (sml/setup)
-(setq sml/hidden-modes '(" Anzu" " Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company" " Helm" " yas"))
+(setq sml/hidden-modes '(" Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company" " Helm" " yas"))
 
 ;; Show column position
 (column-number-mode 1)
-
-;; Show number of search result
-(global-anzu-mode 1)
 
 ;; Do not show top menu
 (menu-bar-mode 0)
