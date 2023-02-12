@@ -1,70 +1,64 @@
 (source gnu)
 (source melpa)
 
-(depends-on "cask")
-
 ;; Packages for general improvements
 (depends-on "bind-key")
 (depends-on "expand-region")
-(depends-on "fic-mode")
+(depends-on "hl-todo")
 (depends-on "idle-highlight-mode")
-(depends-on "helm")
-(depends-on "helm-ls-git")
-(depends-on "helm-swoop")
-(depends-on "helm-projectile")
-(depends-on "helm-company")
-(depends-on "helm-mode-manager")
 (depends-on "smartparens")
-(depends-on "projectile")
-(depends-on "org-projectile")
-(depends-on "perspective")
-(depends-on "persp-projectile")
 (depends-on "rainbow-delimiters")
-(depends-on "smart-mode-line")
-(depends-on "smart-mode-line-powerline-theme")
 (depends-on "undo-tree")
 (depends-on "which-key")
 (depends-on "editorconfig")
-(depends-on "ace-window")
-(depends-on "ace-jump-mode")
-(depends-on "hydra")
-(depends-on "ibuffer-vc")
+(depends-on "smart-mode-line")
+(depends-on "company")
+
+(depends-on "helm")
+(depends-on "helm-swoop")
+(depends-on "helm-projectile")
+(depends-on "helm-company")
+(depends-on "helm-mode-manager") ;; TODO Add keybindings/hydra?
+
+(depends-on "projectile")
+(depends-on "org-projectile") ;; TODO Configure keybindings/hydra?
+(depends-on "org-projectile-helm") ;; TODO Configure keybindings/hydra?
+
+;; Git extended support TODO Revisit?
+(depends-on "magit")
+
+;; TODO Revisit
+(depends-on "org-rainbow-tags")
 (depends-on "org-roam")
 
+;; TODO Revisit
+(depends-on "hydra")
+
 ;; Check buffer on the fly
-(depends-on "flycheck")
+(depends-on "flycheck") ;; TODO Setup checks for all(?) prog-modes
 (depends-on "flycheck-cask")
-(depends-on "flymake-cursor")
+(depends-on "flycheck-color-mode-line")
+(depends-on "helm-flycheck")
+(depends-on "flyspell-correct-helm")
 
-;; Git extended support
-(depends-on "magit")
-(depends-on "magit-gerrit")
-(depends-on "gitconfig-mode")
-(depends-on "gitignore-mode")
-(depends-on "git-timemachine")
-(depends-on "git-gutter-fringe+")
+;; Python related
+(depends-on "pyenv-mode")
+(depends-on "python-mode")
+(depends-on "company-anaconda")
+(depends-on "flycheck-pycheckers")
 
-;; Modes for web related files like css, json etc
-(depends-on "less-css-mode")
+;; Mostly programming related modes
 (depends-on "json-mode")
 (depends-on "json-reformat")
 (depends-on "markdown-mode")
-(depends-on "web-mode")
-(depends-on "tide")
 (depends-on "yaml-mode")
-(depends-on "ember-mode")
-
 (depends-on "gradle-mode")
-(depends-on "groovy-mode")
-(depends-on "grails-mode")
 (depends-on "dockerfile-mode")
 (depends-on "terraform-mode")
 (depends-on "company-terraform")
 (depends-on "swift-mode")
-(depends-on "vue-mode")
 (depends-on "kotlin-mode")
 (depends-on "cask-mode")
 
 ;; Themes
-(depends-on "zenburn-theme")
 (depends-on "labburn-theme")

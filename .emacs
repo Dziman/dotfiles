@@ -1,17 +1,7 @@
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   (quote
-    ("84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+      '("84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))
+)
 
 ;; Cask
 (require 'cask "$HOMEBREW_PREFIX/Cellar/cask/0.8.8/cask.el")
@@ -28,9 +18,9 @@
 (load-theme 'labburn t)
 
 ;; Customize status line
-(setq sml/theme 'powerline)
+(setq sml/mode-width 'right)
 (sml/setup)
-(setq sml/hidden-modes '(" Undo-Tree" " SP" " FIC" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company" " Helm" " yas"))
+(setq sml/hidden-modes '(" Undo-Tree" " SP" " AC" " MRev" " Hi" " hl-p" " ElDoc" " Flymake" " Server" " WK" " company" " Helm" " yas" " EditorConfig" " company-dabbrev"))
 
 ;; Show column position
 (column-number-mode 1)
@@ -47,14 +37,20 @@
 (global-idle-highlite-mode 1)
 
 ;; Highlight TODOs
-(define-globalized-minor-mode global-fic-mode fic-mode (lambda () (fic-mode 1)))
-(global-fic-mode 1)
+(setq hl-todo-keyword-faces
+    '(
+         ("TODO" warning bold)
+         ("FIXME"  error bold)
+	     ("NOTE"  success bold)
+         )
+    )
+(add-hook 'prog-mode-hook 'hl-todo-mode)
 
 ;; rainbow parentheses
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;; Show whitespaces in programming mode
-;; (add-hook 'prog-mode-hook 'whitespace-mode)
+;; (add-hook 'prog-mode-hook 'whitespace-mode) ;; It is braking highlighting so disabled for now
 
 ;; Show line numbers
 (global-linum-mode 1)
@@ -119,6 +115,12 @@
 ;; Enable editorconfig
 (editorconfig-mode 1)
 
+;; Use helm for company
+(eval-after-load 'company
+  '(progn
+     (define-key company-mode-map (kbd "C-:") 'helm-company)
+     (define-key company-active-map (kbd "C-:") 'helm-company)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -126,7 +128,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq magit-last-seen-setup-instructions "1.4.0")
-(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG\\'" . global-magit-file-mode))
+(magit-commit) ;; FIXME
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
