@@ -2,10 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Actions</key>
+	<array/>
 	<key>CheckTestRelease</key>
 	<true/>
 	<key>Command</key>
 	<string></string>
+	<key>CopySelection</key>
+	<false/>
 	<key>Custom Color Presets</key>
 	<dict>
 		<key>DjangoSmooth</key>
@@ -433,7 +437,13 @@
 	<string>AD9630E8-F16C-4F51-90B3-1D207242C64D</string>
 	<key>DimBackgroundWindows</key>
 	<true/>
+	<key>DoubleClickPerformsSmartSelection</key>
+	<false/>
 	<key>EnableAPIServer</key>
+	<true/>
+	<key>EnableProxyIcon</key>
+	<false/>
+	<key>HTMLTabTitles</key>
 	<true/>
 	<key>HapticFeedbackForEsc</key>
 	<false/>
@@ -443,6 +453,8 @@
 	<true/>
 	<key>IRMemory</key>
 	<integer>4</integer>
+	<key>NeverBlockSystemShutdown</key>
+	<true/>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -3499,6 +3511,8 @@
 			<string>/Users/dziman</string>
 		</dict>
 	</array>
+	<key>PerPaneBackgroundImage</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -3538,7 +3552,17 @@
 	<real>0.23000000000000001</real>
 	<key>StatusBarPosition</key>
 	<integer>1</integer>
+	<key>StretchTabsToFillBar</key>
+	<false/>
+	<key>TabStyleWithAutomaticOption</key>
+	<integer>4</integer>
+	<key>TabsHaveCloseButton</key>
+	<false/>
+	<key>UseBorder</key>
+	<false/>
 	<key>VisualIndicatorForEsc</key>
+	<false/>
+	<key>disableMetalInLowPowerMode</key>
 	<false/>
 	<key>disableMetalWhenUnplugged</key>
 	<false/>
