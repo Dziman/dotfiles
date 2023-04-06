@@ -1,27 +1,22 @@
 // Provided/managed by AOS Helpers. Any edits may be lost in subsequent AOS Helpers updates.
 
 /**
- Enable / disable the user of Maven Local for retrieving artifacts in Gradle builds.
+Enable / disable the use of Maven Local for retrieving artifacts in Gradle builds.
 
- Usage: uncomment / comment the mavenLocal() line below.
- */
+Usage: uncomment / comment the appropriate mavenLocal() line below.
+*/
+
 allprojects {
     buildscript {
         repositories {
             maven {
-                url 'https://artifacts.apple.com/plugins-release'
-            }
-            maven {
-                credentials {
-                    username System.getenv('ARTIFACTORY_USR')
-                    password System.getenv('ARTIFACTORY_PSW')
-                }
-                url System.getenv('ARTIFACTORY_URL')
+                url 'https://aos-artifactory.corp.apple.com/artifactory/ci-plugins-virtual'
             }
         }
     }
+
     repositories {
-//        mavenLocal(); System.out.println("WARNING: Maven local is active");
+        // mavenLocal(); System.out.println("WARNING: Maven local is active for dependency retrieval");
         maven {
             url System.getenv('ARTIFACTORY_URL')
             credentials {
@@ -35,15 +30,9 @@ allprojects {
 settingsEvaluated { settings ->
     settings.pluginManagement {
         repositories {
+            // mavenLocal(); System.out.println("WARNING: Maven local is active for plugin retrieval");
             maven {
-                url 'https://artifacts.apple.com/plugins-release'
-            }
-            maven {
-                credentials {
-                    username System.getenv('ARTIFACTORY_USR')
-                    password System.getenv('ARTIFACTORY_PSW')
-                }
-                url System.getenv('ARTIFACTORY_URL')
+                url 'https://aos-artifactory.corp.apple.com/artifactory/ci-plugins-virtual'
             }
         }
     }
@@ -56,5 +45,4 @@ settingsEvaluated { settings ->
             settings.apply from: localSettings
         }
     }
-
 }
