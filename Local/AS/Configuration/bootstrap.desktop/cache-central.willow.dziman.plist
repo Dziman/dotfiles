@@ -1,0 +1,11 @@
+{
+	META = {
+		contextScope = {
+		    app = "Willow";
+		    host = "localhost.apple.com";
+		    user = "dziman";
+		};
+	};
+
+	cacheCentralEnabled = false;
+}

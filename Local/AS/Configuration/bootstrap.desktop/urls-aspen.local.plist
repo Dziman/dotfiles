@@ -127,4 +127,88 @@ PICKUP_PARAMETERS = {
             };
         };
 
+        fulfillmentMessage = {
+                url = "<PREFIX>/fulfillment-messages";
+                parameters = (
+                   "<PICKUP_PARAMETERS>",
+                    {
+                        name = partNumbers;
+                        type = List;
+                        form = parts;
+                    },
+                    {
+                        name = "postalCode";
+                        type = "String";
+                        form = "postalCode";
+                    },
+                    {
+                        name = "state";
+                        type = "String";
+                        form = "state";
+                    },
+                    {
+                        name = "district";
+                        type = "String";
+                        form = "district";
+                    },
+                    {
+                        name = "city";
+                        type = "String";
+                        form = "city";
+                    },
+                    {
+                        name = "gifting";
+                        type = "String";
+                        form = "gifting";
+                    },
+                    {
+                        name = geoLocated;
+                        type = String;
+                        form = geoLocated;
+                    },
+                    {
+                        name = disableIDL;
+                        type = Boolean;
+                        form = disableIDL;
+                        value = false;
+                    },
+                    {
+                        name = ft;
+                        type = String;
+                        form = ft;
+                    },
+                    {
+                        name = "messageType";
+                        type = "String";
+                        form = "mt";
+                    },
+                    {
+                        name = "messageTypes";
+                        type = "List";
+                        form = "mts";
+                    },
+                    {
+                        name = pl;
+                        type = Boolean;
+                        form = pl;
+                        value = false;
+                    },
+                    {
+                        // if provided as url param without searchNearby=true, tries to find a single store nearby where product is available
+                        name = filterTopAvailableStore;
+                        type = Boolean;
+                        form = fts;
+                    },
+                    "<OPTIONS>",
+                    "<CARRIER_POLICY_PRODUCT>",
+                    "<CARRIER_POLICY_TYPE>",
+                    "<PURCHASE_OPTION>",
+                );
+
+                dispatch = {
+                    controller = fulfillmentMessageController;
+                    method = getFulfillmentMessage;
+                };
+            };
+
 }

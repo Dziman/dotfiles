@@ -10,9 +10,15 @@
 		"secure+" = {
 		  clientAuthLevel = 1;
 		  secure = false;
+		  disabledHttpMethods = ();
 		};
 		"primary+" = {
 		  secure = false;
+		  disabledHttpMethods = ();
+		};
+		"admin+" = {
+		  secure = false;
+		  disabledHttpMethods = ();
 		};
 	};
 }
