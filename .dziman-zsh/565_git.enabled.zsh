@@ -93,13 +93,15 @@ function git-delete-branch() {
 
 function enable-forgit() {
   if [[ -o interactive ]]; then
-    if [[ -e ~/.dziman-zsh/forgit/forgit.plugin.zsh ]]; then
+    local brew_prefix=$(brew --prefix)
+    local forgit_zsh_plugin="${brew_prefix}/opt/forgit/share/forgit/forgit.plugin.zsh"
+
+    if [[ -e  $forgit_zsh_plugin ]]; then
       export FORGIT_LOG_FORMAT="%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s"
       export FORGIT_FZF_DEFAULT_OPTS="--reverse --preview-window bottom"
-      source ~/.dziman-zsh/forgit/forgit.plugin.zsh
+      source "$forgit_zsh_plugin"
     else
-      # TODO Add git clone?
-      echo "forgit not found. Clone from git://github.com/wfxr/forgit to ~/.dziman-zsh/forgit/"
+      echo "forgit not found. Please install it `brew install forgit`"
     fi
   fi
 }
