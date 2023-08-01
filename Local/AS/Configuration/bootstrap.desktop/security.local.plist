@@ -1,0 +1,20 @@
+{
+    META = {
+        contextScope = {
+            host = "localhost.apple.com";
+        };
+    };
+
+    enableClientAuthentication = true;
+
+    "serverKeyStore+" = {
+        alias = "localhost.apple.com";
+        password = "Apple123$%";
+        aliasSuffix = "-as-client";
+    };
+
+    "clientKeyStore+" = {
+        password = "Apple123$%";
+        aliasSuffix = "-as-client";
+    };
+}

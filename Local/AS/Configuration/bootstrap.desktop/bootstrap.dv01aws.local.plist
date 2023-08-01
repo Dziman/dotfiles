@@ -1,0 +1,12 @@
+{
+    META = {
+        contextScope = {
+	    host = "localhost.apple.com";
+            layer = "all.dev.integration.dv01aws";
+        };
+    };
+
+    "context+" = {
+        dc = "aws.us-east-1";
+    };
+}

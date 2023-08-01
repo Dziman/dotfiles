@@ -1,10 +1,11 @@
 {
-  META = {
-    contextScope = {
+    META = {
+        contextScope = {
+            host = "localhost.apple.com";
+        };
     };
-  };
 
-  enabled = "false";
+    enabled = "false";
 
-  marcomPriceEnabled = "false";
+    marcomPriceEnabled = "false";
 }

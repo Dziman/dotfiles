@@ -2,7 +2,7 @@
 
     META = {
         contextScope = {
-	    app = "/ASPEN|Willow/";
+	    host="localhost.apple.com";
         };
     };
 

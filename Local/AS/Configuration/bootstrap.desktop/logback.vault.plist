@@ -1,9 +1,8 @@
 {
-    META = { 
-		contextScope = {
-			app = "/.*/";
-			host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
-		};
+    META = {
+        contextScope = {
+            host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+        };
     };
 
     "com.apple.store.toolkit.config.secrets.vault.VaultSecretsResolver" = OFF;

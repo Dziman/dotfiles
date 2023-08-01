@@ -1,11 +1,11 @@
 {
 	META = {
 		contextScope = {
-		    app = "ASPEN";
 		    host = "localhost.apple.com";
 		    user = "dziman";
 		};
 	};
 
-	cacheCentralEnabled = false;
+    //	cacheCentralEnabled = false;
+    	cacheCentralEnabled = true;
 }

@@ -1,7 +1,6 @@
 {
 	META = {
 		contextScope = {
-			app = "/.*/";
 			host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
 		};
 	};
@@ -10,15 +9,18 @@
 		"secure+" = {
 		  clientAuthLevel = 1;
 		  secure = false;
-		  disabledHttpMethods = ();
+		    disabledHttpMethods = ();
+		    requiresAuth = false;
 		};
 		"primary+" = {
 		  secure = false;
 		  disabledHttpMethods = ();
+		    requiresAuth = false;
 		};
 		"admin+" = {
 		  secure = false;
 		  disabledHttpMethods = ();
+		    requiresAuth = false;
 		};
 	};
 }

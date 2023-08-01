@@ -2,7 +2,7 @@
     META = {
         contextScope = {
             app = "ASPEN";
-            user = "dziman";
+	    hot = "localhost.apple.com";
         };
     };
    
@@ -10,25 +10,24 @@
     enableLoadTemplatesFromContentService = false;
     templateCacheEnabled = false;
    
-//    templatePrefix = "/templates";
-    // Note that because of the templatePrefix above, the actual path would be $HOME/Local/AS/Data/templates
+    // Note that the actual path would be $HOME/Local/AS/Data/templates
     localTemplateDirectory = "/Users/dziman/Local/AS/Data/ASPEN";
     localSchemaDirectory = "/Users/dziman/Local/AS/Data/ASPEN";
-   //this change will let it pick templates from YOUR_WORKSPACE
-   //If you have templates in the classpath under WEB-INF then you can switch the order - I believe order matters that's why this setting works.
+
     templateStrategies = (
-    "com.apple.store.platform.mendocino.ui.strategy.FileSystemLoader",
-    "com.apple.store.platform.mendocino.ui.strategy.ClassPathLoader",
-    "com.apple.store.platform.mendocino.ui.strategy.ContentServiceLoader"
+	"com.apple.store.platform.mendocino.ui.strategy.FileSystemLoader",
+	"com.apple.store.platform.mendocino.ui.strategy.ClassPathLoader",
+	"com.apple.store.platform.mendocino.ui.strategy.ContentServiceLoader"
     );
+
     // Classes used by AggregateTemplateLoader. These must implement
     //  com.apple.store.template.core.api.TemplateLoader. To enable/disable them,
     //  set enableLoadTemplatesFromLocal, enableLoadTemplatesFromClasspath, and
     //  enableLoadTemplatesFromContentService.
     templateLoaders = (
-    "com.apple.store.app.content.template.ContextAwareFileTemplateLoader",
-    "com.apple.store.template.core.loaders.ClasspathTemplateLoader",
-    "com.apple.store.app.content.template.ContentTemplateLoader"
+	"com.apple.store.app.content.template.ContextAwareFileTemplateLoader",
+	"com.apple.store.template.core.loaders.ClasspathTemplateLoader",
+	"com.apple.store.app.content.template.ContentTemplateLoader"
     );
      
 }

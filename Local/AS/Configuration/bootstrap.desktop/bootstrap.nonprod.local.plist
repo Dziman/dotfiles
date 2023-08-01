@@ -1,0 +1,13 @@
+{
+    META = {
+        contextScope = {
+	    host = "localhost.apple.com";
+        };
+    };
+
+    "context+" = {
+        dc = "aws.us-west-2";
+    };
+
+    vault_cert_file_name = "storehackers_vault_client.jks";
+}
