@@ -9,4 +9,7 @@
     "context+" = {
         dc = "aws.us-east-1";
     };
+
+    vault_cert_file_name = "storehackers_vault_client.jks";
+    vault_team = "storehackers";
 }

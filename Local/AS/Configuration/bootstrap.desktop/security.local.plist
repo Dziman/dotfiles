@@ -7,6 +7,10 @@
 
     enableClientAuthentication = true;
 
+    "trustStore+" = {
+	password = "Apple123";
+    };
+
     "serverKeyStore+" = {
         alias = "localhost.apple.com";
         password = "Apple123$%";

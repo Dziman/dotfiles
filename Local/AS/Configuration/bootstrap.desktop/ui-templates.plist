@@ -2,7 +2,7 @@
     META = {
         contextScope = {
             app = "ASPEN";
-	    hot = "localhost.apple.com";
+	    host = "localhost.apple.com";
         };
     };
    

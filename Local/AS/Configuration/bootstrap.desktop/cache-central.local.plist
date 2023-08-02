@@ -1,11 +1,10 @@
 {
 	META = {
-		contextScope = {
-		    host = "localhost.apple.com";
-		    user = "dziman";
-		};
+	    contextScope = {
+		host = "localhost.apple.com";
+		user = "dziman"; // User scope is required as it seems some other config has priority if `host` only defined
+	    };
 	};
 
-    //	cacheCentralEnabled = false;
-    	cacheCentralEnabled = true;
+    	cacheCentralEnabled = false;
 }
