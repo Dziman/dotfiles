@@ -20,7 +20,7 @@ function fix-git-completion() {
   if [ -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git ]; then
     echo "git completion detected while better alternative exists"
     if command-exists gum; then
-      gum confirm "Do you wont delete it?" \
+      gum confirm "Do you want delete it?" \
           --selected.background "101" \
           --default=false --affirmative "Yes" \
           --negative "No" &&
