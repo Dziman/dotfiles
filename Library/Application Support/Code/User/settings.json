@@ -9,7 +9,6 @@
         }
     },
     "editor.cursorStyle": "block",
-    "editor.fontFamily": "FuraCode Nerd Font, Fira Code, Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 16,
     "editor.rulers": [
         120,
@@ -53,5 +52,7 @@
     },
     "[python]": {
         "editor.formatOnType": true
-    }
+    },
+    "lldb.suppressUpdateNotifications": true,
+    "editor.fontFamily": "JetBrainsMono Nerd Font Mono, Menlo, Monaco, 'Courier New', monospace"
 }
