@@ -1,11 +1,78 @@
 (custom-set-variables
  '(custom-safe-themes
-      '("84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))
-)
+   '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
+ '(package-selected-packages
+   '(rainbow-delimiters which-key smartparens smart-mode-line magit labburn-theme idle-highlight-mode helm-projectile editorconfig)))
+(custom-set-faces)
 
-;; Cask
-(require 'cask "$HOMEBREW_PREFIX/Cellar/cask/0.8.8/cask.el")
-(cask-initialize)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;  Install packages ;; TODO Move to separate file?
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'package)
+
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(dolist (package '(use-package))
+   (unless (package-installed-p package)
+       (package-install package)))
+
+(package-initialize)
+
+(use-package labburn-theme :ensure t)
+(use-package which-key :ensure t)
+(use-package bind-key :ensure t)
+(use-package expand-region :ensure t)
+(use-package smart-mode-line :ensure t)
+(use-package hl-todo :ensure t)
+(use-package undo-tree :ensure t)
+(use-package company :ensure t)
+(use-package editorconfig :ensure t)
+(use-package idle-highlight-mode :ensure t)
+(use-package smartparens :ensure t)
+(use-package rainbow-delimiters :ensure t)
+
+(use-package helm :ensure t)
+(use-package helm-swoop :ensure t)
+(use-package helm-projectile :ensure t)
+(use-package helm-company :ensure t)
+(use-package helm-mode-manager :ensure t) ;; TODO Add keybindings/hydra?
+
+(use-package projectile :ensure t)
+
+;; Git extended support TODO Revisit?
+(use-package magit :ensure t)
+
+;; TODO Revisit
+(use-package org-roam :ensure t)
+(use-package org-rainbow-tags :ensure t)
+
+;; TODO Revisit
+(use-package hydra :ensure t)
+
+;; Check buffer on the fly
+(use-package flycheck :ensure t) ;; TODO Setup checks for all(?) prog-modes
+(use-package flycheck-color-mode-line :ensure t)
+(use-package helm-flycheck :ensure t)
+(use-package flyspell-correct-helm :ensure t)
+
+;; Python related
+(use-package pyenv-mode :ensure t)
+(use-package python-mode :ensure t)
+(use-package company-anaconda :ensure t)
+(use-package flycheck-pycheckers :ensure t)
+
+;; Mostly programming related modes
+(use-package json-mode :ensure t)
+(use-package json-reformat :ensure t)
+(use-package markdown-mode :ensure t)
+(use-package yaml-mode :ensure t)
+(use-package gradle-mode :ensure t)
+(use-package dockerfile-mode :ensure t)
+(use-package terraform-mode :ensure t)
+(use-package company-terraform :ensure t)
+(use-package swift-mode :ensure t)
+(use-package kotlin-mode :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;  Global settings
@@ -14,7 +81,6 @@
 ;; change default shell to zsh
 (setq shell-file-name "zsh")
 
-;; Themes
 (load-theme 'labburn t)
 
 ;; Customize status line
@@ -38,23 +104,19 @@
 
 ;; Highlight TODOs
 (setq hl-todo-keyword-faces
-    '(
-         ("TODO" warning bold)
-         ("FIXME"  error bold)
-	     ("NOTE"  success bold)
-         )
-    )
+  '(
+     ("TODO" warning bold)
+     ("FIXME"  error bold)
+     ("NOTE"  success bold)
+   )
+)
 (add-hook 'prog-mode-hook 'hl-todo-mode)
 
 ;; rainbow parentheses
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-;; Show whitespaces in programming mode
-;; (add-hook 'prog-mode-hook 'whitespace-mode) ;; It is braking highlighting so disabled for now
-
 ;; Show line numbers
-(global-linum-mode 1)
-(setq linum-format "%4d \u2502 ")
+(global-display-line-numbers-mode 1)
 
 ;; helm
 (setq helm-ff-transformer-show-only-basename nil
@@ -115,12 +177,6 @@
 ;; Enable editorconfig
 (editorconfig-mode 1)
 
-;; Use helm for company
-(eval-after-load 'company
-  '(progn
-     (define-key company-mode-map (kbd "C-:") 'helm-company)
-     (define-key company-active-map (kbd "C-:") 'helm-company)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -129,20 +185,6 @@
 
 (setq magit-last-seen-setup-instructions "1.4.0")
 (magit-commit) ;; FIXME
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; TypeScript
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(add-hook 'typescript-mode-hook
-  (lambda ()
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (company-mode-on)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -190,7 +232,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;
-;;; ibuffer settings
+;;; ibuffer settings ;; TODO Revisit
 (setq ibuffer-saved-filter-groups
   (quote (
     ("default-dziman"
