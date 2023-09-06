@@ -1844,6 +1844,8 @@
 			<false/>
 			<key>Shortcut</key>
 			<string></string>
+			<key>Show Offscreen Command line</key>
+			<false/>
 			<key>Show Status Bar</key>
 			<true/>
 			<key>Silence Bell</key>
@@ -3546,6 +3548,8 @@
 			<string>kNextWindowPointerAction</string>
 		</dict>
 	</dict>
+	<key>ShowPaneTitles</key>
+	<true/>
 	<key>SoundForEsc</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
@@ -3566,6 +3570,8 @@
 	<false/>
 	<key>disableMetalWhenUnplugged</key>
 	<false/>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
