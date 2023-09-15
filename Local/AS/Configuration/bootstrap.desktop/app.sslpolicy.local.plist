@@ -1,7 +1,7 @@
 {
     META = {
         contextScope = {
-	    host = "localhost.apple.com";
+            host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
         };
     };
     // Override to file in ASWebToolkit - needed for external HTTPS

@@ -1,15 +1,9 @@
 {
     META = {
         contextScope = {
-            app = "ASPEN";
             host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
         };
     };
 
-    "STOREFRONT_HOST+" = {
-      "parameter+" = {
-        value = "dziman.apple.com";
-      };
-    };
-
+    versionedStaticResourcesEnabled = false;
 }
