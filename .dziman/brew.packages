@@ -1,3 +1,4 @@
+abseil
 autoconf
 aws-shell
 awscli
@@ -7,13 +8,16 @@ bdw-gc
 ca-certificates
 cairo
 cask
+cffi
 colordiff
 coreutils
 curlie
 docutils
 emacs
+exiftags
 fd
 fontconfig
+forgit
 freetype
 fzf
 gdbm
@@ -49,6 +53,7 @@ jless
 jo
 jpeg-turbo
 jq
+jsoncpp
 libarchive
 libb2
 libcbor
@@ -58,6 +63,7 @@ libfido2
 libidn
 libidn2
 libnghttp2
+libpaper
 libpng
 libpthread-stubs
 libpython-tabulate
@@ -90,7 +96,6 @@ nettle
 noti
 oniguruma
 openjdk
-openjdk@11
 openjdk@17
 openjpeg
 openssl@1.1
@@ -102,9 +107,12 @@ pixman
 pkg-config
 procs
 protobuf
+protobuf@21
 psutils
+pycparser
 pyenv
 pygments
+python-cryptography
 python-tabulate
 python@3.11
 readline
@@ -116,6 +124,7 @@ sqlite
 tealdeer
 tig
 tmux
+tree-sitter
 uchardet
 unbound
 utf8proc
