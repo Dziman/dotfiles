@@ -2,5 +2,5 @@
 	name = Dzmitry Rusak
 	email = drusak@apple.com
 [alias]
-	cd = checkout develop
 	cr = !sh -c 'git checkout release/20${1}-R0${2}' -
+	ror = !sh -c 'git rebase origin/release/20${1}-R0${2}' -

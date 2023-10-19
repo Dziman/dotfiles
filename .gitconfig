@@ -51,6 +51,8 @@
 	rc = rebase --continue
 	###
 
+    cd = checkout develop
+
 	# show commits where file was changed. Usage `git fh <file name>`
 	fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
 	# list conflicted files
