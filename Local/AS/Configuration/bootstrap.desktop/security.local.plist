@@ -7,16 +7,4 @@
 
     enableClientAuthentication = true;
 
-    "trustStore+" = {
-        password = "Apple123";
-    };
-
-    "serverKeyStore+" = {
-        password = "Apple123$%";
-    };
-
-    "clientKeyStore+" = {
-        alias = "dziman.apple.com-as-client";
-        password = "Apple123$%";
-    };
 }

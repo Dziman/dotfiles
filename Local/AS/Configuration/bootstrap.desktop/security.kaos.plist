@@ -1,0 +1,20 @@
+{
+    META = {
+      contextScope = {
+        host="/.*/";
+      };
+    };
+
+    "trustStore+" = {
+        password = "Apple123";
+    };
+    
+    "serverKeyStore+" = {
+      "alias" = "server";
+      "password" = "Apple123";
+    };
+    "clientKeyStore+" = {
+      "alias" = "client";
+      "password" = "Apple123";
+    };
+  }
