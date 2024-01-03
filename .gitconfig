@@ -59,8 +59,13 @@
 	show-conflicts = diff --name-only --diff-filter=U
 	# fetch with prune
 	fp = fetch --prune
+
+    ### stash related
 	# show changes in stash
 	st = !sh -c 'git stash show --patch stash@{${1:-0}}' -
+	# drop stash entry
+	std = !sh -c 'git stash drop stash@{${1:-0}}' -
+
 	### push related
 	# push to origin and track current branch
 	put = !sh -c 'git push ${1:-origin} --set-upstream ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
