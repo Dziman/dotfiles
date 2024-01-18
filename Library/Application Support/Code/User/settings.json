@@ -22,7 +22,6 @@
     "git.autofetch": false,
     "files.autoSave": "onFocusChange",
     "debug.inlineValues": true,
-    "workbench.activityBar.visible": true,
     "workbench.sideBar.location": "right",
     "gitlens.advanced.messages": {
         "suppressCommitHasNoPreviousCommitWarning": false,
