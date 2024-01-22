@@ -6,13 +6,13 @@
 
 function open-idea() {
     if [ -d "/Applications/IntelliJ IDEA 2023.x EAP.app" ]; then
-	open -na "IntelliJ IDEA 2023.x EAP.app" --args "$@"
+        open -na "IntelliJ IDEA 2024.x EAP.app" --args "$@"
     else
-	if [ -d "/Applications/IntelliJ IDEA.app" ]; then
-	    open -na "IntelliJ IDEA.app" --args "$@"
-	else
-	    echo "No installed IDEA found" && return 13
-	fi
+        if [ -d "/Applications/IntelliJ IDEA.app" ]; then
+            open -na "IntelliJ IDEA.app" --args "$@"
+        else
+            echo "No installed IDEA found" && return 13
+        fi
     fi
 }
 
