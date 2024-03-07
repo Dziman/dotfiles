@@ -63,6 +63,18 @@ function check-tags-config() {
   fi
 }
 
+function execute-git-in-dirs() {
+  local dirs_array_name=$1
+  shift
+
+  for directory in ${(P)${dirs_array_name}}; do
+    echo "$fg[green]--> Executing command in $(basename ${directory})$reset_color"
+
+    execute-git-command-in $directory $@ || break
+  done
+
+}
+
 function execute-git-command-in() {
     local directory=$1
     shift
