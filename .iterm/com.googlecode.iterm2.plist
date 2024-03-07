@@ -2698,6 +2698,10 @@
 	<integer>1</integer>
 	<key>TabStyleWithAutomaticOption</key>
 	<integer>6</integer>
+	<key>ToolbeltTools</key>
+	<array>
+		<string>Actions</string>
+	</array>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
 	<key>disableMetalInLowPowerMode</key>
