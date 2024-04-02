@@ -70,7 +70,7 @@ function execute-git-in-dirs() {
   for directory in ${(P)${dirs_array_name}}; do
     echo "$fg[green]--> Executing command in $(basename ${directory})$reset_color"
 
-    execute-git-command-in $directory $@ || break
+    execute-git-command-in $directory $@ || custom-show-confirmation "Error executing git command. Do you want proceed in other repos?" "Yes" "No" 2s true || break
   done
 
 }
