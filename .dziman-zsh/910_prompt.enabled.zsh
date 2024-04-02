@@ -221,5 +221,5 @@ if [[ -o interactive ]]; then
   PS1="$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)
 $icons[MULTILINE_LAST_PROMPT_PREFIX]%{$reset_color%}"
   PS2="%{$fg[red]%}%_%{$reset_color%}"
-  PROMPT3="%{$fg[red]%}Make your choice:%{reset_color%}"
+  PROMPT3="%{$fg[red]%}Make your choice:%{$reset_color%}"
 fi
