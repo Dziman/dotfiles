@@ -4,6 +4,6 @@
 # Customize ls colors using vivid util
 ################################################################################
 
-if [[ -o interactive ]] && which vivid &>/dev/null; then
+if [[ -o interactive ]] && command-exists vivid; then
   export LS_COLORS="$(vivid generate solarized-dark)"
 fi

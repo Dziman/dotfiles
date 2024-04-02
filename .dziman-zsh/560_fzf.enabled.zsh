@@ -1,14 +1,6 @@
-if [[ -o interactive ]] && which fzf &>/dev/null; then
+if [[ -o interactive ]] && command-exists fzf; then
 
-  FZF_FOLDER=$(which fzf | xargs greadlink -f | sed 's/\/bin\/fzf$//')
+  eval "$(fzf --zsh)"
 
-  # Auto-completion
-  # ---------------
-  source "$FZF_FOLDER/shell/completion.zsh" 2> /dev/null
-
-  # Key bindings
-  # ------------
-  source "$FZF_FOLDER/shell/key-bindings.zsh"
-
-fi
+ fi
 

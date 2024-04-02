@@ -5,12 +5,13 @@
 ################################################################################
 
 if [[ -o interactive ]]; then
-  if [[ -a ~/.dziman-zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    source ~/.dziman-zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+  local brew_prefix=$(brew --prefix)
+  local zsh_autos_script="${brew_prefix}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+  if [[ -a "${zsh_autos_script}" ]]; then
+    source "${zsh_autos_script}"
   else
-    # TODO Add git clone?
-    # git://github.com/zsh-users/zsh-autosuggestions
-    echo "zsh autosuggestions not found. Clone from git://github.com/zsh-users/zsh-autosuggestions to ~/.dziman-zsh/zsh-autosuggestions/"
+    echo "zsh-autosuggestions is not installed. Please install `brew install zsh-autosuggestions`"
   fi
 fi
 

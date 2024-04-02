@@ -10,30 +10,17 @@ alias gpom='git push origin master'
 alias gpod='git push origin develop'
 alias gca='git commit --all'
 
+brew_prefix=$(brew --prefix)
+
 function check-git-completion() {
-  if [ -f /opt/brew/share/zsh/site-functions/_git ]; then
+  if [ -f "${brew_prefix}/share/zsh/site-functions/_git" ]; then
     echo "$fg_bold[yellow]git completion detected while better alternative exists$reset_color"
   fi
 }
 
 function fix-git-completion() {
-  if [ -f /opt/brew/share/zsh/site-functions/_git ]; then
-    echo "git completion detected while better alternative exists"
-    PS3="Do you want delete it? "
-    answers=("Yes" "No")
-    select answer in "${answers[@]}"
-    do
-      case $answer in
-      "Yes")
-        rm /opt/brew/share/zsh/site-functions/_git
-        break
-        ;;
-      "No")
-        break
-        ;;
-      *) echo "Invalid selection";;
-      esac
-    done
+  if [ -f "${brew_prefix}/share/zsh/site-functions/_git" ]; then
+    custom-show-confirmation "git completion detected while better alternative exists. Do yo want to delete it?" "Yes" "No" && rm "${brew_prefix}/share/zsh/site-functions/_git"
   fi
 }
 
@@ -90,23 +77,24 @@ function git-delete-branch() {
     git push $remote :$branch
 
     if [[ "$branch" == "$current_branch" ]]; then
-	# TODO Use function param or get default branch??
-	git checkout develop || git checkout master
+      # TODO Use function param or get default branch??
+      git checkout develop || git checkout master
     fi
 
     git branch -D $branch
 }
 
-function enable-forgit() {
-    if [[ -o interactive ]]; then
-	if [[ -a ~/.dziman-zsh/forgit/forgit.plugin.zsh ]]; then
-	    export FORGIT_LOG_FORMAT="%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s"
-	    export FORGIT_FZF_DEFAULT_OPTS="--reverse --preview-window bottom"
-            source ~/.dziman-zsh/forgit/forgit.plugin.zsh
-	else
-	    # TODO Add git clone?
-	    echo "forgit not found. Clone from git://github.com/wfxr/forgit to ~/.dziman-zsh/forgit/"
-	fi
+function setup-forgit() {
+  if [[ -o interactive ]]; then
+    local forgit_script="${brew_prefix}/opt/forgit/share/forgit/forgit.plugin.zsh"
+      if [[ -a "$forgit_script" ]]; then
+        export FORGIT_LOG_FORMAT="%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s"
+        export FORGIT_FZF_DEFAULT_OPTS="--reverse --preview-window bottom"
+        source "$forgit_script"
+      else
+        # TODO Add git clone?
+        echo "forgit not found. To install run `brew install forgit`"
+      fi
     fi
 }
 
@@ -114,4 +102,4 @@ add-zsh-hook chpwd check-tags-config
 
 [[ -o interactive ]] && check-git-completion
 
-enable-forgit
+setup-forgit
