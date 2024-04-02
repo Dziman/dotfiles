@@ -8,9 +8,11 @@ bdw-gc
 ca-certificates
 cairo
 cask
+certifi
 cffi
 colordiff
 coreutils
+cryptography
 curlie
 docutils
 emacs
@@ -50,6 +52,7 @@ jbig2dec
 jenv
 jid
 jless
+jnv
 jo
 jpeg-turbo
 jq
@@ -60,6 +63,7 @@ libcbor
 libevent
 libffi
 libfido2
+libgit2
 libidn
 libidn2
 libnghttp2
@@ -67,6 +71,7 @@ libpaper
 libpng
 libpthread-stubs
 libpython-tabulate
+libssh2
 libtasn1
 libtiff
 libtool
@@ -112,9 +117,12 @@ psutils
 pycparser
 pyenv
 pygments
+python-certifi
 python-cryptography
+python-setuptools
 python-tabulate
 python@3.11
+python@3.12
 readline
 ripgrep
 rustup-init
