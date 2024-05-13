@@ -4,3 +4,9 @@
 [alias]
 	cr = !sh -c 'git checkout release/20${1}-R0${2}' -
 	ror = !sh -c 'git rebase origin/release/20${1}-R0${2}' -
+[gpg "x509"]
+	program = /usr/local/bin/ac-sign
+[gpg]
+	format = x509
+[commit]
+	gpgsign = true
