@@ -1745,6 +1745,16 @@
 					<key>regex</key>
 					<string>(?i:\: error\:)</string>
 				</dict>
+				<dict>
+					<key>action</key>
+					<string>HighlightTrigger</string>
+					<key>parameter</key>
+					<string>{p3#000000000000,#e9d619}</string>
+					<key>partial</key>
+					<true/>
+					<key>regex</key>
+					<string>(?i:Checkstyle violations by severity)</string>
+				</dict>
 			</array>
 			<key>Unlimited Scrollback</key>
 			<false/>
