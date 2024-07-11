@@ -3,6 +3,8 @@ storecontentdto
 store-product-foundation
 store-app-foundation-parent
 store-mvc-foundation-parent
+store-modules
 interop-store-parent
 aspen
 willow
+ash
