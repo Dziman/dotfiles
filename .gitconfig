@@ -1,135 +1,139 @@
 [user]
-	name = Dzmitry Rusak
-	email = dzmitry.rusak@gmail.com
+    name = Dzmitry Rusak
+    email = dzmitry.rusak@gmail.com
 [includeIf "gitdir:~/src/ta/"]
-	path = ~/.gitconfig-ta
+    path = ~/.gitconfig-ta
 [includeIf "gitdir:~/src/oss/"]
-	path = ~/.gitconfig-oss
+    path = ~/.gitconfig-oss
 [includeIf "gitdir:~/src/apple/"]
-	path = ~/.gitconfig-apple
+    path = ~/.gitconfig-apple
 [includeIf "gitdir:~/Local/AS/"]
-	path = ~/.gitconfig-apple
+    path = ~/.gitconfig-apple
 [color]
-	status = auto
-	branch = auto
-	ui = true
+    status = auto
+    branch = auto
+    ui = true
 [core]
-	editor = emacsclient -t
-	excludesfile = ~/.gitignore
-	autocrlf = input
+    editor = emacsclient -t
+    excludesfile = ~/.gitignore
+    autocrlf = input
 [alias]
-	# edit last commit message
-	ed = commit --amend
-	# show log in pretty view
-	lg = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit --no-merges
-	lgs = "!git lg -10"
-	lgl = "!git lg -30"
-	lgf = "!git lg --numstat"
-	lgsf = "!git lgs --numstat"
-	lglf = "!git lgl --numstat"
-	# show pretty log with author date additionally to commit date
-	lga = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08%Creset@%C(green)%ai%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit --no-merges
-	lgas = "!git lga -10"
-	lgal = "!git lga -30"
-	lgaf = "!git lga --numstat"
-	lgasf = "!git lgas --numstat"
-	lgalf = "!git lgal --numstat"
-	# show files changed in commit
-	df = !sh -c 'git diff-tree --no-commit-id --name-only -r ${1:-HEAD}'
+    # edit last commit message
+    ed = commit --amend
+    # show log in pretty view
+    lg = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit --no-merges
+    lgs = "!git lg -10"
+    lgl = "!git lg -30"
+    lgf = "!git lg --numstat"
+    lgsf = "!git lgs --numstat"
+    lglf = "!git lgl --numstat"
+    # show pretty log with author date additionally to commit date
+    lga = log --color --graph --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08%Creset@%C(green)%ai%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit --no-merges
+    lgas = "!git lga -10"
+    lgal = "!git lga -30"
+    lgaf = "!git lga --numstat"
+    lgasf = "!git lgas --numstat"
+    lgalf = "!git lgal --numstat"
+    # show files changed in commit
+    df = !sh -c 'git diff-tree --no-commit-id --name-only -r ${1:-HEAD}'
 
-	### rebase related
-        # interactive
-	ri = rebase --interactive
-	rih2 = rebase --interactive HEAD~2
-	rih3 = rebase --interactive HEAD~3
-	rih4 = rebase --interactive HEAD~4
-	rih5 = rebase --interactive HEAD~5
-	rih = !sh -c 'git rebase --interactive HEAD~${1:-3}' -
-	#
-	rom = rebase origin/master
-	rod = rebase origin/develop
-	rc = rebase --continue
-	###
+    ### rebase related
+    # interactive
+    ri = rebase --interactive
+    rih2 = rebase --interactive HEAD~2
+    rih3 = rebase --interactive HEAD~3
+    rih4 = rebase --interactive HEAD~4
+    rih5 = rebase --interactive HEAD~5
+    rih = !sh -c 'git rebase --interactive HEAD~${1:-3}' -
+    #
+    rom = rebase origin/master
+    rod = rebase origin/develop
+    #
+    rc = rebase --continue
+    ra = rebase --abort
+    ###
 
     cd = checkout develop
 
-	# show commits where file was changed. Usage `git fh <file name>`
-	fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
-	# list conflicted files
-	show-conflicts = diff --name-only --diff-filter=U
-	# fetch with prune
-	fp = fetch --prune
+    # show commits where file was changed. Usage `git fh <file name>`
+    fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
+    # list conflicted files
+    show-conflicts = diff --name-only --diff-filter=U
+    # shortcut for fetch
+    f = fetch
+    # fetch with prune
+    fp = fetch --prune
 
     ### stash related
-	# show changes in stash
-	st = !sh -c 'git stash show --patch stash@{${1:-0}}' -
-	# drop stash entry
-	std = !sh -c 'git stash drop stash@{${1:-0}}' -
+    # show changes in stash
+    st = !sh -c 'git stash show --patch stash@{${1:-0}}' -
+    # drop stash entry
+    std = !sh -c 'git stash drop stash@{${1:-0}}' -
 
-	### push related
-	# push to origin and track current branch
-	put = !sh -c 'git push ${1:-origin} --set-upstream ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
-	pushf = !sh -c 'git push --force ${1:-origin} ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
-	pushfo = !sh -c 'git pushf origin ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
-	###
+    ### push related
+    # push to origin and track current branch
+    put = !sh -c 'git push ${1:-origin} --set-upstream ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+    pushf = !sh -c 'git push --force ${1:-origin} ${2:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+    pushfo = !sh -c 'git pushf origin ${1:-$(git symbolic-ref --short HEAD 2>/dev/null)}' -
+    ###
 
-	# show N recent tags. By default N=10
-	recent-tags = !sh -c 'git tag --sort=-taggerdate | head -n ${1:-10}' -
-	configure-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --tags' -
-	configure-stop-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --no-tags' -
+    # show N recent tags. By default N=10
+    recent-tags = !sh -c 'git tag --sort=-taggerdate | head -n ${1:-10}' -
+    configure-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --tags' -
+    configure-stop-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --no-tags' -
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
 [pager]
-	diff = delta
-	log = delta
-	reflog = delta
-	show = delta
-	blame = delta
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+    blame = delta
 [delta]
-	side-by-side = false
-	commit-decoration-style = none
-	dark = true
-	file-added-label = [+]
-	file-copied-label = [C]
-	file-decoration-style = none
-	file-modified-label = [M]
-	file-removed-label = [-]
-	file-renamed-label = [R]
-	file-style = 232 bold 184
-	hunk-header-decoration-style = none
-	hunk-header-file-style = "#999999"
-	hunk-header-line-number-style = bold "#03a4ff"
-	hunk-header-style = file line-number syntax
-	line-numbers = true
-	line-numbers-left-style = black
-	line-numbers-minus-style = "#D77C9D"
-	line-numbers-plus-style = "#03a4ff"
-	line-numbers-right-style = black
-	line-numbers-zero-style = "#999999"
-	minus-emph-style = syntax bold "#780000"
-	minus-style = syntax "#706464"
-	plus-emph-style = syntax bold "#007800"
-	plus-style = syntax "#647064"
-	whitespace-error-style = "#280050" reverse
-	zero-style = syntax
-	syntax-theme = zenburn
-	max-line-length = 0
-	hyperlinks = true
-	blame-timestamp-output-format = "%Y-%m-%d %H:%M:%S %z"
-	blame-palette = "#4B6C5A #88816D #576F71"
+    side-by-side = false
+    commit-decoration-style = none
+    dark = true
+    file-added-label = [+]
+    file-copied-label = [C]
+    file-decoration-style = none
+    file-modified-label = [M]
+    file-removed-label = [-]
+    file-renamed-label = [R]
+    file-style = 232 bold 184
+    hunk-header-decoration-style = none
+    hunk-header-file-style = "#999999"
+    hunk-header-line-number-style = bold "#03a4ff"
+    hunk-header-style = file line-number syntax
+    line-numbers = true
+    line-numbers-left-style = black
+    line-numbers-minus-style = "#D77C9D"
+    line-numbers-plus-style = "#03a4ff"
+    line-numbers-right-style = black
+    line-numbers-zero-style = "#999999"
+    minus-emph-style = syntax bold "#780000"
+    minus-style = syntax "#706464"
+    plus-emph-style = syntax bold "#007800"
+    plus-style = syntax "#647064"
+    whitespace-error-style = "#280050" reverse
+    zero-style = syntax
+    syntax-theme = zenburn
+    max-line-length = 0
+    hyperlinks = true
+    blame-timestamp-output-format = "%Y-%m-%d %H:%M:%S %z"
+    blame-palette = "#4B6C5A #88816D #576F71"
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green
-	newHighlight = green 22
+    oldNormal = red bold
+    oldHighlight = red bold 52
+    newNormal = green
+    newHighlight = green 22
 [color "diff"]
-	meta = 227
-	frag = magenta bold
-	commit = 227 bold
-	old = red bold
-	new = green
-	whitespace = red reverse
+    meta = 227
+    frag = magenta bold
+    commit = 227 bold
+    old = red bold
+    new = green
+    whitespace = red reverse
 [pull]
-	rebase = true
+    rebase = true
 [init]
-	defaultBranch = develop
+    defaultBranch = develop
