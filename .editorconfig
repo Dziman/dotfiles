@@ -18,3 +18,6 @@ indent_size = 2
 
 [*.zsh]
 indent_size = 2
+
+[*.y?ml]
+indent_size = 2
