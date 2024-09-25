@@ -4,8 +4,14 @@
 # Java specific
 ################################################################################
 
-# jenv initialization
-if [[ -o interactive ]] && command-exists jenv; then eval "$(jenv init - zsh)"; fi
+if [[ -o interactive ]] then
+   # jenv initialization
+   if command-exists jenv; then eval "$(jenv init - zsh)"; fi
+
+   # init gradle completion. Temporary(?) workaround as putting it into $fpath has no effect
+   if [[ -e $HOMEBREW_PREFIX/share/zsh/site-functions/_gradle ]]; then source $HOMEBREW_PREFIX/share/zsh/site-functions/_gradle 1>&2 2>/dev/null; fi
+
+fi
 
 function refresh-jenv() {
   command-exists jenv || return 1
@@ -18,8 +24,7 @@ function refresh-jenv() {
     jenv remove $jenv_version > /dev/null
   done
 
-  local brew_prefix=$(brew --prefix)
-  local -a installed_openjdks=($(gls -d $brew_prefix/Cellar/openjdk*))
+  local -a installed_openjdks=($(gls -d $HOMEBREW_PREFIX/Cellar/openjdk*))
 
   for openjdk_root in $installed_openjdks; do
     local openjdk_version_dir=$(gls $openjdk_root | head -1)

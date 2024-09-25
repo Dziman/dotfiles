@@ -93,8 +93,7 @@ function git-delete-branch() {
 
 function enable-forgit() {
   if [[ -o interactive ]]; then
-    local brew_prefix=$(brew --prefix)
-    local forgit_zsh_plugin="${brew_prefix}/opt/forgit/share/forgit/forgit.plugin.zsh"
+    local forgit_zsh_plugin="${HOMEBREW_PREFIX}/opt/forgit/share/forgit/forgit.plugin.zsh"
 
     if [[ -e  $forgit_zsh_plugin ]]; then
       export FORGIT_LOG_FORMAT="%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s"
