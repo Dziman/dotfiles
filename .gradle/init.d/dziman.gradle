@@ -1,3 +1,67 @@
-gradle.ext.isSkipLocal = {
+gradle.ext.aosMeRootPath = "/Users/dziman/src/apple/aos-me" // TODO Remove hardcoding?
+
+gradle.ext.isSkipLocal = { project ->
     return java.util.Optional.ofNullable(System.getProperty("local.settings.skip")).map(Boolean::parseBoolean).orElse(false)
+}
+
+gradle.ext.printBanner = { project ->
+    if (!gradle.ext.isSkipLocal(project)) {
+        File bannerFile = new File(project.rootDir, "dziman-banner.txt")
+        if (bannerFile.exists()) {
+            def line
+            bannerFile.withReader { reader ->
+                while ((line = reader.readLine()) != null) {
+                    println(line)
+                }
+            }
+        }
+    }
+}
+
+gradle.ext.getModules = { currentModuleName ->
+    def readModulesFromFile = { modulesFilePath ->
+        File modulesFile = new File(modulesFilePath)
+        def line
+        def modulesName = []
+        modulesFile.withReader { reader ->
+            while ((line = reader.readLine()) != null) {
+                modulesName.add(line.trim())
+            }
+        }
+
+        return modulesName
+    }
+
+    def modules = readModulesFromFile("${gradle.ext.aosMeRootPath}/.modules")
+
+    if (modules.contains(currentModuleName)) {
+        return modules
+            .takeWhile { !it.endsWith(currentModuleName) }
+            .findAll { !it.startsWith("#") }
+    } else {
+        return []
+    }
+}
+
+gradle.ext.doLocalSetup = { settings ->
+    if (!gradle.ext.isSkipLocal(settings.rootProject)) {
+
+        def addProject = { projectId ->
+            settings.includeBuild("${gradle.ext.aosMeRootPath}/${projectId}")
+        }
+
+        gradle.ext.getModules(settings.rootProject.name.toLowerCase()).each { projectId ->
+            addProject(projectId)
+        }
+    }
+}
+
+beforeProject { project ->
+    gradle.ext.printBanner(project)
+}
+
+settingsEvaluated { settings ->
+    if (!gradle.ext.isSkipLocal(settings.rootProject)) {
+        gradle.ext.doLocalSetup(settings)
+    }
 }
