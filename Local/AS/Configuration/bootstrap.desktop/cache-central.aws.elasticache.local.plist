@@ -1,0 +1,43 @@
+{
+  META = {
+    contextScope = {
+      user = "dziman";
+      host = "/.*/";
+    };
+  };
+
+  "cacheCentralEnabled" =  false;
+
+  "elasticacheClusters" = {
+    "nonPciCluster+" = {
+      "clusterOptions" = {};
+      "nearCacheOptions" = "${this.commonNearCacheOptionsNonPciEc}";
+      "globalOptions+" = {
+        "authEnabled" = "true";
+        "authToken" = "q8d9d8d8s7";
+        "enableSSL" = "false";
+        clusterAddresses = ("redis://127.0.0.1:8000");
+      };
+    };
+    "pciCluster+" = {
+      "clusterOptions" = {};
+      "nearCacheOptions" = "${this.commonNearCacheOptionsPciEc}";
+      "globalOptions+" = {
+        "authEnabled" = "true";
+        "authToken" = "q8d9d8d8s7";
+        "enableSSL" = "false";
+        clusterAddresses = ("redis://127.0.0.1:8000");
+      };
+    };
+    "pageCacheCluster+" = {
+      "clusterOptions" = {};
+      "nearCacheOptions" = "${this.commonNearCacheOptionsPciEc}";
+      "globalOptions+" = {
+        "authEnabled" = "true";
+        "authToken" = "q8d9d8d8s7";
+        "enableSSL" = "false";
+        clusterAddresses = ("redis://127.0.0.1:8000");
+      };
+    };
+  };
+}
