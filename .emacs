@@ -49,6 +49,7 @@
 
 ;; Git extended support TODO Revisit?
 (use-package magit :ensure t)
+(use-package git-timemachine :ensure t)
 
 ;; TODO Revisit
 (use-package org-roam :ensure t)
@@ -188,12 +189,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-hook 'org-mode-hook
+    (lambda ()
+        (setq-local truncate-lines nil)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Git
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq magit-last-seen-setup-instructions "1.4.0")
-(magit-commit) ;; FIXME
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
