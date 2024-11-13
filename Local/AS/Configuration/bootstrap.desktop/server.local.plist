@@ -17,10 +17,7 @@
 		  disabledHttpMethods = ();
 		    requiresAuth = false;
 		};
-		"admin+" = {
-		  secure = false;
-		  disabledHttpMethods = ();
-		    requiresAuth = false;
-		};
+        "health-" ={};
+        "admin-" ={};
 	};
 }
