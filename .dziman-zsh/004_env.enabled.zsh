@@ -21,6 +21,9 @@ GREP_TOOL="grep"
 
 if command-exists rg; then
   GREP_TOOL="rg"
+
+  # ripgrep config file definition
+  export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 fi
 
 export GREP_TOOL
