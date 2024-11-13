@@ -12,6 +12,8 @@ export HOMEBREW_NO_AUTO_UPDATE="true"
 export HOMEBREW_NO_GITHUB_API="true"
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/.speedy/bin:$PATH"
+export PATH="$HOME/src/apple/aos-ado/dpe-extension/bin:$PATH"
+export PATH="$HOME/src/apple/aos-me/merch-scripts/bin:$PATH"
 
 export LSCOLORS=GxFxCxDxBxegedabagaced
 

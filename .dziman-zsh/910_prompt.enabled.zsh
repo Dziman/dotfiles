@@ -84,6 +84,7 @@ function left-prompt() {
 
 # TODO Use variables for colors
 function right-prompt() {
+  print-right-segment 10 103 "$(hydra-prompt-status)"
   print-right-segment 10 111 "$(jenv-status)"
   print-right-segment 10 103 "$(git-prompt-status)"
   print-right-prompt-end
@@ -97,6 +98,19 @@ function update-right-prompt() {
 function current-dir() {
   echo "%~"
 }
+
+################################################################################
+# hydra status information
+################################################################################
+function hydra-prompt-status() {
+  hydra info &>/dev/null
+  if [[ $? == 0 ]]; then
+    local base_branch=$(hydra info --base)
+    local feature_branch=$(hydra info --feature)
+    echo -n "${feature_branch} => ${base_branch}"
+  fi
+}
+################################################################################
 
 ################################################################################
 # Git status information
