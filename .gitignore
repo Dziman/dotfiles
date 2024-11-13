@@ -32,3 +32,4 @@ test-env/
 gradlew.bat
 #local gradle settings
 local-settings.gradle
+dziman-banner.txt
