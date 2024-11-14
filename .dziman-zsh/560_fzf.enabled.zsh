@@ -1,3 +1,8 @@
+#!/bin/zsh
+# Author: Dziman <dziman.by@gmail.com>
+################################################################################
+# fzf customizations
+################################################################################
 if [[ -o interactive ]] && command-exists fzf; then
 
   eval "$(fzf --zsh)"

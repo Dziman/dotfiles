@@ -1,3 +1,8 @@
+#!/bin/zsh
+# Author: Dziman <dziman.by@gmail.com>
+################################################################################
+# iTerm integration. Copy from iTerm's `Install shell integration` menu item
+################################################################################
 if [[ -o interactive ]]; then
   if [ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}""$TERM" != "tmux-256color" -a "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}""$TERM" != "screen" -a "${ITERM_SHELL_INTEGRATION_INSTALLED-}" = "" -a "$TERM" != linux -a "$TERM" != dumb ]; then
     ITERM_SHELL_INTEGRATION_INSTALLED=Yes

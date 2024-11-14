@@ -1,3 +1,8 @@
+#!/bin/zsh
+# Author: Dziman <dziman.by@gmail.com>
+################################################################################
+# `man` color scheme
+################################################################################
 if [ "$OSTYPE[0,7]" = "solaris" ]; then
   if [ ! -x ${HOME}/bin/nroff ]; then
     mkdir -p ${HOME}/bin
