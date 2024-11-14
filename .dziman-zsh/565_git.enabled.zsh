@@ -18,27 +18,8 @@ function check-git-completion() {
 
 function fix-git-completion() {
   if [ -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git ]; then
-    echo "git completion detected while better alternative exists"
-    if command-exists gum; then
-      gum confirm "Do you want delete it?" \
-          --selected.background "101" \
-          --default=false --affirmative "Yes" \
-          --negative "No" &&
-        rm $HOMEBREW_PREFIX/share/zsh/site-functions/_git
-    else
-      echo "Do you want delete it?"
-      answer=$(gum choose "Yes" "No")
-      select answer in "${answers[@]}"; do
-        case $answer in
-          "Yes")
-            rm $HOMEBREW_PREFIX/share/zsh/site-functions/_git
-            ;;
-          "No")
-            ;;
-          *) echo "Invalid selection" ;;
-        esac
-      done
-    fi
+    show-confirmation "git completion detected while better alternative exists. Do you want to delete it?" "Yes" "No" && \
+      rm $HOMEBREW_PREFIX/share/zsh/site-functions/_git
   fi
 }
 
