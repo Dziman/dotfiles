@@ -13,8 +13,8 @@ function command-exists() {
 # Show confirmation 'dialog'. In fancy way if `gum` installed otherwise use shell built-in selection
 function custom-show-confirmation() {
   local confirmation_question=$1
-  local confirm_option=$2
-  local cancel_option=$3
+  local confirm_option=${2:-Yes}
+  local cancel_option=${3:-No}
 
   if command-exists gum; then
     local -a gum_args=()

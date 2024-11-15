@@ -32,7 +32,7 @@ gradle.ext.getModules = { currentModuleName ->
         return modulesName
     }
 
-    def modules = readModulesFromFile("${gradle.ext.aosMeRootPath}/.modules")
+    def modules = readModulesFromFile("${gradle.ext.aosMeRootPath}/.modules-active")
 
     if (modules.contains(currentModuleName)) {
         return modules
