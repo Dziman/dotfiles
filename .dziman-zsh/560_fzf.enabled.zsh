@@ -15,6 +15,6 @@ if [[ -o interactive ]] && command-exists fzf; then
             --bind "enter:become(zsh -i -c 'edit +{2} {1}')"
     }
   fi
-  
+
 fi
 
