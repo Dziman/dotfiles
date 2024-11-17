@@ -23,7 +23,7 @@
 ;;;;;; Load configs. Ordiring is important
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'dz-config-emacs-generic)
-(require 'dz-config-appearance)
+(require 'dz-config-icons)
 (require 'dz-config-smart-mode-line)
 (require 'dz-config-prog-mode)
 (require 'dz-config-git)
@@ -36,4 +36,7 @@
 (require 'dz-config-prog-languages)
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
+(require 'dz-config-hydra)
+;;(require 'dz-config-spaceline)
+(require 'dz-config-appearance)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

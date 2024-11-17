@@ -8,6 +8,7 @@
 (use-package helm-org :ensure t)
 (use-package helm-org-ql :ensure t)
 (use-package helm-org-multi-wiki :ensure t)
+(use-package helm-mode-manager :ensure t)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"

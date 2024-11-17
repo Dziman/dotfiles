@@ -10,4 +10,6 @@
   (lambda ()
     (setq-local truncate-lines nil)))
 
+;; TODO Add avy bindings? https://github.com/abo-abo/avy
+
 (provide 'dz-config-org)
