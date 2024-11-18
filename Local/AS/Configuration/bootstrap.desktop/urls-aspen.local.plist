@@ -12,4 +12,60 @@
       };
     };
 
+    FOOTNOTES_SCOPE_PARAM = {
+        parameter = {
+            name = footnotesScope;
+            type = String;
+            form = fs;
+        };
+    };
+
+    footnotesDevPattern1 = {
+        url = "<PREFIX>/footnotes/1";
+        parameters = (
+            "<FOOTNOTES_SCOPE_PARAM>",
+            {
+                name = partNumbers;
+                type = CommaSeparatedList;
+                form = parts;
+            },
+        );
+        dispatch = {
+            controller = footnotesTestController;
+            method = getFootnotes1;
+        };
+    };
+
+    footnotesDevPattern2 = {
+        url = "<PREFIX>/footnotes/2";
+        parameters = (
+            "<FOOTNOTES_SCOPE_PARAM>",
+            {
+                name = partNumbers;
+                type = CommaSeparatedList;
+                form = parts;
+            },
+        );
+        dispatch = {
+            controller = footnotesTestController;
+            method = getFootnotes2;
+        };
+    };
+
+    footnotesDevPattern3 = {
+        url = "<PREFIX>/footnotes/3";
+        parameters = (
+            "<FOOTNOTES_SCOPE_PARAM>",
+            {
+                name = partNumbers;
+                type = CommaSeparatedList;
+                form = parts;
+            },
+        );
+        dispatch = {
+            controller = footnotesTestController;
+            method = getFootnotes3;
+        };
+    };
+
 }
