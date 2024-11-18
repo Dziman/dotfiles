@@ -22,4 +22,6 @@
 (set-face-background 'git-gutter:added "#7DCF96")
 (set-face-background 'git-gutter:deleted "#CE7666")
 
+;; TODO Add 'resolve conflicts' hydra? https://github.com/alphapapa/unpackaged.el?tab=readme-ov-file#smerge-mode
+
 (provide 'dz-config-git)
