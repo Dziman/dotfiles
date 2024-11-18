@@ -40,6 +40,5 @@
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
 (require 'dz-config-hydra)
-;;(require 'dz-config-spaceline)
 (require 'dz-config-appearance)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
