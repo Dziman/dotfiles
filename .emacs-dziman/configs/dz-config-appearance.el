@@ -12,4 +12,6 @@
 
 (set-face-attribute 'mode-line nil :background "#5F5F5F")
 
+(set-face-attribute 'sml/modes nil :foreground "#3CB371" :weight 'bold)
+
 (provide 'dz-config-appearance)
