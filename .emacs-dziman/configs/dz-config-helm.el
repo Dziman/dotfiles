@@ -55,4 +55,7 @@
 (bind-key "C-x M-i" 'helm-multi-swoop-all)
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 
+;;(setq helm-source-buffers-list '(helm-bufler-source))
+;;(helm :sources '(helm-bufler-source))
+
 (provide 'dz-config-helm)

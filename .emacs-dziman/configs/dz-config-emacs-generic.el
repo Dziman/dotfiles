@@ -10,6 +10,8 @@
 (use-package bind-map :ensure t)
 (use-package move-text :ensure t)
 (use-package diminish :ensure t)
+(use-package bufler :ensure t)
+;; (use-package helm-bufler :ensure t) ;; TODO Learn/configure
 
 ;; Highlight word under caret
 (define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode 1)))
@@ -62,6 +64,9 @@
 (bind-key "C-c j l" 'avy-goto-line)
 
 (move-text-default-bindings)
+
+;; TODO Learn how to use workspaces https://github.com/alphapapa/bufler.el?tab=readme-ov-file
+;; (bufler-workspace-mode t)
 
 ;; TODO Move to line start/end enhancments: https://d12frosted.io/posts/2020-06-04-beginning-of-line.html and/or https://github.com/alezost/mwim.el
 
