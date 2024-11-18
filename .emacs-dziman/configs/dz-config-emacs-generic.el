@@ -50,6 +50,7 @@
 ;; Help to learn keys
 (which-key-mode)
 (which-key-setup-side-window-bottom)
+(setq which-key-compute-remaps t)
 
 (bind-key "C-c e" 'er/expand-region)
 ;; Duplicate current line
