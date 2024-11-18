@@ -2,7 +2,6 @@
 ;;;;;; Generic packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package which-key :ensure t)
-(use-package undo-tree :ensure t)
 (use-package bind-key :ensure t)
 (use-package expand-region :ensure t)
 (use-package editorconfig :ensure t)
@@ -36,6 +35,7 @@
 
 ;; Undo tree
 (setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
+(use-package undo-tree :ensure t)
 (global-undo-tree-mode)
 (bind-key "C-x u" 'undo-tree-undo)
 (bind-key "C-x C-u" 'undo-tree-visualize)
