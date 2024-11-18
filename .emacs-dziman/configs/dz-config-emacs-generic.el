@@ -63,4 +63,6 @@
 
 (move-text-default-bindings)
 
+;; TODO Move to line start/end enhancments: https://d12frosted.io/posts/2020-06-04-beginning-of-line.html and/or https://github.com/alezost/mwim.el
+
 (provide 'dz-config-emacs-generic)

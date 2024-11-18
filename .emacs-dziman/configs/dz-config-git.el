@@ -5,6 +5,10 @@
 (use-package git-timemachine :ensure t)
 (use-package git-modes :ensure t)
 (use-package git-gutter :ensure t)
+(use-package magit-todos
+  :ensure t
+  :after magit
+  :config (magit-todos-mode 1)) ;; Revisit: it looks broken
 
 (setq magit-last-seen-setup-instructions "1.4.0")
 

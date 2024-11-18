@@ -148,7 +148,7 @@
 (bind-map dz-hydra-map
   :keys ("C-.")
   :bindings (
-              "m" 'major-mode-hydra ;; TODO Revisit binding?
+              "h" 'major-mode-hydra ;; TODO Revisit binding?
               "w" 'dz-window/body
               "t" 'dz-toggles/body
               "j" 'dz-jump-to/body
