@@ -7,7 +7,7 @@
 (use-package helm-mode-manager :ensure t) ;; TODO Add keybindings/hydra?
 (use-package helm-org :ensure t)
 (use-package helm-org-ql :ensure t)
-(use-package helm-org-multi-wiki :ensure t)
+(use-package helm-roam :ensure t)
 (use-package helm-mode-manager :ensure t)
 
 (setq helm-ff-transformer-show-only-basename nil

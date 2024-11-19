@@ -2,7 +2,9 @@
 ;;;;;; org packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package org-super-agenda :ensure t)
+(use-package org-roam :ensure t)
 (use-package org-ql :ensure t) ;; TODO Learn https://github.com/alphapapa/org-ql
+(use-package org-roam-ql-ql :ensure t)
 (use-package org-rainbow-tags :ensure t)
 (use-package org-sticky-header :ensure t)
 (use-package org-super-agenda :ensure t)
@@ -40,5 +42,10 @@
                      :order 1)))
 
 ;; TODO Add avy bindings? https://github.com/abo-abo/avy
+
+(setq org-roam-directory "~/wiki")
+(setq org-roam-db-location
+      (concat org-roam-directory "/.org-roam/org-roam-sqlite-database.db"))
+(org-roam-db-autosync-mode)
 
 (provide 'dz-config-org)
