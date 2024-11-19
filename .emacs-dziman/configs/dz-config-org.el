@@ -10,11 +10,18 @@
 
 (add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
 
-;; FIXME Remove path hardcoding
-;; TODO Automatically reload on new file created/deleted
-;; Original source: https://stackoverflow.com/questions/11384516/how-to-make-all-org-files-under-a-folder-added-in-agenda-list-automatically
-;; Could cause performance issues for agenda view. Check https://github.com/nicolas-graves/org-agenda-files-track as potential solution
-(setq org-agenda-files (directory-files-recursively "~/src/idr/kb" "\\.org$"))
+(defun dz-refresh-agenda-files ()
+  (interactive)
+  ;; FIXME Remove path hardcoding
+  ;; TODO Automatically reload on new file created/deleted
+  ;; TODO Exclude temp files
+  ;; Original source: https://stackoverflow.com/questions/11384516/how-to-make-all-org-files-under-a-folder-added-in-agenda-list-automatically
+  ;; Could cause performance issues for agenda view. Check https://github.com/nicolas-graves/org-agenda-files-track as potential solution
+  (setq org-agenda-files (directory-files-recursively "~/src/idr/kb" "\\.org$"))
+  )
+
+(dz-refresh-agenda-files)
+(bind-key "C-c a r" 'dz-refresh-agenda-files)
 
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
