@@ -39,6 +39,12 @@
 (global-undo-tree-mode)
 (bind-key "C-x u" 'undo-tree-undo)
 (bind-key "C-x C-u" 'undo-tree-visualize)
+;; Prevent undo tree files from polluting all dirs
+(setq undo-tree-history-directory-alist '(("." . ".emacs~/undo")))
+;; Put emacs backup files into one hidden dir in current dir
+(setq backup-directory-alist '(("." . ".emacs~")))
+;; Кеep autosave files in temp directory
+(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
 ;; Use spaces for indent
 (setq indent-tabs-mode nil)
