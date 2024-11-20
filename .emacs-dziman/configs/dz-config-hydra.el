@@ -159,6 +159,15 @@
 
 (setq major-mode-hydra-invisible-quit-key "q")
 
+(major-mode-hydra-define org-mode
+  (:color amaranth)
+  ("View"
+    (
+      ("l" org-toggle-link-display "toggle link view" :toggle t)
+      )
+    )
+  )
+
 (bind-map dz-hydra-map
   :keys ("C-.")
   :bindings (
