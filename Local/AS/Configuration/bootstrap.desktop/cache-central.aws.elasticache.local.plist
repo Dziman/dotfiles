@@ -1,12 +1,9 @@
 {
   META = {
-    contextScope = {
-      user = "dziman";
-      host = "/.*/";
+      contextScope = {
+          host = "localhost.apple.com";
     };
   };
-
-  "cacheCentralEnabled" = true;
 
   "elasticacheClusters" = {
     "nonPciCluster+" = {
