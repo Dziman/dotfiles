@@ -143,7 +143,7 @@
       ("S" git-gutter:set-start-revision "set start revision")
       )
     )
-    )
+  )
 
 (setq major-mode-hydra-title-generator
   '(lambda (mode)

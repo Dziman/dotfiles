@@ -41,7 +41,9 @@
 
 (defun dz-remove-trailing-whitespace()
   (when (derived-mode-p 'prog-mode)
-    (delete-trailing-whitespace)))
+    (delete-trailing-whitespace)
+    )
+  )
 
 ;; highlight indentation level
 ;; (add-hook 'prog-mode-hook 'highlight-indentation-mode)

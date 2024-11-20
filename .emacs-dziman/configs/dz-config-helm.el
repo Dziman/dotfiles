@@ -10,19 +10,20 @@
 (use-package helm-roam :ensure t)
 (use-package helm-mode-manager :ensure t)
 
-(setq helm-ff-transformer-show-only-basename nil
-      helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
-      helm-yank-symbol-first                 t
-      helm-move-to-line-cycle-in-source      t
-      helm-buffers-fuzzy-matching            t
-      helm-recentf-fuzzy-match               t
-      helm-M-x-fuzzy-match                   t
-      helm-semantic-fuzzy-match              t
-      helm-ff-auto-update-initial-value      t
-      helm-split-window-in-side-p            t
-      helm-autoresize-min-height             25
-      helm-autoresize-max-height             25
-      )
+(setq
+  helm-ff-transformer-show-only-basename nil
+  helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
+  helm-yank-symbol-first                 t
+  helm-move-to-line-cycle-in-source      t
+  helm-buffers-fuzzy-matching            t
+  helm-recentf-fuzzy-match               t
+  helm-M-x-fuzzy-match                   t
+  helm-semantic-fuzzy-match              t
+  helm-ff-auto-update-initial-value      t
+  helm-split-window-in-side-p            t
+  helm-autoresize-min-height             25
+  helm-autoresize-max-height             25
+  )
 (helm-mode 1)
 (helm-autoresize-mode 1)
 (setq helm-ff-skip-boring-files t)
