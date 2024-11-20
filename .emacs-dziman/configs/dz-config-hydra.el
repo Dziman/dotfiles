@@ -143,6 +143,29 @@
       ("S" git-gutter:set-start-revision "set start revision")
       )
     )
+    )
+
+(setq major-mode-hydra-title-generator
+  '(lambda (mode)
+     (s-concat "\n"
+       (s-repeat 10 " ")
+       (all-the-icons-icon-for-mode mode :v-adjust 0.05)
+       " "
+       (symbol-name mode)
+       " commands"
+       )
+     )
+   )
+
+(setq major-mode-hydra-invisible-quit-key "q")
+
+(major-mode-hydra-define org-mode
+  (:color amaranth)
+  ("View"
+    (
+      ("l" org-toggle-link-display "toggle link view" :toggle t)
+      )
+    )
   )
 
 (bind-map dz-hydra-map
