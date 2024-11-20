@@ -145,6 +145,20 @@
     )
   )
 
+(setq major-mode-hydra-title-generator
+  '(lambda (mode)
+     (s-concat "\n"
+       (s-repeat 10 " ")
+       (all-the-icons-icon-for-mode mode :v-adjust 0.05)
+       " "
+       (symbol-name mode)
+       " commands"
+       )
+     )
+  )
+
+(setq major-mode-hydra-invisible-quit-key "q")
+
 (bind-map dz-hydra-map
   :keys ("C-.")
   :bindings (
