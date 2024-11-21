@@ -9,6 +9,7 @@
 (use-package helm-org-ql :ensure t)
 (use-package helm-roam :ensure t)
 (use-package helm-mode-manager :ensure t)
+(use-package helm-bufler :ensure t)
 
 (setq
   helm-ff-transformer-show-only-basename nil
@@ -23,6 +24,9 @@
   helm-split-window-in-side-p            t
   helm-autoresize-min-height             25
   helm-autoresize-max-height             25
+  helm-buffer-max-length                 120
+  helm-buffers-column-separator          "  "
+  helm-buffers-end-truncated-string      " ~~>"
   )
 (helm-mode 1)
 (helm-autoresize-mode 1)
@@ -36,6 +40,7 @@
 (add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
 (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags . helm-org-completing-read-tags))
 
+;; TODO Revisit keybindings
 (bind-key "M-x" 'helm-M-x)
 ;; This is old M-x
 (bind-key "C-c C-c M-x" 'execute-extended-command)
@@ -56,7 +61,13 @@
 (bind-key "C-x M-i" 'helm-multi-swoop-all)
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 
-;;(setq helm-source-buffers-list '(helm-bufler-source))
-;;(helm :sources '(helm-bufler-source))
+(setq helm-mini-default-sources
+  '(
+     helm-bufler-source
+;;     helm-source-buffers-list
+     helm-source-recentf
+     helm-source-buffer-not-found
+     )
+  )
 
 (provide 'dz-config-helm)
