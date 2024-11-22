@@ -9,6 +9,7 @@
 (use-package helm-org-ql :ensure t)
 (use-package helm-roam :ensure t)
 (use-package helm-mode-manager :ensure t)
+(use-package helm-bufler :ensure t)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
@@ -22,6 +23,9 @@
       helm-split-window-in-side-p            t
       helm-autoresize-min-height             25
       helm-autoresize-max-height             25
+      helm-buffer-max-length                 120
+      helm-buffers-column-separator          "  "
+      helm-buffers-end-truncated-string      " ~~>"
       )
 (helm-mode 1)
 (helm-autoresize-mode 1)
@@ -57,5 +61,13 @@
 
 ;;(setq helm-source-buffers-list '(helm-bufler-source))
 ;;(helm :sources '(helm-bufler-source))
+(setq helm-mini-default-sources
+  '(
+     helm-bufler-source
+     ;; helm-source-buffers-list ;; Standard value
+     helm-source-recentf
+     ;; helm-source-buffer-not-found ;; Standard value
+     )
+  )
 
 (provide 'dz-config-helm)
