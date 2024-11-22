@@ -27,6 +27,8 @@
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
 
+(setq org-descriptive-links nil) ;; Show raw link markup by default
+
 ;; TODO Customize https://github.com/alphapapa/org-super-agenda
 (add-hook 'org-mode-hook 'org-super-agenda-mode)
 (setq org-super-agenda-groups
