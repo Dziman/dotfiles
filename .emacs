@@ -1,8 +1,7 @@
 (let ((file-name-handler-alist nil)) ;; lefihack to speed up init. See https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
 
-(setq gc-cons-threshold (* 512 1024 1024)) ;; set memory 'limit' to 256Mb to reduce number of GC calls
+(setq gc-cons-threshold (* 128 1024 1024)) ;; set memory 'limit' to 128Mb to reduce number of GC calls
 
-;; TODO Review modi config for ideas/scripts https://github.com/kaushalmodi/.emacs.d
 ;;;;;; Use separate file for `custom` to keep config cleaner
 (setq custom-file "~/.emacs-dziman/custom.el")
 (load custom-file :noerror :nomessage)
