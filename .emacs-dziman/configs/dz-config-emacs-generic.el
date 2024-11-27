@@ -68,7 +68,7 @@
 ;; jump to key bindings
 (bind-key "C-c j n" 'goto-line)
 (bind-key "C-c j c" 'avy-goto-char-timer)
-(bind-key "C-c j w" 'avy-goto-word-1)
+(bind-key "C-c j W" 'avy-goto-word-1)
 (bind-key "C-c j l" 'avy-goto-line)
 
 (move-text-default-bindings)

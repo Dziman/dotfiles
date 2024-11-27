@@ -88,18 +88,12 @@
       ("n" goto-line "line number")
       )
 
-    "Ace jump"
-    (
-      ("C" ace-jump-char-mode "char")
-      ("W" ace-jump-word-mode "word")
-      ("L" ace-jump-line-mode "line")
-      )
-
-    "avy"
+    "avy, ace"
     (
       ("c" avy-goto-char-timer "char")
-      ("w" avy-goto-word-1 "word")
+      ("W" avy-goto-word-1 "word")
       ("l" avy-goto-line "line")
+      ("w" ace-window "window")
       )
     )
   )

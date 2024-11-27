@@ -2,12 +2,19 @@
 ;;;;;; ace packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package ace-window :ensure t)
-(use-package ace-jump-helm-line :ensure t) ;; TODO Learn/config https://github.com/cute-jumper/ace-jump-helm-line?tab=readme-ov-file
-(use-package ace-jump-mode :ensure t) ;; TODO Learn/config https://github.com/winterTTr/ace-jump-mode
 
 (setq aw-scope 'frame)
 
-(bind-key "M-o" 'ace-window)
-;; TODO Customize ace-window action bindings: https://github.com/abo-abo/ace-window
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
+(bind-key "C-c j w" 'ace-window)
+
+(bind-key "C-c w j" 'ace-window)
+(bind-key "C-c w k" 'aw-delete-window)
+(bind-key "C-c w s" 'aw-swap-window)
+(bind-key "C-c w m" 'aw-move-window)
+(bind-key "C-c w v" 'aw-split-window-vert)
+(bind-key "C-c w h" 'aw-split-window-horz)
+(bind-key "C-c w o" 'delete-other-windows)
 
 (provide 'dz-config-ace)
