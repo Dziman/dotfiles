@@ -21,7 +21,7 @@
   (setq org-agenda-files (directory-files-recursively "~/wiki" "\\.org$"))
   )
 
-(dz-refresh-agenda-files)
+(add-hook 'org-mode-hook 'dz-refresh-agenda-files)
 (bind-key "C-c a r" 'dz-refresh-agenda-files)
 
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
@@ -46,8 +46,7 @@
 ;; TODO Add avy bindings? https://github.com/abo-abo/avy
 
 (setq org-roam-directory "~/wiki")
-(setq org-roam-db-location
-      (concat org-roam-directory "/.org-roam/org-roam-sqlite-database.db"))
-(org-roam-db-autosync-mode)
+(setq org-roam-db-location (concat org-roam-directory "/.org-roam/org-roam-sqlite-database.db"))
+(add-hook 'org-mode-hook 'org-roam-db-autosync-mode)
 
 (provide 'dz-config-org)

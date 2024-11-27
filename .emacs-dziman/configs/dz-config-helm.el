@@ -9,7 +9,7 @@
 (use-package helm-org-ql :ensure t)
 (use-package helm-roam :ensure t)
 (use-package helm-mode-manager :ensure t)
-(use-package helm-bufler :ensure t)
+;; (use-package helm-bufler :ensure t)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
@@ -43,7 +43,7 @@
 ;; This is old M-x
 (bind-key "C-c C-c M-x" 'execute-extended-command)
 (bind-key "C-x b" 'helm-mini)
-(bind-key "C-x C-b" 'helm-buffers-list)
+(bind-key "C-x C-b" 'bufler-switch-buffer)
 (bind-key "C-x C-f" 'helm-find-files)
 (bind-key "C-x C-r" 'helm-recentf)
 (bind-key "C-x r l" 'helm-filtered-bookmarks)
@@ -58,16 +58,5 @@
 (bind-key "M-s /" 'helm-multi-swoop)
 (bind-key "C-x M-i" 'helm-multi-swoop-all)
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-
-;;(setq helm-source-buffers-list '(helm-bufler-source))
-;;(helm :sources '(helm-bufler-source))
-(setq helm-mini-default-sources
-  '(
-     helm-bufler-source
-     ;; helm-source-buffers-list ;; Standard value
-     helm-source-recentf
-     ;; helm-source-buffer-not-found ;; Standard value
-     )
-  )
 
 (provide 'dz-config-helm)

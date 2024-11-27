@@ -1,12 +1,14 @@
+(setq gc-cons-threshold (* 512 1024 1024)) ;; set memory 'limit' to 256Mb to reduce number of GC calls
+
 ;; TODO Review modi config for ideas/scripts https://github.com/kaushalmodi/.emacs.d
 ;;;;;; Use separate file for `custom` to keep config cleaner
 (setq custom-file "~/.emacs-dziman/custom.el")
-(load custom-file 'noerror)
+(load custom-file :noerror :nomessage)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Setup `package` to install automatically
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (setq use-package-always-defer t) ;; Lazy load for packages. Causing some errors on init but it seems it doesn't provide any startup time reduction
+(setq use-package-always-defer t) ;; Lazy load for packages. Causing some errors on init but it seems it doesn't provide any startup time reduction
 ;; (setq use-package-compute-statistics t) ;; Collect init statistics. Check by run `M-x use-package-report`
 (require 'package)
 
