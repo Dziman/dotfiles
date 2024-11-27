@@ -4,7 +4,7 @@
 (use-package helm :ensure t)
 (use-package helm-swoop :ensure t)
 (use-package helm-company :ensure t)
-(use-package helm-mode-manager :ensure t) ;; TODO Add keybindings/hydra?
+(use-package helm-mode-manager :ensure t)
 (use-package helm-org :ensure t)
 (use-package helm-org-ql :ensure t)
 (use-package helm-roam :ensure t)
