@@ -98,24 +98,6 @@
     )
   )
 
-(defvar dz-dumb-jump-to--title (with-faicon "forward" "Jump to definition" 1 -0.05))
-
-(pretty-hydra-define dz-dumb-jump-to
-  (:color amaranth :quit-key "q" :title dz-dumb-jump-to--title)
-  (
-    "Dumb Jump"
-    (
-      ("j" dumb-jump-go "Go")
-      ("o" dumb-jump-go-other-window "Other window")
-      ("e" dumb-jump-go-prefer-external "Go external")
-      ("x" dumb-jump-go-prefer-external-other-window "Go external other window")
-      ("i" dumb-jump-go-prompt "Prompt")
-      ("l" dumb-jump-quick-look "Quick look")
-      ("b" dumb-jump-back "Back")
-      )
-    )
-  )
-
 (defvar dz-git-gator--title (with-faicon "git" "Git gator actions" 1 -0.05))
 
 (pretty-hydra-define dz-git-gator
@@ -169,7 +151,6 @@
               "w" 'dz-window/body
               "t" 'dz-toggles/body
               "j" 'dz-jump-to/body
-              "d" 'dz-dumb-jump-to/body ;; TODO Do I really need hydra for that?
               "g" 'dz-git-gator/body
               )
   )

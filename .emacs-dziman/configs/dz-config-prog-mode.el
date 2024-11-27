@@ -5,7 +5,6 @@
 (use-package rainbow-delimiters :ensure t)
 (use-package rainbow-mode :ensure t)
 (use-package smartparens :ensure t)
-(use-package dumb-jump :ensure t)
 (use-package hungry-delete :ensure t)
 (use-package highlight-parentheses :ensure t)
 (use-package whitespace-cleanup-mode :ensure t) ;; TODO Revisit: see no effect
@@ -28,9 +27,6 @@
 
 ;; Autoclose parentheses
 (smartparens-global-mode 1)
-
-(setq dumb-jump-force-searcher 'rg)
-(setq dumb-jump-selector 'helm)
 
 (add-hook 'prog-mode-hook 'hungry-delete-mode)
 (setq hungry-delete-join-reluctantly t)
