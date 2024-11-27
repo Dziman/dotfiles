@@ -223,10 +223,6 @@ if [[ -o interactive ]]; then
   if [ -f $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
     source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   fi
-  # TODO Revisit fast syntax highlight later: at the moment it adds some delays in shell (for example when type `man date` there are delays after `man` typed and after `da` typed)
-  #    if [ -f $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]; then
-  #        source $HOMEBREW_PREFIX/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-  #    fi
   ################################################################################
 
   add-zsh-hook precmd update-right-prompt

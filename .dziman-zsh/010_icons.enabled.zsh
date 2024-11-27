@@ -4,7 +4,7 @@
 # Font symbols for easy use
 ################################################################################
 typeset -gAH icons
-icons=( # TODO Rename and remove unused
+icons=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -72,7 +72,7 @@ icons=( # TODO Rename and remove unused
 
       ################# Added #################
       LAPTOP_ICON                    $'\uF109'              # 
-      AWS_ICON                       $'\uF375'              # 
+      AWS_ICON                       $'\uE7AD'              # 
       CLOUD_ICON                     $'\uF0C2'              # 
       BADGE_ICON                     $'\uF2C1'              # 
     )
