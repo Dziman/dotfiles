@@ -9,12 +9,32 @@
 
 (bind-key "C-c j w" 'ace-window)
 
-(bind-key "C-c w j" 'ace-window)
-(bind-key "C-c w k" 'aw-delete-window)
-(bind-key "C-c w s" 'aw-swap-window)
-(bind-key "C-c w m" 'aw-move-window)
-(bind-key "C-c w v" 'aw-split-window-vert)
-(bind-key "C-c w h" 'aw-split-window-horz)
-(bind-key "C-c w o" 'delete-other-windows)
+(bind-map dz-window-map
+  :keys ("C-c w")
+  :bindings (
+              "j" 'ace-select-window
+              "k" 'ace-delete-window
+              "s" 'ace-swap-window
+              "m" 'ace-delete-other-windows
+              "f" 'delete-other-windows
+              "b" 'split-window-right
+              "v" 'split-window-below
+              )
+  )
+
+(pretty-hydra-define+ dz-window
+  nil
+  (
+    "Ace window"
+    (
+      ("j" ace-select-window "jump")
+      ("k" ace-delete-window "kill")
+      ("s" ace-swap-window "swap")
+      ("m" ace-delete-other-windows "maximize")
+      ("f" delete-other-windows "maximize current")
+      )
+    )
+  )
+
 
 (provide 'dz-config-ace)

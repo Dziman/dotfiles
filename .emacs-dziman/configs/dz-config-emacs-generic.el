@@ -73,6 +73,22 @@
 
 (move-text-default-bindings)
 
+(defvar dz-window--title (with-faicon "windows" "Window Management" 1 -0.05))
+
+(pretty-hydra-define dz-window
+  (:foreign-keys warn :title dz-window--title :quit-key "q")
+  (
+   "Split"
+    (
+      ("b" split-window-right "horizontally")
+      ("v" split-window-below "vertically")
+      )
+    )
+  )
+
+(bind-key "w" 'dz-window/body dz-hydra-map)
+
+
 ;; TODO Learn how to use workspaces https://github.com/alphapapa/bufler.el?tab=readme-ov-file
 ;; (bufler-workspace-mode t)
 

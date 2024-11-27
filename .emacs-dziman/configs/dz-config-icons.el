@@ -5,6 +5,7 @@
 (use-package all-the-icons :ensure t)
 
 (require 's)
+(require 'all-the-icons)
 
 (defun with-faicon (icon str &optional height v-adjust)
   (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
