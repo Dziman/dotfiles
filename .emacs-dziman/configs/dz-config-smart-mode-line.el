@@ -1,13 +1,15 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;; Smart mode line configs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package smart-mode-line :ensure t)
 (use-package smart-mode-line-powerline-theme :ensure t)
 
-;; TODO Finetune?
 (setq sml/mode-width 'right)
 (setq powerline-arrow-shape 'curve)
 (setq powerline-default-separator-dir '(right . left))
 (setq sml/theme 'powerline)
 (sml/setup)
-;;; Hide minor modes which mostly enabled all the time
+;; Hide minor modes which mostly enabled all the time
 (setq
   sml/hidden-modes
   '(

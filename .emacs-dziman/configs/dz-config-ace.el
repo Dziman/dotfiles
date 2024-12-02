@@ -2,12 +2,39 @@
 ;;;;;; ace packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package ace-window :ensure t)
-(use-package ace-jump-helm-line :ensure t) ;; TODO Learn/config https://github.com/cute-jumper/ace-jump-helm-line?tab=readme-ov-file
-(use-package ace-jump-mode :ensure t) ;; TODO Learn/config https://github.com/winterTTr/ace-jump-mode
 
 (setq aw-scope 'frame)
 
-(bind-key "M-o" 'ace-window)
-;; TODO Customize ace-window action bindings: https://github.com/abo-abo/ace-window
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
+(bind-key "C-c j w" 'ace-window)
+
+(bind-map dz-window-map
+  :keys ("C-c w")
+  :bindings (
+              "j" 'ace-select-window
+              "k" 'ace-delete-window
+              "s" 'ace-swap-window
+              "m" 'ace-delete-other-windows
+              "f" 'delete-other-windows
+              "b" 'split-window-right
+              "v" 'split-window-below
+              )
+  )
+
+(pretty-hydra-define+ dz-window
+  nil
+  (
+    "Ace window"
+    (
+      ("j" ace-select-window "jump")
+      ("k" ace-delete-window "kill")
+      ("s" ace-swap-window "swap")
+      ("m" ace-delete-other-windows "maximize")
+      ("f" delete-other-windows "maximize current")
+      )
+    )
+  )
+
 
 (provide 'dz-config-ace)

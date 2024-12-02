@@ -22,6 +22,29 @@
 (set-face-background 'git-gutter:added "#7DCF96")
 (set-face-background 'git-gutter:deleted "#CE7666")
 
-;; TODO Add 'resolve conflicts' hydra? https://github.com/alphapapa/unpackaged.el?tab=readme-ov-file#smerge-mode
+(defvar dz-git-gator--title (with-faicon "git" "Git gator actions" 1 -0.05))
+
+(pretty-hydra-define dz-git-gator
+  (:color amaranth :quit-key "q" :title dz-git-gator--title)
+  (
+    "Jump"
+    (
+      ("n" git-gutter:next-hunk "next hunk")
+      ("p" git-gutter:previous-hunk "prev hunk")
+      ("e" git-gutter:end-of-hunk "end of hunk")
+      )
+
+    "Actions"
+    (
+      ("d" git-gutter:popup-hunk "diff")
+      ("s" git-gutter:stage-hunk "stage")
+      ("r" git-gutter:revert-hunk "revert")
+      ("R" git-gutter:update-all-windows "refresh status")
+      ("S" git-gutter:set-start-revision "set start revision")
+      )
+    )
+  )
+
+(bind-key "g" 'dz-git-gator/body dz-hydra-map)
 
 (provide 'dz-config-git)

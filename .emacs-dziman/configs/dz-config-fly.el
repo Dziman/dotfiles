@@ -9,10 +9,6 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 
 (eval-after-load "flyspell"
-  '(define-key flyspell-mode-map (kbd "C-,") nil)
-  ) ;; Remove conflicting keybinding. See `dz-config-emacs-generic`
-(eval-after-load "flyspell"
-  '(define-key flyspell-mode-map (kbd "C-.") nil)
-  ) ;; Remove conflicting keybinding. See `dz-config-hydra`
+  '(define-key flyspell-mode-map (kbd "C-.") nil)) ;; Remove conflicting keybinding. See `dz-config-hydra`
 
 (provide 'dz-config-fly)

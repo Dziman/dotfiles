@@ -10,6 +10,8 @@
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
 
-(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(with-eval-after-load "org"
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  )
 
 (provide 'dz-config-plantuml)

@@ -5,6 +5,7 @@
 (use-package python-mode :ensure t)
 (use-package company-anaconda :ensure t)
 (use-package flycheck-pycheckers :ensure t)
+(use-package elpy :ensure t)
 
 (use-package web-mode :ensure t)
 (use-package json-mode :ensure t)
