@@ -110,7 +110,7 @@ prepended to the element after the #+HEADER: tag."
   (:color amaranth)
   ("View"
     (
-      ("l" org-toggle-link-display "toggle link view" :toggle t)
+      ("l" org-toggle-link-display "toggle link view" :toggle t) ;; TODO Write wrapper function so that toggle status works
       )
     )
   )
