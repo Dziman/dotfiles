@@ -31,6 +31,9 @@
 
 (setq org-special-ctrl-a/e '(t . t)) ;; smart jump in headers
 
+(setq org-todo-keywords '((sequence "TODO" "BLOCKED" "|" "DONE" "CANCELED")))
+(setq org-complete-tags-always-offer-all-agenda-tags t)
+
 ;; TODO Customize https://github.com/alphapapa/org-super-agenda
 (add-hook 'org-mode-hook 'org-super-agenda-mode)
 (setq org-super-agenda-groups
