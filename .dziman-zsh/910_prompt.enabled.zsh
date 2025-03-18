@@ -220,8 +220,9 @@ if [[ -o interactive ]]; then
   ################################################################################
   # Highlight syntax in prompt
   ################################################################################
-  if [ -f $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  if [ -f $HOMEBREW_PREFIX/share/zsh-f-sy-h/F-Sy-H.plugin.zsh ]; then
+    source $HOMEBREW_PREFIX/share/zsh-f-sy-h/F-Sy-H.plugin.zsh
+    fast-theme -q spa
   fi
   ################################################################################
 
