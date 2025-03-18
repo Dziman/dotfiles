@@ -27,6 +27,8 @@
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
 
+(add-hook 'org-mode-hook 'org-rainbow-tags-mode)
+
 (setq org-descriptive-links nil) ;; Show raw link markup by default
 
 (setq org-special-ctrl-a/e '(t . t)) ;; smart jump in headers
@@ -36,17 +38,24 @@
 
 ;; TODO Customize https://github.com/alphapapa/org-super-agenda
 (add-hook 'org-mode-hook 'org-super-agenda-mode)
+
+;(setq org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
+;      org-agenda-skip-scheduled-if-done t
+;      org-agenda-skip-deadline-if-done t
+;      org-agenda-include-deadlines t
+;      org-agenda-include-diary t
+;      org-agenda-block-separator nil
+;      org-agenda-compact-blocks t
+;      org-agenda-start-with-log-mode t)
+
 (setq org-super-agenda-groups
-      '((:name "Next Items"
-               :time-grid t
-               :tag ("NEXT" "outbox"))
-        (:name "Important"
-               :priority "A")
-        (:name "Quick Picks"
-               :effort< "0:30")
-        (:priority<= "B"
-                     :scheduled future
-                     :order 1)))
+       '((:auto-map (lambda (item)
+                      (-when-let* ((marker (or (get-text-property 0 'org-marker item)
+                                               (get-text-property 0 'org-hd-marker item)))
+                                   (file-path (->> marker marker-buffer buffer-file-name))
+                                   (directory-name (->> file-path file-name-directory directory-file-name file-name-nondirectory)))
+                        (concat "Directory: " directory-name))))))
+;  (org-agenda-list))
 
 (setq org-roam-directory dz-org-directory)
 (setq org-roam-db-location (concat org-roam-directory "/.org-roam/org-roam-sqlite-database.db"))
