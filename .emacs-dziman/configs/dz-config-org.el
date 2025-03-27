@@ -27,9 +27,14 @@
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
 
+(add-hook 'org-mode-hook 'org-rainbow-tags-mode)
+
 (setq org-descriptive-links nil) ;; Show raw link markup by default
 
 (setq org-special-ctrl-a/e '(t . t)) ;; smart jump in headers
+
+(setq org-todo-keywords '((sequence "TODO" "|" "DONE" "CANCELED")))
+(setq org-complete-tags-always-offer-all-agenda-tags t)
 
 ;; TODO Customize https://github.com/alphapapa/org-super-agenda
 (add-hook 'org-mode-hook 'org-super-agenda-mode)
