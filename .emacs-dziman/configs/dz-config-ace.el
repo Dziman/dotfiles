@@ -7,7 +7,7 @@
 
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
-(bind-key "C-c j w" 'ace-window)
+(bind-key "C-c j W" 'ace-window)
 
 (bind-map dz-window-map
   :keys ("C-c w")
