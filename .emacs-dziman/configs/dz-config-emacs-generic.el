@@ -12,6 +12,12 @@
 (use-package diminish :ensure t)
 (use-package bufler :ensure t)
 ;; (use-package helm-bufler :ensure t) ;; TODO Learn/configure
+(use-package nerd-icons-dired :ensure t)
+(use-package diredfl :ensure t)
+
+(setf dired-kill-when-opening-new-dired-buffer t)
+(add-hook 'dired-mode-hook 'diredfl-mode)
+(add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
 
 ;; Highlight word under caret
 (define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode 1)))
