@@ -35,8 +35,6 @@
 (setq helm-swoop-split-direction 'split-window-horizontally)
 (setq helm-swoop-move-to-line-cycle t)
 
-;; TODO Learn how to use: https://github.com/emacs-helm/helm-org
-;; TODO Add key bindings/hydra
 (add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
 (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags . helm-org-completing-read-tags))
 (setq helm-org-format-outline-path t)

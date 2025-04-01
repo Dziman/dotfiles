@@ -12,7 +12,6 @@
 (use-package move-text :ensure t)
 (use-package diminish :ensure t)
 (use-package bufler :ensure t)
-;; (use-package helm-bufler :ensure t) ;; TODO Learn/configure
 (use-package nerd-icons-dired :ensure t)
 (use-package diredfl :ensure t)
 
