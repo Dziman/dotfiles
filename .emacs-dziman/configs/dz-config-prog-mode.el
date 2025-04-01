@@ -31,9 +31,9 @@
 
 (add-hook 'prog-mode-hook 'highlight-parentheses-mode)
 
-(add-hook 'before-save-hook 'dz-remove-trailing-whitespace)
+(add-hook 'before-save-hook 'dziman/remove-trailing-whitespace)
 
-(defun dz-remove-trailing-whitespace()
+(defun dziman/remove-trailing-whitespace()
   (when (derived-mode-p 'prog-mode)
     (delete-trailing-whitespace)))
 

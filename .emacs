@@ -29,6 +29,7 @@
 ;;;;;; Load configs. Ordiring is important
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'dz-config-icons)
+(require 'dz-config-bind-maps)
 (require 'dz-config-hydra)
 (require 'dz-config-emacs-generic)
 (require 'dz-config-smart-mode-line)

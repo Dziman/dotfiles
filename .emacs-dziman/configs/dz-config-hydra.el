@@ -5,12 +5,12 @@
 (use-package major-mode-hydra :ensure t)
 (use-package pretty-hydra :ensure t)
 
-;; TODO Learn about hydra colors and use them properly
+(setq major-mode-hydra-invisible-quit-key "q")
 
-(defvar dz-toggles--title (with-faicon "toggle-on" "Toggles" 1 -0.05))
+(defvar dziman/hydra/toggles--title (dziman/with-faicon "toggle-on" "Toggles" 1 -0.05))
 
-(pretty-hydra-define dz-toggles
-  (:color amaranth :quit-key "q" :title dz-toggles--title)
+(pretty-hydra-define dziman/hydra/toggles
+  (:color amaranth :quit-key "q" :title dziman/hydra/toggles--title)
   (
     "Basic"
     (
@@ -44,6 +44,8 @@
     )
   )
 
+(bind-key "t" 'dziman/hydra/toggles/body dziman/bind-map/hydra)
+
 (setq major-mode-hydra-title-generator
   '(lambda (mode)
      (s-concat "\n"
@@ -56,14 +58,6 @@
      )
   )
 
-(setq major-mode-hydra-invisible-quit-key "q")
-
-(bind-map dz-hydra-map
-  :keys ("C-.")
-  :bindings (
-              "h" 'major-mode-hydra
-              "t" 'dz-toggles/body
-              )
-  )
+(bind-key "h" 'major-mode-hydra dziman/bind-map/hydra)
 
 (provide 'dz-config-hydra)

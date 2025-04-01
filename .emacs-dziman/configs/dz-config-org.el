@@ -11,23 +11,24 @@
 
 (add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
 
-(defvar dz-org-directory "~/wiki")
+(defvar dziman/org-directory "~/wiki")
 
-(defun dz-refresh-agenda-files ()
+(defun dziman/refresh-agenda-files ()
   (interactive)
   ;; TODO Automatically reload on new file created/deleted
   ;; Original source: https://stackoverflow.com/questions/11384516/how-to-make-all-org-files-under-a-folder-added-in-agenda-list-automatically
   ;; Could cause performance issues for agenda view. Check https://github.com/nicolas-graves/org-agenda-files-track as potential solution
-  (setq org-agenda-files (directory-files-recursively dz-org-directory "\\.org$"))
+  (setq org-agenda-files (directory-files-recursively dziman/org-directory "\\.org$"))
   )
 
-(add-hook 'org-mode-hook 'dz-refresh-agenda-files)
-(bind-key "C-c a r" 'dz-refresh-agenda-files)
+(add-hook 'org-mode-hook 'dziman/refresh-agenda-files)
+(bind-key "C-c a r" 'dziman/refresh-agenda-files)
 
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
 
 (add-hook 'org-mode-hook 'org-rainbow-tags-mode)
+(setq org-rainbow-tags-hash-start-index 13)
 
 (setq org-descriptive-links nil) ;; Show raw link markup by default
 
@@ -50,11 +51,11 @@
                      :scheduled future
                      :order 1)))
 
-(setq org-roam-directory dz-org-directory)
+(setq org-roam-directory dziman/org-directory)
 (setq org-roam-db-location (concat org-roam-directory "/.org-roam/org-roam-sqlite-database.db"))
 (add-hook 'org-mode-hook 'org-roam-db-autosync-mode)
 
-(pretty-hydra-define dz-hydra-org-template
+(pretty-hydra-define dziman/hydra/org-template
   (:color blue :quit-key "q")
   (
     "Source"
@@ -105,7 +106,7 @@ prepended to the element after the #+HEADER: tag."
   (lambda ()
     (interactive)
     (if (or (region-active-p) (looking-back "^"))
-      (dz-hydra-org-template/body)
+      (dziman/hydra/org-template/body)
       (self-insert-command 1)
       )
     )

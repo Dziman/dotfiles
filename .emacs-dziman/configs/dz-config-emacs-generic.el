@@ -3,11 +3,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package which-key :ensure t)
 (use-package bind-key :ensure t)
+(use-package bind-map :ensure t)
+(use-package undo-tree :ensure t)
 (use-package expand-region :ensure t)
 (use-package editorconfig :ensure t)
 (use-package idle-highlight-mode :ensure t)
 (use-package avy :ensure t)
-(use-package bind-map :ensure t)
 (use-package move-text :ensure t)
 (use-package diminish :ensure t)
 (use-package bufler :ensure t)
@@ -41,7 +42,6 @@
 
 ;; Undo tree
 (setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
-(use-package undo-tree :ensure t)
 (global-undo-tree-mode)
 (bind-key "C-x u" 'undo-tree-undo)
 (bind-key "C-x C-u" 'undo-tree-visualize)
@@ -72,17 +72,17 @@
 (setq avy-timeout-seconds 0.8)
 
 ;; jump to key bindings
-(bind-key "C-c j n" 'goto-line)
-(bind-key "C-c j c" 'avy-goto-char-timer)
-(bind-key "C-c j w" 'avy-goto-word-1)
-(bind-key "C-c j l" 'avy-goto-line)
+(bind-key "n" 'goto-line dziman/bind-map/jump)
+(bind-key "c" 'avy-goto-char-timer dziman/bind-map/jump)
+(bind-key "w" 'avy-goto-word-1 dziman/bind-map/jump)
+(bind-key "l" 'avy-goto-line dziman/bind-map/jump)
 
 (move-text-default-bindings)
 
-(defvar dz-window--title (with-faicon "windows" "Window Management" 1 -0.05))
+(defvar dziman/hydra/window--title (dziman/with-faicon "windows" "Window Management" 1 -0.05))
 
-(pretty-hydra-define dz-window
-  (:foreign-keys warn :title dz-window--title :quit-key "q")
+(pretty-hydra-define dziman/hydra/window
+  (:foreign-keys warn :title dziman/hydra/window--title :quit-key "q")
   (
    "Split"
     (
@@ -92,12 +92,6 @@
     )
   )
 
-(bind-key "w" 'dz-window/body dz-hydra-map)
-
-
-;; TODO Learn how to use workspaces https://github.com/alphapapa/bufler.el?tab=readme-ov-file
-;; (bufler-workspace-mode t)
-
-;; TODO Move to line start/end enhancments: https://d12frosted.io/posts/2020-06-04-beginning-of-line.html and/or https://github.com/alezost/mwim.el
+(bind-key "w" 'dziman/hydra/window/body dziman/bind-map/hydra)
 
 (provide 'dz-config-emacs-generic)
