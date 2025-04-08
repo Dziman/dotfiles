@@ -14,6 +14,7 @@
 (use-package bufler :ensure t)
 (use-package nerd-icons-dired :ensure t)
 (use-package diredfl :ensure t)
+(use-package mwim :ensure t)
 
 (setf dired-kill-when-opening-new-dired-buffer t)
 (add-hook 'dired-mode-hook 'diredfl-mode)
@@ -96,5 +97,8 @@
 (bind-key "w" 'dziman/hydra/window/body dziman/bind-map/hydra)
 
 (setq abbrev-file-name "~/.emacs-dziman/abbrevs.def")
+
+(global-set-key [remap move-beginning-of-line] #'mwim-beginning)
+(global-set-key [remap move-end-of-line] #'mwim-end)
 
 (provide 'dz-config-emacs-generic)

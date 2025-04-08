@@ -3,11 +3,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package org-super-agenda :ensure t)
 (use-package org-roam :ensure t)
-(use-package org-ql :ensure t)
-(use-package org-roam-ql-ql :ensure t)
 (use-package org-rainbow-tags :ensure t)
 (use-package org-sticky-header :ensure t)
 (use-package org-super-agenda :ensure t)
+(use-package helm-org :ensure t)
+(use-package helm-roam :ensure t)
 
 (add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
 
@@ -27,6 +27,7 @@
 (setq org-sticky-header-full-path 'full)
 
 (add-hook 'org-mode-hook 'org-rainbow-tags-mode)
+(add-hook 'org-agenda-finalize-hook 'org-rainbow-tags-mode)
 (setq org-rainbow-tags-hash-start-index 13)
 
 (setq org-descriptive-links nil) ;; Show raw link markup by default
@@ -212,6 +213,13 @@ prepended to the element after the #+HEADER: tag."
     "View"
     (
       ("l" org-toggle-link-display "toggle link view" :toggle t) ;; TODO Write wrapper function so that toggle status works
+      )
+
+    "Browse"
+    (
+      ("b h a" helm-org-agenda-files-headings "All headings")
+      ("b h b" helm-org-in-buffer-headings "Buffer headings")
+      ("b h p" helm-org-parent-headings "Parent headings")
       )
 
     "Capture"
