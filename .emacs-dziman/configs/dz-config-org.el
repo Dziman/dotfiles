@@ -9,6 +9,15 @@
 (use-package org-sticky-header :ensure t)
 (use-package org-super-agenda :ensure t)
 
+(defun dziman/org/get-formatted-date (&optional date-format)
+  (interactive)
+  (let* (
+          (date-format-to-use (or date-format "%B %d %G, %a"))
+          )
+    (format-time-string date-format-to-use (org-read-date nil t nil nil))
+    )
+  )
+
 (add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
 
 (defvar dziman/org-directory "~/wiki")
@@ -28,6 +37,8 @@
 
 (add-hook 'org-mode-hook 'org-rainbow-tags-mode)
 (setq org-rainbow-tags-hash-start-index 13)
+
+(add-hook 'org-mode-hook 'abbrev-mode)
 
 (setq org-descriptive-links nil) ;; Show raw link markup by default
 
@@ -121,7 +132,8 @@ prepended to the element after the #+HEADER: tag."
     "Capture"
     (
       ("c j d" (lambda () (interactive) (org-capture nil "jd")) "journal day entry")
-      ("c j m" (lambda () (interactive) (org-capture nil "jm")) "journal month header")
+      ("c j m" (lambda () (interactive) (org-capture nil "jm")) "journal meeting header")
+      ("c j M" (lambda () (interactive) (org-capture nil "jM")) "journal month header")
       )
     )
   )
@@ -143,7 +155,12 @@ prepended to the element after the #+HEADER: tag."
        )
 
      (
-       "jm" "Journal month entry" plain (here)
+       "jm" "Journal meeting entry" plain (here)
+       (file "~/.emacs-dziman/configs/org-templates/journal-apple-meeting.tmpl.org")
+       )
+
+     (
+       "jM" "Journal month entry" plain (here)
        (file "~/.emacs-dziman/configs/org-templates/journal-month.tmpl.org")
        )
      )
@@ -155,13 +172,15 @@ prepended to the element after the #+HEADER: tag."
   :bindings (
               "j d" (lambda () (interactive) (org-capture nil "jd"))
               "j m" (lambda () (interactive) (org-capture nil "jm"))
+              "j M" (lambda () (interactive) (org-capture nil "jM"))
               )
   )
 
 (which-key-add-keymap-based-replacements dziman/bind-map/org-capture
   "j" "journal entry"
   "j d" "journal day entry"
-  "j m" "journal month header"
+  "j m" "journal meeting header"
+  "j M" "journal month header"
   )
 
 (provide 'dz-config-org)

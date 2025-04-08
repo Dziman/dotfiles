@@ -1,0 +1,14 @@
+(define-abbrev-table
+  'org-mode-abbrev-table
+    '(
+         ;; locations
+         ("loma" "27504 Loma Prieta Way, Los Gatos, CA" nil 0)
+         ("herm" "884 Hermosa Court, Sunnyvale, CA" nil 0)
+
+         ;; persons
+         ("kpai" "Kiran Pai" nil 0)
+         ("kdarsi" "Kiran Darsi" nil 0)
+         ("manoj" "Manoj Kumar" nil 0)
+         ("phil" "Phil Manuel" nil 0)
+     )
+  )
