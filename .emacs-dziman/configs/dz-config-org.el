@@ -34,20 +34,116 @@
 (setq org-special-ctrl-a/e '(t . t)) ;; smart jump in headers
 
 (setq org-todo-keywords '((sequence "TODO" "|" "DONE" "CANCELED")))
+(setq org-log-done t)
+(setq org-deadline-warning-days 5)
+(setq org-scheduled-delay-days 0)
+
 (setq org-complete-tags-always-offer-all-agenda-tags t)
 
 (add-hook 'org-mode-hook 'org-super-agenda-mode)
-(setq org-super-agenda-groups
-      '((:name "Next Items"
-               :time-grid t
-               :tag ("NEXT" "outbox"))
-        (:name "Important"
-               :priority "A")
-        (:name "Quick Picks"
-               :effort< "0:30")
-        (:priority<= "B"
-                     :scheduled future
-                     :order 1)))
+(setq org-agenda-span 'week)
+(setq org-agenda-show-inherited-tags 'always)
+(setq org-agenda-with-colors t)
+(setq org-agenda-tags-column -105)
+(setq org-agenda-time-leading-zero t)
+(setq org-agenda-skip-deadline-if-done t)
+(setq org-agenda-skip-scheduled-if-done t)
+(setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+(setq org-agenda-include-deadlines t)
+(setq org-agenda-compact-blocks t)
+
+(setq org-agenda-custom-commands
+  '(
+
+     (
+       "r" "Reading list"
+       (
+         (
+           todo ""
+           (
+             (org-agenda-overriding-header "Reading list")
+             (org-super-agenda-groups
+               '(
+                  (
+                    :name "Books"
+                    :and ( :tag ("to_read") :tag ("book") )
+                    :order 1
+                    )
+
+                  (
+                    :name "Web"
+                    :and ( :tag ("to_read") :tag ("web") )
+                    :order 2
+                    )
+
+                  (:discard (:anything t))
+
+                  )
+               )
+             )
+           )
+         )
+       )
+
+     (
+       "e" "Everything TODOs"
+       (
+         (
+           todo ""
+           (
+             (org-agenda-overriding-header "TODOs")
+             (org-super-agenda-groups
+               '(
+                  (
+                    :name "Overdue"
+                    :time-grid t
+                    :deadline past
+
+                    :face (:foreground "firebrick" :weight bold)
+                    :order 0
+                    )
+
+                  (
+                    :name "Deadline today"
+                    :time-grid t
+                    :deadline today
+
+                    :face (:foreground "darkgoldenrod" :weight bold)
+                    :order 1
+                    )
+
+                  (
+                    :name "Starting today"
+                    :time-grid t
+                    :scheduled today
+
+                    :face (:foreground "chartreuse4" :weight bold)
+                    :order 2
+                    )
+
+                  (
+                    :name "Prioritized"
+                    :priority<="A"
+                    :order 3
+                    )
+
+                  (
+                    :name "TODOs"
+                    :not (:tag ("to_read"))
+                    :order 4
+                    )
+
+                  (:discard (:anything t))
+
+                  )
+               )
+             )
+           )
+         )
+       )
+
+     )
+  )
 
 (setq org-roam-directory dziman/org-directory)
 (setq org-roam-db-location (concat org-roam-directory "/.org-roam/org-roam-sqlite-database.db"))
