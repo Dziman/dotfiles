@@ -2,8 +2,11 @@
 ;;;;;; Projectile packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package projectile :ensure t)
-(use-package helm-projectile :ensure t) ;; TODO Learn/config https://github.com/bbatsov/helm-projectile
-(use-package ibuffer-projectile :ensure t) ;; TODO Learn/config https://github.com/purcell/ibuffer-projectile
+(use-package helm-projectile :ensure t)
+(use-package ibuffer-projectile :ensure t)
+;; TODO Move to common?
+(use-package ag :ensure t)
+(use-package helm-ag :ensure t)
 
 (projectile-mode)
 (setq projectile-completion-system 'helm)

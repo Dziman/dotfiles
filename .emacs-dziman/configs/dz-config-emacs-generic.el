@@ -3,15 +3,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package which-key :ensure t)
 (use-package bind-key :ensure t)
+(use-package bind-map :ensure t)
+(use-package undo-tree :ensure t)
 (use-package expand-region :ensure t)
 (use-package editorconfig :ensure t)
 (use-package idle-highlight-mode :ensure t)
 (use-package avy :ensure t)
-(use-package bind-map :ensure t)
 (use-package move-text :ensure t)
 (use-package diminish :ensure t)
 (use-package bufler :ensure t)
-;; (use-package helm-bufler :ensure t) ;; TODO Learn/configure
+(use-package nerd-icons-dired :ensure t)
+(use-package diredfl :ensure t)
+
+(setf dired-kill-when-opening-new-dired-buffer t)
+(add-hook 'dired-mode-hook 'diredfl-mode)
+(add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
 
 ;; Highlight word under caret
 (define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode 1)))
@@ -35,7 +41,6 @@
 
 ;; Undo tree
 (setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
-(use-package undo-tree :ensure t)
 (global-undo-tree-mode)
 (bind-key "C-x u" 'undo-tree-undo)
 (bind-key "C-x C-u" 'undo-tree-visualize)
@@ -45,6 +50,8 @@
 (setq backup-directory-alist '(("." . ".emacs~")))
 ;; Кеep autosave files in temp directory
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+;; do not create locks
+(setq create-lockfiles nil)
 
 ;; Use spaces for indent
 (setq indent-tabs-mode nil)
@@ -66,17 +73,17 @@
 (setq avy-timeout-seconds 0.8)
 
 ;; jump to key bindings
-(bind-key "C-c j n" 'goto-line)
-(bind-key "C-c j c" 'avy-goto-char-timer)
-(bind-key "C-c j W" 'avy-goto-word-1)
-(bind-key "C-c j l" 'avy-goto-line)
+(bind-key "n" 'goto-line dziman/bind-map/jump)
+(bind-key "c" 'avy-goto-char-timer dziman/bind-map/jump)
+(bind-key "w" 'avy-goto-word-1 dziman/bind-map/jump)
+(bind-key "l" 'avy-goto-line dziman/bind-map/jump)
 
 (move-text-default-bindings)
 
-(defvar dz-window--title (with-faicon "windows" "Window Management" 1 -0.05))
+(defvar dziman/hydra/window--title (dziman/with-faicon "windows" "Window Management" 1 -0.05))
 
-(pretty-hydra-define dz-window
-  (:foreign-keys warn :title dz-window--title :quit-key "q")
+(pretty-hydra-define dziman/hydra/window
+  (:foreign-keys warn :title dziman/hydra/window--title :quit-key "q")
   (
    "Split"
     (
@@ -86,12 +93,8 @@
     )
   )
 
-(bind-key "w" 'dz-window/body dz-hydra-map)
+(bind-key "w" 'dziman/hydra/window/body dziman/bind-map/hydra)
 
-
-;; TODO Learn how to use workspaces https://github.com/alphapapa/bufler.el?tab=readme-ov-file
-;; (bufler-workspace-mode t)
-
-;; TODO Move to line start/end enhancments: https://d12frosted.io/posts/2020-06-04-beginning-of-line.html and/or https://github.com/alezost/mwim.el
+(setq abbrev-file-name "~/.emacs-dziman/abbrevs.def")
 
 (provide 'dz-config-emacs-generic)

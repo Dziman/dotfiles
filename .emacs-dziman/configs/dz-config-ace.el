@@ -7,9 +7,9 @@
 
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
-(bind-key "C-c j w" 'ace-window)
+(bind-key "W" 'ace-window 'dziman/bind-map/jump)
 
-(bind-map dz-window-map
+(bind-map dziman/bind-map/window
   :keys ("C-c w")
   :bindings (
               "j" 'ace-select-window
@@ -22,7 +22,7 @@
               )
   )
 
-(pretty-hydra-define+ dz-window
+(pretty-hydra-define+ dziman/hydra/window
   nil
   (
     "Ace window"
@@ -35,6 +35,5 @@
       )
     )
   )
-
 
 (provide 'dz-config-ace)

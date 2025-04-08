@@ -22,10 +22,10 @@
 (set-face-background 'git-gutter:added "#7DCF96")
 (set-face-background 'git-gutter:deleted "#CE7666")
 
-(defvar dz-git-gator--title (with-faicon "git" "Git gator actions" 1 -0.05))
+(defvar dziman/hydra/git-gator--title (dziman/with-faicon "git" "Git gator actions" 1 -0.05))
 
-(pretty-hydra-define dz-git-gator
-  (:color amaranth :quit-key "q" :title dz-git-gator--title)
+(pretty-hydra-define dziman/hydra/git-gator
+  (:color amaranth :quit-key "q" :title dziman/hydra/git-gator--title)
   (
     "Jump"
     (
@@ -45,6 +45,6 @@
     )
   )
 
-(bind-key "g" 'dz-git-gator/body dz-hydra-map)
+(bind-key "g" 'dziman/hydra/git-gator/body dziman/bind-map/hydra)
 
 (provide 'dz-config-git)
