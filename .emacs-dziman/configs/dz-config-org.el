@@ -22,7 +22,6 @@
   )
 
 (add-hook 'org-mode-hook 'dziman/refresh-agenda-files)
-(bind-key "C-c a r" 'dziman/refresh-agenda-files)
 
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
@@ -112,12 +111,57 @@ prepended to the element after the #+HEADER: tag."
   )
 
 (major-mode-hydra-define org-mode
-  (:color amaranth)
-  ("View"
+  (:color blue)
+  (
+    "View"
     (
       ("l" org-toggle-link-display "toggle link view" :toggle t) ;; TODO Write wrapper function so that toggle status works
       )
+
+    "Capture"
+    (
+      ("c j d" (lambda () (interactive) (org-capture nil "jd")) "journal day entry")
+      ("c j m" (lambda () (interactive) (org-capture nil "jm")) "journal month header")
+      )
     )
+  )
+
+(bind-map dziman/bind-map/org
+  :keys ("C-c")
+  :major-modes (org-mode)
+  :bindings (
+              "a" 'org-agenda
+              "R" 'dziman/refresh-agenda-files
+              )
+  )
+
+(setq org-capture-templates
+  '(
+     (
+       "jd" "Journal day entry" plain (here)
+       (file "~/.emacs-dziman/configs/org-templates/journal-day.tmpl.org")
+       )
+
+     (
+       "jm" "Journal month entry" plain (here)
+       (file "~/.emacs-dziman/configs/org-templates/journal-month.tmpl.org")
+       )
+     )
+  )
+
+(bind-map dziman/bind-map/org-capture
+  :keys ("C-c c")
+  :major-modes (org-mode)
+  :bindings (
+              "j d" (lambda () (interactive) (org-capture nil "jd"))
+              "j m" (lambda () (interactive) (org-capture nil "jm"))
+              )
+  )
+
+(which-key-add-keymap-based-replacements dziman/bind-map/org-capture
+  "j" "journal entry"
+  "j d" "journal day entry"
+  "j m" "journal month header"
   )
 
 (provide 'dz-config-org)

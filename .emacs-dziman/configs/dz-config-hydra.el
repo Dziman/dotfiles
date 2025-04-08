@@ -18,6 +18,7 @@
       ("w" whitespace-mode "whitespace" :toggle t)
       ("r" rainbow-mode "rainbow" :toggle t)
       ("d" git-gutter-mode "git gutter" :toggle t)
+      ("a" abbrev-mode "abbrev" :toggle t)
       )
 
     "Highlight"

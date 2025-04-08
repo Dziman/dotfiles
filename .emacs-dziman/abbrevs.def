@@ -1,0 +1,7 @@
+(define-abbrev-table
+  'org-mode-abbrev-table
+  '(
+     ("loma" "27504 Loma Prieta Way, Los Gatos, CA" nil 0)
+     ("herm" "884 Hermosa Court, Sunnyvale, CA" nil 0)
+     )
+  )

@@ -1,0 +1,7 @@
+** %^{title} %^{Entry date}u
+:properties:
+:location: %^{Location|27504 Loma Prieta Way, Los Gatos, CA|884 Hermosa Court, Sunnyvale, CA}
+:created: %U
+:end:
+
+%?

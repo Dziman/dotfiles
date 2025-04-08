@@ -50,6 +50,8 @@
 (setq backup-directory-alist '(("." . ".emacs~")))
 ;; Кеep autosave files in temp directory
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+;; do not create locks
+(setq create-lockfiles nil)
 
 ;; Use spaces for indent
 (setq indent-tabs-mode nil)
@@ -92,5 +94,7 @@
   )
 
 (bind-key "w" 'dziman/hydra/window/body dziman/bind-map/hydra)
+
+(setq abbrev-file-name "~/.emacs-dziman/abbrevs.def")
 
 (provide 'dz-config-emacs-generic)
