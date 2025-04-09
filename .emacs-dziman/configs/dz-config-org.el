@@ -9,6 +9,15 @@
 (use-package helm-org :ensure t)
 (use-package helm-roam :ensure t)
 
+(defun dziman/org/get-formatted-date (&optional date-format)
+  (interactive)
+  (let* (
+          (date-format-to-use (or date-format "%B %d %G, %a"))
+          )
+    (format-time-string date-format-to-use (org-read-date nil t nil nil))
+    )
+  )
+
 (add-hook 'org-mode-hook (lambda () (setq-local truncate-lines nil)))
 
 (defvar dziman/org-directory "~/wiki")
