@@ -5,8 +5,7 @@
 (use-package helm-swoop :ensure t)
 (use-package helm-company :ensure t)
 (use-package helm-mode-manager :ensure t)
-(use-package helm-mode-manager :ensure t)
-;; (use-package helm-bufler :ensure t)
+(use-package helm-bufler :ensure t)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
@@ -41,8 +40,8 @@
 (bind-key "M-x" 'helm-M-x)
 ;; This is old M-x
 (bind-key "C-c C-c M-x" 'execute-extended-command)
-(bind-key "C-x b" 'helm-mini)
-(bind-key "C-x C-b" 'bufler-switch-buffer)
+(bind-key "C-x C-b" 'helm-mini)
+(bind-key "C-x b" 'bufler-switch-buffer)
 (bind-key "C-x C-f" 'helm-find-files)
 (bind-key "C-x C-r" 'helm-recentf)
 (bind-key "C-x r l" 'helm-filtered-bookmarks)
