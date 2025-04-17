@@ -234,7 +234,7 @@ prepended to the element after the #+HEADER: tag."
     "Capture"
     (
       ("c j d" (lambda () (interactive) (org-capture nil "jd")) "journal day entry")
-      ("c j m" (lambda () (interactive) (org-capture nil "jm")) "journal month header")
+      ("c j M" (lambda () (interactive) (org-capture nil "jM")) "journal month header")
       )
     )
   )
@@ -256,7 +256,7 @@ prepended to the element after the #+HEADER: tag."
        )
 
      (
-       "jm" "Journal month entry" plain (here)
+       "jM" "Journal month entry" plain (here)
        (file "~/.emacs-dziman/configs/org-templates/journal-month.tmpl.org")
        )
      )
@@ -267,14 +267,14 @@ prepended to the element after the #+HEADER: tag."
   :major-modes (org-mode)
   :bindings (
               "j d" (lambda () (interactive) (org-capture nil "jd"))
-              "j m" (lambda () (interactive) (org-capture nil "jm"))
+              "j M" (lambda () (interactive) (org-capture nil "jM"))
               )
   )
 
 (which-key-add-keymap-based-replacements dziman/bind-map/org-capture
   "j" "journal entry"
   "j d" "journal day entry"
-  "j m" "journal month header"
+  "j M" "journal month header"
   )
 
 (provide 'dz-config-org)
