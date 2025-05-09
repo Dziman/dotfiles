@@ -13,6 +13,7 @@ colordiff
 coreutils
 cryptography
 curlie
+diffr
 exiftags
 fd
 fontconfig
@@ -36,9 +37,8 @@ harfbuzz
 htop
 http-prompt
 httpie
-hugo
-icu4c@75
 icu4c@76
+icu4c@77
 ispell
 jansson
 jenv
@@ -48,10 +48,11 @@ jnv
 jo
 jpeg-turbo
 jq
+json-c
 libarchive
 libb2
 libevent
-libgit2@1.7
+libgit2
 libidn2
 libnghttp2
 libpng
@@ -66,6 +67,7 @@ libxdmcp
 libxext
 libxrender
 libyaml
+litecli
 little-cms2
 lnav
 lsd
@@ -81,6 +83,7 @@ mysql
 navi
 ncurses
 nettle
+newsboat
 noti
 oniguruma
 openjdk
@@ -95,6 +98,7 @@ pixman
 pkgconf
 procs
 protobuf
+protobuf@29
 pycparser
 pyenv
 python-certifi
@@ -109,6 +113,7 @@ rustup-init
 shellcheck
 sqlite
 tealdeer
+the_silver_searcher
 tig
 tmux
 unbound
@@ -123,5 +128,6 @@ zlib
 zsh
 zsh-autosuggestions
 zsh-completions
+zsh-f-sy-h
 zsh-syntax-highlighting
 zstd

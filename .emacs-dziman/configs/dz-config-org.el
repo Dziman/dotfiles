@@ -38,6 +38,8 @@
 (add-hook 'org-mode-hook 'org-rainbow-tags-mode)
 (add-hook 'org-agenda-finalize-hook 'org-rainbow-tags-mode)
 (setq org-rainbow-tags-hash-start-index 13)
+(setq org-rainbow-tags-extra-face-attributes '(:inverse-video t :box t :weight 'bold))
+(setq org-rainbow-tags-adjust-color-percent 33)
 
 (setq org-descriptive-links nil) ;; Show raw link markup by default
 
@@ -276,5 +278,10 @@ prepended to the element after the #+HEADER: tag."
   "j d" "journal day entry"
   "j M" "journal month header"
   )
+
+(setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
+(setq org-refile-use-outline-path 'file)
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
 
 (provide 'dz-config-org)

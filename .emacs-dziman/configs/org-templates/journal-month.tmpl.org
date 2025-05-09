@@ -1,5 +1,5 @@
 :properties:
- :id: %^{Id (like ~journal-2025-04~)}
- :end:
- #+title: Journal: %^{Month and year}
- * %^{Actual month and year title}
+:id: %^{Id (like ~journal-2025-04~)}
+:end:
+#+title: Journal: %^{Month and year}
+* %^{Actual month and year title}
