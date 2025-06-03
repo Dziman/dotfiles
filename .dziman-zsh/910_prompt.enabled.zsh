@@ -222,6 +222,15 @@ function perf-precmd() {
 
 if [[ -o interactive ]]; then
 
+  ################################################################################
+  # Highlight syntax in prompt
+  ################################################################################
+  if [ -f $HOMEBREW_PREFIX/share/zsh-f-sy-h/F-Sy-H.plugin.zsh ]; then
+    source $HOMEBREW_PREFIX/share/zsh-f-sy-h/F-Sy-H.plugin.zsh
+    fast-theme -q spa
+  fi
+  ################################################################################
+
   add-zsh-hook precmd update-right-prompt
 
   PS1="$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)

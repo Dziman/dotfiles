@@ -9,9 +9,9 @@ setopt localtraps
 setopt promptsubst
 setopt histignorealldups
 setopt autocd
-setopt appendhistory 
-setopt beep 
-setopt nomatch 
+setopt appendhistory
+setopt beep
+setopt nomatch
 setopt notify
 setopt correct
 unsetopt extendedglob
@@ -46,8 +46,6 @@ zle -N incremental-complete-word
 bindkey "^Xi" incremental-complete-word ## C-x-i
 
 bindkey '\e[3~' delete-char
-
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ################################################################################
 
 ################################################################################
