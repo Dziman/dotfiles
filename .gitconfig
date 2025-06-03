@@ -1,14 +1,15 @@
 [user]
     name = Dzmitry Rusak
     email = dzmitry.rusak@gmail.com
-[includeIf "gitdir:~/src/ta/"]
-    path = ~/.gitconfig-ta
 [includeIf "gitdir:~/src/oss/"]
     path = ~/.gitconfig-oss
 [includeIf "gitdir:~/src/apple/"]
     path = ~/.gitconfig-apple
 [includeIf "gitdir:~/Local/AS/"]
     path = ~/.gitconfig-apple
+[includeIf "gitdir:~/Local/AS/Data/ASPEN/templates/"]
+    path = ~/.gitconfig-apple-templates
+
 [color]
     status = auto
     branch = auto
@@ -81,6 +82,8 @@
     recent-tags = !sh -c 'git tag --sort=-taggerdate | head -n ${1:-10}' -
     configure-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --tags' -
     configure-stop-fetch-tags = !sh -c 'git config remote.${1:-origin}.tagopt --no-tags' -
+    diffr = "!git -c pager.diff=diffr diff"
+    chp = cherry-pick
 [credential]
     helper = osxkeychain
 [pager]
@@ -117,10 +120,11 @@
     whitespace-error-style = "#280050" reverse
     zero-style = syntax
     syntax-theme = zenburn
-    max-line-length = 0
+    max-line-distance = 0.8
     hyperlinks = true
     blame-timestamp-output-format = "%Y-%m-%d %H:%M:%S %z"
     blame-palette = "#4B6C5A #88816D #576F71"
+    true-color = always
 [color "diff-highlight"]
     oldNormal = red bold
     oldHighlight = red bold 52
