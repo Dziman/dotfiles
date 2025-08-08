@@ -14,6 +14,7 @@ coreutils
 cryptography
 curlie
 diffr
+emacs
 exiftags
 fd
 fontconfig
@@ -40,7 +41,6 @@ httpie
 icu4c@76
 icu4c@77
 ispell
-jansson
 jenv
 jid
 jless
@@ -89,7 +89,6 @@ oniguruma
 openjdk
 openjdk@17
 openjdk@21
-openssl@1.1
 openssl@3
 p11-kit
 pcre
@@ -103,8 +102,6 @@ pycparser
 pyenv
 python-certifi
 python-cryptography
-python-packaging
-python@3.12
 python@3.13
 readline
 ripgrep
@@ -116,6 +113,7 @@ tealdeer
 the_silver_searcher
 tig
 tmux
+tree-sitter
 unbound
 utf8proc
 vivid
