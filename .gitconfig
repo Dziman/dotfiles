@@ -64,6 +64,7 @@
     f = fetch
     # fetch with prune
     fp = fetch --prune
+    fpo = fp origin
 
     ### stash related
     # show changes in stash
