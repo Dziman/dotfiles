@@ -32,6 +32,11 @@ gradle.ext.getModules = { currentModuleName ->
         return modulesName
     }
 
+    // One more hack for merch-content-service
+    if (currentModuleName.equals("merch-content-service-root")) {
+       currentModuleName = "merch-content-service"
+    }
+
     def modules = readModulesFromFile("${gradle.ext.aosMeRootPath}/.modules-active")
 
     if (modules.contains(currentModuleName)) {
@@ -47,7 +52,12 @@ gradle.ext.doLocalSetup = { settings ->
     if (!gradle.ext.isSkipLocal(settings.rootProject)) {
 
         def addProject = { projectId ->
-            settings.includeBuild("${gradle.ext.aosMeRootPath}/${projectId}")
+            // hack for merch-content-service and merch-core as they both in the same mono repo
+            if (projectId.equals("merch-content-service") || projectId.equals("merch-core")) {
+               settings.includeBuild("${gradle.ext.aosMeRootPath}/merch-content-service/${projectId}")
+            } else {
+              settings.includeBuild("${gradle.ext.aosMeRootPath}/${projectId}")
+            }
         }
 
         gradle.ext.getModules(settings.rootProject.name.toLowerCase()).each { projectId ->
