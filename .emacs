@@ -45,6 +45,7 @@
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
 (require 'dz-config-appearance)
+(require 'dz-config-ios)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ) ;; end of lifehack wrapper

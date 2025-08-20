@@ -10,4 +10,7 @@ if [[ -o interactive ]] && command-exists anyenv; then eval "$(anyenv init - zsh
 # node env
 export NVM_DIR="$HOME/.nvm"
 [[ -s "/usr/local/opt/nvm/nvm.sh" ]] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[[ -s "/usr/local/opt/nvm/etc/bash_completion" ]] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion  
+[[ -s "/usr/local/opt/nvm/etc/bash_completion" ]] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+
+# LLVM
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
