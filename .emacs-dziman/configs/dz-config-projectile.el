@@ -6,7 +6,7 @@
 (use-package ibuffer-projectile :ensure t)
 ;; TODO Move to common?
 (use-package ag :ensure t)
-(use-package helm-ag :ensure t)
+(require 'dz-config-helm-ag)
 
 (projectile-mode)
 (setq projectile-completion-system 'helm)

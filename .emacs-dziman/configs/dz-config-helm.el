@@ -2,7 +2,7 @@
 ;;;;;; Helm packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package helm :ensure t)
-(use-package helm-swoop :ensure t)
+(require 'dz-config-helm-swoop)
 (use-package helm-company :ensure t)
 (use-package helm-mode-manager :ensure t)
 (use-package helm-bufler :ensure t)
