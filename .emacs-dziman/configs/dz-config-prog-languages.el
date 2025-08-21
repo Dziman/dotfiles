@@ -16,7 +16,6 @@
 (use-package dockerfile-mode :ensure t)
 (use-package terraform-mode :ensure t)
 (use-package company-terraform :ensure t)
-(use-package swift-mode :ensure t)
 (use-package kotlin-mode :ensure t)
 
 (provide 'dz-config-prog-languages)

@@ -4,5 +4,5 @@
 # Swift specific
 ################################################################################
 
-# TODO Support some kind of Toolchains switching
-export PATH="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH"
+# Looks like there is no need in any customization to Swift toolchain work in given setup
+# But will keep this file for now

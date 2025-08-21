@@ -53,5 +53,6 @@
         "editor.formatOnType": true
     },
     "lldb.suppressUpdateNotifications": true,
-    "editor.fontFamily": "JetBrainsMono Nerd Font Mono, Menlo, Monaco, 'Courier New', monospace"
+    "editor.fontFamily": "JetBrainsMono Nerd Font Mono, Menlo, Monaco, 'Courier New', monospace",
+    "swift.path": "/Library/Developer/CommandLineTools/usr/bin/"
 }

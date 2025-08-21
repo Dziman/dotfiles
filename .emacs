@@ -44,6 +44,7 @@
 (require 'dz-config-prog-languages)
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
+(require 'dz-config-ios)
 (require 'dz-config-appearance)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

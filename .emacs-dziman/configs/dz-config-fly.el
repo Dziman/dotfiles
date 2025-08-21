@@ -11,4 +11,7 @@
 (eval-after-load "flyspell"
   '(define-key flyspell-mode-map (kbd "C-.") nil)) ;; Remove conflicting keybinding. See `dz-config-hydra`
 
+;; TODO Slightly conflicting with `git-gutter`. Reconfigure for better UI
+(setq-default flycheck-indication-mode 'left-margin)
+
 (provide 'dz-config-fly)
