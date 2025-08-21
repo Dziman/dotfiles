@@ -23,3 +23,6 @@ if command-exists rg; then
 fi
 
 export GREP_TOOL
+
+export GUM_CHOOSE_SHOW_HELP="false"
+export GUM_CONFIRM_SHOW_HELP="false"
