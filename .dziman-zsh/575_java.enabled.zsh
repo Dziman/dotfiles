@@ -16,13 +16,8 @@ fi
 function refresh-jenv() {
   command-exists jenv || return 1
 
-  local -a jenv_versions=($(jenv completions local))
-  jenv_versions=("${(@)jenv_versions:#system}") # remove 'system' entry from versions list
-  jenv_versions=("${(@)jenv_versions:#--unset}") # remove '--unset' entry from versions list
-
-  for jenv_version in $jenv_versions; do
-    jenv remove $jenv_version > /dev/null
-  done
+  setopt localoptions rmstarsilent
+  rm -r ~/.jenv/versions/*
 
   local -a installed_openjdks=($(gls -d $HOMEBREW_PREFIX/Cellar/openjdk*))
 
