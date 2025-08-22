@@ -101,4 +101,6 @@
 (global-set-key [remap move-beginning-of-line] #'mwim-beginning)
 (global-set-key [remap move-end-of-line] #'mwim-end)
 
+(global-subword-mode)
+
 (provide 'dz-config-emacs-generic)
