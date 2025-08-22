@@ -53,4 +53,63 @@
 (set-face-attribute 'dap-ui-pending-breakpoint-face nil :inherit nil :background "salmon3" :foreground "white")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defvar dziman/hydra/debug--title (dziman/with-faicon "bug" "Debug" 1 -0.05))
+
+(pretty-hydra-define dziman/hydra/debug
+  (:color pink :quit-key "q" :title dziman/hydra/debug--title)
+  (
+    " Stepping"
+    (
+      ("n" dap-next " step over")
+      ("i" dap-step-in "󰆹 step in")
+      ("o" dap-step-out "󰆸 step out")
+      ("c" dap-continue " continue")
+      ("r" dap-restart-frame " restart frame")
+      ("D" dap-disconnect " disconnect")
+      )
+
+    " Breakpoints"
+    (
+      ("b b" dap-breakpoint-toggle " toggle")
+      ("b a" dap-breakpoint-add " add")
+      ("b d" dap-breakpoint-delete " delete")
+      ("b c" dap-breakpoint-condition " condition")
+      ("b h" dap-breakpoint-hit-condition " hit count")
+      ("b l" dap-breakpoint-log-message "log")
+      )
+
+    " Debug"
+    (
+      ("d d" dap-debug " start")
+      ("d r" dap-debug-recent " recent")
+      ("d l" dap-debug-last " last")
+      ("d R" dap-debug-restart " restart")
+      )
+
+    "Eval"
+    (
+      ("e e" dap-eval "eval")
+      ("e r" dap-eval-region "region")
+      ("e s" dap-eval-thing-at-point "at point")
+      ("e a" dap-ui-expressions-add "add expression")
+      )
+
+    "Switch"
+    (
+      ("s s" dap-switch-session "session")
+      ("s t" dap-switch-thread "thread")
+      ("s f" dap-switch-stack-frame "stack frame")
+      ("s u" dap-up-stack-frame "up stack frame")
+      ("s d" dap-down-stack-frame "down stack frame")
+      ("s l" dap-ui-loclals "list locals")
+      ("s b" dap-ui-breakpoints " list breakpints")
+      ("s S" dap-ui-sessions "list sessions")
+      )
+
+    )
+  )
+
+(bind-key "d" 'dziman/hydra/debug/body dziman/bind-map/hydra)
+
+
 (provide 'dz-config-prog-mode)
