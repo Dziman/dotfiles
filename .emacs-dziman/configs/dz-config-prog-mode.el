@@ -12,9 +12,13 @@
 (use-package lsp-ui :ensure t)
 (use-package dap-mode :ensure t)
 (use-package helm-lsp :ensure t)
+
 ;; formatting
 (use-package apheleia :ensure t)
+
 (use-package yasnippet :ensure t)
+(use-package string-inflection :ensure t)
+(use-package flycheck-inline :ensure t)
 
 ;; Highlight TODOs
 (setq hl-todo-keyword-faces
@@ -122,5 +126,11 @@
 ;; TODO Revisit if need external package
 ;; (bind-key "C-c f" 'apheleia-format-buffer)
 (bind-key "C-c f" 'lsp-format-buffer)
+
+;; TODO Is Java style is good for global?
+(bind-key "M-U" 'string-inflection-java-style-cycle)
+
+;; TODO It might duplicate `lsp-mode` messages
+(add-hook 'flycheck-mode-hook 'flycheck-inline-mode)
 
 (provide 'dz-config-prog-mode)

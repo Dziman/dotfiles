@@ -15,6 +15,10 @@
 (use-package nerd-icons-dired :ensure t)
 (use-package diredfl :ensure t)
 (use-package mwim :ensure t)
+(use-package info-colors
+  :ensure t
+  :hook ((Info-selection . info-colors-fontify-node)))
+(use-package helpful :ensure t)
 
 (setf dired-kill-when-opening-new-dired-buffer t)
 (add-hook 'dired-mode-hook 'diredfl-mode)
@@ -30,11 +34,11 @@
 ;; Show column position
 (column-number-mode 1)
 
-;; show top menu bar
-(menu-bar-mode t)
+;; Do not show top menu bar in terminal
+(menu-bar-mode 0)
 
-;; Do not show top menu in terminal
-(unless (display-graphic-p) (menu-bar-mode 0))
+;; Show top menu in macOs Emacs.app
+(when (display-graphic-p) (menu-bar-mode t))
 
 ;; Highlight current line
 (global-hl-line-mode 1)
@@ -108,5 +112,13 @@
 
 ;; Do not show recent buffers in switch menu. If that param is on/true then menu basially duplicate entries
 (setq bufler-switch-buffer-include-recent-buffers nil)
+
+(setq history-delete-duplicates t)
+
+;; key bindings for `helpful`
+;; TODO Keep original help bindings?
+(bind-key "C-h f" 'helpful-callable)
+(bind-key "C-h v" 'helpful-variable)
+(bind-key "C-h k" 'helpful-key)
 
 (provide 'dz-config-emacs-generic)
