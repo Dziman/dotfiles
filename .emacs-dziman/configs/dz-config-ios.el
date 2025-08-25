@@ -16,4 +16,8 @@
 
 (add-hook 'swift-mode-hook 'lsp)
 
+(require 'apheleia)
+(add-to-list 'apheleia-mode-alist '(swift-mode . swift-format))
+(add-to-list 'apheleia-formatters '(swift-format "swift-format" (buffer-file-name)))
+
 (provide 'dz-config-ios)

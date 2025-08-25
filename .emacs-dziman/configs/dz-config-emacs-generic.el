@@ -30,8 +30,11 @@
 ;; Show column position
 (column-number-mode 1)
 
-;; Do not show top menu
-(menu-bar-mode 0)
+;; show top menu bar
+(menu-bar-mode t)
+
+;; Do not show top menu in terminal
+(unless (display-graphic-p) (menu-bar-mode 0))
 
 ;; Highlight current line
 (global-hl-line-mode 1)
@@ -102,5 +105,8 @@
 (global-set-key [remap move-end-of-line] #'mwim-end)
 
 (global-subword-mode)
+
+;; Do not show recent buffers in switch menu. If that param is on/true then menu basially duplicate entries
+(setq bufler-switch-buffer-include-recent-buffers nil)
 
 (provide 'dz-config-emacs-generic)

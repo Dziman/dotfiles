@@ -5,7 +5,6 @@
 (require 'dz-config-helm-swoop)
 (use-package helm-company :ensure t)
 (use-package helm-mode-manager :ensure t)
-(use-package helm-bufler :ensure t)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
