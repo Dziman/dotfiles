@@ -10,7 +10,7 @@
   branch = auto
   ui = true
 [core]
-  editor = emacsclient -t
+  editor = emacsclient --tty --socket-name git-editor-emacs
   excludesfile = ~/.gitignore
   autocrlf = input
 [alias]
