@@ -8,9 +8,10 @@
 (use-package hungry-delete :ensure t)
 (use-package highlight-parentheses :ensure t)
 ;; Language server integration
+(use-package eglot :ensure t)
+(use-package dap-mode :ensure t)
 (use-package lsp-mode :ensure t)
 (use-package lsp-ui :ensure t)
-(use-package dap-mode :ensure t)
 (use-package helm-lsp :ensure t)
 
 ;; formatting
@@ -125,6 +126,7 @@
 ;; TODO Create `prog-mode` bind-map?
 ;; TODO Revisit if need external package
 ;; (bind-key "C-c f" 'apheleia-format-buffer)
+;; (bind-key "C-c f" 'eglot-format)
 (bind-key "C-c f" 'lsp-format-buffer)
 
 ;; TODO Is Java style is good for global?
