@@ -6,10 +6,5 @@
 
 alias emacs='emacs --no-window-system'
 alias edit='emacsclient --tty'
-alias ec='emacsclient --tty'
-
-function ke() {
-  if pgrep 'emacs' &>/dev/null; then
-    emacsclient --eval "(save-buffers-kill-emacs)"
-  fi
-}
+alias edit-wiki='edit --socket-name personal-wiki-emacs'
+alias edit-config='edit --socket-name configs-emacs'
