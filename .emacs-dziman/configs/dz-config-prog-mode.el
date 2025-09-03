@@ -129,6 +129,9 @@
 ;; (bind-key "C-c f" 'eglot-format)
 (bind-key "C-c f" 'lsp-format-buffer)
 
+;; TODO Try to fix icons in terminal. For now disable it at all
+(setq lsp-headerline-breadcrumb-icons-enable nil)
+
 ;; TODO Is Java style is good for global?
 (bind-key "M-U" 'string-inflection-java-style-cycle)
 

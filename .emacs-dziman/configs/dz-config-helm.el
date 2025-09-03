@@ -5,6 +5,8 @@
 (require 'dz-config-helm-swoop)
 (use-package helm-company :ensure t)
 (use-package helm-mode-manager :ensure t)
+(use-package ag :ensure t)
+(require 'dz-config-helm-ag)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
@@ -15,7 +17,7 @@
       helm-M-x-fuzzy-match                   t
       helm-semantic-fuzzy-match              t
       helm-ff-auto-update-initial-value      t
-      helm-split-window-in-side-p            t
+      helm-split-window-inside-p             t
       helm-autoresize-min-height             25
       helm-autoresize-max-height             25
       helm-buffer-max-length                 120

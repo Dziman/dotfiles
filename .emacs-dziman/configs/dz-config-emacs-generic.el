@@ -37,9 +37,6 @@
 ;; Do not show top menu bar in terminal
 (menu-bar-mode 0)
 
-;; Show top menu in macOs Emacs.app
-(when (display-graphic-p) (menu-bar-mode t))
-
 ;; Highlight current line
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#3e4446")
@@ -75,8 +72,6 @@
 (setq which-key-compute-remaps t)
 
 (bind-key "C-c e" 'er/expand-region)
-;; Duplicate current line
-(bind-key "C-c C-d" "\C-a\C- \C-n\M-w\C-y\C-b")
 
 (setq avy-timeout-seconds 0.8)
 
@@ -95,8 +90,8 @@
   (
    "Split"
     (
-      ("b" split-window-right "horizontally")
-      ("v" split-window-below "vertically")
+      ("b" split-window-right "║ horizontally")
+      ("v" split-window-below "══ vertically")
       )
     )
   )
@@ -120,5 +115,7 @@
 (bind-key "C-h f" 'helpful-callable)
 (bind-key "C-h v" 'helpful-variable)
 (bind-key "C-h k" 'helpful-key)
+
+(recentf-mode)
 
 (provide 'dz-config-emacs-generic)
