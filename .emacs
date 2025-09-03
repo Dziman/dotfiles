@@ -32,6 +32,7 @@
 (require 'dz-config-bind-maps)
 (require 'dz-config-hydra)
 (require 'dz-config-emacs-generic)
+(require 'dz-config-crux)
 (require 'dz-config-smart-mode-line)
 (require 'dz-config-prog-mode)
 (require 'dz-config-git)
@@ -46,6 +47,7 @@
 (require 'dz-config-ace)
 (require 'dz-config-ios)
 (require 'dz-config-appearance)
+(require 'dz-config-emacs-graphic)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ) ;; end of lifehack wrapper
