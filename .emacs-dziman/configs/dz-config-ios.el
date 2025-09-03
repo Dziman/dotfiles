@@ -38,7 +38,7 @@
 ;; TODO Do not hardcode?
 (setq dap-lldb-debug-program '("/opt/homebrew/opt/llvm/bin/lldb-dap"))
 
-;;(add-hook 'swift-mode-hook 'lsp)
+(add-hook 'swift-mode-hook 'lsp)
 
 ;; eglot configs TODO revisit
 ;;(add-hook 'swift-mode-hook 'eglot-ensure)
