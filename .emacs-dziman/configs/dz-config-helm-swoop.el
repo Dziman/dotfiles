@@ -1,6 +1,6 @@
+;; helm-swoop.el --- Efficiently hopping squeezed lines powered by helm interface -*- lexical-binding: t -*-
 ;; "Clone" of `helm-swoop` as it was removed from MELPA
 ;; TODO Find alternative?
-;; helm-swoop.el --- Efficiently hopping squeezed lines powered by helm interface -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2019  Emacsorphanage Community
 ;; Copyright (C) 2013-2018  Shingo Fukuyama

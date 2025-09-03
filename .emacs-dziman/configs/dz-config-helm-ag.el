@@ -1,6 +1,6 @@
+;;; helm-ag.el --- The silver searcher with helm interface -*- lexical-binding: t; -*-
 ;; "Clone" of `helm-ag` as it was removed from MELPA
 ;; TODO Find alternative?
-;;; helm-ag.el --- The silver searcher with helm interface -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  Syohei YOSHIDA
 ;; Copyright (C) 2020-2024  Shen, Jen-Chieh
