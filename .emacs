@@ -1,26 +1,47 @@
 ;;; -*- lexical-binding: t -*-
-(let ((file-name-handler-alist nil)) ;; lefihack to speed up init. See https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
-
-(setq gc-cons-threshold (* 128 1024 1024)) ;; set memory 'limit' to 128Mb to reduce number of GC calls
 
 ;;;;;; Use separate file for `custom` to keep config cleaner
 (setq custom-file "~/.emacs-dziman/custom.el")
 (load custom-file :noerror :nomessage)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; Setup `package` to install automatically
+;;;;;; Setup `package`
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq use-package-always-defer t) ;; Lazy load for packages. Causing some errors on init but it seems it doesn't provide any startup time reduction
-;; (setq use-package-compute-statistics t) ;; Collect init statistics. Check by run `M-x use-package-report`
-(require 'package)
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;; install packages automatically
 (dolist (package '(use-package))
-   (unless (package-installed-p package)
-       (package-install package)))
+  (unless (package-installed-p package)
+    (package-install package)
+    )
+  )
 
 (package-initialize)
+
+(use-package use-package
+  :custom
+  (use-package-verbose nil)
+  (use-package-expand-minimally t)
+  (use-package-always-ensure t)
+  (use-package-compute-statistics t)
+  (use-package-minimum-reported-time 0.02)
+  )
+
+(setq
+  package-archives
+  '(
+     ("melpa-stable" . "https://stable.melpa.org/packages/")
+     ("melpa" . "https://melpa.org/packages/")
+     ("gnu" . "https://elpa.gnu.org/packages/")
+     ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+     )
+  package-archive-priorities
+  '(
+     ("gnu" . 99)
+     ("nongnu" . 80)
+     ("melpa" . 1)
+     ("melpa-stable" . 0)
+     )
+  )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;; Add personal configs dir to list
@@ -50,5 +71,3 @@
 (require 'dz-config-appearance)
 (require 'dz-config-emacs-graphic)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-) ;; end of lifehack wrapper

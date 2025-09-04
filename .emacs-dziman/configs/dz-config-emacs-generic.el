@@ -2,6 +2,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Generic packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package no-littering :ensure t)
 (use-package which-key :ensure t)
 (use-package bind-key :ensure t)
 (use-package bind-map :ensure t)
@@ -26,24 +27,11 @@
 (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
 
 ;; Highlight word under caret
-(define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode 1)))
-(global-idle-highlite-mode 1)
+(define-globalized-minor-mode global-idle-highlite-mode idle-highlight-mode (lambda () (idle-highlight-mode t)))
+(global-idle-highlite-mode t)
 
 ;; Enable editorconfig
-(editorconfig-mode 1)
-
-;; Show column position
-(column-number-mode 1)
-
-;; Do not show top menu bar in terminal
-(menu-bar-mode 0)
-
-;; Highlight current line
-(global-hl-line-mode 1)
-(set-face-background 'hl-line "#3e4446")
-
-;; Show line numbers
-(global-display-line-numbers-mode 1)
+(editorconfig-mode t)
 
 ;; Undo tree
 (setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
@@ -52,8 +40,6 @@
 (bind-key "C-x C-u" 'undo-tree-visualize)
 ;; Prevent undo tree files from polluting all dirs
 (setq undo-tree-history-directory-alist '(("." . ".emacs~/undo")))
-;; Put emacs backup files into one hidden dir in current dir
-(setq backup-directory-alist '(("." . ".emacs~")))
 ;; Кеep autosave files in temp directory
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 ;; do not create locks
@@ -104,8 +90,6 @@
 (global-set-key [remap move-beginning-of-line] #'mwim-beginning)
 (global-set-key [remap move-end-of-line] #'mwim-end)
 
-(global-subword-mode)
-
 ;; Do not show recent buffers in switch menu. If that param is on/true then menu basially duplicate entries
 (setq bufler-switch-buffer-include-recent-buffers nil)
 
@@ -118,5 +102,56 @@
 (bind-key "C-h k" 'helpful-key)
 
 (recentf-mode)
+
+(use-package emacs
+  :hook (after-init .
+          (lambda ()
+            (global-hl-line-mode t)
+            (global-auto-revert-mode t)
+            (pixel-scroll-precision-mode t)
+            (global-subword-mode)
+            ;; Show line numbers
+            (global-display-line-numbers-mode t)
+            ;; Do not show top menu bar in terminal
+            (menu-bar-mode 0)
+            ;; Highlight current line
+            (global-hl-line-mode t)
+            (set-face-background 'hl-line "#3e4446")
+            )
+          )
+  :custom
+  (auto-revert-avoid-polling t) ;; Automatically reread from disk if the underlying file changes
+  (auto-revert-check-vc-info t)
+  (completion-ignore-case t)
+  (backward-delete-char-untabify-method 'hungry)
+    (auto-save-no-message t)
+  (auto-save-timeout 20)
+  (auto-window-vscroll nil)
+  (auto-save-file-name-transforms `((".*" ,(expand-file-name "var/auto-save/" user-emacs-directory) t)))
+  (auto-save-list-file-prefix (expand-file-name "var/auto-save/.saves-" user-emacs-directory))
+  :config
+  (setopt history-length 300)
+  (setopt kept-new-versions 6)
+  (setopt kept-old-versions 2)
+  (setopt kill-do-not-save-duplicates t)
+  (setopt large-file-warning-threshold (* 15 1024 1024))
+  (setopt recentf-auto-cleanup (if (daemonp) 300 'never))
+  (setopt recentf-max-menu-items 15)
+  (setopt recentf-max-saved-items 300)
+  (setopt use-short-answers t)
+  (setopt version-control t)
+  (setopt warning-minimum-level :emergency)
+  (setopt xref-search-program 'ripgrep)
+  ;; Put emacs backup files into one hidden dir in current dir
+  (setopt backup-directory-alist '(("." . ".emacs~")))
+
+  (when (eq system-type 'darwin)
+    (setq
+      dired-use-ls-dired t
+      insert-directory-program "/opt/homebrew/bin/gls"
+      dired-listing-switches "-aBhl --group-directories-first"
+      )
+    )
+  )
 
 (provide 'dz-config-emacs-generic)

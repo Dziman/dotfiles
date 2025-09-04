@@ -5,9 +5,9 @@
 (use-package crux :ensure t)
 
 (bind-key "C-c C-d" 'crux-duplicate-current-line-or-region)
-(bind-key "S-<return>" 'crux-smart-open-line)
-(bind-key "C-S-<return>" 'crux-smart-open-line-above)
-(bind-key "C-k" 'crux-smart-kill-line)
+(bind-key "C-<return>" 'crux-smart-open-line)
+(bind-key "M-<return>" 'crux-smart-open-line-above)
+(bind-key "M-k" 'crux-smart-kill-line)
 ;; `keyboard-quit` close the minibuffer or completions buffer even without focusing it.
 (bind-key "C-g" 'crux-keyboard-quit-dwim)
 
