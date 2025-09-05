@@ -44,8 +44,12 @@
   )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;; Add personal configs dir to list
-(add-to-list 'load-path (expand-file-name "~/.emacs-dziman/configs" user-emacs-directory))
+;;;;;; Add personal configs dir and subdirs to list
+(let ((dir (expand-file-name "~/.emacs-dziman/configs" user-emacs-directory)))
+  (when (file-directory-p dir)
+    (add-to-list 'load-path dir)
+    (let ((default-directory dir))
+      (normal-top-level-add-subdirs-to-load-path))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Load configs. Ordiring is important
