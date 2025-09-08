@@ -110,13 +110,9 @@
             (global-subword-mode)
             ;; Show line numbers
             (global-display-line-numbers-mode t)
-            ;; Do not show top menu bar in terminal
-            (menu-bar-mode 0)
-            ;; Highlight current line
-            (global-hl-line-mode t)
-            (set-face-background 'hl-line "#3e4446")
             )
           )
+
   :custom
   (auto-revert-avoid-polling t) ;; Automatically reread from disk if the underlying file changes
   (auto-revert-check-vc-info t)
@@ -127,6 +123,7 @@
   (auto-window-vscroll nil)
   (auto-save-file-name-transforms `((".*" ,(expand-file-name "var/auto-save/" user-emacs-directory) t)))
   (auto-save-list-file-prefix (expand-file-name "var/auto-save/.saves-" user-emacs-directory))
+
   :config
   (setopt history-length 300)
   (setopt kept-new-versions 6)
@@ -151,5 +148,11 @@
       )
     )
   )
+
+;; Highlight current line
+(global-hl-line-mode t)
+
+;; Do not show top menu bar in terminal
+(menu-bar-mode 0)
 
 (provide 'dz-config-emacs-generic)
