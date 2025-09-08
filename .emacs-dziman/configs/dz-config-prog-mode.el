@@ -147,4 +147,15 @@
 (setq flyover-show-virtual-line t)
 (setq flyover-virtual-line-icon "  ")
 
+(use-package periphery-search
+  :ensure nil
+  :bind (:map prog-mode-map
+          ("C-c C-s" . #'periphery-search-rg)
+          ("C-c C-f" . #'periphery-search-dwiw-rg) ;; TODO Fix: does not work
+          ("C-x C-t" . #'periphery-query-todos-and-fixmes) ;; TODO Fix: does not work
+          ("C-x C-m" . #'periphery-query-marks) ;; TODO Fix: does not work
+          ("M-?" . #'periphery-toggle-buffer)
+          )
+  )
+
 (provide 'dz-config-prog-mode)

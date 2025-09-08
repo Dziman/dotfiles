@@ -16,11 +16,8 @@
 
 (defun periphery--swiftlint:analyze-result (result)
   "Analyze RESULT."
-  (periphery-run-parser result (lambda ()
-                                 (message-with-color
-                                  :tag "[Success]"
-                                  :text "No lint warning or errors."
-                                  :attributes 'success))))
+  (periphery-run-parser result)
+)
 
 (defun periphery-run-swiftlint ()
   "Lint the whole project not just current file."
@@ -29,8 +26,10 @@
       (progn
         (let ((default-directory (get-swiftlint-file-root)))
           (async-start-command-to-string
-           :command "swiftlint"
-           :callback '(lambda (result) (periphery--swiftlint:analyze-result result))))
+            :command "swiftlint"
+            :callback '(lambda (result) (periphery--swiftlint:analyze-result result))
+            )
+          )
         (message-with-color
          :tag "[Linting|Swiftlint]"
          :text (file-name-nondirectory (directory-file-name (file-name-directory default-directory)))
@@ -42,4 +41,3 @@
 
 (provide 'periphery-swiftlint)
 ;;; periphery-swiftlint.el ends here.
-
