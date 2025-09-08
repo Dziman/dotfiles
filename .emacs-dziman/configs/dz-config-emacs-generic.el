@@ -6,6 +6,7 @@
 (use-package which-key)
 (use-package bind-key)
 (use-package bind-map)
+(setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
 (use-package undo-tree)
 (use-package expand-region)
 (use-package editorconfig)
@@ -32,7 +33,6 @@
 (editorconfig-mode t)
 
 ;; Undo tree
-(setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
 (global-undo-tree-mode)
 (bind-key "C-x u" 'undo-tree-undo)
 (bind-key "C-x C-u" 'undo-tree-visualize)
