@@ -49,23 +49,25 @@
   )
 
 ;; Package system optimizations
-(setq
-  package-enable-at-startup nil
-  package-native-compile t
-  package-quickstart t
-  )
+;; TODO Revisit: it looks like causing some startup issues
+;;(setq
+;;  package-enable-at-startup nil
+;;  package-native-compile t
+;;  package-quickstart t
+;;  )
 
 ;; Native compilation settings
-(when (and
-        (fboundp 'native-comp-available-p)
-        (native-comp-available-p)
-        )
-  (setq
-    native-comp-async-report-warnings-errors nil
-    native-comp-async-query-on-exit t
-    native-comp-jit-compilation t
-    )
-  )
+;; TODO Revisit: it looks like causing some startup issues
+;;(when (and
+;;        (fboundp 'native-comp-available-p)
+;;        (native-comp-available-p)
+;;        )
+;;  (setq
+;;    native-comp-async-report-warnings-errors nil
+;;    native-comp-async-query-on-exit t
+;;    native-comp-jit-compilation t
+;;    )
+;;  )
 
 ;; UTF-8 everywhere
 (set-language-environment "UTF-8")
