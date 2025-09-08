@@ -9,7 +9,6 @@
 (use-package hungry-delete)
 (use-package highlight-parentheses)
 ;; Language server integration
-(use-package eglot)
 (use-package dap-mode)
 (use-package lsp-mode)
 (use-package lsp-ui)
@@ -137,6 +136,15 @@
 (bind-key "M-U" 'string-inflection-java-style-cycle)
 
 ;; TODO It might duplicate `lsp-mode` messages
-(add-hook 'flycheck-mode-hook 'flycheck-inline-mode)
+;; FIXME Disable as `flyover` is doing the same and even better(?)
+;;(add-hook 'flycheck-mode-hook 'flycheck-inline-mode)
+
+(require 'flyover)
+(add-hook 'flycheck-mode-hook #'flyover-mode)
+(setq flyover-checkers '(flycheck flymake))
+(setq flyover-levels '(error warning info))
+(setq flyover-show-at-eol t)
+(setq flyover-show-virtual-line t)
+(setq flyover-virtual-line-icon "  ")
 
 (provide 'dz-config-prog-mode)

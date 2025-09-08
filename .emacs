@@ -40,7 +40,7 @@
       (normal-top-level-add-subdirs-to-load-path))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; Load configs. Ordiring is important
+;;;;;; Load configs. Ordiring is important in some cases
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'dz-config-icons)
 (require 'dz-config-bind-maps)
@@ -61,6 +61,7 @@
 (require 'dz-config-prog-languages)
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
+(require 'dz-config-eglot)
 (require 'dz-config-ios)
 (require 'dz-config-appearance)
 (require 'dz-config-emacs-graphic)
