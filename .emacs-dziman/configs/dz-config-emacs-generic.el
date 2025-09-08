@@ -128,6 +128,7 @@
   (setopt history-length 300)
   (setopt kept-new-versions 6)
   (setopt kept-old-versions 2)
+  (setopt delete-old-versions t)
   (setopt kill-do-not-save-duplicates t)
   (setopt large-file-warning-threshold (* 15 1024 1024))
   (setopt recentf-auto-cleanup (if (daemonp) 300 'never))
