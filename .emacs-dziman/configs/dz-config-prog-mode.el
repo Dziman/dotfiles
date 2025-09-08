@@ -2,25 +2,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Development related small-ish packages and related configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package hl-todo :ensure t)
-(use-package rainbow-delimiters :ensure t)
-(use-package rainbow-mode :ensure t)
-(use-package smartparens :ensure t)
-(use-package hungry-delete :ensure t)
-(use-package highlight-parentheses :ensure t)
+(use-package hl-todo)
+(use-package rainbow-delimiters)
+(use-package rainbow-mode)
+(use-package smartparens)
+(use-package hungry-delete)
+(use-package highlight-parentheses)
 ;; Language server integration
-(use-package eglot :ensure t)
-(use-package dap-mode :ensure t)
-(use-package lsp-mode :ensure t)
-(use-package lsp-ui :ensure t)
-(use-package helm-lsp :ensure t)
+(use-package eglot)
+(use-package dap-mode)
+(use-package lsp-mode)
+(use-package lsp-ui)
+(use-package helm-lsp)
 
 ;; formatting
-(use-package apheleia :ensure t)
+(use-package apheleia)
 
-(use-package yasnippet :ensure t)
-(use-package string-inflection :ensure t)
-(use-package flycheck-inline :ensure t)
+(use-package yasnippet)
+(use-package string-inflection)
+(use-package flycheck-inline)
 
 ;; Highlight TODOs
 (setq hl-todo-keyword-faces

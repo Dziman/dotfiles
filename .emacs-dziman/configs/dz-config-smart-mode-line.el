@@ -2,8 +2,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Smart mode line configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package smart-mode-line :ensure t)
-(use-package smart-mode-line-powerline-theme :ensure t)
+(use-package smart-mode-line)
+(use-package smart-mode-line-powerline-theme)
 
 (setq sml/mode-width 'right)
 (setq powerline-arrow-shape 'curve)

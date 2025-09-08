@@ -2,9 +2,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Projectile packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package projectile :ensure t)
-(use-package helm-projectile :ensure t)
-(use-package ibuffer-projectile :ensure t)
+(use-package projectile)
+(use-package helm-projectile)
+(use-package ibuffer-projectile)
 
 (projectile-mode)
 (setq projectile-completion-system 'helm)

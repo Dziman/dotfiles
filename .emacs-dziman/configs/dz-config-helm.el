@@ -2,11 +2,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Helm packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package helm :ensure t)
+(use-package helm)
 (require 'dz-config-helm-swoop)
-(use-package helm-company :ensure t)
-(use-package helm-mode-manager :ensure t)
-(use-package ag :ensure t)
+(use-package helm-company)
+(use-package helm-mode-manager)
+(use-package ag)
 (require 'dz-config-helm-ag)
 
 (setq helm-ff-transformer-show-only-basename nil

@@ -2,8 +2,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Defining key bind maps
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package bind-key :ensure t)
-(use-package bind-map :ensure t)
+(use-package bind-key)
+(use-package bind-map)
 
 (bind-map dziman/bind-map/hydra
   :keys ("C-.")

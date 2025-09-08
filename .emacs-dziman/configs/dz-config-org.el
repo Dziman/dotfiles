@@ -2,13 +2,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; org packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package org-super-agenda :ensure t)
-(use-package org-roam :ensure t)
-(use-package org-rainbow-tags :ensure t)
-(use-package org-sticky-header :ensure t)
-(use-package org-super-agenda :ensure t)
-(use-package helm-org :ensure t)
-(use-package helm-roam :ensure t)
+(use-package org-super-agenda)
+(use-package org-roam)
+(use-package org-rainbow-tags)
+(use-package org-sticky-header)
+(use-package org-super-agenda)
+(use-package helm-org)
+(use-package helm-roam)
 
 (defun dziman/org/get-formatted-date (&optional date-format)
   (interactive)

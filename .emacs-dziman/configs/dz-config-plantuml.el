@@ -2,7 +2,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; PlantUML packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package plantuml-mode :ensure t)
+(use-package plantuml-mode)
 
 (setq plantuml-default-exec-mode 'jar)
 (setq plantuml-jar-path (expand-file-name "~/.plantuml/plantuml.jar"))
