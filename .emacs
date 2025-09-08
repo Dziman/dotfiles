@@ -1,7 +1,9 @@
 ;;; -*- lexical-binding: t -*-
 
+(setq dziman/settings-base-dir (or (getenv "DZIMAN_EMACS_SETTINGS_DIR") "~/.emacs-dziman"))
+
 ;;;;;; Use separate file for `custom` to keep config cleaner
-(setq custom-file "~/.emacs-dziman/custom.el")
+(setq custom-file (expand-file-name "custom.el" dziman/settings-base-dir))
 (load custom-file :noerror :nomessage)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -45,7 +47,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;; Add personal configs dir and subdirs to list
-(let ((dir (expand-file-name "~/.emacs-dziman/configs" user-emacs-directory)))
+(let ((dir (expand-file-name "configs" dziman/settings-base-dir)))
   (when (file-directory-p dir)
     (add-to-list 'load-path dir)
     (let ((default-directory dir))
