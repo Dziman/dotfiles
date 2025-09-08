@@ -101,52 +101,45 @@
 
 (recentf-mode)
 
-(use-package emacs
-  :hook (after-init .
-          (lambda ()
-            (global-hl-line-mode t)
-            (global-auto-revert-mode t)
-            (pixel-scroll-precision-mode t)
-            (global-subword-mode)
-            ;; Show line numbers
-            (global-display-line-numbers-mode t)
-            )
-          )
+(global-hl-line-mode t)
+(global-auto-revert-mode t)
+(pixel-scroll-precision-mode t)
+(global-subword-mode)
+;; Show line numbers
+(global-display-line-numbers-mode t)
 
-  :custom
-  (auto-revert-avoid-polling t) ;; Automatically reread from disk if the underlying file changes
-  (auto-revert-check-vc-info t)
-  (completion-ignore-case t)
-  (backward-delete-char-untabify-method 'hungry)
-    (auto-save-no-message t)
-  (auto-save-timeout 20)
-  (auto-window-vscroll nil)
-  (auto-save-file-name-transforms `((".*" ,(expand-file-name "var/auto-save/" user-emacs-directory) t)))
-  (auto-save-list-file-prefix (expand-file-name "var/auto-save/.saves-" user-emacs-directory))
+(setq auto-revert-avoid-polling t) ;; Automatically reread from disk if the underlying file changes
+(setq auto-revert-check-vc-info t)
+(setq completion-ignore-case t)
+(setq backward-delete-char-untabify-method 'hungry)
+(setq auto-save-no-message t)
+(setq auto-save-timeout 20)
+(setq auto-window-vscroll nil)
+(setq auto-save-file-name-transforms `((".*" ,(expand-file-name "var/auto-save/" user-emacs-directory) t)))
+(setq auto-save-list-file-prefix (expand-file-name "var/auto-save/.saves-" user-emacs-directory))
 
-  :config
-  (setopt history-length 300)
-  (setopt kept-new-versions 6)
-  (setopt kept-old-versions 2)
-  (setopt delete-old-versions t)
-  (setopt kill-do-not-save-duplicates t)
-  (setopt large-file-warning-threshold (* 15 1024 1024))
-  (setopt recentf-auto-cleanup (if (daemonp) 300 'never))
-  (setopt recentf-max-menu-items 15)
-  (setopt recentf-max-saved-items 300)
-  (setopt use-short-answers t)
-  (setopt version-control t)
+(setopt history-length 300)
+(setopt kept-new-versions 6)
+(setopt kept-old-versions 2)
+(setopt delete-old-versions t)
+(setopt kill-do-not-save-duplicates t)
+(setopt large-file-warning-threshold (* 15 1024 1024))
+(setopt recentf-auto-cleanup (if (daemonp) 300 'never))
+(setopt recentf-max-menu-items 15)
+(setopt recentf-max-saved-items 300)
+(setopt use-short-answers t)
+(setopt version-control t)
+
 ;  (setopt warning-minimum-level :emergency)
-  (setopt xref-search-program 'ripgrep)
-  ;; Put emacs backup files into one hidden dir in current dir
-  (setopt backup-directory-alist '(("." . ".emacs~")))
+(setopt xref-search-program 'ripgrep)
+;; Put emacs backup files into one hidden dir in current dir
+(setopt backup-directory-alist '(("." . ".emacs~")))
 
-  (when (eq system-type 'darwin)
-    (setq
-      dired-use-ls-dired t
-      insert-directory-program "/opt/homebrew/bin/gls"
-      dired-listing-switches "-aBhl --group-directories-first"
-      )
+(when (eq system-type 'darwin)
+  (setq
+    dired-use-ls-dired t
+    insert-directory-program "/opt/homebrew/bin/gls"
+    dired-listing-switches "-aBhl --group-directories-first"
     )
   )
 
