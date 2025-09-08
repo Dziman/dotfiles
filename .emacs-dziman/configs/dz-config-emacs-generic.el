@@ -140,7 +140,7 @@
   (setopt recentf-max-saved-items 300)
   (setopt use-short-answers t)
   (setopt version-control t)
-  (setopt warning-minimum-level :emergency)
+;  (setopt warning-minimum-level :emergency)
   (setopt xref-search-program 'ripgrep)
   ;; Put emacs backup files into one hidden dir in current dir
   (setopt backup-directory-alist '(("." . ".emacs~")))
