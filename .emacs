@@ -28,22 +28,8 @@
   (use-package-minimum-reported-time 0.02)
   )
 
-(setq
-  package-archives
-  '(
-     ("melpa-stable" . "https://stable.melpa.org/packages/")
-     ("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "https://elpa.gnu.org/packages/")
-     ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-     )
-  package-archive-priorities
-  '(
-     ("gnu" . 99)
-     ("nongnu" . 80)
-     ("melpa" . 1)
-     ("melpa-stable" . 0)
-     )
-  )
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;; Add personal configs dir and subdirs to list
