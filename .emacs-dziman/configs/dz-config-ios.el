@@ -127,12 +127,56 @@
 
 (require 'lsp)
 
+(defun dziman/lsp-activate-on-test (&rest languages)
+  (lambda (file-name _mode)
+    (message file-name)
+    (and
+      (or
+        (string-match ".*Test\.swift$" file-name)
+        (string-match ".*Package\.swift$" file-name)
+        )
+      (-contains? languages (lsp-buffer-language))
+      )
+    )
+  )
+
+(defun dziman/lsp-activate-on-non-test (&rest languages)
+  (lambda (file-name _mode)
+    (message file-name)
+    (and
+      (not
+        (or
+          (string-match ".*Test\.swift$" file-name)
+          (string-match ".*Package\.swift$" file-name)
+          )
+        )
+      (-contains? languages (lsp-buffer-language))
+      )
+    )
+  )
+
+(lsp-register-client
+  (make-lsp-client
+    :new-connection
+    (lsp-stdio-connection (list "xcrun" "sourcekit-lsp"))
+    :activation-fn (dziman/lsp-activate-on-test "swifts")
+    :server-id 'dziman/sourcekit-ls-test)
+  )
+
 (lsp-register-client
   (make-lsp-client
     :new-connection
     (lsp-stdio-connection (dziman/sourcekit-lsp-command-line))
-    :major-modes '(swift-mode swift-ts-mode)
+    :activation-fn (dziman/lsp-activate-on-non-test "swifts")
     :server-id 'dziman/sourcekit-ls)
+  )
+
+(lsp-register-client
+  (make-lsp-client
+    :new-connection
+    (lsp-stdio-connection (list "xcrun" "sourcekit-lsp"))
+    :activation-fn (lsp-activate-on "swift")
+    :server-id 'dziman/sourcekit-ls-plain)
   )
 
 (add-hook 'swift-mode-hook 'lsp)
