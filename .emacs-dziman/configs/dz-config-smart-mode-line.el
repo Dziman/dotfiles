@@ -36,6 +36,8 @@
      " h"
      " Abbrev"
      " Rbow"
+     " fo"
+     " Lens"
      )
   )
 

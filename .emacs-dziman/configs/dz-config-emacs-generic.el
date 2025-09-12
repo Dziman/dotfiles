@@ -149,4 +149,6 @@
 ;; Do not show top menu bar in terminal
 (menu-bar-mode 0)
 
+(column-number-mode t)
+
 (provide 'dz-config-emacs-generic)

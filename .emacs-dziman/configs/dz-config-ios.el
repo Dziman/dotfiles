@@ -5,12 +5,18 @@
 (use-package swift-mode
   :mode "\\.swift\\'"
   :config
-  (add-to-list 'auto-mode-alist '("\\.swift\\'" . swift-mode)))
+  (add-to-list 'auto-mode-alist '("\\.swift\\'" . swift-mode))
+  )
+
+;;(define-derived-mode swift-test-mode swift-mode "Swift[Test]")
+;;(define-derived-mode swift-ui-test-mode swift-mode "Swift[UI Test]")
 
 (require 'eglot)
 (require 'swift-lsp)
 (add-to-list 'eglot-server-programs '(swift-mode . my-swift-mode:eglot-server-contact))
-(add-hook 'swift-mode-hook 'eglot-ensure)
+;; For tests we need to use `macOS` default platform to enable `Testing` framework
+;;(add-to-list 'eglot-server-programs '(swift-test-mode . ("xcrun" "sourcekit-lsp")))
+;;(add-hook 'swift-mode-hook 'eglot-ensure)
 
 ;;;; Debugging
 (require 'dap-lldb)
@@ -56,7 +62,7 @@
   :bind
   (:map swift-mode-map
     ("M-K" .  #'xcode-additions:clean-build-folder)
-    ("C-c C-d" . #'xcode-additions:start-debugging)
+;;    ("C-c C-d" . #'xcode-additions:start-debugging)
     ("C-c C-x" . #'swift-additions:reset)
     )
   )
@@ -87,5 +93,48 @@
 ;;  :bind
 ;;  ("C-c C-a" . #'apple-docs/query)
 ;;  ("C-c C-A" . #'apple-docs/query-thing-at-point))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;; To achieve completion for iOS development have to create LSP client manually instead of using `lsp-sourcekit` package.
+;;;;;; Just using `xcrun --sdk` is not enough: we need to pass `swiftc` `sdka` and `target` as well, otherwise some features (like code completion) will not work properly
+;;;;;; TODO Do not hardcode target and add possibility to switch target platform without need to edit emacs config and restart emacs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun dziman/ios-lsp-target (sdk-platform)
+  "Get the current simulator sdk."
+  (let* (
+          (target-components (split-string (string-trim (shell-command-to-string "clang -print-target-triple")) "-"))
+          (arch (nth 0 target-components))
+          (vendor (nth 1 target-components))
+          (version (string-trim (shell-command-to-string (format "xcrun --sdk %s --show-sdk-version" sdk-platform))))
+          )
+    ;; TODO Really take into account `sdk-platform`. Right now it properly works for `iphoneos` only
+    (format "%s-%s-ios%s" arch vendor version)))
+
+(defun dziman/sourcekit-lsp-command-line()
+  (let* (
+         (dziman/sourcekit-lsp-sdk-platform "iphoneos")
+         (dziman/sourcekit-lsp-sdk-target (dziman/ios-lsp-target dziman/sourcekit-lsp-sdk-platform))
+         (dziman/sourcekit-lsp-sdk-path (car (process-lines "xcrun" "--sdk" dziman/sourcekit-lsp-sdk-platform "--show-sdk-path")))
+          )
+    (list
+       "xcrun" "--sdk" dziman/sourcekit-lsp-sdk-platform
+         "sourcekit-lsp"
+           "-Xswiftc" "-sdk" "-Xswiftc" dziman/sourcekit-lsp-sdk-path
+           "-Xswiftc" "-target" "-Xswiftc" dziman/sourcekit-lsp-sdk-target
+       )
+     )
+   )
+
+(require 'lsp)
+
+(lsp-register-client
+  (make-lsp-client
+    :new-connection
+    (lsp-stdio-connection (dziman/sourcekit-lsp-command-line))
+    :major-modes '(swift-mode swift-ts-mode)
+    :server-id 'dziman/sourcekit-ls)
+  )
+
+(add-hook 'swift-mode-hook 'lsp)
 
 (provide 'dz-config-ios)
