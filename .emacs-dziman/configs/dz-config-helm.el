@@ -3,7 +3,6 @@
 ;;;;;; Helm packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package helm)
-(require 'dz-config-helm-swoop)
 (use-package helm-company)
 (use-package helm-mode-manager)
 (use-package ag)
@@ -29,10 +28,6 @@
 (helm-autoresize-mode 1)
 (setq helm-ff-skip-boring-files t)
 
-;; helm-swoop (search improvement)
-(setq helm-swoop-split-direction 'split-window-horizontally)
-(setq helm-swoop-move-to-line-cycle t)
-
 (add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
 (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags . helm-org-completing-read-tags))
 (setq helm-org-format-outline-path t)
@@ -50,13 +45,9 @@
 (bind-key "M-y" 'helm-show-kill-ring)
 (bind-key "C-x C-d" 'helm-browse-project)
 
-;; helm-swoop (improved search)
-(bind-key "M-i" 'helm-swoop)
-(bind-key "M-s o" 'helm-swoop)
-(bind-key "M-I" 'helm-swoop-back-to-last-point)
-(bind-key "C-c M-i" 'helm-multi-swoop)
-(bind-key "M-s /" 'helm-multi-swoop)
-(bind-key "C-x M-i" 'helm-multi-swoop-all)
-(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+;; helm-occur (improved search)
+(bind-key "M-i" 'helm-occur)
+(bind-key "M-s o" 'helm-occur)
+(define-key isearch-mode-map (kbd "M-i") 'helm-occur-from-isearch)
 
 (provide 'dz-config-helm)
