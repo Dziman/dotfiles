@@ -5,8 +5,6 @@
 (use-package helm)
 (use-package helm-company)
 (use-package helm-mode-manager)
-(use-package ag)
-(require 'dz-config-helm-ag)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
