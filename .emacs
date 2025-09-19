@@ -47,7 +47,6 @@
 (require 'dz-config-hydra)
 (require 'dz-config-emacs-generic)
 (require 'dz-config-crux)
-(require 'dz-config-smart-mode-line)
 ;; Missing very important for me feature: save indicator. Decided not to use (for now)
 ;; (require 'dz-config-punch-line)
 (require 'dz-config-prog-mode)
@@ -65,4 +64,5 @@
 (require 'dz-config-ios)
 (require 'dz-config-appearance)
 (require 'dz-config-emacs-graphic)
+(require 'dz-config-doom-modeline)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

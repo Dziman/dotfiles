@@ -74,6 +74,8 @@
   (global-unset-key [C-wheel-up])
   (global-unset-key [C-wheel-down])
 
+  (tool-bar-mode 0)
+
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )
 
