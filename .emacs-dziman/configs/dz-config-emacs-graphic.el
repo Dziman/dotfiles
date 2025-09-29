@@ -2,7 +2,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Settings overrides for graphic emacs (Emacs.app)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(when (display-graphic-p)
+(when (or
+        (display-graphic-p)
+        (string= (getenv "DZIMAN_EMACSCLIENT_MODE") "ui")
+        )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Show top menu
   (menu-bar-mode t)
@@ -24,6 +27,7 @@
       ns-use-proxy-icon nil
       mac-command-modifier 'super
       mac-option-modifier 'meta
+      mac-right-option-modifier nil
       )
     )
 
