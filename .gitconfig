@@ -1,10 +1,9 @@
 [user]
   name = Dzmitry Rusak
   email = dzmitry.rusak@gmail.com
-[includeIf "gitdir:~/src/ta/"]
-  path = ~/.gitconfig-ta
 [includeIf "gitdir:~/src/oss/"]
   path = ~/.gitconfig-oss
+
 [color]
   status = auto
   branch = auto
@@ -59,7 +58,7 @@
   fp = fetch --prune
   fpo = fp origin
 
-    ### stash related
+  ### stash related
   # show changes in stash
   st = !sh -c 'git stash show --patch stash@{${1:-0}}' -
   # drop stash entry
@@ -114,10 +113,11 @@
   whitespace-error-style = "#280050" reverse
   zero-style = syntax
   syntax-theme = zenburn
-  max-line-length = 0
+  max-line-distance = 0.8
   hyperlinks = true
-    blame-timestamp-output-format = "%Y-%m%d %H;%M:%S %z"
-    blame-palette = "#486C5A #88816D #576F71"
+  blame-timestamp-output-format = "%Y-%m-%d %H:%M:%S %z"
+  blame-palette = "#486C5A #88816D #576F71"
+  true-color = always
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = red bold 52
