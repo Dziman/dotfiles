@@ -23,6 +23,7 @@ function print-color-palette() {
 function list-installed() {
   brew list --formulae >~/.dziman/brew.packages
   brew list --cask >~/.dziman/brew.cask.packages
+  brew tap >~/.dziman/brew.taps
   code --version >/dev/null 2>&1
   if [[ $? == 0 ]]; then
     code --list-extensions >~/.dziman/vs.code.extensions

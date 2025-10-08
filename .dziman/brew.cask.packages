@@ -1,7 +1,8 @@
 docker
 docker-desktop
-emacs
-emacs-app
+font-cascadia-code-nf
+font-cascadia-mono-nf
+font-fira-code
 font-fira-code-nerd-font
 font-jetbrains-mono-nerd-font
 monitorcontrol
