@@ -20,6 +20,7 @@
 (use-package mwim)
 (use-package info-colors :hook ((Info-selection . info-colors-fontify-node)))
 (use-package helpful)
+(use-package rg)
 
 (setf dired-kill-when-opening-new-dired-buffer t)
 (add-hook 'dired-mode-hook 'diredfl-mode)
@@ -150,5 +151,7 @@
 (menu-bar-mode 0)
 
 (column-number-mode t)
+
+(rg-enable-menu)
 
 (provide 'dz-config-emacs-generic)
