@@ -6,6 +6,7 @@
 (use-package git-timemachine)
 (use-package git-modes)
 (use-package git-gutter)
+(use-package git-link)
 (use-package magit-todos
   :after magit
   :config (magit-todos-mode 1))
@@ -22,10 +23,10 @@
 (set-face-background 'git-gutter:added "#7DCF96")
 (set-face-background 'git-gutter:deleted "#CE7666")
 
-(defvar dziman/hydra/git-gator--title (dziman/with-faicon "git" "Git gator actions" 1 -0.05))
+(defvar dziman/hydra/git--title (dziman/with-faicon "git" "Git actions" 1 -0.05))
 
-(pretty-hydra-define dziman/hydra/git-gator
-  (:color amaranth :quit-key "q" :title dziman/hydra/git-gator--title)
+(pretty-hydra-define dziman/hydra/git
+  (:color amaranth :quit-key "q" :title dziman/hydra/git--title)
   (
     "Jump"
     (
@@ -36,15 +37,23 @@
 
     "Actions"
     (
-      ("d" git-gutter:popup-hunk "diff")
-      ("s" git-gutter:stage-hunk "stage")
-      ("r" git-gutter:revert-hunk "revert")
+      ("d" git-gutter:popup-hunk "diff hunk")
+      ("s" git-gutter:stage-hunk "stage hunk")
+      ("r" git-gutter:revert-hunk "revert hunk")
       ("R" git-gutter:update-all-windows "refresh status")
       ("S" git-gutter:set-start-revision "set start revision")
+      ("t" git-timemachine "timemachine" :color blue)
+      )
+
+    "Links"
+    (
+      ("l f" git-link "Current file and line(s)")
+      ("l c" git-link-commit "Commit at point")
+      ("l h" git-link-homepage "Repo home page")
       )
     )
   )
 
-(bind-key "g" 'dziman/hydra/git-gator/body dziman/bind-map/hydra)
+(bind-key "g" 'dziman/hydra/git/body dziman/bind-map/hydra)
 
 (provide 'dz-config-git)
