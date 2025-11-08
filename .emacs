@@ -59,7 +59,7 @@
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
 (require 'dz-config-eglot)
-(require 'dz-config-ios)
+(require 'dz-config-swift)
 (require 'dz-config-appearance)
 (require 'dz-config-emacs-graphic)
 (require 'dz-config-doom-modeline)
