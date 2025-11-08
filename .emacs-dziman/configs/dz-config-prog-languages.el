@@ -18,5 +18,6 @@
 (use-package terraform-mode)
 (use-package company-terraform)
 (use-package kotlin-mode)
+(use-package mustache-mode)
 
 (provide 'dz-config-prog-languages)
