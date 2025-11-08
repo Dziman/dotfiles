@@ -9,6 +9,7 @@
 (use-package org-super-agenda)
 (use-package helm-org)
 (use-package helm-roam)
+(use-package calfw-org)
 
 (defun dziman/org/get-formatted-date (&optional date-format)
   (interactive)
@@ -284,5 +285,8 @@ prepended to the element after the #+HEADER: tag."
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-link-file-path-type 'relative)
+
+(setq calfw-display-calendar-holidays nil)
 
 (provide 'dz-config-org)
