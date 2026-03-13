@@ -150,4 +150,4 @@
 
 (add-hook 'swift-mode-hook 'lsp)
 
-(provide 'dz-config-ios)
+(provide 'dz-config-swift)

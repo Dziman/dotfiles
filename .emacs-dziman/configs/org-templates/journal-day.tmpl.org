@@ -1,6 +1,6 @@
 ** %(dziman/org/get-formatted-date)
 :properties:
-:location: %^{Location|27504 Loma Prieta Way, Los Gatos, CA|884 Hermosa Court, Sunnyvale, CA}
+:location: %^{Location|27504 Loma Prieta Way, Los Gatos, CA|555 N. Mathilda Ave., Sunnyvale, CA}
 :created: %(org-insert-time-stamp nil t t nil nil nil)
 :end:
 
