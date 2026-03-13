@@ -40,4 +40,9 @@ if [[ -o interactive ]] && command-exists fzf; then
     }
   fi
 
+  # use fzf for commands completion in zsh interactive mode
+  if [ -f $HOMEBREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh ]; then
+    source $HOMEBREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh
+  fi
+
 fi
