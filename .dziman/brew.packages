@@ -14,6 +14,7 @@ coreutils
 cryptography
 curlie
 diffr
+docker-compose
 emacs-plus@31
 exiftags
 fd
@@ -22,6 +23,7 @@ forgit
 freetype
 fribidi
 fzf
+fzf-tab
 gcc
 gdk-pixbuf
 gdu
@@ -46,7 +48,8 @@ htop
 http-prompt
 httpie
 icu4c@76
-icu4c@77
+icu4c@78
+iperf3
 isl
 ispell
 jenv
@@ -60,9 +63,11 @@ jq
 json-c
 libarchive
 libb2
+libdatrie
 libevent
 libgccjit
 libgit2
+libiconv
 libidn2
 libmpc
 libnghttp2
@@ -70,6 +75,7 @@ libpng
 librsvg
 libssh2
 libtasn1
+libthai
 libtiff
 libunistring
 libx11
@@ -114,17 +120,19 @@ pixman
 pkgconf
 procs
 protobuf
-protobuf@29
 pycparser
+pydantic
 pyenv
 python-certifi
 python-cryptography
 python@3.13
+python@3.14
 readline
 ripgrep
 rustup
 rustup-init
 shellcheck
+smartmontools
 sourcekitten
 sourcery
 sqlite
@@ -148,6 +156,7 @@ yh
 yq
 z3
 zlib
+zlib-ng-compat
 zsh
 zsh-autosuggestions
 zsh-completions
