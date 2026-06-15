@@ -37,6 +37,7 @@
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
 
+(add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'org-rainbow-tags-mode)
 (add-hook 'org-agenda-finalize-hook 'org-rainbow-tags-mode)
 (setq org-rainbow-tags-hash-start-index 13)
@@ -226,6 +227,7 @@ prepended to the element after the #+HEADER: tag."
     "View"
     (
       ("l" org-toggle-link-display "toggle link view" :toggle t) ;; TODO Write wrapper function so that toggle status works
+      ("i" org-indent-mode "toggle indent view" :toggle t)
       )
 
     "Browse"
