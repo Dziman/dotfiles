@@ -20,6 +20,14 @@
 (use-package yasnippet)
 (use-package string-inflection)
 (use-package flycheck-inline)
+(use-package bind-map)
+
+(define-minor-mode dziman-prog-mode
+  "Dziman prog minor mode for customizing key bindings etc"
+  :init-value nil
+  :lighter " DzProgMode")
+
+(add-hook 'prog-mode-hook 'dziman-prog-mode)
 
 ;; Highlight TODOs
 (setq hl-todo-keyword-faces
@@ -120,40 +128,25 @@
     )
   )
 
-;; TODO Make it specific to `prog-mode` only
-(bind-key "d" 'dziman/hydra/debug/body dziman/bind-map/hydra)
+(bind-map dziman/bind-map/prog
+  :keys ("M-p")
+  :minor-modes (dziman-prog-mode)
+  :bindings (
+              "d" 'dziman/hydra/debug/body
+              "M-U" 'string-inflection-java-style-cycle
+              "C-c f" 'lsp-format-buffer
+              )
+  )
 
-;; TODO Create `prog-mode` bind-map?
-;; TODO Revisit if need external package
-;; (bind-key "C-c f" 'apheleia-format-buffer)
-;; (bind-key "C-c f" 'eglot-format)
-(bind-key "C-c f" 'lsp-format-buffer)
-
-;; TODO Try to fix icons in terminal. For now disable it at all
 (setq lsp-headerline-breadcrumb-icons-enable nil)
-
-;; TODO Is Java style is good for global?
-(bind-key "M-U" 'string-inflection-java-style-cycle)
 
 ;; TODO It might duplicate `lsp-mode` messages
 ;;(add-hook 'flycheck-mode-hook 'flycheck-inline-mode)
 
-(use-package periphery-search
-  :ensure nil
-  :bind (:map prog-mode-map
-          ("C-c C-s" . #'periphery-search-rg)
-          ("C-c C-f" . #'periphery-search-dwiw-rg) ;; TODO Fix: does not work
-          ("C-x C-t" . #'periphery-query-todos-and-fixmes) ;; TODO Fix: does not work
-          ("C-x C-m" . #'periphery-query-marks) ;; TODO Fix: does not work
-          ("M-?" . #'periphery-toggle-buffer)
-          )
-  )
-
 (bind-map lsp-command-map
   :keys ("C-c l")
+  :minor-modes (dziman-prog-mode)
   )
-
-(setq lsp-keymap-prefix "C-c l")
 
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))

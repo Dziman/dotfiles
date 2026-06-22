@@ -44,7 +44,7 @@
 (setq org-rainbow-tags-extra-face-attributes '(:inverse-video t :box t :weight 'bold))
 (setq org-rainbow-tags-adjust-color-percent 33)
 
-(setq org-descriptive-links t) ;; Show 'rendered' link by default
+(setq org-link-descriptive t) ;; Show 'rendered' link by default
 
 (setq org-special-ctrl-a/e '(t . t)) ;; smart jump in headers
 
