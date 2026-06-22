@@ -13,4 +13,7 @@ export NVM_DIR="$HOME/.nvm"
 [[ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion" ]] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 
 # Add LLVM to path
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"
+
+# Rust
+export PATH="$HOMEBREW_PREFIX/opt/rustup/bin:$PATH"

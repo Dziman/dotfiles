@@ -38,6 +38,7 @@ zstyle ':completion:*' word true
 fpath=($HOMEBREW_PREFIX/share/zsh-completions $fpath)
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 fpath=($HOME/.dziman-zsh/completions $fpath)
+fpath=($HOME/.orbstack/shell/completions/zsh $fpath)
 compinit
 
 autoload -U +X bashcompinit && bashcompinit
