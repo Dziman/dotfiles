@@ -58,5 +58,11 @@
     "swift.swiftEnvironmentVariables": {
         "DEVELOPER_DIR": "/Applications/Xcode-beta.app/Contents/Developer"
     },
-    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3"
+    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+    "terminal.integrated.commandsToSkipShell": [
+        "kilo-code.new.agentManagerOpen",
+        "kilo-code.new.agentManager.showTerminal",
+        "kilo-code.new.agentManager.runScript"
+    ],
+    "kilo-code.new.agentWorkStyle": "unset"
 }
