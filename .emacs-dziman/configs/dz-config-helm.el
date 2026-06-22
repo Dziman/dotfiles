@@ -16,21 +16,16 @@
       helm-semantic-fuzzy-match              t
       helm-ff-auto-update-initial-value      t
       helm-split-window-inside-p             t
+      helm-ff-skip-boring-files              t
       helm-autoresize-min-height             25
       helm-autoresize-max-height             25
       helm-buffer-max-length                 120
       helm-buffers-column-separator          "  "
       helm-buffers-end-truncated-string      " ~~>"
-      )
+  )
+
 (helm-mode 1)
 (helm-autoresize-mode 1)
-(setq helm-ff-skip-boring-files t)
-
-(add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
-(add-to-list 'helm-completing-read-handlers-alist '(org-set-tags . helm-org-completing-read-tags))
-(setq helm-org-format-outline-path t)
-(setq helm-org-headings-fontify t)
-(setq helm-org-ignore-autosaves t)
 
 (bind-key "M-x" 'helm-M-x)
 ;; This is old M-x
@@ -42,8 +37,6 @@
 (bind-key "C-x r l" 'helm-filtered-bookmarks)
 (bind-key "M-y" 'helm-show-kill-ring)
 (bind-key "C-x C-d" 'helm-browse-project)
-
-;; helm-occur (improved search)
 (bind-key "M-i" 'helm-occur)
 (bind-key "M-s o" 'helm-occur)
 (define-key isearch-mode-map (kbd "M-i") 'helm-occur-from-isearch)

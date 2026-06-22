@@ -1,7 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; Python development
+;;;;;; Python development ;; TODO Rewview, improve, cleanup
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package pyenv-mode)
+(use-package python-mode)
+(use-package company-anaconda)
+(use-package flycheck-pycheckers)
+(use-package elpy)
 
 (defvar apheleia-formatters)
 (defvar projectile-project-root)

@@ -3,19 +3,23 @@
 ;;;;;; Doom modeline
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package doom-modeline)
-(use-package minions)
-
-(setq minions-mode-line-lighter "…")
-(setq minions-mode-line-delimiters '("" . ""))
-
-(minions-mode t)
-
 (doom-modeline-mode t)
 
-(setq doom-modeline-height 30)
-(setq doom-modeline-time-icon nil)
-(setq doom-modeline-minor-modes t)
-(setq doom-modeline-buffer-encoding nil)
-(setq doom-modeline-total-line-number t)
+(setq
+  doom-modeline-height            30
+  doom-modeline-time-icon         nil
+  doom-modeline-minor-modes       t
+  doom-modeline-buffer-encoding   nil
+  doom-modeline-total-line-number t
+  )
+
+;;;;;;;
+(use-package minions)
+(setq
+  minions-mode-line-lighter    "…"
+  minions-mode-line-delimiters '("" . "")
+  )
+
+(minions-mode t)
 
 (provide 'dz-config-doom-modeline)

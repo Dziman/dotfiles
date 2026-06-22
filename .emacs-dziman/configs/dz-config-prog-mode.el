@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; Development related small-ish packages and related configs
+;;;;;; Development related small-ish packages and related configs ;; TODO Rewview, improve, cleanup
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package hl-todo)
 (use-package rainbow-delimiters)
@@ -20,7 +20,6 @@
 (use-package yasnippet)
 (use-package string-inflection)
 (use-package flycheck-inline)
-(use-package bind-map)
 
 (define-minor-mode dziman-prog-mode
   "Dziman prog minor mode for customizing key bindings etc"

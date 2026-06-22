@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; org packages and their configs
+;;;;;; org packages and their configs ;; TODO Review, improve, cleanup
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package org-super-agenda)
 (use-package org-roam)
@@ -288,6 +288,12 @@ prepended to the element after the #+HEADER: tag."
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 (setq org-link-file-path-type 'relative)
+
+(setq helm-org-format-outline-path t)
+(setq helm-org-headings-fontify t)
+(setq helm-org-ignore-autosaves t)
+(add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
+(add-to-list 'helm-completing-read-handlers-alist '(org-set-tags . helm-org-completing-read-tags))
 
 (setq calfw-display-calendar-holidays nil)
 

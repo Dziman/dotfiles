@@ -65,12 +65,7 @@
                                        "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
                                        "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                        "\\\\" "://"))
-  ;; Enables ligature checks globally in all buffers. You can also do it
-  ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
-
-  ;;Doesn't work but keep it for now. TODO Fix or remove
-  ;;(set-font t 'unicode (font-spec :family "Apple Color Emoji") nil 'append)
 
   ;; Disable font size changes
   (global-unset-key (kbd "C-<wheel-up>"))
