@@ -1,13 +1,15 @@
+;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; org packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package org-super-agenda :ensure t)
-(use-package org-roam :ensure t)
-(use-package org-rainbow-tags :ensure t)
-(use-package org-sticky-header :ensure t)
-(use-package org-super-agenda :ensure t)
-(use-package helm-org :ensure t)
-(use-package helm-roam :ensure t)
+(use-package org-super-agenda)
+(use-package org-roam)
+(use-package org-rainbow-tags)
+(use-package org-sticky-header)
+(use-package org-super-agenda)
+(use-package helm-org)
+(use-package helm-roam)
+(use-package calfw-org)
 
 (defun dziman/org/get-formatted-date (&optional date-format)
   (interactive)
@@ -35,16 +37,14 @@
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
 
+(add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'org-rainbow-tags-mode)
 (add-hook 'org-agenda-finalize-hook 'org-rainbow-tags-mode)
-
 (setq org-rainbow-tags-hash-start-index 13)
 (setq org-rainbow-tags-extra-face-attributes '(:inverse-video t :box t :weight 'bold))
 (setq org-rainbow-tags-adjust-color-percent 33)
 
-(add-hook 'org-mode-hook 'abbrev-mode)
-
-(setq org-descriptive-links nil) ;; Show raw link markup by default
+(setq org-descriptive-links t) ;; Show 'rendered' link by default
 
 (setq org-special-ctrl-a/e '(t . t)) ;; smart jump in headers
 
@@ -144,7 +144,7 @@
 
                   (
                     :name "TODOs"
-                    :not (:tag ("learning"))
+                    :not (:tag ("to_read"))
                     :order 4
                     )
 
@@ -227,6 +227,7 @@ prepended to the element after the #+HEADER: tag."
     "View"
     (
       ("l" org-toggle-link-display "toggle link view" :toggle t) ;; TODO Write wrapper function so that toggle status works
+      ("i" org-indent-mode "toggle indent view" :toggle t)
       )
 
     "Browse"
@@ -289,5 +290,13 @@ prepended to the element after the #+HEADER: tag."
   "j m" "journal meeting header"
   "j M" "journal month header"
   )
+
+(setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
+(setq org-refile-use-outline-path 'file)
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-link-file-path-type 'relative)
+
+(setq calfw-display-calendar-holidays nil)
 
 (provide 'dz-config-org)
