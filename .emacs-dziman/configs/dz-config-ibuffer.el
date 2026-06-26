@@ -14,10 +14,6 @@
        (name . "^\\*Warnings\\*$")
        (name . "^\\*Help\\*$")
       ))
-      ("helm" (or
-       (name . "^\\*helm.*$")
-       (mode . helm-mode)
-      ))
     )
   ))
 )

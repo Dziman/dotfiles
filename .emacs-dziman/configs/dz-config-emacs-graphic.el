@@ -34,7 +34,6 @@
   ;; Font settings
   (setq use-default-font-for-symbols t)
   (let (
-         ;;(mono-font "JetBrainsMono Nerd Font Mono")
          (mono-font "Cascadia Code NF")
          (variable-font "SF Pro")
          )
@@ -65,7 +64,7 @@
                                        "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
                                        "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                        "\\\\" "://"))
-  (global-ligature-mode t))
+    (global-ligature-mode t))
 
   ;; Disable font size changes
   (global-unset-key (kbd "C-<wheel-up>"))
