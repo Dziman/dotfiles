@@ -105,6 +105,7 @@
 
 (defvar dziman/hydra/window--title (dziman/with-faicon "windows" "Window Management" 1 -0.05))
 
+(use-package pretty-hydra) ;; FIXME
 (pretty-hydra-define dziman/hydra/window
   (:foreign-keys warn :title dziman/hydra/window--title :quit-key "q")
   (

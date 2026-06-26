@@ -34,6 +34,8 @@
     )
   )
 
+(setq projectile-indexing-method 'hybrid)
+
 (bind-key "C-c c p t" 'org-project-capture-project-todo-completing-read projectile-mode-map)
 
 (provide 'dz-config-projectile)

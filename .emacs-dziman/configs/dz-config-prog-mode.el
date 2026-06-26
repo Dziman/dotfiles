@@ -1,26 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; Development related small-ish packages and related configs ;; TODO Rewview, improve, cleanup
+;;;;;; Development related small-ish packages and related configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package hl-todo)
-(use-package rainbow-delimiters)
-(use-package rainbow-mode)
-(use-package smartparens)
-(use-package hungry-delete)
-(use-package highlight-parentheses)
-;; Language server integration
-(use-package dap-mode)
-(use-package lsp-mode)
-(use-package lsp-ui)
-(use-package helm-lsp)
-
-;; formatting
-(use-package apheleia)
-
-(use-package yasnippet)
-(use-package string-inflection)
-(use-package flycheck-inline)
-
 (define-minor-mode dziman-prog-mode
   "Dziman prog minor mode for customizing key bindings etc"
   :init-value nil
@@ -28,7 +9,24 @@
 
 (add-hook 'prog-mode-hook 'dziman-prog-mode)
 
-;; Highlight TODOs
+(defun dziman/remove-trailing-whitespace()
+  (when (derived-mode-p 'prog-mode)
+    (delete-trailing-whitespace)))
+
+(add-hook 'before-save-hook 'dziman/remove-trailing-whitespace)
+
+;;;;;;;;
+(use-package string-inflection)
+(bind-map dziman/bind-map/prog
+  :keys ("M-p")
+  :minor-modes (dziman-prog-mode)
+  :bindings (
+              "U" 'string-inflection-java-style-cycle
+              )
+  )
+
+;;;;;;;;
+(use-package hl-todo)
 (setq hl-todo-keyword-faces
   '(
      ("TODO" warning bold)
@@ -38,120 +36,34 @@
 )
 (add-hook 'prog-mode-hook 'hl-todo-mode)
 
-;; rainbow parentheses
+;;;;;;;;
+(use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
+;;;;;;;;
+(use-package rainbow-mode)
 (add-hook 'prog-mode-hook 'rainbow-mode)
+
+;;;;;;;; TODO Review: do not use it explicitly, but some other packages can provide some functionality because it enabled
+(use-package yasnippet)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
 
+;;;;;;;;
+(use-package smartparens)
 ;; Autoclose parentheses
 (smartparens-global-mode 1)
 
+;;;;;;;;
+(use-package hungry-delete)
 (add-hook 'prog-mode-hook 'hungry-delete-mode)
 (setq hungry-delete-join-reluctantly t)
 
+;;;;;;;;
+(use-package highlight-parentheses)
 (add-hook 'prog-mode-hook 'highlight-parentheses-mode)
 
-(add-hook 'before-save-hook 'dziman/remove-trailing-whitespace)
-
-(defun dziman/remove-trailing-whitespace()
-  (when (derived-mode-p 'prog-mode)
-    (delete-trailing-whitespace)))
-
-;; Autoconfigure debug capabilities
-(dap-auto-configure-mode)
-
-;;;;;; In terminal emacs doesn't show `fringe` where `dap-ui` is rendering 'icons' for debug (like brakepoint symbol)
-;;;;;; As (temp) workaround, customizing faces instead. This solution still has issues: highlighting expands if current bookmark line edited and new line added from it.
-;;;;;; TODO Revisit for better UI/UX solution
-;; Current execution point
-(set-face-attribute 'dap-ui-marker-face nil :inherit nil :background "darkolivegreen" :foreground "white")
-
-;; Breakpoints
-(set-face-attribute 'dap-ui-pending-breakpoint-face nil :inherit nil :background "salmon3" :foreground "white")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defvar dziman/hydra/debug--title (dziman/with-faicon "bug" "Debug" 1 -0.05))
-
-(pretty-hydra-define dziman/hydra/debug
-  (:color pink :quit-key "q" :title dziman/hydra/debug--title)
-  (
-    " Stepping"
-    (
-      ("n" dap-next " step over")
-      ("i" dap-step-in "󰆹 step in")
-      ("o" dap-step-out "󰆸 step out")
-      ("c" dap-continue " continue")
-      ("r" dap-restart-frame " restart frame")
-      ("D" dap-disconnect " disconnect")
-      )
-
-    " Breakpoints"
-    (
-      ("b b" dap-breakpoint-toggle " toggle")
-      ("b a" dap-breakpoint-add " add")
-      ("b d" dap-breakpoint-delete " delete")
-      ("b c" dap-breakpoint-condition " condition")
-      ("b h" dap-breakpoint-hit-condition " hit count")
-      ("b l" dap-breakpoint-log-message "log")
-      )
-
-    " Debug"
-    (
-      ("d d" dap-debug " start")
-      ("d r" dap-debug-recent " recent")
-      ("d l" dap-debug-last " last")
-      ("d R" dap-debug-restart " restart")
-      )
-
-    "Eval"
-    (
-      ("e e" dap-eval "eval")
-      ("e r" dap-eval-region "region")
-      ("e s" dap-eval-thing-at-point "at point")
-      ("e a" dap-ui-expressions-add "add expression")
-      )
-
-    "Switch"
-    (
-      ("s s" dap-switch-session "session")
-      ("s t" dap-switch-thread "thread")
-      ("s f" dap-switch-stack-frame "stack frame")
-      ("s u" dap-up-stack-frame "up stack frame")
-      ("s d" dap-down-stack-frame "down stack frame")
-      ("s l" dap-ui-loclals "list locals")
-      ("s b" dap-ui-breakpoints " list breakpints")
-      ("s S" dap-ui-sessions "list sessions")
-      )
-
-    )
-  )
-
-(bind-map dziman/bind-map/prog
-  :keys ("M-p")
-  :minor-modes (dziman-prog-mode)
-  :bindings (
-              "d" 'dziman/hydra/debug/body
-              "M-U" 'string-inflection-java-style-cycle
-              "C-c f" 'lsp-format-buffer
-              )
-  )
-
-(setq lsp-headerline-breadcrumb-icons-enable nil)
-
-;; TODO It might duplicate `lsp-mode` messages
-;;(add-hook 'flycheck-mode-hook 'flycheck-inline-mode)
-
-(bind-map lsp-command-map
-  :keys ("C-c l")
-  :minor-modes (dziman-prog-mode)
-  )
-
-(with-eval-after-load 'lsp-mode
-  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
-
-;; Log communication with lsp server. Can be useful for trouebleshooting.
-;; Use `lsp-workspace-show-log` to check logs
-;; (setq lsp-log-io t)
+;;;;;;;;
+(use-package flycheck-inline)
+(add-hook 'flycheck-mode-hook 'flycheck-inline-mode)
 
 (provide 'dz-config-prog-mode)
