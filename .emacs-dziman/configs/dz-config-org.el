@@ -7,8 +7,6 @@
 (use-package org-rainbow-tags)
 (use-package org-sticky-header)
 (use-package org-super-agenda)
-(use-package helm-org)
-(use-package helm-roam)
 (use-package calfw-org)
 
 (defun dziman/org/get-formatted-date (&optional date-format)
@@ -232,12 +230,12 @@ prepended to the element after the #+HEADER: tag."
       ("i" org-indent-mode "toggle indent view" :toggle t)
       )
 
-    "Browse"
-    (
-      ("b h a" helm-org-agenda-files-headings "All headings")
-      ("b h b" helm-org-in-buffer-headings "Buffer headings")
-      ("b h p" helm-org-parent-headings "Parent headings")
-      )
+;    "Browse"
+;    (
+;      ("b h a" helm-org-agenda-files-headings "All headings")
+;      ("b h b" helm-org-in-buffer-headings "Buffer headings")
+;      ("b h p" helm-org-parent-headings "Parent headings")
+;      )
 
     "Capture"
     (
@@ -290,9 +288,6 @@ prepended to the element after the #+HEADER: tag."
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 (setq org-link-file-path-type 'relative)
-
-(add-to-list 'helm-completing-read-handlers-alist '(org-capture-command . helm-org-completing-read-tags))
-(add-to-list 'helm-completing-read-handlers-alist '(org-set-tags-command . helm-org-completing-read-tags))
 
 (setq calfw-display-calendar-holidays nil)
 
