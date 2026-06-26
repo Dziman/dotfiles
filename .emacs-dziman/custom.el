@@ -8,13 +8,7 @@
     '("95ee4d370f4b66ff2287d8075f8fe5f58c4a9b9c1e65d663b15174f1a8c57717"
        default))
  '(package-selected-packages nil)
- '(safe-local-variable-values
-    '(
-       (eval dziman/register-swift-lsp-client "macosx")
-       (eval dziman/register-swift-lsp-client "iphoneos")
-       )
-    )
-  )
+ '(safe-local-variable-values '((rustic-indent-offset . 4))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

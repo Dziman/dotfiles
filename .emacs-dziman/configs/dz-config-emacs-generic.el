@@ -13,7 +13,13 @@
 (use-package avy)
 (use-package move-text)
 (use-package diminish)
-(use-package bufler)
+(use-package bufler
+  :init (bufler-mode)
+  :bind (("C-x b"   . bufler-switch-buffer)
+         ("C-x C-b" . bufler-list)
+         ("C-x B"   . bufler-workspace-switch-buffer))
+  :custom
+  (bufler-switch-buffer-include-recent-buffers nil))
 (use-package nerd-icons-dired)
 (use-package diredfl)
 (use-package mwim)
@@ -84,12 +90,11 @@
 (bind-key "w" 'dziman/hydra/window/body dziman/bind-map/hydra)
 
 (setq abbrev-file-name "~/.emacs-dziman/abbrevs.def")
+(setq-default abbrev-mode t)
 
 (global-set-key [remap move-beginning-of-line] #'mwim-beginning)
 (global-set-key [remap move-end-of-line] #'mwim-end)
 
-;; Do not show recent buffers in switch menu. If that param is on/true then menu basially duplicate entries
-(setq bufler-switch-buffer-include-recent-buffers nil)
 
 (setq history-delete-duplicates t)
 

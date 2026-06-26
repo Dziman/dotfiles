@@ -2,12 +2,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Completion-related packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Kept as library: cape-company-to-capf wraps company backends at runtime
 (use-package company)
-(use-package company-box)
 
-(add-hook 'after-init-hook 'global-company-mode)
 (setq company-tooltip-align-annotations t)
-
-(add-hook 'company-mode 'company-box-mode)
 
 (provide 'dz-config-completion)

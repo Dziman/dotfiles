@@ -4,7 +4,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package flycheck)
 (use-package flycheck-color-mode-line)
-(use-package helm-flycheck)
+;;(use-package helm-flycheck)
 (use-package flyspell-correct-helm)
 
 (add-hook 'text-mode-hook 'flyspell-mode)

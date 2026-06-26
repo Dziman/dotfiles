@@ -34,8 +34,8 @@
   ;; Font settings
   (setq use-default-font-for-symbols t)
   (let (
-         ;;(mono-font "JetBrainsMono Nerd Font Mono")
-         (mono-font "Cascadia Code NF")
+         (mono-font "Liga SFMono Nerd Font")
+         ;;(mono-font "Iosevka Nerd Font")
          (variable-font "SF Pro")
          )
 

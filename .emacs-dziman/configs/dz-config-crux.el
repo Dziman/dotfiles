@@ -7,7 +7,7 @@
 (bind-key "C-c C-d" 'crux-duplicate-current-line-or-region)
 (bind-key "C-<return>" 'crux-smart-open-line)
 ;; Disabled for now: it's conflicting with org-mode keybinding and I don't think I'm really using it
-;; (bind-key "M-<return>" 'crux-smart-open-line-above)
+;;(bind-key "M-<return>" 'crux-smart-open-line-above)
 (bind-key "M-k" 'crux-smart-kill-line)
 ;; `keyboard-quit` close the minibuffer or completions buffer even without focusing it.
 (bind-key "C-g" 'crux-keyboard-quit-dwim)

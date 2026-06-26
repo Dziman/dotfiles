@@ -3,15 +3,12 @@
 ;;;;;; Projectile packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package projectile)
-(use-package helm-projectile)
 (use-package ibuffer-projectile)
 (use-package treemacs-projectile)
 (use-package org-projectile)
-(use-package org-projectile-helm)
 
 (projectile-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
+(setq projectile-completion-system 'default)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (setq org-project-capture-default-backend (make-instance 'org-project-capture-projectile-backend))

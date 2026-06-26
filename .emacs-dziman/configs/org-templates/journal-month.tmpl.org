@@ -1,5 +1,8 @@
 :properties:
-:id: %^{Id (like ~journal-2025-04~)}
+:id: journal-apple-%<%G-%m>
 :end:
-#+title: Journal: %^{Month and year}
-* %^{Actual month and year title}
+#+title: Apple Journal: %<%B %G>
+
+* %<%B %G>
+
+%?

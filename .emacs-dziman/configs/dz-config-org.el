@@ -7,8 +7,8 @@
 (use-package org-rainbow-tags)
 (use-package org-sticky-header)
 (use-package org-super-agenda)
-(use-package helm-org)
-(use-package helm-roam)
+;(use-package helm-org)
+;(use-package helm-roam)
 (use-package calfw-org)
 
 (defun dziman/org/get-formatted-date (&optional date-format)
@@ -240,6 +240,7 @@ prepended to the element after the #+HEADER: tag."
     "Capture"
     (
       ("c j d" (lambda () (interactive) (org-capture nil "jd")) "journal day entry")
+      ("c j m" (lambda () (interactive) (org-capture nil "jm")) "journal meeting header")
       ("c j M" (lambda () (interactive) (org-capture nil "jM")) "journal month header")
       )
     )
@@ -262,6 +263,11 @@ prepended to the element after the #+HEADER: tag."
        )
 
      (
+       "jm" "Journal meeting entry" plain (here)
+       (file "~/.emacs-dziman/configs/org-templates/journal-apple-meeting.tmpl.org")
+       )
+
+     (
        "jM" "Journal month entry" plain (here)
        (file "~/.emacs-dziman/configs/org-templates/journal-month.tmpl.org")
        )
@@ -273,6 +279,7 @@ prepended to the element after the #+HEADER: tag."
   :major-modes (org-mode)
   :bindings (
               "j d" (lambda () (interactive) (org-capture nil "jd"))
+              "j m" (lambda () (interactive) (org-capture nil "jm"))
               "j M" (lambda () (interactive) (org-capture nil "jM"))
               )
   )
@@ -280,6 +287,7 @@ prepended to the element after the #+HEADER: tag."
 (which-key-add-keymap-based-replacements dziman/bind-map/org-capture
   "j" "journal entry"
   "j d" "journal day entry"
+  "j m" "journal meeting header"
   "j M" "journal month header"
   )
 
