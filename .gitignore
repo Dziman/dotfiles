@@ -25,5 +25,7 @@ venv/
 # jenv
 .java-version
 
+**/.claude/settings.local.json
+
 # Active machine profile (symlink made by `config-profile`)
 .dziman/profile
