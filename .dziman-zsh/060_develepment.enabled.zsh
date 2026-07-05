@@ -8,9 +8,14 @@
 if [[ -o interactive ]] && command-exists anyenv; then eval "$(anyenv init - zsh)"; fi
 
 # node env
-export NVM_DIR="$HOME/.nvm"
-[[ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]] && . "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"  # This loads nvm
-[[ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion" ]] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+if command-exists fnm; then
+  eval "$(fnm env --use-on-cd --shell zsh)"
+else
+  # TODO: replace nvm with fnm on this machine
+  export NVM_DIR="$HOME/.nvm"
+  [[ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]] && . "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"  # This loads nvm
+  [[ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion" ]] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+fi
 
 # Add LLVM to path
 export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"
