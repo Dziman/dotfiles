@@ -25,7 +25,7 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 
 autoload -U compinit
-compinit
+compinit -u
 
 autoload -U promptinit
 promptinit
