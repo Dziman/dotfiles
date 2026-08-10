@@ -5,7 +5,7 @@
 ################################################################################
 
 export ALTERNATE_EDITOR=""
-export EDITOR=emacsclient
+export EDITOR="emacs --no-window-system"
 
 # Homebrew configuration
 export HOMEBREW_NO_AUTO_UPDATE="true"

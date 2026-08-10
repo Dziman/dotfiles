@@ -22,3 +22,4 @@ export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"
 
 # Rust
 export PATH="$HOMEBREW_PREFIX/opt/rustup/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
