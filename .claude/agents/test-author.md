@@ -13,7 +13,7 @@ Before writing:
 2. Reuse existing fixtures/builders before writing new ones; shared fixtures live in
    the shared test module, not copied per package.
 
-Working rules (from `dz-testing-and-refactoring` — load it first; authoritative):
+Working rules (from `dz-test-writing` and `dz-refactoring` — load both first; authoritative):
 - **One scenario per test.** Multiple inputs → separate or parameterized tests.
 - **Name each case by the business rule**, not by variable values — the name must
   survive a refactor of how the rule is implemented.

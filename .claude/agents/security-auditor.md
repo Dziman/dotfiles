@@ -1,7 +1,7 @@
 ---
 name: security-auditor
 description: Use for a security-focused review of changed or specified code — hardcoded secrets, injection (SQL/command/path), authz gaps, unsafe deserialization, SSRF, and PII/secrets in logs. Advisory only, makes no edits. Read-only, safe to run in parallel. Invoke before merging sensitive changes or when the user asks for a security pass.
-tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
+tools: Read, Grep, Glob, Bash, WebFetch, WebSearch, Skill
 model: opus
 ---
 

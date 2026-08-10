@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
-description: Use to review a diff or a set of changed files against dz-coding-standards and dz-testing-and-refactoring. Reports findings only — makes no edits. Invoke after a change is written and before committing, or when the user asks for a review. Read-only, safe to run in parallel with other agents.
-tools: Read, Grep, Glob, Bash, WebFetch
+description: Use to review a diff or a set of changed files against dz-coding-standards, dz-test-writing, and dz-refactoring. Reports findings only — makes no edits. Invoke after a change is written and before committing, or when the user asks for a review. Read-only, safe to run in parallel with other agents.
+tools: Read, Grep, Glob, Bash, WebFetch, Skill
 model: opus
 ---
 
@@ -12,7 +12,8 @@ Process:
    or the files/paths the caller names. Read enough surrounding context to judge
    each change, not just the changed lines.
 2. Load the `dz-coding-standards` skill (authoritative) and, when tests are in
-   scope, `dz-testing-and-refactoring`. Review against those rules — naming,
+   scope, `dz-test-writing`; when the diff is a refactor/move, `dz-refactoring`.
+   Review against those rules — naming,
    function/type design, nullability-in-the-type, error handling (specific catch,
    preserve cause, never swallow), dependency/layering hygiene, logging (no
    PII/secrets, parameterized), public-API stability, and touch-it-fix-it/minimal-churn

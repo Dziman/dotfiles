@@ -5,8 +5,8 @@ description: Load when writing, editing, or reviewing code in any language — c
 
 # Comments & docstrings
 
-- Comments explain **why** (intent, trade-off, non-obvious constraint), not **what** the code already says. Delete commented-out code — that's what version control is for.
-- Do not add comments that merely restate what the code or config already expresses; assume the reader is fluent in the language. Do not add comments explaining why something was added, updated, or removed — that context belongs in the commit message.
+- A comment earns its place only when the information cannot be recovered from the code itself or from commit history/commit messages. Comments explain **why** (intent, trade-off, non-obvious constraint), never **what** the code says or **why it changed** — the latter belongs in the commit message. Delete commented-out code — that's what version control is for.
+- Assume the reader is fluent in the language: never restate what the code or config already expresses.
 - Doc-comment the **public** surface; keep internal comments sparse and current. A wrong comment is worse than none.
 
 # Naming
@@ -27,7 +27,7 @@ description: Load when writing, editing, or reviewing code in any language — c
 # Class / type design
 
 - Prefer **immutable** value types; expose the **narrowest** visibility that works; keep state private and invariants enforced in one place (the constructor/factory).
-- Prefer composition over inheritance; an interface/abstract type earns its place only when a second implementation exists (see the `dz-testing-and-refactoring` no-speculative-abstraction rule).
+- Prefer composition over inheritance; an interface/abstract type earns its place only when a second implementation exists (see the `dz-refactoring` no-speculative-abstraction rule).
 - Use the language's data-carrier construct for plain data (record / dataclass / struct / `data class`) instead of hand-written getters.
 
 # Absence & nullability

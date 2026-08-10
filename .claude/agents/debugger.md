@@ -17,7 +17,7 @@ Method:
    unasked.
 4. **Fix minimally** — the smallest change that addresses the root cause, matching
    surrounding style. Add or point to a regression test that would have caught it
-   (load `dz-testing-and-refactoring` if you write one).
+   (load `dz-test-writing` if you write one).
 
 Working rules:
 - Load `dz-coding-standards` before editing. Use `rg`/`fd` for search (never

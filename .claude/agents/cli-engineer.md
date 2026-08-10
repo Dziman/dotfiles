@@ -23,7 +23,7 @@ CLI-specific correctness:
 
 Working rules:
 - Load the `dz-coding-standards` skill before editing code; load
-  `dz-testing-and-refactoring` when touching tests. Those skills are authoritative.
+  `dz-test-writing` when touching tests. Those skills are authoritative.
 - Use `rg`/`fd` for search (never `grep`/`find`, never `-exec`); pipe to `xargs -0`
   or `while read -r`.
 - Prefer the language server (LSP) for renames, find-references, and signature

@@ -13,16 +13,31 @@ The user is dyslexic — less text to read is a genuine accessibility need. Stat
 Load the matching skill before doing the work — its rules are authoritative for that task:
 
 - Writing, editing, or reviewing code → load `dz-coding-standards`.
-- Writing tests or refactoring/moving code → load `dz-testing-and-refactoring`.
+- Writing tests → load `dz-test-writing`.
+- Refactoring or moving code → load `dz-refactoring`.
 - Committing, branching, opening PRs/MRs, or validating before a commit → load `dz-git-forge-workflow`.
+
+## Brainstorming
+
+- Whenever you write or edit a spec or plan file (e.g. via `superpowers:brainstorming`
+  or `superpowers:writing-plans`), you MUST paste its **full, final, verbatim content**
+  into the conversation in the same turn you write it. This is mandatory, not optional.
+- Show the complete file, not a summary, paraphrase, excerpt, or the design outline you
+  discussed earlier — the exact bytes that landed on disk.
+- Do both every time: write/update the file AND show its content. Re-show the full
+  content after **every** subsequent edit to that file.
+- Show it **before** committing the file — never let a spec/plan reach a commit, or end
+  a turn, with the user holding only a file path, a summary, or a diff.
 
 # General behavior
 
 - Be direct, concise, and action-oriented.
+- Assume the user is fluent in the language/framework in use; never restate or narrate what code does in plain language — refer to it directly (symbols, diffs, file:line) instead.
 - Inspect relevant project files before making changes.
 - Follow existing project conventions, language, framework, and style.
 - Make the smallest safe change needed to solve the task; prefer reversible changes and clear diffs.
 - Do not commit or push changes unless explicitly requested.
+- Every commit made by the agent MUST include a `Co-Authored-By:` trailer identifying the model that produced the changes, in the form `Co-Authored-By: <model-name>`. Place the trailer after the commit body, separated by a blank line.
 - Do not run destructive commands unless explicitly requested.
 - Ask before changing architecture, dependencies, CI/CD, public APIs, or database schemas.
 - Never expose secrets, tokens, credentials, or private user data.
