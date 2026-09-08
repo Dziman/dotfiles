@@ -1,8 +1,8 @@
 symbolPreset: nerd
-theme: 
-  dark: dark
-setupVersion: 1
-modelRoles: 
+theme:
+  dark: dark-rose-pine
+setupVersion: 2
+modelRoles:
   default: openai-codex/gpt-5.6-sol
   smol: openai-codex/gpt-5.6-luna
   slow: openai-codex/gpt-5.6-sol
@@ -13,28 +13,49 @@ modelRoles:
   tiny: openai-codex/gpt-5.6-luna
   task: openai-codex/gpt-5.6-sol
   advisor: openai-codex/gpt-5.6-terra
-retry: 
-  fallbackChains: 
-    default: 
+retry:
+  fallbackChains:
+    default:
       - openai-codex/gpt-5.6-terra
-    smol: 
+    smol:
       - openai-codex/gpt-5.4-mini
-    slow: 
+    slow:
       - openai-codex/gpt-5.6-terra
-    vision: 
+    vision:
       - openai-codex/gpt-5.6-terra
-    plan: 
+    plan:
       - openai-codex/gpt-5.6-terra
-    designer: 
+    designer:
       - openai-codex/gpt-5.6-terra
-    commit: 
+    commit:
       - openai-codex/gpt-5.4-mini
-    tiny: 
+    tiny:
       - openai-codex/gpt-5.4-mini
-    task: 
+    task:
       - openai-codex/gpt-5.6-terra
-    advisor: 
+    advisor:
       - openai-codex/gpt-5.4-mini
-dev: 
+dev:
   autoqaConsent: denied
-hideThinkingBlock: false
+hideThinkingBlock: true
+extensions:
+  - /Users/ai-dev/src/dziman/ai-cost/adapters/omp-extension.ts
+statusLine:
+  contextLine: annotated
+  preset: full
+  separator: powerline
+composer:
+  shape: box
+terminal:
+  showProgress: true
+display:
+  shimmer: classic
+  showTokenUsage: true
+  showTurnTime: true
+personality: default
+bash:
+  enabled: true
+astGrep:
+  enabled: false
+commands:
+  enableClaudeUser: true
