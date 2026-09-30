@@ -1,0 +1,43 @@
+#!/bin/sh
+# $EDITOR wrapper for Claude Code.
+#
+# Claude Code runs a bracketed-paste state machine on stdin (Node readline:
+# ESC[200~ -> paste-start, ESC[201~ -> paste-end).  While the editor it
+# spawned shares that same tty, the head of a paste -- the ESC[200~ opener
+# included -- is consumed before the editor sees it.  Emacs then self-inserts
+# the surviving tail as plain keystrokes and, unable to parse the orphaned
+# ESC[201~ closer, leaves a stray "~" behind.
+#
+# The cure is to keep the editor off Claude Code's tty:
+#   under tmux      -- its own window, hence its own pty
+#   local with a UI -- a GUI frame, no tty at all
+# Neither is possible on a bare remote tty, so that case warns and proceeds.
+
+socket=${CLAUDE_EDITOR_SOCKET:-claude-code}
+
+if [ -n "$TMUX" ]; then
+  sig="claudeedit$$"
+  runner=$(mktemp "${TMPDIR:-/tmp}/claude-editor.XXXXXX") || exit 1
+  trap 'rm -f "$runner"' EXIT INT TERM
+  {
+    printf '#!/bin/sh\nemacsclient -t --socket-name %s' "$socket"
+    for arg in "$@"; do
+      printf " '%s'" "$(printf '%s' "$arg" | sed "s/'/'\\\\''/g")"
+    done
+    printf '\ntmux wait-for -S %s\n' "$sig"
+  } > "$runner"
+  chmod +x "$runner"
+  tmux new-window -n claude-edit "$runner" || exit 1
+  tmux wait-for "$sig"
+  exit 0
+fi
+
+if [ -z "$SSH_CONNECTION" ] && [ -z "$SSH_TTY" ] &&
+   emacsclient --socket-name "$socket" -e '(featurep (quote ns))' 2>/dev/null | grep -q t; then
+  exec emacsclient -c --socket-name "$socket" "$@"
+fi
+
+echo "claude-editor: no tmux and no window system; paste into this editor may" >&2
+echo "               lose its leading text (Claude Code consumes it). Run" >&2
+echo "               Claude Code inside tmux to avoid this." >&2
+exec emacsclient -t --socket-name "$socket" "$@"

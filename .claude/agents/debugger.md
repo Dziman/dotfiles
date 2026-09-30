@@ -15,9 +15,11 @@ Method:
 3. **Root-cause** — explain *why* it fails, distinguishing the trigger from the
    underlying defect. Note any related latent bugs you see but don't fix them
    unasked.
-4. **Fix minimally** — the smallest change that addresses the root cause, matching
-   surrounding style. Add or point to a regression test that would have caught it
-   (load `dz-test-writing` if you write one).
+4. **Pin it red** — before the fix, add or point to a regression test that
+   reproduces the bug and watch it fail on its assertion; a compile error is not
+   red (load `dz-test-writing`, which defines red).
+5. **Fix minimally** — the smallest change that addresses the root cause, matching
+   surrounding style. Re-run the test and watch it pass.
 
 Working rules:
 - Load `dz-coding-standards` before editing. Use `rg`/`fd` for search (never

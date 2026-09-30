@@ -5,7 +5,7 @@ description: Use when working with Git and Forgejo repositories, especially bran
 
 # Git / Forgejo
 
-Repositories on `git.blakitka.home` use Forgejo.
+Repositories on `git.nasha.casa` use Forgejo.
 
 - Use `git` for local repository state, branches, commits, diffs, and remotes.
 - Use `fj` for Forgejo repositories, issues, pull requests, releases, actions, tags, reviews, and repository metadata.
@@ -22,7 +22,7 @@ For an unfamiliar operation, run the narrowest relevant help command first:
     fj <group> --help
     fj <group> <command> --help
 
-Use `--host git.blakitka.home` when the host is not already configured. Check authentication with `fj auth list` and identity with `fj whoami`. Do not expose tokens or credentials.
+Use `--host git.nasha.casa` when the host is not already configured. Check authentication with `fj auth list` and identity with `fj whoami`. Do not expose tokens or credentials.
 
 ## GitHub CLI to `fj` mapping
 

@@ -2,6 +2,8 @@
 
 The user is dyslexic — less text to read is a genuine accessibility need. State the answer once, up front, in one representation; support it, don't restate it in multiple formats. Narrate steps in ≤6-word fragments — what, not why ("Checking glossary.", never "Per the repo rules, let me check the glossary to give you an accurate answer"). Do not buy brevity by searching less or dropping source citations — keep the rigor, cut the repetition.
 
+Render Markdown directly in conversation; never wrap an entire Markdown document in a code fence. Fence only actual code.
+
 # Tools
 
 - Prefer `rg` (ripgrep) over `grep` and `fd` over `find` for all shell-driven search and file-discovery tasks — they're faster, respect `.gitignore` by default, and produce cleaner output. Fall back to `grep`/`find` only when `rg`/`fd` are unavailable on the host or when a flag/behavior is genuinely missing.
@@ -32,6 +34,7 @@ Load the matching skill before doing the work — its rules are authoritative fo
 # General behavior
 
 - Be direct, concise, and action-oriented.
+- **Questions with options** — Whenever you offer the user a choice between discrete options, ask it with the `AskUserQuestion` tool, never as a plain-text list. This overrides any skill that shows options as text (e.g. `finishing-a-development-branch`); keep the skill's option wording.
 - Assume the user is fluent in the language/framework in use; never restate or narrate what code does in plain language — refer to it directly (symbols, diffs, file:line) instead.
 - Inspect relevant project files before making changes.
 - Follow existing project conventions, language, framework, and style.
@@ -42,6 +45,13 @@ Load the matching skill before doing the work — its rules are authoritative fo
 - Ask before changing architecture, dependencies, CI/CD, public APIs, or database schemas.
 - Never expose secrets, tokens, credentials, or private user data.
 - For multi-file tasks, read relevant files first to understand context, then plan edits before executing them.
+
+## Teammate lifecycle
+
+- Stop each teammate with `TaskStop` as soon as nothing further can depend on it.
+- Keep an implementor alive while its work is under review or verification, since fixes are cheaper with its context. Stop it once the review passes or the work is accepted.
+- Stop reviewers, researchers and probes right after they report.
+- Before ending a turn, no finished teammate may remain open.
 
 # Coding standards
 
@@ -62,4 +72,3 @@ Load the matching skill before doing the work — its rules are authoritative fo
 - Avoid unnecessary generated files.
 - Do not modify lockfiles unless dependencies actually change.
 - Ensure files end with an empty line (enforced via `insert_final_newline = true` in `.editorconfig`, if present).
-

@@ -1,5 +1,13 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
+    "allow": [
+      "Bash(fj pr create:*)",
+      "mcp__youtrack__update_issue",
+      "mcp__youtrack__add_issue_comment"
+    ],
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
@@ -43,10 +51,17 @@
     "code-simplifier@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true
   },
+  "feedbackDrafts": "off",
   "effortLevel": "xhigh",
   "modelSettings": {
     "claude-opus-5": {
       "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "high"
+    },
+    "claude-sonnet-5": {
+      "effortLevel": "medium"
     }
   },
   "promptSuggestionEnabled": false,
@@ -56,6 +71,7 @@
   "theme": "dark",
   "editorMode": "normal",
   "preferredNotifChannel": "iterm2",
+  "teammateMode": "auto",
   "remoteControlAtStartup": false,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
@@ -95,7 +111,7 @@
       "### User-specific",
       "**Primary use of Claude Code**: software development — Kotlin/Ktor API, Vue 3 web SPA, SwiftUI/SwiftData iOS app, and Docker Compose infrastructure in the `finhea` monorepo",
       "**Trusted repo**: `/Users/ai-dev/src/dziman/finhea` and its configured remote `ssh://git.blakitka.home:2422/ai-mirrors/finhea.git`. When the repo's public/private visibility is given — by the Repository visibility entry or the user's own message — use it to scope what is OK to commit or push there: confidential material is fine in a private repo; in a public one, only that repo's own work is — and content ported, repointed, or first read from outside this session's repo is not its own work, whoever directed the port. Visibility scopes confidential material only: secrets and sensitive data (personal & entrusted) are never cleared into any repo by its visibility (see Definitions).",
-      "**Org-specific CLIs**: `fj` (118x here, 86x across projects — forge CLI), `rtk` (19x here, 6x across projects); Apple toolchain `xcodebuild`, `xcrun`, `swiftlint`, `swiftformat`; `fd` used in place of `find` per user CLAUDE.md",
+      "**Org-specific CLIs**: `fj` (118x here, 86x across projects — forge CLI); Apple toolchain `xcodebuild`, `xcrun`, `swiftlint`, `swiftformat`; `fd` used in place of `find` per user CLAUDE.md",
       "**Routine under user prefix**: work is routine under `/Users/ai-dev/src/dziman/` and the `ai-mirrors/` namespace on the self-hosted forge"
     ]
   }

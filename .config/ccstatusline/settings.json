@@ -34,6 +34,11 @@
         "color": "magenta"
       },
       {
+        "id": "worktree-name-inline",
+        "type": "worktree-name",
+        "color": "blue"
+      },
+      {
         "id": "7",
         "type": "git-changes",
         "color": "yellow"
@@ -67,6 +72,7 @@
   "compactThreshold": 60,
   "colorLevel": 3,
   "defaultPadding": " ",
+  "defaultPaddingSide": "both",
   "inheritSeparatorColors": false,
   "globalBold": false,
   "gitCacheTtlSeconds": 5,
@@ -79,8 +85,12 @@
     "separatorInvertBackground": [
       false
     ],
-    "startCaps": [],
-    "endCaps": [],
+    "startCaps": [
+      ""
+    ],
+    "endCaps": [
+      ""
+    ],
     "theme": "onedark",
     "autoAlign": true,
     "continueThemeAcrossLines": false
