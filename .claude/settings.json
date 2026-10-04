@@ -6,7 +6,9 @@
     "allow": [
       "Bash(fj pr create:*)",
       "mcp__youtrack__update_issue",
-      "mcp__youtrack__add_issue_comment"
+      "mcp__youtrack__add_issue_comment",
+      "mcp__youtrack__get_issue",
+      "mcp__teamcity__teamcity_rest_get"
     ],
     "defaultMode": "auto"
   },
@@ -49,7 +51,16 @@
     "kotlin-lsp@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true
+    "claude-md-management@claude-plugins-official": true,
+    "peer-review@claude-peer-review-mod": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-peer-review-mod": {
+      "source": {
+        "source": "git",
+        "url": "git@git.nasha.casa:ai-mirrors/claude-peer-review-mod.git"
+      }
+    }
   },
   "feedbackDrafts": "off",
   "effortLevel": "xhigh",
@@ -78,41 +89,41 @@
   "autoMode": {
     "allow": [
       "$defaults",
-      "Bash(fd:*) — read-only file discovery in the finhea repo, used in place of find per the user's global CLAUDE.md",
-      "Bash(xcodebuild:*) — local iOS build/test of finhea-ios on this machine",
-      "Bash(swiftlint:*) and Bash(swiftformat:*) — local lint/format of finhea-ios sources",
-      "Bash(make lint:*), Bash(make format:*), Bash(make check:*), Bash(make build:*) — local Makefile targets in finhea-infra"
+      "`fd` for file discovery, used in place of find per the user's global CLAUDE.md; any `-x`/`-X`/`--exec` payload is evaluated as if run directly",
+      "`xcodebuild` build/test/clean of projects inside the trusted repo; not archive/export/upload, not `-allowProvisioningUpdates`, and not projects cloned this session",
+      "`swiftlint` and `swiftformat` on paths inside the trusted repo",
+      "`make lint`, `make format`, `make check`, `make build` in the trusted repo — only when the Makefile and its build scripts were not written or edited this session and no other target is chained in the same command"
     ],
     "soft_deny": [
       "$defaults",
-      "Bash(fj:*) subcommands that delete, merge, or force-push on git.blakitka.home — repository-mutating forge operations should be confirmed",
-      "Bash(make clean:*), Bash(make clean-derived:*), Bash(make clean-simulators:*), Bash(make down:*) — destructive local teardown targets"
+      "Any `fj` subcommand that deletes, merges, or closes a repo, PR, issue, release, or branch, on any forge — clearing requires the user to name the operation and the repo/PR/issue",
+      "`make clean`, `make clean-derived`, `make clean-simulators`, `make down` — destructive local teardown targets; applies when any of them appears anywhere in the command, even chained after an allowed target; clearing requires the user to name the target"
     ],
     "environment": [
       "### Org-wide",
-      "**Organization**: None configured — personal/hobby project (`dziman/finhea`, self-hosted forge)",
+      "**Organization**: None configured — personal/hobby projects on a self-hosted forge (`git.nasha.casa`, namespace `ai-mirrors/`)",
       "**Cloud provider(s)**: None configured",
-      "**Repository visibility**: Not queryable via gh (origin is a self-hosted SSH forge at `git.blakitka.home:2422`, not a plain owner/repo host) — assume private; README states \"Proprietary — internal project\"",
+      "**Repository visibility**: All repos under `git.nasha.casa/ai-mirrors/` are private (not queryable via gh — the forge is self-hosted). For any other remote, assume private unless the remote host and repo name indicate otherwise, or a visibility check in the transcript shows public; a meta line reading `\"visibility\":\"unverified\"` for such a remote means treat it as possibly public",
       "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
-      "**Secrets management**: None configured — README notes `default.env` holds safe local defaults with no secrets; overrides come from the shell or `--env-file custom.env`",
-      "**Default / protected branches**: Default branch `develop`; no protected-branch or ruleset data available (gh could not query this self-hosted host)",
-      "**CI/CD deploy targets**: None configured — local Docker Compose stack under `finhea-infra/` is the only observed target",
-      "**Network posture**: None configured — observed traffic is limited to the home LAN hosts `git.blakitka.home` and `yt.blakitka.home`",
-      "**Source control**: The trusted repo and its remote(s) only (no additional orgs configured) — `ssh://git.blakitka.home:2422/ai-mirrors/finhea.git`",
-      "**Trusted internal domains**: `git.blakitka.home` (git remote, 6x in transcripts), `yt.blakitka.home` (13x in transcripts)",
+      "**Secrets management**: None configured",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured — expected internal traffic is limited to `git.nasha.casa` and `tracker.nasha.casa`",
+      "**Host containment**: None configured — Claude Code runs on an ordinary developer machine with open internet. Instance-metadata credential paths and node/cluster credentials of any hosting layer are never task credentials (see Containment Escape).",
+      "**Source control**: The trusted repo and its remote(s), plus the sibling repos under `~/src/dziman/` and their own configured remotes under `git.nasha.casa/ai-mirrors/` — as scoped by the Trusted repo and Repository visibility entries",
+      "**Trusted internal domains**: `git.nasha.casa` (self-hosted git forge), `tracker.nasha.casa` (YouTrack issue tracker)",
       "**Trusted cloud buckets**: None configured",
-      "**Key internal services**: `git.blakitka.home:2422` (self-hosted git forge); local dev endpoints `http://localhost:5173` (web) and `http://localhost:8080` (API)",
+      "**Key internal services**: `git.nasha.casa` (git forge, driven by the `fj` CLI); `tracker.nasha.casa` (YouTrack, driven by the `youtrack` MCP server); local dev endpoints on `localhost`",
       "**Internal package registry**: None configured",
-      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar — note this is a personal finance application, so account, balance and credit-card data are sensitive by default",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
       "**Data retention / declassification**: None configured",
       "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
       "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
       "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
       "### User-specific",
-      "**Primary use of Claude Code**: software development — Kotlin/Ktor API, Vue 3 web SPA, SwiftUI/SwiftData iOS app, and Docker Compose infrastructure in the `finhea` monorepo",
-      "**Trusted repo**: `/Users/ai-dev/src/dziman/finhea` and its configured remote `ssh://git.blakitka.home:2422/ai-mirrors/finhea.git`. When the repo's public/private visibility is given — by the Repository visibility entry or the user's own message — use it to scope what is OK to commit or push there: confidential material is fine in a private repo; in a public one, only that repo's own work is — and content ported, repointed, or first read from outside this session's repo is not its own work, whoever directed the port. Visibility scopes confidential material only: secrets and sensitive data (personal & entrusted) are never cleared into any repo by its visibility (see Definitions).",
-      "**Org-specific CLIs**: `fj` (118x here, 86x across projects — forge CLI); Apple toolchain `xcodebuild`, `xcrun`, `swiftlint`, `swiftformat`; `fd` used in place of `find` per user CLAUDE.md",
-      "**Routine under user prefix**: work is routine under `/Users/ai-dev/src/dziman/` and the `ai-mirrors/` namespace on the self-hosted forge"
+      "**Primary use of Claude Code**: software development",
+      "**Trusted repo**: The git repository the agent started in (its working directory) and its configured remote(s). When the repo's public/private visibility is given — by the Repository visibility entry or the user's own message — use it to scope what is OK to commit or push there: confidential material is fine in a private repo; in a public one, only that repo's own work is — and content ported, repointed, or first read from outside this session's repo is not its own work, whoever directed the port. Visibility scopes confidential material only: secrets and sensitive data (personal & entrusted) are never cleared into any repo by its visibility (see Definitions).",
+      "**Org-specific CLIs**: `fj` (forge CLI for `git.nasha.casa`); Apple toolchain `xcodebuild`, `xcrun`, `swiftlint`, `swiftformat`; `fd` used in place of `find` per user CLAUDE.md",
+      "**Routine under user prefix**: reading and writing files in sibling repos under `~/src/dziman/` is routine and is not scope escalation; commits and pushes there go only to that repo's own configured remote. Destructive operations (deleting repos or directories, history rewrites, force-pushes) are still evaluated on their own terms"
     ]
   }
 }
