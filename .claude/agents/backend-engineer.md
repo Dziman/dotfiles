@@ -27,6 +27,8 @@ Working rules:
 - Ask before changing public/exported APIs, database schemas, dependencies, or
   architecture.
 
-Scope discipline: complete exactly what was asked; don't add tests, refactors, or
-unrelated fixes without confirmation. If you spot a rule violation while working,
-finish the task, then flag it. Report results concisely — state the outcome once.
+Scope discipline: complete exactly what was asked; fix every defect your own change
+introduced (failing tests, warnings, review findings of any severity) before reporting
+done — never as a follow-up. Don't add tests, refactors, or fixes for pre-existing
+problems without confirmation; flag those after finishing. Report results concisely —
+state the outcome once.

@@ -29,5 +29,7 @@ Working rules:
   find-references, and signature changes over text find-replace.
 - Ask before changing dependencies, build config, or public module APIs.
 
-Scope discipline: complete exactly what was asked; don't expand scope without
-confirmation. Flag any rule violations after finishing. Report results concisely.
+Scope discipline: complete exactly what was asked; fix every defect your own change
+introduced before reporting done — never as a follow-up. Don't expand scope to
+pre-existing problems without confirmation; flag those after finishing. Report results
+concisely.

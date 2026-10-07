@@ -5,9 +5,13 @@ description: Load when writing, editing, or reviewing code in any language — c
 
 # Comments & docstrings
 
-- A comment earns its place only when the information cannot be recovered from the code itself or from commit history/commit messages. Comments explain **why** (intent, trade-off, non-obvious constraint), never **what** the code says or **why it changed** — the latter belongs in the commit message. Delete commented-out code — that's what version control is for.
-- Assume the reader is fluent in the language: never restate what the code or config already expresses.
-- Doc-comment the **public** surface; keep internal comments sparse and current. A wrong comment is worse than none.
+- Comment a line **only where a reader fluent in the language would stop and ask "why?"**. First try to remove the surprise with a better name or structure; a comment is for the surprise that remains. Unsurprising lines get no comment.
+- That comment states the **fact outside the code** that answers the question — a system's behaviour, a business rule, a constraint. Never **who decided, when or where**: no session, review or plan context ("per the ruling", "round 2"), no "now"/"again", no issue/spec/roadmap IDs, titled or not.
+- A **past event** belongs only as a hazard the code still guards against, written as that constraint ("must stay an alert: iOS 26 renders a confirmation dialog here without its cancel action"), not as a story ("it was a confirmation dialog, which…"). Why the code changed belongs in the commit message.
+- Keep an inline comment to **about three lines**; a longer explanation belongs in a spec or design doc.
+- A **doc comment** states what the name and signature cannot — units, absence, errors, side effects, ordering. When they already say it all, write none (`getTitle() // Returns the title` is noise).
+- A `TODO`/`FIXME` **carries the issue that tracks it** — the one comment an ID belongs in.
+- Keep comments current — a wrong comment is worse than none. Delete commented-out code — that's what version control is for.
 
 # Naming
 

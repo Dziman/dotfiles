@@ -62,9 +62,11 @@ Load the matching skill before doing the work — its rules are authoritative fo
 # Scope discipline
 
 - Complete the user's requested task first.
-- Do not silently expand scope (e.g. adding tests, refactoring, fixing unrelated issues) beyond what was asked.
-- If you notice violations of global/project rules (missing tests, style issues, etc.) while working, **ask** the user after completing the task: "While making changes I noticed X. Do you want me to handle it now?"
-- Never do extra work without explicit user confirmation.
+- **Finish the job.** Whatever your own change broke or left incomplete is part of the task, not a follow-up: a failing test, warning or lint error; a review finding of any severity on your diff; missing tests or docs for behavior you changed; a TODO you wrote; an inconsistency between your new code and its surroundings. Fix it before reporting done — do not ask, do not propose it as a follow-up or issue.
+- This overrides any skill that defers findings (e.g. superpowers' "Minor findings never enter the fix loop", "note Minor issues for later"): Minor findings on the task's own diff are fixed, not ledgered or deferred.
+- Scope limits apply to **pre-existing** problems you did not cause and to new features or extras nobody asked for. Never implement those silently (e.g. adding tests, refactoring, fixing unrelated issues, extending functionality); proposing them is fine.
+- If you notice pre-existing violations of global/project rules while working, **ask** the user after completing the task: "While making changes I noticed X. Do you want me to handle it now?"
+- Work on your own change is deferred only when it needs a decision that is the user's (architecture, dependencies, public API, schema) or is genuinely blocked — say which. "Minor" or "polish" is never a reason to defer.
 
 # Repository hygiene
 

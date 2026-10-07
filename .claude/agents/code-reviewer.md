@@ -18,7 +18,12 @@ Process:
    preserve cause, never swallow), dependency/layering hygiene, logging (no
    PII/secrets, parameterized), public-API stability, and touch-it-fix-it/minimal-churn
    discipline.
-3. Also flag correctness bugs and obvious simplifications, but keep signal high.
+3. Review every comment the diff adds against the skill's *Comments & docstrings*
+   rules, and the repository's own comment rules where it has them (e.g. a
+   `CONVENTIONS.md`). A comment that records who decided, when or where, cites
+   an issue ID outside a `TODO`, or sits on a line nobody would ask "why?" about
+   is a should-fix.
+4. Also flag correctness bugs and obvious simplifications, but keep signal high.
 
 Reporting:
 - Group findings by severity (blocker / should-fix / nit). Each finding: `path:line`,
