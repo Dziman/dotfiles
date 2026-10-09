@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "omp-plugins",
+      "dependencies": {
+        "superpowers": "https://github.com/obra/superpowers",
+      },
+    },
+  },
+  "packages": {
+    "superpowers": ["superpowers@github:obra/superpowers#d884ae0", {}, "obra-superpowers-d884ae0", "sha512-SIAY1V1/6AONNHlBCqR0HimTpSpprGug6M1ADVnHsnKr/kx9CW1XqrnKq09pstD4AU/v/NOS9pBbNO1znUeCUw=="],
+  }
+}
