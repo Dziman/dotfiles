@@ -52,9 +52,9 @@
 ;; smartparens advises `hippie-expand'; loading hippie-exp after that advice prints an
 ;; "ad-handle-definition: got redefined" message, so load it first
 (require 'hippie-exp)
-(use-package smartparens)
+(use-package smartparens :defer t)
 ;; Autoclose parentheses
-(smartparens-global-mode 1)
+(add-hook 'dziman/first-buffer-hook #'smartparens-global-mode)
 
 ;;;;;;;;
 (use-package hungry-delete :defer t)

@@ -2,14 +2,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Projectile packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package projectile)
+(use-package projectile :defer t)
 (use-package ibuffer-projectile :defer t)
 (use-package treemacs-projectile :defer t)
 (use-package org-projectile :defer t)
 
-(projectile-mode)
+(add-hook 'dziman/first-buffer-hook #'projectile-mode)
 (setq projectile-completion-system 'default)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+;; Global, not in `projectile-mode-map', so the prefix works (and loads projectile) before the mode is on
+(autoload 'projectile-command-map "projectile" nil nil 'keymap)
+(global-set-key (kbd "C-c p") 'projectile-command-map)
 
 ;; The projectile backend class lives in `org-projectile', so load it with `org-project-capture'.
 ;; When `org-projectile' is loaded first (only via its obsolete commands), this hook loads it
@@ -45,6 +47,6 @@
 
 (setq projectile-indexing-method 'hybrid)
 
-(bind-key "C-c c p t" 'org-project-capture-project-todo-completing-read projectile-mode-map)
+(bind-key "C-c c p t" 'org-project-capture-project-todo-completing-read)
 
 (provide 'dz-config-projectile)

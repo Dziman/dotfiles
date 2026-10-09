@@ -5,7 +5,10 @@
 (use-package magit :defer t)
 (use-package git-timemachine :defer t)
 (use-package git-modes :defer t)
-(use-package git-gutter)
+(use-package git-gutter
+  :commands (git-gutter:next-hunk git-gutter:previous-hunk git-gutter:end-of-hunk
+             git-gutter:popup-hunk git-gutter:stage-hunk git-gutter:revert-hunk
+             git-gutter:update-all-windows git-gutter:set-start-revision))
 (use-package git-link :defer t)
 (use-package magit-todos
   :after magit
@@ -13,15 +16,17 @@
 
 (setq magit-last-seen-setup-instructions "1.4.0")
 
-(global-git-gutter-mode t)
+(add-hook 'dziman/first-buffer-hook #'global-git-gutter-mode)
 (setq git-gutter:window-width 1)
 (setq git-gutter:modified-sign " ")
 (setq git-gutter:added-sign " ")
 (setq git-gutter:deleted-sign " ")
 
-(set-face-background 'git-gutter:modified "#5586B4")
-(set-face-background 'git-gutter:added "#7DCF96")
-(set-face-background 'git-gutter:deleted "#CE7666")
+(with-eval-after-load 'git-gutter
+  (set-face-background 'git-gutter:modified "#5586B4")
+  (set-face-background 'git-gutter:added "#7DCF96")
+  (set-face-background 'git-gutter:deleted "#CE7666")
+  )
 
 (defvar dziman/hydra/git--title (dziman/with-faicon "git" "Git actions" 1 -0.05))
 

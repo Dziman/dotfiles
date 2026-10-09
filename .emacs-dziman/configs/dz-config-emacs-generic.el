@@ -6,9 +6,9 @@
 (use-package bind-key)
 (use-package bind-map)
 (setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
-(use-package undo-tree)
+(use-package undo-tree :commands (undo-tree-undo undo-tree-visualize))
 (use-package expand-region :defer t)
-(use-package editorconfig)
+(use-package editorconfig :defer t)
 (use-package idle-highlight-mode)
 (use-package avy :defer t)
 (use-package move-text :defer t)
@@ -37,10 +37,10 @@
 (global-idle-highlite-mode t)
 
 ;; Enable editorconfig
-(editorconfig-mode t)
+(add-hook 'dziman/first-buffer-hook #'editorconfig-mode)
 
 ;; Undo tree
-(global-undo-tree-mode)
+(add-hook 'dziman/first-buffer-hook #'global-undo-tree-mode)
 (bind-key "C-x u" 'undo-tree-undo)
 (bind-key "C-x C-u" 'undo-tree-visualize)
 ;; Prevent undo tree files from polluting all dirs

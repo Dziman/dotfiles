@@ -27,13 +27,33 @@
     )
   )
 
+(defvar dziman/first-buffer-hook nil
+  "Run once: on the first visited file, or when idle preloading starts, whichever is first.
+For global modes that only matter in real buffers, kept out of startup.")
+
+(defun dziman/run-first-buffer-hook ()
+  (remove-hook 'find-file-hook #'dziman/run-first-buffer-hook)
+  (run-hooks 'dziman/first-buffer-hook)
+  (setq dziman/first-buffer-hook nil)
+  )
+
+(add-hook 'find-file-hook #'dziman/run-first-buffer-hook -90)
+
+(defun dziman/preload--begin ()
+  (dziman/run-first-buffer-hook)
+  (dziman/preload--next)
+  )
+
 (defun dziman/preload-start ()
   (setq dziman/preload--pending (copy-sequence dziman/preload-features))
   (if (daemonp)
-    (while dziman/preload--pending
-      (dziman/preload--load (pop dziman/preload--pending))
+    (progn
+      (dziman/run-first-buffer-hook)
+      (while dziman/preload--pending
+        (dziman/preload--load (pop dziman/preload--pending))
+        )
       )
-    (run-with-idle-timer dziman/preload-idle-delay nil #'dziman/preload--next)
+    (run-with-idle-timer dziman/preload-idle-delay nil #'dziman/preload--begin)
     )
   )
 
