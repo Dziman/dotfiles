@@ -7,25 +7,26 @@
 (use-package bind-map)
 (setq undo-tree-map (make-sparse-keymap)) ;; Trick to prevent `undo-tree` to remap std undo key bindings
 (use-package undo-tree)
-(use-package expand-region)
+(use-package expand-region :defer t)
 (use-package editorconfig)
 (use-package idle-highlight-mode)
-(use-package avy)
-(use-package move-text)
-(use-package diminish)
+(use-package avy :defer t)
+(use-package move-text :defer t)
+(use-package diminish :defer t)
 (use-package bufler
-  :init (bufler-mode)
   :bind (("C-x b"   . bufler-switch-buffer)
          ("C-x C-b" . bufler-list)
          ("C-x B"   . bufler-workspace-switch-buffer))
   :custom
-  (bufler-switch-buffer-include-recent-buffers nil))
-(use-package nerd-icons-dired)
-(use-package diredfl)
-(use-package mwim)
+  (bufler-switch-buffer-include-recent-buffers nil)
+  :config
+  (bufler-mode))
+(use-package nerd-icons-dired :defer t)
+(use-package diredfl :defer t)
+(use-package mwim :defer t)
 (use-package info-colors :hook ((Info-selection . info-colors-fontify-node)))
-(use-package helpful)
-(use-package rg)
+(use-package helpful :defer t)
+(use-package rg :defer t)
 
 (setf dired-kill-when-opening-new-dired-buffer t)
 (add-hook 'dired-mode-hook 'diredfl-mode)
@@ -72,7 +73,8 @@
 (bind-key "w" 'avy-goto-word-1 dziman/bind-map/jump)
 (bind-key "l" 'avy-goto-line dziman/bind-map/jump)
 
-(move-text-default-bindings)
+(global-set-key [M-down] 'move-text-down)
+(global-set-key [M-up]   'move-text-up)
 
 (defvar dziman/hydra/window--title (dziman/with-faicon "windows" "Window Management" 1 -0.05))
 
@@ -156,6 +158,8 @@
 
 (column-number-mode t)
 
-(rg-enable-menu)
+;; Same global key as `rg-enable-menu'; the rest of it runs once rg loads
+(global-set-key (kbd "C-c s") #'rg-menu)
+(with-eval-after-load 'rg (rg-enable-menu))
 
 (provide 'dz-config-emacs-generic)

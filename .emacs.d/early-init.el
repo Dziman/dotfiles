@@ -126,13 +126,11 @@ Includes Homebrew GCC paths and CommandLineTools SDK libraries."
   warning-suppress-types '((comp) (lexical-binding))
   )
 
-;; Package system optimizations
-;; TODO Revisit: it looks like causing some startup issues
-;;(setq
-;;  package-enable-at-startup nil
-;;  package-native-compile t
-;;  package-quickstart t
-;;  )
+;; Package system optimizations: activate all packages from one pre-generated file.
+;; package.el regenerates it after installs; run `M-x package-quickstart-refresh'
+;; after changing ~/.emacs.d/elpa by other means. It is regenerated once per installed
+;; package, so the first start on a machine without packages is slower.
+(setq package-quickstart t)
 
 ;; Native compilation settings
 ;; TODO Revisit: it looks like causing some startup issues
@@ -161,9 +159,6 @@ Includes Homebrew GCC paths and CommandLineTools SDK libraries."
 ;; Restore file-name-handler-alist after startup
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (when (file-exists-p custom-file)
-              (load custom-file 'noerror 'nomessage)
-              )
             (setq
               gc-cons-threshold (* 16 1024 1024)  ; Reset to 16 MB
               gc-cons-percentage 0.2              ; Reset percentage for GC

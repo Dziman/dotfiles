@@ -2,12 +2,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; org packages and their configs ;; TODO Review, improve, cleanup
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package org-super-agenda)
-(use-package org-roam)
-(use-package org-rainbow-tags)
-(use-package org-sticky-header)
-(use-package org-super-agenda)
-(use-package calfw-org)
+(use-package org-super-agenda :defer t)
+(use-package org-roam :defer t)
+(use-package org-rainbow-tags :defer t)
+(use-package org-sticky-header :defer t)
+(use-package calfw-org :commands calfw-org-open-calendar)
 
 (defun dziman/org/get-formatted-date (&optional date-format)
   (interactive)
@@ -185,9 +184,11 @@
     )
   )
 
-(require 'org-tempo)
-;; Reset the org-template expansion system, this is need after upgrading to org 9 for some reason
-(setq org-structure-template-alist (eval (car (get 'org-structure-template-alist 'standard-value))))
+(with-eval-after-load 'org
+  (require 'org-tempo)
+  ;; Start from org's standard template list so the `<' expansions match org's documented defaults
+  (setq org-structure-template-alist (eval (car (get 'org-structure-template-alist 'standard-value))))
+  )
 
 (defun hot-expand (str &optional mod header)
   "Expand org template.
@@ -210,12 +211,14 @@ prepended to the element after the #+HEADER: tag."
     )
   )
 
-(define-key org-mode-map "<"
-  (lambda ()
-    (interactive)
-    (if (or (region-active-p) (looking-back "^"))
-      (dziman/hydra/org-template/body)
-      (self-insert-command 1)
+(with-eval-after-load 'org
+  (define-key org-mode-map "<"
+    (lambda ()
+      (interactive)
+      (if (or (region-active-p) (looking-back "^"))
+        (dziman/hydra/org-template/body)
+        (self-insert-command 1)
+        )
       )
     )
   )

@@ -4,7 +4,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Kept as library: cape-company-to-capf wraps company backends at runtime
-(use-package company)
+(use-package company :defer t)
 
 (setq company-tooltip-align-annotations t)
 

@@ -9,6 +9,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Setup `package`
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Packages are already activated before init (`package-enable-at-startup' +
+;; `package-quickstart' in early-init), so no explicit `package-initialize' here.
+
+(with-eval-after-load 'package
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
 ;; install packages automatically
 (dolist (package '(use-package))
@@ -17,18 +22,26 @@
     )
   )
 
-(package-initialize)
+(defun dziman/use-package-ensure (name args state &optional no-refresh)
+  "Skip `use-package-ensure-elpa' for installed packages.
+It always requires the whole of package.el (~80 ms); `package-installed-p'
+alone needs only the small package-activate.el."
+  (unless (and (equal args '(t)) (package-installed-p (use-package-as-symbol name)))
+    (use-package-ensure-elpa name args state no-refresh)
+    )
+  )
+
+(setq use-package-ensure-function #'dziman/use-package-ensure)
 
 (use-package use-package
   :custom
   (use-package-verbose nil)
   (use-package-expand-minimally t)
   (use-package-always-ensure t)
-  (use-package-compute-statistics t)
+  ;; Set DZIMAN_EMACS_PROFILE=1 and run `M-x use-package-report' to profile startup
+  (use-package-compute-statistics (and (getenv "DZIMAN_EMACS_PROFILE") t))
   (use-package-minimum-reported-time 0.02)
   )
-
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -61,5 +74,6 @@
 (require 'dz-config-appearance)
 (require 'dz-config-emacs-graphic)
 (require 'dz-config-doom-modeline)
+(require 'dz-config-preload)
 (require 'dz-config-profile)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

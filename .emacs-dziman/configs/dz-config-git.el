@@ -2,11 +2,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; git-related packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package magit)
-(use-package git-timemachine)
-(use-package git-modes)
+(use-package magit :defer t)
+(use-package git-timemachine :defer t)
+(use-package git-modes :defer t)
 (use-package git-gutter)
-(use-package git-link)
+(use-package git-link :defer t)
 (use-package magit-todos
   :after magit
   :config (magit-todos-mode 1))

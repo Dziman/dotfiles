@@ -2,9 +2,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Fly* packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package flycheck)
-(use-package flycheck-color-mode-line)
-(use-package flyspell-correct-helm)
+(use-package flycheck :defer t)
+(use-package flycheck-color-mode-line :defer t)
+(use-package flyspell-correct-helm :after flyspell)
 
 (add-hook 'text-mode-hook 'flyspell-mode)
 
