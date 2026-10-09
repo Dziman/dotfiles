@@ -3,38 +3,93 @@ theme:
   dark: dark-rose-pine
 setupVersion: 2
 modelRoles:
-  default: openai-codex/gpt-5.6-terra
-  smol: openai-codex/gpt-5.6-luna
-  slow: openai-codex/gpt-5.6-sol
-  vision: openai-codex/gpt-5.6-sol
-  plan: openai-codex/gpt-5.6-sol
-  designer: openai-codex/gpt-5.6-terra
-  commit: openai-codex/gpt-5.6-luna
-  tiny: openai-codex/gpt-5.6-luna
-  task: openai-codex/gpt-5.6-sol
-  advisor: openai-codex/gpt-5.6-terra
+  default: openai-codex/gpt-5.6-terra:high
+  smol: openai-codex/gpt-5.6-luna:medium
+  slow: openai-codex/gpt-5.6-terra:high
+  vision: openai-codex/gpt-5.6-terra:high
+  plan: openai-codex/gpt-5.6-terra:high
+  designer: openai-codex/gpt-5.6-terra:high
+  commit: openai-codex/gpt-5.6-luna:medium
+  tiny: openai-codex/gpt-5.6-luna:medium
+  task: openai-codex/gpt-5.6-terra:high
+  advisor: zai/glm-5.3-flash:high
+defaultThinkingLevel: high
+modelPresets:
+  codex-primary:
+    modelRoles:
+      default: openai-codex/gpt-5.6-terra:high
+      smol: openai-codex/gpt-5.6-luna:medium
+      slow: openai-codex/gpt-5.6-sol:xhigh
+      vision: openai-codex/gpt-5.6-sol:xhigh
+      plan: openai-codex/gpt-5.6-sol:xhigh
+      designer: openai-codex/gpt-5.6-terra:high
+      commit: openai-codex/gpt-5.6-luna:medium
+      tiny: openai-codex/gpt-5.6-luna:medium
+      task: openai-codex/gpt-5.6-terra:high
+      advisor: zai/glm-5.3:xhigh
+    defaultThinkingLevel: high
+  zai-primary:
+    modelRoles:
+      default: zai/glm-5.3:high
+      smol: zai/glm-5.3-flash:medium
+      slow: zai/glm-5.3:xhigh
+      vision: zai/glm-5.3-flash:medium
+      plan: zai/glm-5.3:xhigh
+      designer: zai/glm-5.3:high
+      commit: zai/glm-5.3-flash:medium
+      tiny: zai/glm-5.3-flash:medium
+      task: zai/glm-5.3:high
+      advisor: openai-codex/gpt-5.6-terra:high
+    defaultThinkingLevel: high
+  economy:
+    modelRoles:
+      default: openai-codex/gpt-5.6-luna:medium
+      smol: openai-codex/gpt-5.6-luna:medium
+      slow: openai-codex/gpt-5.6-luna:medium
+      vision: openai-codex/gpt-5.6-luna:medium
+      plan: openai-codex/gpt-5.6-luna:medium
+      designer: openai-codex/gpt-5.6-luna:medium
+      commit: openai-codex/gpt-5.6-luna:medium
+      tiny: openai-codex/gpt-5.6-luna:medium
+      task: openai-codex/gpt-5.6-luna:medium
+      advisor: zai/glm-5.3-flash:medium
+    defaultThinkingLevel: medium
+  balanced:
+    modelRoles:
+      default: openai-codex/gpt-5.6-terra:high
+      smol: openai-codex/gpt-5.6-luna:medium
+      slow: openai-codex/gpt-5.6-terra:high
+      vision: openai-codex/gpt-5.6-terra:high
+      plan: openai-codex/gpt-5.6-terra:high
+      designer: openai-codex/gpt-5.6-terra:high
+      commit: openai-codex/gpt-5.6-luna:medium
+      tiny: openai-codex/gpt-5.6-luna:medium
+      task: openai-codex/gpt-5.6-terra:high
+      advisor: zai/glm-5.3-flash:high
+    defaultThinkingLevel: high
+  deep:
+    modelRoles:
+      default: openai-codex/gpt-6-astra:xhigh
+      smol: openai-codex/gpt-5.6-terra:high
+      slow: openai-codex/gpt-6-astra:max
+      vision: openai-codex/gpt-6-astra:xhigh
+      plan: openai-codex/gpt-6-astra:max
+      designer: openai-codex/gpt-6-astra:xhigh
+      commit: openai-codex/gpt-5.6-terra:high
+      tiny: openai-codex/gpt-5.6-terra:high
+      task: openai-codex/gpt-6-astra:xhigh
+      advisor: zai/glm-5.3:xhigh
+    defaultThinkingLevel: xhigh
+advisor:
+  enabled: true
+  reviewMode: agent-end
+  reviewInterval: 1
+  syncBacklog: strict
+task:
+  agentAdvisor:
+    task: "on"
 retry:
-  fallbackChains:
-    default:
-      - openrouter/z-ai/glm-5.3-flash
-    smol:
-      - openrouter/openai/gpt-oss-20b
-    slow:
-      - openrouter/z-ai/glm-5.3
-    vision:
-      - openai-codex/gpt-5.6-terra
-    plan:
-      - openrouter/z-ai/glm-5.3
-    designer:
-      - openai-codex/gpt-5.6-terra
-    commit:
-      - openrouter/openai/gpt-oss-120b
-    tiny:
-      - openrouter/openai/gpt-oss-120b
-    task:
-      - openai-codex/gpt-5.6-terra
-    advisor:
-      - openrouter/z-ai/glm-5.3-flash
+  modelFallback: false
 dev:
   autoqaConsent: denied
 hideThinkingBlock: true
