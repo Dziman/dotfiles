@@ -5,13 +5,14 @@
 ################################################################################
 
 if [[ -o interactive ]] then
-   # jenv: the cheap part of `jenv init` up front, the rest (~0.15 s: rehash, plugins,
-   # completion) on the first `jenv` call. After installing a JDK run `jenv rehash` once.
+   # jenv: the cheap part of `jenv init` up front, the rest (~0.15 s: rehash, plugins)
+   # on the first `jenv` call. After installing a JDK run `jenv rehash` once.
    if command-exists jenv; then
       export PATH="${JENV_ROOT:-$HOME/.jenv}/shims:${PATH}"
       export JENV_SHELL=zsh
       export JENV_LOADED=1
       unset JAVA_HOME JDK_HOME
+      source "$HOMEBREW_PREFIX/opt/jenv/libexec/completions/jenv.zsh"
       function jenv() {
          unfunction jenv
          eval "$(command jenv init - zsh)"
