@@ -78,7 +78,7 @@ function git-delete-branch() {
 
     if [[ "$branch" == "$current_branch" ]]; then
       # TODO Use function param or get default branch??
-      git checkout develop || git checkout master
+      git switch develop || git switch master
     fi
 
     git branch -D $branch

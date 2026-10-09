@@ -39,4 +39,8 @@ fpath=(/opt/brew/share/zsh/site-functions/ $fpath)
 fpath=(/opt/brew/share/zsh-completions $fpath)
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=(/usr/local/share/zsh/site-functions $fpath)
+fpath=(~/.zsh/site-functions $fpath)
+
 compinit
+
+source "$HOMEBREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"

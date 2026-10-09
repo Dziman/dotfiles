@@ -1,9 +1,19 @@
 (define-abbrev-table
+  'global-abbrev-table
+    '(
+      ;; abbrevs for git commit to attribute AI commits. TODO: find a way to make them commit 'mode' specific
+      ("caclop" "Co-Authored-By: Claude Opus <drusak+claude@apple.com>" nil 0)
+      ("caclso" "Co-Authored-By: Claude Sonnet <drusak+claude@apple.com>" nil 0)
+      ("caclha" "Co-Authored-By: Claude Haiku <drusak+claude@apple.com>" nil 0)
+    )
+  )
+
+(define-abbrev-table
   'org-mode-abbrev-table
     '(
          ;; locations
-         ("loma" "27504 Loma Prieta Way, Los Gatos, CA" nil 0)
-         ("herm" "884 Hermosa Court, Sunnyvale, CA" nil 0)
+         ("floma" "27504 Loma Prieta Way, Los Gatos, CA" nil 0)
+         ("fherm" "884 Hermosa Court, Sunnyvale, CA" nil 0)
 
          ;; persons
          ("kpai" "Kiran Pai" nil 0)

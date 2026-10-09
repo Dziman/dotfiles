@@ -14,6 +14,10 @@ export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/.speedy/bin:$PATH"
 export PATH="$HOME/src/apple/aos-ado/dpe-extension/bin:$PATH"
 export PATH="$HOME/src/apple/aos-me/merch-scripts/bin:$PATH"
+export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/share/maven/bin:$PATH"
+export PATH="$HOME/.optimus/bin:$PATH"
 export HOMEBREW_PREFIX=$(brew --prefix)
 
 export LSCOLORS=GxFxCxDxBxegedabagaced

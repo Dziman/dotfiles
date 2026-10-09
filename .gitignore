@@ -33,3 +33,10 @@ gradlew.bat
 #local gradle settings
 local-settings.gradle
 dziman-banner.txt
+
+# Do not include local Claude settings
+.claude/
+# Some Claude temp files
+*.swp
+# Something appeared after Claude was working in ASPEN. May be some MCP created that
+.factorypath

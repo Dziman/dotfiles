@@ -21,7 +21,7 @@ if [[ -o interactive ]] && command-exists fzf; then
                  --preview "bat --color=always {1} --highlight-line {2}" \
                  --preview-window "up,60%,border-bottom,+{2}+3/3,~3" \
                  --bind "alt-enter:become(zsh -i -c 'ideal {2} {1}')" \
-                 --bind "enter:become(zsh -i -c 'edit +{2} {1}')"
+                 --bind "enter:become(zsh -i -c 'emacs +{2} {1}')"
       }
     fi
 
@@ -31,7 +31,7 @@ if [[ -o interactive ]] && command-exists fzf; then
           dz-fzf --preview "bat --color=always {1}" \
                  --preview-window "up,60%,border-bottom,+0+3/3,~3" \
                  --bind "alt-enter:become(zsh -i -c 'idea {1}')" \
-                 --bind "enter:become(zsh -i -c 'edit {1}')"
+                 --bind "enter:become(zsh -i -c 'emacs {1}')"
       }
     fi
 

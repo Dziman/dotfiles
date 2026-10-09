@@ -1,20 +1,16 @@
 {
     META = {
       contextScope = {
-        host="/.*/";
+        host = "/.*/";
+        mode = "desktop";
       };
     };
-
-    "trustStore+" = {
-        password = "Apple123";
-    };
-    
     "serverKeyStore+" = {
-      "alias" = "server";
-      "password" = "Apple123";
+      "alias" = "1";
+      "password" = "85d70f3269d2fe44d79389e22d20bd73867a0b4ebca479f5856afe6a7abc17c5";
     };
     "clientKeyStore+" = {
-      "alias" = "client";
-      "password" = "Apple123";
+      "alias" = "1";
+      "password" = "85d70f3269d2fe44d79389e22d20bd73867a0b4ebca479f5856afe6a7abc17c5";
     };
   }

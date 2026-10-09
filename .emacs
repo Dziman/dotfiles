@@ -1,51 +1,65 @@
-(let ((file-name-handler-alist nil)) ;; lefihack to speed up init. See https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
+;;; -*- lexical-binding: t -*-
 
-(setq gc-cons-threshold (* 128 1024 1024)) ;; set memory 'limit' to 128Mb to reduce number of GC calls
+(setq dziman/settings-base-dir (or (getenv "DZIMAN_EMACS_SETTINGS_DIR") "~/.emacs-dziman"))
 
 ;;;;;; Use separate file for `custom` to keep config cleaner
-(setq custom-file "~/.emacs-dziman/custom.el")
+(setq custom-file (expand-file-name "custom.el" dziman/settings-base-dir))
 (load custom-file :noerror :nomessage)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; Setup `package` to install automatically
+;;;;;; Setup `package`
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq use-package-always-defer t) ;; Lazy load for packages. Causing some errors on init but it seems it doesn't provide any startup time reduction
-;; (setq use-package-compute-statistics t) ;; Collect init statistics. Check by run `M-x use-package-report`
-(require 'package)
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;; install packages automatically
 (dolist (package '(use-package))
-   (unless (package-installed-p package)
-       (package-install package)))
+  (unless (package-installed-p package)
+    (package-install package)
+    )
+  )
 
 (package-initialize)
+
+(use-package use-package
+  :custom
+  (use-package-verbose nil)
+  (use-package-expand-minimally t)
+  (use-package-always-ensure t)
+  (use-package-compute-statistics t)
+  (use-package-minimum-reported-time 0.02)
+  )
+
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;; Add personal configs dir to list
-(add-to-list 'load-path (expand-file-name "~/.emacs-dziman/configs" user-emacs-directory))
+;;;;;; Add personal configs dir and subdirs to list
+(let ((dir (expand-file-name "configs" dziman/settings-base-dir)))
+  (when (file-directory-p dir)
+    (add-to-list 'load-path dir)
+    (let ((default-directory dir))
+      (normal-top-level-add-subdirs-to-load-path))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;; Load configs. Ordiring is important
+;;;;;; Load configs. Ordiring is important in some cases
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'dz-config-icons)
 (require 'dz-config-bind-maps)
 (require 'dz-config-hydra)
 (require 'dz-config-emacs-generic)
-(require 'dz-config-smart-mode-line)
+(require 'dz-config-crux)
+(require 'dz-config-mermaid)
 (require 'dz-config-prog-mode)
 (require 'dz-config-git)
 (require 'dz-config-org)
-(require 'dz-config-plantuml)
-(require 'dz-config-helm)
+;;(require 'dz-config-helm)
 (require 'dz-config-projectile)
 (require 'dz-config-fly)
 (require 'dz-config-completion)
+(require 'dz-config-vertico)
 (require 'dz-config-prog-languages)
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
 (require 'dz-config-appearance)
-(require 'dz-config-ios)
+(require 'dz-config-emacs-graphic)
+(require 'dz-config-doom-modeline)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-) ;; end of lifehack wrapper

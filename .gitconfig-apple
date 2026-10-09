@@ -2,8 +2,9 @@
 	name = Dzmitry Rusak
 	email = drusak@apple.com
 [alias]
-	cr = !sh -c 'git checkout release/20${1}-R0${2}' -
-	ror = !sh -c 'git rebase origin/release/20${1}-R0${2}' -
+	swr = "!sh -c 'git switch release/20${1}-R$(printf %02d ${2#0})' -"
+	cr = swr
+	ror = "!sh -c 'git rebase origin/release/20${1}-R$(printf %02d ${2#0})' -"
 [gpg "x509"]
 	program = /usr/local/bin/ac-sign
 [gpg]

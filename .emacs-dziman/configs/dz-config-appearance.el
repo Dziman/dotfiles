@@ -1,7 +1,8 @@
+;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Apperance customizations (like themes, etc.)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package labburn-theme :ensure t)
+(use-package labburn-theme)
 
 (load-theme 'labburn t)
 
@@ -16,8 +17,6 @@
   )
 
 (set-face-attribute 'mode-line nil :background "#5F5F5F")
-
-(set-face-attribute 'sml/modes nil :foreground "#3CB371" :weight 'bold)
 
 (setq highlight-parentheses-background-colors '("dimgray"))
 (setq highlight-parentheses-colors '("firebrick1" "seagreen" "IndianRed3" "forestgreen"))

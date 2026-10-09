@@ -1,9 +1,10 @@
+;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; hydra packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package hydra :ensure t)
-(use-package major-mode-hydra :ensure t)
-(use-package pretty-hydra :ensure t)
+(use-package hydra)
+(use-package major-mode-hydra)
+(use-package pretty-hydra)
 
 (setq major-mode-hydra-invisible-quit-key "q")
 

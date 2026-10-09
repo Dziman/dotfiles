@@ -15,7 +15,7 @@
         120,
         200
     ],
-    "editor.tabCompletion": true,
+    "editor.tabCompletion": "onlySnippets",
     "editor.minimap.enabled": false,
     "editor.cursorBlinking": "blink",
     "editor.fontLigatures": true,
@@ -23,7 +23,6 @@
     "git.autofetch": false,
     "files.autoSave": "onFocusChange",
     "debug.inlineValues": true,
-    "workbench.activityBar.visible": true,
     "workbench.sideBar.location": "right",
     "gitlens.advanced.messages": {
         "suppressCommitHasNoPreviousCommitWarning": false,
@@ -41,5 +40,8 @@
     "terminal.integrated.macOptionIsMeta": true,
     "gitlens.keymap": "chorded",
     "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "claudeCode.preferredLocation": "panel",
+    "intellij.region": "americas",
+    "intellij.dataSharing": "none"
 }

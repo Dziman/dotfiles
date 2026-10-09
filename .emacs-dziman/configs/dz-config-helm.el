@@ -1,15 +1,10 @@
+;;; -*- lexical-binding: t -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Helm packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package helm :ensure t)
-(use-package helm-swoop :ensure t)
-(use-package helm-company :ensure t)
-(use-package helm-mode-manager :ensure t)
-(use-package helm-org :ensure t)
-(use-package helm-org-ql :ensure t)
-(use-package helm-roam :ensure t)
-(use-package helm-mode-manager :ensure t)
-;; (use-package helm-bufler :ensure t)
+(use-package helm)
+(use-package helm-company)
+(use-package helm-mode-manager)
 
 (setq helm-ff-transformer-show-only-basename nil
       helm-adaptive-history-file             "~/.emacs.d/data/helm-history"
@@ -20,7 +15,7 @@
       helm-M-x-fuzzy-match                   t
       helm-semantic-fuzzy-match              t
       helm-ff-auto-update-initial-value      t
-      helm-split-window-in-side-p            t
+      helm-split-window-inside-p             t
       helm-autoresize-min-height             25
       helm-autoresize-max-height             25
       helm-buffer-max-length                 120
@@ -31,34 +26,26 @@
 (helm-autoresize-mode 1)
 (setq helm-ff-skip-boring-files t)
 
-;; helm-swoop (search improvement)
-(setq helm-swoop-split-direction 'split-window-horizontally)
-(setq helm-swoop-move-to-line-cycle t)
-
-(add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
-(add-to-list 'helm-completing-read-handlers-alist '(org-set-tags . helm-org-completing-read-tags))
-(setq helm-org-format-outline-path t)
-(setq helm-org-headings-fontify t)
-(setq helm-org-ignore-autosaves t)
+;(add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
+;(add-to-list 'helm-completing-read-handlers-alist '(org-set-tags . helm-org-completing-read-tags))
+;(setq helm-org-format-outline-path t)
+;(setq helm-org-headings-fontify t)
+;(setq helm-org-ignore-autosaves t)
 
 (bind-key "M-x" 'helm-M-x)
 ;; This is old M-x
 (bind-key "C-c C-c M-x" 'execute-extended-command)
-(bind-key "C-x b" 'helm-mini)
-(bind-key "C-x C-b" 'bufler-switch-buffer)
+(bind-key "C-x C-b" 'helm-mini)
+(bind-key "C-x b" 'bufler-switch-buffer)
 (bind-key "C-x C-f" 'helm-find-files)
 (bind-key "C-x C-r" 'helm-recentf)
 (bind-key "C-x r l" 'helm-filtered-bookmarks)
 (bind-key "M-y" 'helm-show-kill-ring)
 (bind-key "C-x C-d" 'helm-browse-project)
 
-;; helm-swoop (improved search)
-(bind-key "M-i" 'helm-swoop)
-(bind-key "M-s o" 'helm-swoop)
-(bind-key "M-I" 'helm-swoop-back-to-last-point)
-(bind-key "C-c M-i" 'helm-multi-swoop)
-(bind-key "M-s /" 'helm-multi-swoop)
-(bind-key "C-x M-i" 'helm-multi-swoop-all)
-(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+;; helm-occur (improved search)
+(bind-key "M-i" 'helm-occur)
+(bind-key "M-s o" 'helm-occur)
+(define-key isearch-mode-map (kbd "M-i") 'helm-occur-from-isearch)
 
 (provide 'dz-config-helm)

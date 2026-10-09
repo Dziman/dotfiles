@@ -1,10 +1,10 @@
 mendocino-platform-ui-parent
 merch-core
 merch-content-service
-web-app-platform-parent
 storecontentdto
 store-product-foundation
 store-app-foundation-parent
+web-app-platform-parent
 store-mvc-foundation-parent
 store-modules
 interop-store-parent

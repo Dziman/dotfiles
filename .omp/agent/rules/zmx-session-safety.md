@@ -1,0 +1,1 @@
+/opt/homebrew/opt/apple-omp/libexec/assets/rules/zmx-session-safety.md

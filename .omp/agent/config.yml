@@ -1,0 +1,97 @@
+modelRoles:
+  default: floodgate/aws:anthropic.claude-opus-5-5
+  slow: floodgate/aws:anthropic.claude-opus-5-5:high
+  plan: floodgate/aws:anthropic.claude-opus-5-5:high
+  task: floodgate/aws:anthropic.claude-sonnet-5:medium
+  designer: floodgate/aws:anthropic.claude-sonnet-5
+  commit: floodgate/aws:anthropic.claude-sonnet-5:minimal
+  advisor: floodgate/aws:anthropic.claude-sonnet-5:medium
+  smol: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:minimal
+  vision: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:off
+  tiny: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:off
+  impl_cheap: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:medium
+  impl_standard: floodgate/aws:anthropic.claude-sonnet-5:medium
+  impl_capable: floodgate/aws:anthropic.claude-opus-5-5:high
+  review_cheap: floodgate-openai/gemini-3.8-flash:latest:low
+  review_standard: floodgate-openai/gemini-3.8-flash:latest:high
+  review_capable: floodgate-openai/gemini-3.1-pro-preview:latest:high
+dev:
+  autoqa: false
+  autoqaConsent: denied
+collab:
+  relayUrl: wss://omp-relay.multidev.apple.com
+share:
+  serverUrl: https://omp.multidev.apple.com/s
+setupVersion: 2
+enabledProviders:
+  - claude
+  - claude-plugins
+statusLine:
+  preset: custom
+  leftSegments:
+    - vim
+    - model
+    - mode
+    - path
+    - git
+    - pr
+    - subagents
+  rightSegments:
+    - cache_hit
+    - token_total
+    - token_rate
+    - cost
+    - context_pct
+  segmentOptions:
+    path:
+      stripWorkPrefix: false
+  separator: powerline
+  contextLine: embedded
+  sessionAccent: true
+  transparent: true
+  compactThinkingLevel: true
+  showHookStatus: true
+telemetry:
+  otlpExportEnabled: false
+theme:
+  dark: zenburn
+composer:
+  shape: band
+  tokenRate: true
+terminal:
+  showProgress: true
+tui:
+  textSizing: false
+  titleSpinner: braille
+  hyperlinks: auto
+  tight: true
+display:
+  shimmer: classic
+  pinnedAgents: collapsed
+  subagentLivePreview: true
+  hideToolActivity: true
+  showTokenUsage: true
+  showTurnTime: true
+  cacheMissMarker: false
+proseOnlyThinking: true
+personality: pragmatic
+startup:
+  showSplash: true
+contextPromotion:
+  enabled: false
+read:
+  renderMarkdown: true
+grep:
+  enabled: true
+astGrep:
+  enabled: true
+github:
+  enabled: true
+task:
+  enableEffort: true
+  enableLsp: true
+  isolation:
+    enabled: false
+commands:
+  enableClaudeUser: false
+symbolPreset: nerd

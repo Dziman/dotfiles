@@ -2,6 +2,7 @@
     META = {
         contextScope = {
             host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+            mode = "desktop";
         };
     };
 

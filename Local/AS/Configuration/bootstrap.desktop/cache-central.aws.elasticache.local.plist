@@ -8,7 +8,7 @@
   "elasticacheClusters" = {
     "nonPciCluster+" = {
       "clusterOptions" = {};
-      "nearCacheOptions" = "${this.commonNearCacheOptionsNonPciEc}";
+      "nearCacheOptions" = "${this.commonNearCacheOptionsEc}";
       "globalOptions+" = {
         "authEnabled" = "true";
         "authToken" = "q8d9d8d8s7";
@@ -18,7 +18,7 @@
     };
     "pciCluster+" = {
       "clusterOptions" = {};
-      "nearCacheOptions" = "${this.commonNearCacheOptionsPciEc}";
+      "nearCacheOptions" = "${this.commonNearCacheOptionsEc}";
       "globalOptions+" = {
         "authEnabled" = "true";
         "authToken" = "q8d9d8d8s7";
@@ -28,7 +28,7 @@
     };
     "pageCacheCluster+" = {
       "clusterOptions" = {};
-      "nearCacheOptions" = "${this.commonNearCacheOptionsPciEc}";
+      "nearCacheOptions" = "${this.commonNearCacheOptionsEc}";
       "globalOptions+" = {
         "authEnabled" = "true";
         "authToken" = "q8d9d8d8s7";
