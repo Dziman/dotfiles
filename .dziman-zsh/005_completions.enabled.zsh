@@ -39,7 +39,18 @@ fpath=($HOMEBREW_PREFIX/share/zsh-completions $fpath)
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 fpath=($HOME/.dziman-zsh/completions $fpath)
 fpath=($HOME/.orbstack/shell/completions/zsh $fpath)
-compinit -u
+
+# Rebuilding ~/.zcompdump takes ~0.15 s, so trust it and do the full check only once it is
+# older than 24 h. New completion scripts appear within a day, or at once after `rm ~/.zcompdump`.
+fresh_zcompdump=(~/.zcompdump(N.mh-24))
+if (( $#fresh_zcompdump )); then
+    compinit -C
+else
+    compinit -u
+    # compinit leaves a still-valid dump untouched; refresh its age to restart the 24 h window
+    touch ~/.zcompdump
+fi
+unset fresh_zcompdump
 
 autoload -U +X bashcompinit && bashcompinit -u
 complete -o nospace -C $HOMEBREW_PREFIX/bin/terraform terraform # TODO Move to Terraform specific file?

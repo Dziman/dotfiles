@@ -5,8 +5,19 @@
 ################################################################################
 
 if [[ -o interactive ]] then
-   # jenv initialization
-   if command-exists jenv; then eval "$(jenv init - zsh)"; fi
+   # jenv: the cheap part of `jenv init` up front, the rest (~0.15 s: rehash, plugins,
+   # completion) on the first `jenv` call. After installing a JDK run `jenv rehash` once.
+   if command-exists jenv; then
+      export PATH="${JENV_ROOT:-$HOME/.jenv}/shims:${PATH}"
+      export JENV_SHELL=zsh
+      export JENV_LOADED=1
+      unset JAVA_HOME JDK_HOME
+      function jenv() {
+         unfunction jenv
+         eval "$(command jenv init - zsh)"
+         jenv "$@"
+      }
+   fi
 
    # init gradle completion. Temporary(?) workaround as putting it into $fpath has no effect
    if [[ -e $HOMEBREW_PREFIX/share/zsh/site-functions/_gradle ]]; then source $HOMEBREW_PREFIX/share/zsh/site-functions/_gradle 1>&2 2>/dev/null; fi

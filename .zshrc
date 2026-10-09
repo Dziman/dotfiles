@@ -24,8 +24,7 @@ SAVEHIST=1000
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 
-autoload -U compinit
-compinit -u
+autoload -U compinit # Run once in 005_completions, after `fpath` is final
 
 autoload -U promptinit
 promptinit
