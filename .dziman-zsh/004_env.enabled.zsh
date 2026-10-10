@@ -28,4 +28,9 @@ export GUM_CHOOSE_SHOW_HELP="false"
 export GUM_CONFIRM_SHOW_HELP="false"
 
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.local/share/maven/bin:$PATH"
 export PATH="$HOME/.orbstack/bin:$PATH"
+
+# BSD ls colours
+export LSCOLORS=GxFxCxDxBxegedabagaced
