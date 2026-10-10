@@ -44,9 +44,12 @@
   rc = rebase --continue
   ###
 
-  ### checkout
-  cd = checkout develop
-  cm = checkout main
+  ### switch
+  swd = switch develop
+  swm = switch main
+  # old checkout-era names, kept for muscle memory
+  cd = swd
+  cm = swm
 
   # show commits where file was changed. Usage `git fh <file name>`
   fh = log --follow --color --date=local --pretty=format:'%C(red)%h%Creset - %C(green)(%ci%x08%x08%x08%x08%x08%x08) %C(bold blue)%<(20)%an%Creset %C(yellow)%d%Creset %s' --abbrev-commit
