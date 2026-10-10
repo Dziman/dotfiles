@@ -14,6 +14,8 @@ if [[ -o interactive ]] && command-exists fzf; then
         --color "hl:-1:underline,hl+:-1:underline:reverse" \
         --pointer ▶︎ \
         --marker ✓ \
+        --bind "ctrl-k:execute(echo {1} | tr -d '\n' | pbcopy)" \
+        --bind "ctrl-o:execute(echo {1})" \
         "$@"
   }
 
