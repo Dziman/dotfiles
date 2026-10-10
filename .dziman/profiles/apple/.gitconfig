@@ -1,0 +1,6 @@
+[includeIf "gitdir:~/src/apple/"]
+  path = ~/.dziman/profile/.gitconfig-apple
+[includeIf "gitdir:~/Local/AS/"]
+  path = ~/.dziman/profile/.gitconfig-apple
+[includeIf "gitdir:~/Local/AS/Data/ASPEN/templates/"]
+  path = ~/.dziman/profile/.gitconfig-apple-templates

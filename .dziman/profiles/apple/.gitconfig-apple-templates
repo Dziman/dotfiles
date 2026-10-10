@@ -1,0 +1,4 @@
+[alias]
+    swr = !sh -c 'git switch release/${1}.${2}' -
+    cr = swr
+    ror = !sh -c 'git rebase origin/release/${1}.${2}' -

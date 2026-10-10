@@ -1,0 +1,13 @@
+[user]
+	name = Dzmitry Rusak
+	email = drusak@apple.com
+[alias]
+	swr = "!sh -c 'git switch release/20${1}-R$(printf %02d ${2#0})' -"
+	cr = swr
+	ror = "!sh -c 'git rebase origin/release/20${1}-R$(printf %02d ${2#0})' -"
+[gpg "x509"]
+	program = /usr/local/bin/ac-sign
+[gpg]
+	format = x509
+[commit]
+	gpgsign = true
