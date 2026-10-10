@@ -1,0 +1,6 @@
+% apple, src
+
+# Go to project src directory
+cd <project_dir>
+
+$ project_dir: cat ${SRC_ROOT}/.modules | xargs -I {} realpath "${SRC_ROOT}/{}"
