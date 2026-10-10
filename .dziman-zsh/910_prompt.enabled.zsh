@@ -83,6 +83,8 @@ function left-prompt() {
 
 # TODO Use variables for colors
 function right-prompt() {
+  # machine profile segment, when the active profile defines `profile-prompt-status`
+  (( $+functions[profile-prompt-status] )) && print-right-segment 10 103 "$(profile-prompt-status)"
   print-right-segment 10 216 "$(aws-status)"
   print-right-segment 10 111 "$(jenv-status)"
   print-right-segment 10 151 "$(pyenv-status)"
