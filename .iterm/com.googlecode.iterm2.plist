@@ -485,6 +485,8 @@
 	<true/>
 	<key>EnableProxyIcon</key>
 	<false/>
+	<key>GenerativeAIAllowed</key>
+	<false/>
 	<key>HTMLTabTitles</key>
 	<true/>
 	<key>HapticFeedbackForEsc</key>
