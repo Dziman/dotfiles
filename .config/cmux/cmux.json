@@ -29,7 +29,7 @@
           "control" : true,
           "key" : "c",
           "keyCode" : 8,
-          "option" : false,
+          "option" : true,
           "shift" : false
         }
       }
