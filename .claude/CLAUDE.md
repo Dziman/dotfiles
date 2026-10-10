@@ -101,3 +101,5 @@ Load the matching skill before doing the work — its rules are authoritative fo
 - Avoid unnecessary generated files.
 - Do not modify lockfiles unless dependencies actually change.
 - Ensure files end with an empty line (enforced via `insert_final_newline = true` in `.editorconfig`, if present).
+
+@~/.dziman/profile/.claude/CLAUDE.md
