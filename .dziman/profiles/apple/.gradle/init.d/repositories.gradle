@@ -1,0 +1,139 @@
+// Provided/managed by AOS Helpers. Any edits may be lost in subsequent AOS Helpers updates.
+
+/**
+Enable / disable the use of Maven Local for retrieving artifacts in Gradle builds.
+
+Usage: uncomment / comment the appropriate mavenLocal() line below.
+*/
+
+allprojects {
+    buildscript {
+        repositories {
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_RELEASE_URL')
+                credentials {
+                    username System.getenv('ACS_ARTIFACTORY_USR')
+                    password System.getenv('ACS_ARTIFACTORY_PSW')
+                }
+                content {
+                    excludeGroup 'com.sun.jmx'
+                }
+            }
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_SNAPSHOT_URL')
+                credentials {
+                    username System.getenv('ACS_ARTIFACTORY_USR')
+                    password System.getenv('ACS_ARTIFACTORY_PSW')
+                }
+                content {
+                    excludeGroup 'com.sun.jmx'
+                }
+            }
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_PLUGINS_URL')
+                content {
+                    excludeGroup 'com.sun.jmx'
+                    excludeGroupByRegex 'com\\.apple\\.store(\\..*)?'
+                }
+            }
+
+        }
+    }
+
+    repositories {
+        // mavenLocal(); System.out.println("WARNING: Maven local is active for dependency retrieval");
+        maven {
+            url System.getenv('ACS_ARTIFACTORY_RELEASE_URL')
+            credentials {
+                username System.getenv('ACS_ARTIFACTORY_USR')
+                password System.getenv('ACS_ARTIFACTORY_PSW')
+            }
+            content {
+                excludeGroup 'com.sun.jmx'
+            }
+        }
+        maven {
+            url System.getenv('ACS_ARTIFACTORY_SNAPSHOT_URL')
+            credentials {
+                username System.getenv('ACS_ARTIFACTORY_USR')
+                password System.getenv('ACS_ARTIFACTORY_PSW')
+            }
+            content {
+                excludeGroup 'com.sun.jmx'
+            }
+        }
+        maven {
+            url System.getenv('ACS_ARTIFACTORY_PLUGINS_URL')
+            content {
+                excludeGroup 'com.sun.jmx'
+                excludeGroupByRegex 'com\\.apple\\.store(\\..*)?'
+            }
+        }
+    }
+}
+
+settingsEvaluated { settings ->
+    settings.pluginManagement {
+        repositories {
+            // mavenLocal(); System.out.println("WARNING: Maven local is active for plugin retrieval");
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_RELEASE_URL')
+                credentials {
+                    username System.getenv('ACS_ARTIFACTORY_USR')
+                    password System.getenv('ACS_ARTIFACTORY_PSW')
+                }
+                content {
+                    excludeGroup 'com.sun.jmx'
+                }
+            }
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_SNAPSHOT_URL')
+                credentials {
+                    username System.getenv('ACS_ARTIFACTORY_USR')
+                    password System.getenv('ACS_ARTIFACTORY_PSW')
+                }
+                content {
+                    excludeGroup 'com.sun.jmx'
+                }
+            }
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_PLUGINS_URL')
+                content {
+                    excludeGroup 'com.sun.jmx'
+                    excludeGroupByRegex 'com\\.apple\\.store(\\..*)?'
+                }
+            }
+        }
+    }
+    settings.dependencyResolutionManagement {
+        repositories {
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_RELEASE_URL')
+                credentials {
+                    username System.getenv('ACS_ARTIFACTORY_USR')
+                    password System.getenv('ACS_ARTIFACTORY_PSW')
+                }
+                content {
+                    excludeGroup 'com.sun.jmx'
+                }
+            }
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_SNAPSHOT_URL')
+                credentials {
+                    username System.getenv('ACS_ARTIFACTORY_USR')
+                    password System.getenv('ACS_ARTIFACTORY_PSW')
+                }
+                content {
+                    excludeGroup 'com.sun.jmx'
+                }
+            }
+            maven {
+                url System.getenv('ACS_ARTIFACTORY_PLUGINS_URL')
+                content {
+                    excludeGroup 'com.sun.jmx'
+                    excludeGroupByRegex 'com\\.apple\\.store(\\..*)?'
+                }
+            }
+        }
+    }
+}

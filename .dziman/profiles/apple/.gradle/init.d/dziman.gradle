@@ -1,0 +1,119 @@
+import java.nio.file.Path;
+
+gradle.ext.appleRootPath = "/Users/dziman/src/apple" // TODO Remove hardcoding?
+
+gradle.ext.isSkipLocal = { project ->
+    def isDisabledExplicitly = java.util.Optional.ofNullable(System.getProperty("local.settings.skip")).map(Boolean::parseBoolean).orElse(false)
+    def inAppleRoot = Path.of(project.projectDir.getAbsolutePath()).startsWith(Path.of(gradle.ext.appleRootPath).toAbsolutePath())
+    def notInAppleRoot = !inAppleRoot
+    //return isDisabledExplicitly || notInAppleRoot
+    return true
+}
+
+gradle.ext.printBanner = { project ->
+    if (!gradle.ext.isSkipLocal(project)) {
+        File bannerFile = new File(project.rootDir, "dziman-banner.txt")
+        if (bannerFile.exists()) {
+            def line
+            bannerFile.withReader { reader ->
+                while ((line = reader.readLine()) != null) {
+                    println(line)
+                }
+            }
+        }
+    }
+}
+
+gradle.ext.getModules = { currentModuleName ->
+    def readModulesFromFile = { modulesFilePath ->
+        File modulesFile = new File(modulesFilePath)
+        def line
+        def modulesName = []
+        modulesFile.withReader { reader ->
+            while ((line = reader.readLine()) != null) {
+                modulesName.add(line.trim())
+            }
+        }
+
+        return modulesName
+    }
+
+    def modules = readModulesFromFile("${gradle.ext.appleRootPath}/.modules-active")
+
+    if (modules.findAll { it.endsWith(currentModuleName) }.isEmpty()) {
+       return []
+    }
+
+    def resultModules = modules
+                         .takeWhile { !it.endsWith(currentModuleName) }
+                         .findAll { !it.startsWith("#") && !it.isBlank()}
+
+   return resultModules
+}
+
+gradle.ext.doLocalSetup = { settings ->
+    if (!gradle.ext.isSkipLocal(settings.rootProject)) {
+
+        def addProject = { projectId ->
+            // println("->>" + projectId)
+            settings.includeBuild("${gradle.ext.appleRootPath}/${projectId}")
+        }
+
+        gradle.ext.getModules(settings.rootProject.name.toLowerCase()).each { projectId ->
+          addProject(projectId)
+        }
+    }
+}
+
+beforeProject { project ->
+    gradle.ext.printBanner(project)
+}
+
+settingsEvaluated { settings ->
+    if (!gradle.ext.isSkipLocal(settings.rootProject)) {
+        gradle.ext.doLocalSetup(settings)
+    }
+}
+
+allprojects {
+    tasks.withType(Test) {
+        // TODO Improve
+        // TODO Extract to more appropriate functions/modules
+        afterSuite { desc, result ->
+            if (!desc.parent) { // will match the outermost suite
+                String ANSI_BOLD_WHITE = "\u001B[0;1m"
+                String ANSI_RESET = "\u001B[0m"
+                String ANSI_BLACK = "\u001B[30m"
+                String ANSI_RED = "\u001B[31m"
+                String ANSI_GREEN = "\u001B[32m"
+                String ANSI_YELLOW = "\u001B[33m"
+                String ANSI_BLUE = "\u001B[34m"
+                String ANSI_PURPLE = "\u001B[35m"
+                String ANSI_CYAN = "\u001B[36m"
+                String ANSI_WHITE = "\u001B[37m"
+                String NEUTRAL_FACE = "\u0CA0_\u0CA0"
+
+                String CHECK_MARK = "\u2713"
+                String X_MARK = "\u274C"
+
+                def successStyle = ANSI_GREEN
+                def failStyle = ANSI_RED
+                def skipStyle = ANSI_YELLOW
+                def summaryStyle = ANSI_WHITE
+
+                switch(result.resultType){
+                    case TestResult.ResultType.SUCCESS:
+                        summaryStyle = ANSI_GREEN
+                        break
+                    case TestResult.ResultType.FAILURE:
+                        summaryStyle = ANSI_RED
+                        break
+                }
+
+                logger.lifecycle( "--------------------------------------------------------------------------")
+                logger.lifecycle("TESTS: $summaryStyle$result.resultType$ANSI_RESET ($result.testCount tests, $successStyle$result.successfulTestCount passed$ANSI_RESET, $failStyle$result.failedTestCount failed$ANSI_RESET, $skipStyle$result.skippedTestCount skipped$ANSI_RESET)")
+                logger.lifecycle( "--------------------------------------------------------------------------")
+            }
+        }
+    }
+}
