@@ -35,6 +35,7 @@ A profile directory mirrors `$HOME`: the part for `~/.gitconfig` is
 | omp | the `omp` shell function adds `--config <profile config>` | `.omp/agent/config.yml` (models, presets, services), `.omp/agent/models.yml` |
 | ssh, pip, maven, gradle, navi | tracked symlinks in `$HOME` point into the profile (dangling on other profiles) | `.ssh/config`, `.pip/pip.conf`, `.m2/settings.xml`, `.gradle/init.d/`, `.navi/cheats/apple.src.cheat` |
 | zsh prompt | `right-prompt` calls `profile-prompt-status` when the profile defines it | `.dziman-zsh/910_prompt.zsh` |
+| Claude Code | `~/.claude/CLAUDE.md` ends with `@~/.dziman/profile/.claude/CLAUDE.md`; `~/.claude/settings.json` and `~/.claude/skills/dz-git-forge-workflow` are symlinks into the profile (no layering in Claude Code) | `.claude/CLAUDE.md`, `.claude/settings.json`, `.claude/skills/dz-git-forge-workflow/` (main's are symlinks to ai's) |
 
 Files that exist for one profile only (`Local/AS`, `src/apple`, omp's Java LSP,
 `.pi`) are tracked as is; `profiles/<p>/sparse` lists what the *other* profiles
