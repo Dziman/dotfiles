@@ -1,3 +1,7 @@
 /*
 !/Local/
 !/src/apple/
+!/.omp/agent/lsp.json
+!/.omp/agent/bin/
+!/.omp/agent/rules/zmx-session-safety.md
+!/.pi/

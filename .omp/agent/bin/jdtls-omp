@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Launches Homebrew jdtls for omp with one Eclipse workspace per worktree and
+# the Lombok agent. Homebrew's default keys the workspace on the directory
+# basename, so worktrees that share a name ("merchandising") collide.
+set -euo pipefail
+
+readonly cache_dir="$HOME/Library/Caches/jdtls"
+readonly lombok_dir="${GRADLE_USER_HOME:-$HOME/.gradle}/caches/modules-2/files-2.1/org.projectlombok/lombok"
+
+# Deletes omp-<sha1> workspaces whose recorded worktree no longer exists.
+prune_stale_workspaces() {
+  local marker recorded
+  for marker in "$cache_dir"/omp-*.root; do
+    [[ -f "$marker" ]] || continue
+    [[ "${marker##*/}" =~ ^omp-[0-9a-f]{40}\.root$ ]] || continue
+    recorded="$(<"$marker")"
+    if [[ -z "$recorded" || -d "$recorded" ]]; then
+      continue
+    fi
+    rm -rf -- "${marker%.root}"
+    rm -f -- "$marker"
+  done
+}
+
+# Prints the highest-version Lombok jar in the Gradle cache, or nothing.
+find_lombok_jar() {
+  [[ -d "$lombok_dir" ]] || return 0
+  find "$lombok_dir" -type f -name 'lombok-*.jar' \
+      ! -name '*-sources.jar' ! -name '*-javadoc.jar' \
+    | awk -F/ '{ print $NF "\t" $0 }' \
+    | sort -V \
+    | tail -n 1 \
+    | cut -f 2
+}
+
+root="$(pwd -P)"
+hash="$(printf '%s' "$root" | shasum -a 1 | cut -d ' ' -f 1)"
+data_dir="$cache_dir/omp-$hash"
+
+mkdir -p "$cache_dir"
+printf '%s\n' "$root" > "$data_dir.root"
+
+# Detached and silent: stdout is the LSP channel.
+prune_stale_workspaces </dev/null >/dev/null 2>&1 &
+disown
+
+args=(-data "$data_dir")
+lombok_jar="$(find_lombok_jar)"
+if [[ -n "$lombok_jar" ]]; then
+  args+=("--jvm-arg=-javaagent:$lombok_jar")
+else
+  echo "jdtls-omp: no Lombok jar under $lombok_dir; starting without Lombok support" >&2
+fi
+
+exec jdtls "${args[@]}" "$@"
