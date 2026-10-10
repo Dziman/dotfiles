@@ -54,5 +54,7 @@
     },
     "lldb.suppressUpdateNotifications": true,
     "editor.fontFamily": "JetBrainsMono Nerd Font Mono, Menlo, Monaco, 'Courier New', monospace",
-    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3"
+    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+    "intellij.region": "americas",
+    "intellij.dataSharing": "none"
 }
