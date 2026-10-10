@@ -1,6 +1,6 @@
 ---
 name: impl-cheap
-description: Superpowers implementer, cheap tier (Claude). Use for implementation dispatches at this tier.
+description: Superpowers implementer, cheap tier. Use for implementation dispatches at this tier.
 model: "@impl_cheap"
 ---
 

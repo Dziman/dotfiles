@@ -1,6 +1,6 @@
 ---
 name: impl-standard
-description: Superpowers implementer, standard tier (Claude). Use for implementation dispatches at this tier.
+description: Superpowers implementer, standard tier. Use for implementation dispatches at this tier.
 model: "@impl_standard"
 ---
 

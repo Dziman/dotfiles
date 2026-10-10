@@ -1,6 +1,6 @@
 ---
 name: impl-capable
-description: Superpowers implementer, most capable tier (Claude). Use for implementation dispatches at this tier.
+description: Superpowers implementer, most capable tier. Use for implementation dispatches at this tier.
 model: "@impl_capable"
 ---
 

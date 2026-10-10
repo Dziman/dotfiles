@@ -16,4 +16,4 @@ export KATA_TELEMETRY_ENABLED=0
 #   kata completion zsh > ~/.zsh/site-functions/_kata
 alias k='kata --project work'
 
-alias omp='VISUAL="emacsclient -f $HOME/.emacs.d/server/omp -t" omp'
+alias omp='VISUAL="emacsclient --socket-name omp -t" omp'

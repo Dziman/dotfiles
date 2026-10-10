@@ -1,6 +1,6 @@
 ---
 name: review-cheap
-description: Superpowers reviewer, cheap tier, cross-family (Gemini). Use for every review dispatch at this tier.
+description: Superpowers reviewer, cheap tier. Use for every review dispatch at this tier.
 model: "@review_cheap"
 tools: read, grep, glob, bash
 ---

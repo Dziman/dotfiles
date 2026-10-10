@@ -1,6 +1,6 @@
 ---
 name: review-capable
-description: Superpowers reviewer, most capable tier, cross-family (Gemini). Use for every review dispatch at this tier.
+description: Superpowers reviewer, most capable tier. Use for every review dispatch at this tier.
 model: "@review_capable"
 tools: read, grep, glob, bash
 ---

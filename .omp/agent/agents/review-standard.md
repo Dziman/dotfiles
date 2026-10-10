@@ -1,6 +1,6 @@
 ---
 name: review-standard
-description: Superpowers reviewer, standard tier, cross-family (Gemini). Use for every review dispatch at this tier.
+description: Superpowers reviewer, standard tier. Use for every review dispatch at this tier.
 model: "@review_standard"
 tools: read, grep, glob, bash
 ---
