@@ -1,0 +1,8 @@
+:properties:
+:id: journal-apple-%<%G-%m>
+:end:
+#+title: Apple Journal: %<%B %G>
+
+* %<%B %G>
+
+%?
