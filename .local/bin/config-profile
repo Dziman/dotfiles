@@ -6,7 +6,7 @@
 #
 # Every shared config file refers to ~/.dziman/profile/..., so this symlink is
 # the only per-machine state. Profiles live in ~/.dziman/profiles/<name>/ and
-# mirror the $HOME layout (e.g. profiles/work/.gitconfig, profiles/ai/.dziman-zsh/).
+# mirror the $HOME layout (e.g. profiles/apple/.gitconfig, profiles/ai/.dziman-zsh/).
 set -eu
 
 profiles_dir="$HOME/.dziman/profiles"
@@ -21,17 +21,19 @@ usage() {
 [ $# -eq 1 ] || usage
 
 if [ "$1" = "--show" ]; then
-  basename "$(readlink "$link")"
+  target=$(readlink "$link" 2>/dev/null) || { echo "config-profile: no profile set" >&2; exit 1; }
+  basename "$target"
   exit 0
 fi
 
 name=$1
+case $name in
+  ''|*/*|.*) echo "config-profile: invalid profile name: '$name'" >&2; usage ;;
+esac
 if [ ! -d "$profiles_dir/$name" ]; then
   echo "config-profile: no such profile: $name" >&2
   usage
 fi
-
-ln -sfn "profiles/$name" "$link"
 
 # Hide directories that exist for other profiles only (patterns in profiles/<name>/sparse).
 # Local repo state, applied idempotently; absent file = full checkout.
@@ -44,5 +46,8 @@ if [ -d "$git_dir" ]; then
     git --git-dir="$git_dir" --work-tree="$HOME" sparse-checkout disable
   fi
 fi
+
+# The symlink switches last, so a failed sparse step leaves the previous profile intact.
+ln -sfn "profiles/$name" "$link"
 
 echo "profile: $name"
