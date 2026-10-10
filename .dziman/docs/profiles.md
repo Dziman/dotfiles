@@ -60,7 +60,9 @@ Then add parts under the same relative paths as in `$HOME`.
 First list untracked files in `$HOME` that `unified` tracks; git refuses to
 overwrite them, and a plain `-f` would discard the machine's own copies
 (`~/.ssh/config`, an edited omp theme, ...). Move each aside, or into the profile
-where it belongs:
+where it belongs. Also commit or discard local edits to tracked files (Claude Code
+edits `~/.claude/settings.json` itself); on the apple machine diff the live
+`~/.claude/settings.json` against the profile's before moving it aside:
 
 ```
 config fetch origin unified
