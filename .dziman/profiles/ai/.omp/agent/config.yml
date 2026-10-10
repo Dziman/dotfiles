@@ -10,6 +10,13 @@ modelRoles:
   tiny: openai-codex/gpt-5.6-luna:medium
   task: openai-codex/gpt-5.6-terra:high
   advisor: zai/glm-5.3-flash:high
+  # tiers used by the shared impl-*/review-* agents (reviews on another model family)
+  impl_cheap: openai-codex/gpt-5.6-luna:medium
+  impl_standard: openai-codex/gpt-5.6-terra:high
+  impl_capable: openai-codex/gpt-5.6-sol:xhigh
+  review_cheap: zai/glm-5.3-flash:medium
+  review_standard: zai/glm-5.3:high
+  review_capable: zai/glm-5.3:xhigh
 defaultThinkingLevel: high
 modelPresets:
   codex-primary:
