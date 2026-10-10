@@ -1,0 +1,9 @@
+{
+    META = {
+        contextScope = {
+            host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+        };
+    };
+
+    versionedStaticResourcesEnabled = false;
+}

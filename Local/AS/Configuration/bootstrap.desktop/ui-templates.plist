@@ -1,0 +1,33 @@
+{
+    META = {
+        contextScope = {
+            app = "ASPEN";
+            host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+        };
+    };
+   
+    enableLoadTemplatesFromLocal = true;
+    enableLoadTemplatesFromContentService = false;
+    templateCacheEnabled = false;
+   
+    // Note that the actual path would be $HOME/Local/AS/Data/templates
+    localTemplateDirectory = "/Users/dziman/Local/AS/Data/ASPEN";
+    localSchemaDirectory = "/Users/dziman/Local/AS/Data/ASPEN";
+
+    templateStrategies = (
+	"com.apple.store.platform.mendocino.ui.strategy.FileSystemLoader",
+	"com.apple.store.platform.mendocino.ui.strategy.ClassPathLoader",
+	"com.apple.store.platform.mendocino.ui.strategy.ContentServiceLoader"
+    );
+
+    // Classes used by AggregateTemplateLoader. These must implement
+    //  com.apple.store.template.core.api.TemplateLoader. To enable/disable them,
+    //  set enableLoadTemplatesFromLocal, enableLoadTemplatesFromClasspath, and
+    //  enableLoadTemplatesFromContentService.
+    templateLoaders = (
+	"com.apple.store.app.content.template.ContextAwareFileTemplateLoader",
+	"com.apple.store.template.core.loaders.ClasspathTemplateLoader",
+	"com.apple.store.app.content.template.ContentTemplateLoader"
+    );
+     
+}

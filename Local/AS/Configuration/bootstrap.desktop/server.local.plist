@@ -1,0 +1,24 @@
+{
+	META = {
+		contextScope = {
+		    host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+                    mode = "desktop";
+		};
+	};
+
+	"connectors+" = {
+		"secure+" = {
+		  clientAuthLevel = 1;
+		  secure = false;
+		    disabledHttpMethods = ();
+		    requiresAuth = false;
+		};
+		"primary+" = {
+		  secure = false;
+		  disabledHttpMethods = ();
+		    requiresAuth = false;
+		};
+        "health-" ={};
+        "admin-" ={};
+	};
+}

@@ -1,0 +1,12 @@
+{
+    META = {
+        contextScope = {
+            host = "localhost.apple.com";
+        };
+    };
+
+    "securePreviewInterceptor+" = {
+	securePreviewAuthEnabled = false;
+    };
+
+}

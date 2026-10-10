@@ -1,0 +1,9 @@
+{ 
+    META = {
+    contextScope = {
+	    host = "localhost.apple.com";
+        };
+    };
+	
+    injectionEnabled = false;
+}

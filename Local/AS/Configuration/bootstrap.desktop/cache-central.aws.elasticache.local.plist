@@ -1,0 +1,40 @@
+{
+  META = {
+      contextScope = {
+          host = "localhost.apple.com";
+    };
+  };
+
+  "elasticacheClusters" = {
+    "nonPciCluster+" = {
+      "clusterOptions" = {};
+      "nearCacheOptions" = "${this.commonNearCacheOptionsEc}";
+      "globalOptions+" = {
+        "authEnabled" = "true";
+        "authToken" = "q8d9d8d8s7";
+        "enableSSL" = "false";
+        clusterAddresses = ("redis://127.0.0.1:8000");
+      };
+    };
+    "pciCluster+" = {
+      "clusterOptions" = {};
+      "nearCacheOptions" = "${this.commonNearCacheOptionsEc}";
+      "globalOptions+" = {
+        "authEnabled" = "true";
+        "authToken" = "q8d9d8d8s7";
+        "enableSSL" = "false";
+        clusterAddresses = ("redis://127.0.0.1:8000");
+      };
+    };
+    "pageCacheCluster+" = {
+      "clusterOptions" = {};
+      "nearCacheOptions" = "${this.commonNearCacheOptionsEc}";
+      "globalOptions+" = {
+        "authEnabled" = "true";
+        "authToken" = "q8d9d8d8s7";
+        "enableSSL" = "false";
+        clusterAddresses = ("redis://127.0.0.1:8000");
+      };
+    };
+  };
+}

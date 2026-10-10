@@ -1,0 +1,15 @@
+{
+    META = {
+        contextScope = {
+            host = "/dziman|dziman\\.(.*)|localhost|localhost\\.(.*)/";
+        };
+    };
+    // Override to file in ASWebToolkit - needed for external HTTPS
+    preventRestrictingToSslOnly = true;
+
+    // Don't force https
+    sslPolicyOverride = "any";
+
+    // Don't secure debug pages
+    adminPortSecure = false;
+}

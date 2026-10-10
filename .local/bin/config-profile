@@ -32,4 +32,17 @@ if [ ! -d "$profiles_dir/$name" ]; then
 fi
 
 ln -sfn "profiles/$name" "$link"
+
+# Hide directories that exist for other profiles only (patterns in profiles/<name>/sparse).
+# Local repo state, applied idempotently; absent file = full checkout.
+git_dir=${DZIMAN_DOTFILES:-$HOME/.dziman-dotfiles}
+if [ -d "$git_dir" ]; then
+  sparse="$profiles_dir/$name/sparse"
+  if [ -r "$sparse" ]; then
+    git --git-dir="$git_dir" --work-tree="$HOME" sparse-checkout set --no-cone --stdin < "$sparse"
+  else
+    git --git-dir="$git_dir" --work-tree="$HOME" sparse-checkout disable
+  fi
+fi
+
 echo "profile: $name"
