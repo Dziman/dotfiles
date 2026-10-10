@@ -24,3 +24,6 @@ venv/
 
 # jenv
 .java-version
+
+# Active machine profile (symlink made by `config-profile`)
+.dziman/profile

@@ -1,0 +1,35 @@
+#!/bin/sh
+# Select the dotfiles profile of this machine.
+#
+#   config-profile <name>   point ~/.dziman/profile at ~/.dziman/profiles/<name>
+#   config-profile --show   print the active profile name
+#
+# Every shared config file refers to ~/.dziman/profile/..., so this symlink is
+# the only per-machine state. Profiles live in ~/.dziman/profiles/<name>/ and
+# mirror the $HOME layout (e.g. profiles/work/.gitconfig, profiles/ai/.dziman-zsh/).
+set -eu
+
+profiles_dir="$HOME/.dziman/profiles"
+link="$HOME/.dziman/profile"
+
+usage() {
+  echo "usage: config-profile <name> | --show" >&2
+  echo "profiles: $(ls "$profiles_dir" | tr '\n' ' ')" >&2
+  exit 2
+}
+
+[ $# -eq 1 ] || usage
+
+if [ "$1" = "--show" ]; then
+  basename "$(readlink "$link")"
+  exit 0
+fi
+
+name=$1
+if [ ! -d "$profiles_dir/$name" ]; then
+  echo "config-profile: no such profile: $name" >&2
+  usage
+fi
+
+ln -sfn "profiles/$name" "$link"
+echo "profile: $name"

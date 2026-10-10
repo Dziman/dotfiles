@@ -61,4 +61,5 @@
 (require 'dz-config-appearance)
 (require 'dz-config-emacs-graphic)
 (require 'dz-config-doom-modeline)
+(require 'dz-config-profile)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -132,3 +132,5 @@
   whitespace = red reverse
 [init]
   defaultBranch = develop
+[include]
+  path = ~/.dziman/profile/.gitconfig
