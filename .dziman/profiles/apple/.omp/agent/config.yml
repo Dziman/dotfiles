@@ -1,0 +1,50 @@
+# omp overlay for the apple profile: Apple model gateways, collab/share relays, custom status line
+modelRoles:
+  default: floodgate/aws:anthropic.claude-opus-5-5
+  slow: floodgate/aws:anthropic.claude-opus-5-5:high
+  plan: floodgate/aws:anthropic.claude-opus-5-5:high
+  task: floodgate/aws:anthropic.claude-sonnet-5:medium
+  designer: floodgate/aws:anthropic.claude-sonnet-5
+  commit: floodgate/aws:anthropic.claude-sonnet-5:minimal
+  advisor: floodgate/aws:anthropic.claude-sonnet-5:medium
+  smol: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:minimal
+  vision: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:off
+  tiny: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:off
+  impl_cheap: floodgate/aws:anthropic.claude-haiku-4-5-20251001-v1:0:medium
+  impl_standard: floodgate/aws:anthropic.claude-sonnet-5:medium
+  impl_capable: floodgate/aws:anthropic.claude-opus-5-5:high
+  review_cheap: floodgate-openai/gemini-3.8-flash:latest:low
+  review_standard: floodgate-openai/gemini-3.8-flash:latest:high
+  review_capable: floodgate-openai/gemini-3.1-pro-preview:latest:high
+collab:
+  relayUrl: wss://omp-relay.multidev.apple.com
+share:
+  serverUrl: https://omp.multidev.apple.com/s
+statusLine:
+  preset: custom
+  leftSegments:
+    - vim
+    - model
+    - mode
+    - path
+    - git
+    - pr
+    - subagents
+  rightSegments:
+    - cache_hit
+    - token_total
+    - token_rate
+    - cost
+    - context_pct
+  segmentOptions:
+    path:
+      stripWorkPrefix: false
+  separator: powerline
+  contextLine: embedded
+  sessionAccent: true
+  transparent: true
+  compactThinkingLevel: true
+  showHookStatus: true
+composer:
+  shape: band
+  tokenRate: true

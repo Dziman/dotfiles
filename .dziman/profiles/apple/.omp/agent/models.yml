@@ -1,0 +1,330 @@
+providers:
+  floodgate:
+    baseUrl: http://127.0.0.1:11211/api/anthropic
+    api: anthropic-messages
+    apiKey: genai-bridge-local
+    headers:
+      X-Floodgate-Project-Token: '!printf %s "$APPLE_OMP_FLOODGATE_PROJECT_TOKEN"'
+    disableStrictTools: true
+    modelOverrides:
+      aws:anthropic.claude-opus-5-5:
+        name: Claude Opus 5.5
+      aws:anthropic.claude-opus-5:
+        name: Claude Opus 5
+      aws:anthropic.claude-sonnet-5:
+        name: Claude Sonnet 5
+      aws:anthropic.claude-haiku-4-5-20251001-v1:0:
+        name: Claude Haiku 4.5
+    models:
+      - id: aws:anthropic.claude-haiku-4-5-20251001-v1:0
+        contextWindow: 200000
+        maxTokens: 32000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 1
+          output: 5
+          cacheRead: 0.1
+          cacheWrite: 1.25
+        tokenizer: claude-v3
+      - id: aws:anthropic.claude-opus-5-5
+        contextWindow: 1000000
+        maxTokens: 32000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 5
+          output: 25
+          cacheRead: 0.5
+          cacheWrite: 6.25
+        tokenizer: claude-v5
+      - id: aws:anthropic.claude-opus-5
+        contextWindow: 1000000
+        maxTokens: 32000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 5
+          output: 25
+          cacheRead: 0.5
+          cacheWrite: 6.25
+        tokenizer: claude-v5
+      - id: aws:anthropic.claude-opus-4-8
+        contextWindow: 1000000
+        maxTokens: 32000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 5
+          output: 25
+          cacheRead: 0.5
+          cacheWrite: 6.25
+        tokenizer: claude-v47
+      - id: aws:anthropic.claude-opus-4-7
+        contextWindow: 1000000
+        maxTokens: 32000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 5
+          output: 25
+          cacheRead: 0.5
+          cacheWrite: 6.25
+        tokenizer: claude-v47
+      - id: aws:anthropic.claude-opus-4-6-v1
+        contextWindow: 1000000
+        maxTokens: 32000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 5
+          output: 25
+          cacheRead: 0.5
+          cacheWrite: 6.25
+        tokenizer: claude-v3
+      - id: aws:anthropic.claude-opus-4-5-20251101-v1:0
+        contextWindow: 1000000
+        maxTokens: 32000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 5
+          output: 25
+          cacheRead: 0.5
+          cacheWrite: 6.25
+        tokenizer: claude-v3
+      - id: aws:anthropic.claude-sonnet-5
+        contextWindow: 1000000
+        maxTokens: 64000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 3
+          output: 15
+          cacheRead: 0.3
+          cacheWrite: 3.75
+        tokenizer: claude-v5-sonnet
+      - id: aws:anthropic.claude-sonnet-4-6
+        contextWindow: 1000000
+        maxTokens: 64000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 3
+          output: 15
+          cacheRead: 0.3
+          cacheWrite: 3.75
+        tokenizer: claude-v3
+      - id: aws:anthropic.claude-sonnet-4-5-20250929-v1:0
+        contextWindow: 1000000
+        maxTokens: 64000
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 3
+          output: 15
+          cacheRead: 0.3
+          cacheWrite: 3.75
+        tokenizer: claude-v3
+  floodgate-openai:
+    baseUrl: http://127.0.0.1:11211/api/openai/v1
+    api: openai-completions
+    apiKey: genai-bridge-local
+    headers:
+      X-Floodgate-Project-Token: '!printf %s "$APPLE_OMP_FLOODGATE_PROJECT_TOKEN"'
+    modelOverrides:
+      gemini-3.8-flash:latest:
+        name: Gemini 3.8 Flash
+      gemini-3.1-pro-preview:latest:
+        name: Gemini 3.1 Pro
+    models:
+      - id: afm-code-150b-instruct:latest
+        contextWindow: 32768
+      - id: afm-code-6b-fitm:latest
+        contextWindow: 65536
+      - id: afm-code-6b-instruct:latest
+        contextWindow: 65536
+      - id: afm-plus-150b-instruct:latest
+        contextWindow: 65536
+        input:
+          - text
+          - image
+      - id: afm-plus-3b-instruct:latest
+        contextWindow: 131072
+        input:
+          - text
+          - image
+      - id: afm-v11-1-pro:latest
+        contextWindow: 131072
+        input:
+          - text
+          - image
+      - id: afm-v11-1-zap:latest
+        contextWindow: 65536
+        input:
+          - text
+          - image
+      - id: afm-v11-2-1-pro:latest
+        contextWindow: 131072
+        input:
+          - text
+          - image
+      - id: afm-v11-2-2-pro:latest
+        contextWindow: 131072
+        input:
+          - text
+          - image
+      - id: afm-v11-2:latest
+        contextWindow: 131072
+        input:
+          - text
+          - image
+      - id: afm-v11-3-zap:latest
+        contextWindow: 65536
+        input:
+          - text
+          - image
+      - id: afm-v11-4-zap:latest
+        contextWindow: 65536
+        input:
+          - text
+          - image
+      - id: afm-v11-5-zap-20260915-rc2:latest
+        contextWindow: 262144
+      - id: afm-v11-5-zap-rc2:latest
+        contextWindow: 262144
+      - id: afm-v11-5-zap:latest
+        contextWindow: 65536
+        input:
+          - text
+          - image
+      - id: afm-v11-pro:latest
+        contextWindow: 131072
+        input:
+          - text
+          - image
+      - id: afm-v11-zap:latest
+        contextWindow: 65536
+        input:
+          - text
+          - image
+      - id: gemini-3.8-flash:latest
+        contextWindow: 1114111
+        maxTokens: 65536
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 0.3
+          output: 2.5
+          cacheRead: 0.03
+          cacheWrite: 0
+      - id: gemini-3.7-flash:latest
+        contextWindow: 1114111
+        maxTokens: 65536
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 0.3
+          output: 2.5
+          cacheRead: 0.03
+          cacheWrite: 0
+      - id: gemini-3.6-flash:latest
+        contextWindow: 1114111
+        maxTokens: 65536
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 0.3
+          output: 2.5
+          cacheRead: 0.03
+          cacheWrite: 0
+      - id: gemini-3.5-flash-lite:latest
+        contextWindow: 1114111
+        maxTokens: 65536
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 0.1
+          output: 0.4
+          cacheRead: 0.01
+          cacheWrite: 0
+      - id: gemini-3.5-flash:latest
+        contextWindow: 1114111
+        maxTokens: 65536
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 0.3
+          output: 2.5
+          cacheRead: 0.03
+          cacheWrite: 0
+      - id: gemini-3.1-pro-preview:latest
+        contextWindow: 1114111
+        maxTokens: 65536
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 1.25
+          output: 10
+          cacheRead: 0.125
+          cacheWrite: 0
+      - id: gemini-3-flash-preview:latest
+        contextWindow: 1114111
+        maxTokens: 65536
+        reasoning: true
+        input:
+          - text
+          - image
+        cost:
+          input: 0.3
+          output: 2.5
+          cacheRead: 0.03
+          cacheWrite: 0
+      - id: machine-translation:latest
+        contextWindow: 4096
+      - id: mt-expert-30b-instruct-v1-20250620-0819:latest
+        contextWindow: 4096
+      - id: mt-expert-30b-instruct-v1:latest
+        contextWindow: 4096
+      - id: personal-usage:latest
+        contextWindow: 128000
+      - id: uem-md5:latest
+        contextWindow: 512
+      - id: uem-md6:latest
+        contextWindow: 512
+      - id: uem-md7:latest
+        contextWindow: 512
+      - id: uem-md8:latest
+        contextWindow: 512

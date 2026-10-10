@@ -1,85 +1,10 @@
+# Shared omp settings. Models, presets and machine services live in the profile
+# overlay ~/.dziman/profile/.omp/agent/config.yml, passed with --config by the omp
+# shell function.
 symbolPreset: nerd
 theme:
   dark: zenburn
 setupVersion: 2
-modelRoles:
-  default: openai-codex/gpt-5.6-terra:high
-  smol: openai-codex/gpt-5.6-luna:medium
-  slow: openai-codex/gpt-5.6-terra:high
-  vision: openai-codex/gpt-5.6-terra:high
-  plan: openai-codex/gpt-5.6-terra:high
-  designer: openai-codex/gpt-5.6-terra:high
-  commit: openai-codex/gpt-5.6-luna:medium
-  tiny: openai-codex/gpt-5.6-luna:medium
-  task: openai-codex/gpt-5.6-terra:high
-  advisor: zai/glm-5.3-flash:high
-defaultThinkingLevel: high
-modelPresets:
-  codex-primary:
-    modelRoles:
-      default: openai-codex/gpt-5.6-terra:high
-      smol: openai-codex/gpt-5.6-luna:medium
-      slow: openai-codex/gpt-5.6-sol:xhigh
-      vision: openai-codex/gpt-5.6-sol:xhigh
-      plan: openai-codex/gpt-5.6-sol:xhigh
-      designer: openai-codex/gpt-5.6-terra:high
-      commit: openai-codex/gpt-5.6-luna:medium
-      tiny: openai-codex/gpt-5.6-luna:medium
-      task: openai-codex/gpt-5.6-terra:high
-      advisor: zai/glm-5.3:xhigh
-    defaultThinkingLevel: high
-  zai-primary:
-    modelRoles:
-      default: zai/glm-5.3:high
-      smol: zai/glm-5.3-flash:medium
-      slow: zai/glm-5.3:xhigh
-      vision: zai/glm-5.3-flash:medium
-      plan: zai/glm-5.3:xhigh
-      designer: zai/glm-5.3:high
-      commit: zai/glm-5.3-flash:medium
-      tiny: zai/glm-5.3-flash:medium
-      task: zai/glm-5.3:high
-      advisor: openai-codex/gpt-5.6-terra:high
-    defaultThinkingLevel: high
-  economy:
-    modelRoles:
-      default: openai-codex/gpt-5.6-luna:medium
-      smol: openai-codex/gpt-5.6-luna:medium
-      slow: openai-codex/gpt-5.6-luna:medium
-      vision: openai-codex/gpt-5.6-luna:medium
-      plan: openai-codex/gpt-5.6-luna:medium
-      designer: openai-codex/gpt-5.6-luna:medium
-      commit: openai-codex/gpt-5.6-luna:medium
-      tiny: openai-codex/gpt-5.6-luna:medium
-      task: openai-codex/gpt-5.6-luna:medium
-      advisor: zai/glm-5.3-flash:medium
-    defaultThinkingLevel: medium
-  balanced:
-    modelRoles:
-      default: openai-codex/gpt-5.6-terra:high
-      smol: openai-codex/gpt-5.6-luna:medium
-      slow: openai-codex/gpt-5.6-terra:high
-      vision: openai-codex/gpt-5.6-terra:high
-      plan: openai-codex/gpt-5.6-terra:high
-      designer: openai-codex/gpt-5.6-terra:high
-      commit: openai-codex/gpt-5.6-luna:medium
-      tiny: openai-codex/gpt-5.6-luna:medium
-      task: openai-codex/gpt-5.6-terra:high
-      advisor: zai/glm-5.3-flash:high
-    defaultThinkingLevel: high
-  deep:
-    modelRoles:
-      default: openai-codex/gpt-6-astra:xhigh
-      smol: openai-codex/gpt-5.6-terra:high
-      slow: openai-codex/gpt-6-astra:max
-      vision: openai-codex/gpt-6-astra:xhigh
-      plan: openai-codex/gpt-6-astra:max
-      designer: openai-codex/gpt-6-astra:xhigh
-      commit: openai-codex/gpt-5.6-terra:high
-      tiny: openai-codex/gpt-5.6-terra:high
-      task: openai-codex/gpt-6-astra:xhigh
-      advisor: zai/glm-5.3:xhigh
-    defaultThinkingLevel: xhigh
 advisor:
   enabled: true
   reviewMode: agent-end
@@ -88,9 +13,14 @@ advisor:
 task:
   agentAdvisor:
     task: "on"
+  enableEffort: true
+  enableLsp: true
+  isolation:
+    enabled: false
 retry:
   modelFallback: false
 dev:
+  autoqa: false
   autoqaConsent: denied
 hideThinkingBlock: true
 statusLine:
@@ -101,17 +31,39 @@ composer:
   shape: box
 terminal:
   showProgress: true
+tui:
+  textSizing: false
+  titleSpinner: braille
+  hyperlinks: auto
+  tight: true
 display:
   shimmer: classic
   showTokenUsage: true
   showTurnTime: true
-personality: default
+  pinnedAgents: collapsed
+  subagentLivePreview: true
+  hideToolActivity: true
+  cacheMissMarker: false
+personality: pragmatic
+startup:
+  showSplash: true
+contextPromotion:
+  enabled: false
+read:
+  renderMarkdown: true
+grep:
+  enabled: true
 bash:
   enabled: true
 astGrep:
   enabled: true
+github:
+  enabled: true
+telemetry:
+  otlpExportEnabled: false
 enabledProviders:
   - claude
+  - claude-plugins
 skills:
   enableClaudeUser: true
 commands:
