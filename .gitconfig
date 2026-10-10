@@ -119,7 +119,7 @@
   max-line-distance = 0.8
   hyperlinks = true
   blame-timestamp-output-format = "%Y-%m-%d %H:%M:%S %z"
-  blame-palette = "#486C5A #88816D #576F71"
+  blame-palette = "#4B6C5A #88816D #576F71"
   true-color = always
 [color "diff-highlight"]
   oldNormal = red bold
