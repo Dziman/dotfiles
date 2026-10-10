@@ -5,13 +5,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; git commit trailers attributing AI-made commits
 (define-abbrev-table 'global-abbrev-table
-  '(("caclop" "Co-Authored-By: Claude Opus <drusak+claude@apple.com>" nil 0)
-    ("caclso" "Co-Authored-By: Claude Sonnet <drusak+claude@apple.com>" nil 0)
-    ("caclha" "Co-Authored-By: Claude Haiku <drusak+claude@apple.com>" nil 0)))
+  '(("caclop" "Co-Authored-By: Claude Opus <drusak+claude@apple.com>" nil :system t)
+    ("caclso" "Co-Authored-By: Claude Sonnet <drusak+claude@apple.com>" nil :system t)
+    ("caclha" "Co-Authored-By: Claude Haiku <drusak+claude@apple.com>" nil :system t)))
 
 ;; persons
 (define-abbrev-table 'org-mode-abbrev-table
-  '(("kpai" "Kiran Pai" nil 0)
-    ("kdarsi" "Kiran Darsi" nil 0)
-    ("manoj" "Manoj Kumar" nil 0)
-    ("phil" "Phil Manuel" nil 0)))
+  '(("kpai" "Kiran Pai" nil :system t)
+    ("kdarsi" "Kiran Darsi" nil :system t)
+    ("manoj" "Manoj Kumar" nil :system t)
+    ("phil" "Phil Manuel" nil :system t)))

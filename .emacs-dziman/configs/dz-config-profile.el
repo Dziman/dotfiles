@@ -7,7 +7,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (let ((dir (expand-file-name "~/.dziman/profile/.emacs-dziman/configs/")))
   (when (file-directory-p dir)
-    (dolist (file (directory-files dir t "\\.el\\'"))
+    (dolist (file (directory-files dir t "\\`[^.].*\\.el\\'"))
       (load file nil 'nomessage))))
 
 (provide 'dz-config-profile)
