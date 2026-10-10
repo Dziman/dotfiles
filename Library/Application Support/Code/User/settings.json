@@ -1,5 +1,5 @@
 {
-    "workbench.colorTheme": "Higher Contrast Zenburn",
+    "workbench.colorTheme": "Zenburn",
     "workbench.colorCustomizations": {
         "[Zenburn]": {
             "editorActiveLineNumber.foreground": "#bbbbbb",
