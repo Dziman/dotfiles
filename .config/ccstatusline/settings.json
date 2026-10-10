@@ -26,7 +26,7 @@
       {
         "id": "api-cost-inline",
         "type": "custom-command",
-        "commandPath": "bun /Users/ai-dev/src/dziman/ai-cost/adapters/claude-cost-widget.ts"
+        "commandPath": "bun ~/src/dziman/ai-cost/adapters/claude-cost-widget.ts"
       },
       {
         "id": "5",

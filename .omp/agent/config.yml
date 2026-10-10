@@ -1,6 +1,6 @@
 symbolPreset: nerd
 theme:
-  dark: dark-rose-pine
+  dark: zenburn
 setupVersion: 2
 modelRoles:
   default: openai-codex/gpt-5.6-terra:high
