@@ -10,3 +10,6 @@ clipboard-read = allow
 window-show-tab-bar = always
 
 theme = Zenburn
+
+cursor-style = block
+shell-integration-features = no-cursor
