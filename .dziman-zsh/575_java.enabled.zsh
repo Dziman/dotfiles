@@ -31,11 +31,17 @@ function refresh-jenv() {
   setopt localoptions rmstarsilent
   rm -r ~/.jenv/versions/*
 
-  local -a installed_openjdks=($(gls -d $HOMEBREW_PREFIX/Cellar/openjdk*))
-
-  for openjdk_root in $installed_openjdks; do
+  # Homebrew openjdk formulae
+  local openjdk_root
+  for openjdk_root in $HOMEBREW_PREFIX/Cellar/openjdk*(N/); do
     local openjdk_version_dir=$(gls $openjdk_root | head -1)
     jenv add $openjdk_root/$openjdk_version_dir/libexec/openjdk.jdk/Contents/Home/ > /dev/null
+  done
+
+  # JDKs installed as macOS packages (e.g. Apple JDK casks)
+  local jdk_root
+  for jdk_root in /Library/Java/JavaVirtualMachines/*.jdk(N); do
+    [[ -d $jdk_root/Contents/Home ]] && jenv add $jdk_root/Contents/Home/ > /dev/null
   done
 
   jenv versions
