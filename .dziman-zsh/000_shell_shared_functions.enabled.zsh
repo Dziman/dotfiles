@@ -15,8 +15,8 @@ function command-exists() {
 # https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash`
 function show-confirmation() {
   local confirmation_question=$1
-  local confirm_option=$2
-  local cancel_option=$3
+  local confirm_option=${2:-Yes}
+  local cancel_option=${3:-No}
 
   if command-exists gum; then
     local -a gum_args=()
