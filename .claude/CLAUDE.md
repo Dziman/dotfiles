@@ -19,7 +19,7 @@ Load the matching skill before doing the work — its rules are authoritative fo
 - Writing, editing, or reviewing code → load `dz-coding-standards`.
 - Writing tests → load `dz-test-writing`.
 - Refactoring or moving code → load `dz-refactoring`.
-- Committing, branching, opening PRs/MRs, or validating before a commit → load `dz-git-forge-workflow`.
+- Committing, branching, opening PRs/MRs, or validating before a commit → load the forge workflow skill when the profile provides one (`dz-git-forge-workflow`); otherwise use plain git and ask before any forge action (push, PR, merge).
 
 ## Brainstorming
 
