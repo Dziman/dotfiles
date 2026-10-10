@@ -19,7 +19,7 @@ repo out as a bare repo `~/.dziman-dotfiles` with work-tree `$HOME` (`config` al
 |---|---|---|
 | `main-computer` | `34e8c40` | reference point |
 | `mirror/ai-dev` | `a1ad581` | `main-computer` + 31 commits, 0 behind |
-| `work-computer` | `c267430` | forked 2020-04-28 (`b84bfd3`); +131 / −230 commits |
+| `work-computer` | `c267430` | forked 2020-04-28 (`b84bfd3`); +131 / −230 commits; its profile is `apple` |
 
 Branch `main` (the remote default) is out of scope.
 
@@ -119,7 +119,7 @@ ai-dev, with ai-specific residue in `profiles/ai/`.
 **Stage 2 — port `work-computer` onto that result**, in four area passes
 (below). Work's history is not replayed; features are reconstructed from its
 diff against `unified` and re-implemented. Work-only residue goes to
-`profiles/work/`.
+`profiles/apple/`.
 
 `main-computer` needs no porting: it is the seed. Its profile dir starts empty.
 
@@ -164,7 +164,7 @@ On this machine (`ai` profile):
 - `zsh -i -c exit` wall time ≤ the current `mirror/ai-dev` figure (~0.09 s).
 - `emacs --batch -l ~/.emacs` loads without error; interactive startup time ≤
   current (~0.24 s) measured with `emacs-init-time`.
-- `config status` clean after `config-profile ai` (filters and symlinks
+- `config status` clean after `config-profile ai` (symlinks and sparse-checkout
   round-trip).
 
 For `apple` and `main` profiles only static checks are possible here: `zsh -n` on
@@ -176,7 +176,7 @@ dry-run. Real verification happens on those machines after rollout.
 ```
 config fetch
 config switch unified
-config-profile <name>        # symlink, filters, optional sparse-checkout
+~/.local/bin/config-profile <name>   # symlink + the profile's sparse-checkout list
 ```
 
 Files tracked only on the old branch disappear from `$HOME` on switch; the

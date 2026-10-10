@@ -32,7 +32,7 @@ A profile directory mirrors `$HOME`: the part for `~/.gitconfig` is
 | emacs | `dz-config-profile.el`, required last from `.emacs` | `.emacs-dziman/configs/*.el` (+ `org-templates/`) |
 | git | `[include] path = ~/.dziman/profile/.gitconfig` | `.gitconfig`, `.gitconfig-apple*` |
 | tmux | `source-file -q ~/.dziman/profile/.tmux.conf` | `.tmux.conf` |
-| omp | the `omp` shell function adds `--config <profile config>` | `.omp/agent/config.yml` (models, presets, services), `.omp/agent/models.yml` |
+| omp | the `omp` shell function adds `--config <profile config>`; the overlay outranks the shared file, so change models in the profile overlay. `/model` and preset saves inside omp write `modelRoles` into the shared `~/.omp/agent/config.yml`: they last one session and leave `config status` dirty; revert them there | `.omp/agent/config.yml` (models, presets, services), `.omp/agent/models.yml` |
 | ssh, pip, maven, gradle, navi | tracked symlinks in `$HOME` point into the profile (dangling on other profiles) | `.ssh/config`, `.pip/pip.conf`, `.m2/settings.xml`, `.gradle/init.d/`, `.navi/cheats/apple.src.cheat` |
 | zsh prompt | `right-prompt` calls `profile-prompt-status` when the profile defines it | `.dziman-zsh/910_prompt.zsh` |
 | Claude Code | `~/.claude/CLAUDE.md` ends with `@~/.dziman/profile/.claude/CLAUDE.md`; `~/.claude/settings.json` and `~/.claude/skills/dz-git-forge-workflow` are symlinks into the profile (no layering in Claude Code) | `.claude/CLAUDE.md`, `.claude/settings.json`, `.claude/skills/dz-git-forge-workflow/` (main's are symlinks to ai's) |
@@ -57,14 +57,29 @@ Then add parts under the same relative paths as in `$HOME`.
 
 ## Rollout on a machine
 
+First list untracked files in `$HOME` that `unified` tracks; git refuses to
+overwrite them, and a plain `-f` would discard the machine's own copies
+(`~/.ssh/config`, an edited omp theme, ...). Move each aside, or into the profile
+where it belongs:
+
 ```
-config fetch
+config fetch origin unified
+config ls-tree -r --name-only origin/unified | while read -r p; do
+  { [ -e "$HOME/$p" ] || [ -L "$HOME/$p" ]; } && ! config ls-files --error-unmatch -- ":/$p" >/dev/null 2>&1 && echo "$p"
+done
+```
+
+Then (full path: `~/.local/bin` is not on PATH until the new zsh config runs):
+
+```
 config switch unified
-config-profile <name>
+~/.local/bin/config-profile <name>
 exec zsh
 ```
 
-Check `config status` is clean afterwards. Files that were tracked on the old
+Check `config status` is clean afterwards. `config-profile` enables
+sparse-checkout in the bare repo for profiles that have a `sparse` file; git
+records that in the repo config (`extensions.worktreeConfig`, `core.sparseCheckout`). Files that were tracked on the old
 branch and are not on `unified` disappear from `$HOME` on switch:
 
 - from `main-computer`: `.dziman-zsh/.editorconfig`, `.dziman-zsh/578_swift.enabled.zsh`
