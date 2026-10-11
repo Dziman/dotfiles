@@ -9,6 +9,9 @@
 ;; Loaded up front so `eglot-lsp-context' is special when tests let-bind it
 (require 'project)
 (require 'eglot)
+(require 'dz-config-bind-maps)
+(require 'dz-config-prog-mode)
+(require 'dz-config-eglot)
 (require 'dz-config-swift)
 
 (defmacro dziman-swift-test-with-project (files &rest body)
@@ -574,6 +577,108 @@
       (dziman-swift-test-capturing-messages (dziman/swift-format-buffer))
       (should (equal (buffer-string) "let a = [1, 2, 3]\n"))
       )
+    )
+  )
+
+;;;;;;;; Helpers and keys
+(ert-deftest dziman-swift-helpers/apple-docs-query-is-url-encoded ()
+  (should (equal (dziman/swift-apple-docs-url "Text field") "https://developer.apple.com/search/?q=Text%20field"))
+  )
+
+(ert-deftest dziman-swift-helpers/apple-docs-looks-up-symbol-at-point ()
+  (let ((opened nil))
+    (with-temp-buffer
+      (insert "NavigationStack")
+      (goto-char 3)
+      (cl-letf (((symbol-function 'browse-url) (lambda (url &rest _) (setq opened url))))
+        (call-interactively #'dziman/swift-apple-docs)
+        )
+      )
+    (should (equal opened "https://developer.apple.com/search/?q=NavigationStack"))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/open-in-xcode-needs-a-file ()
+  (with-temp-buffer
+    (should-error (dziman/swift-open-in-xcode) :type 'user-error)
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/open-in-xcode-selects-the-cursor-line ()
+  (let ((args nil))
+    (with-temp-buffer
+      (setq buffer-file-name "/p/X.swift")
+      (insert "a\nb\nc\n")
+      (goto-char (point-min))
+      (forward-line 2)
+      (set-buffer-modified-p nil)
+      (cl-letf (((symbol-function 'dziman/swift-tool-available-p) (lambda (_tool) "/usr/bin/xed"))
+                 ((symbol-function 'call-process) (lambda (&rest call) (setq args call) 0)))
+        (dziman/swift-open-in-xcode)
+        )
+      (setq buffer-file-name nil)
+      )
+    (should (equal args '("/usr/bin/xed" nil 0 nil "--line" "3" "/p/X.swift")))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/open-in-xcode-saves-unsaved-changes-first ()
+  (let ((saved nil))
+    (with-temp-buffer
+      (setq buffer-file-name "/p/X.swift")
+      (insert "a\n")
+      (cl-letf (((symbol-function 'dziman/swift-tool-available-p) (lambda (_tool) "/usr/bin/xed"))
+                 ((symbol-function 'save-buffer) (lambda (&rest _) (setq saved t) (set-buffer-modified-p nil)))
+                 ((symbol-function 'call-process) (lambda (&rest _) 0)))
+        (dziman/swift-open-in-xcode)
+        )
+      (setq buffer-file-name nil)
+      )
+    (should saved)
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/swift-buffer-has-swift-keys ()
+  (require 'swift-mode)
+  (with-temp-buffer
+    (let ((swift-mode-hook nil)) (swift-mode))
+    (should (equal (list (key-binding (kbd "M-p f")) (key-binding (kbd "M-p x")) (key-binding (kbd "M-p d")))
+              '(dziman/swift-format-buffer dziman/swift-open-in-xcode dziman/swift-apple-docs)))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/swift-buffer-keeps-prog-keys ()
+  (require 'swift-mode)
+  (with-temp-buffer
+    (let ((swift-mode-hook nil)) (swift-mode))
+    (should (eq (key-binding (kbd "M-p U")) 'string-inflection-java-style-cycle))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/language-server-buffer-has-eglot-keys ()
+  (require 'swift-mode)
+  (require 'eglot)
+  (with-temp-buffer
+    (let ((swift-mode-hook nil)) (swift-mode))
+    (setq-local eglot--managed-mode t)
+    (should (equal (list (key-binding (kbd "M-p r")) (key-binding (kbd "M-p a")) (key-binding (kbd "M-p s")))
+              '(eglot-rename eglot-code-actions consult-eglot-symbols)))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/buffer-without-language-server-has-no-eglot-keys ()
+  (require 'swift-mode)
+  (require 'eglot)
+  (with-temp-buffer
+    (let ((swift-mode-hook nil)) (swift-mode))
+    (should-not (key-binding (kbd "M-p r")))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/other-languages-have-no-swift-keys ()
+  (with-temp-buffer
+    (emacs-lisp-mode)
+    (should-not (key-binding (kbd "M-p x")))
     )
   )
 

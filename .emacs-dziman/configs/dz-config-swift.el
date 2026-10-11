@@ -312,4 +312,50 @@ that is how SwiftLint's configuration errors surface."
 
 (add-hook 'swift-mode-hook #'dziman/swift-format-on-save-setup)
 
+;;;;;;;; Helpers
+(defun dziman/swift-open-in-xcode ()
+  "Open the current file in Xcode at the cursor line, saving it first."
+  (interactive)
+  (unless buffer-file-name
+    (user-error "Buffer is not visiting a file")
+    )
+  (let ((xed (dziman/swift-tool-available-p 'xed)))
+    (unless xed
+      (user-error "xed is not installed; it ships with Xcode")
+      )
+    (when (buffer-modified-p)
+      (save-buffer)
+      )
+    (call-process xed nil 0 nil "--line" (number-to-string (line-number-at-pos)) buffer-file-name)
+    )
+  )
+
+(defun dziman/swift-apple-docs-url (term)
+  (concat "https://developer.apple.com/search/?q=" (url-hexify-string term))
+  )
+
+(defun dziman/swift--docs-term ()
+  (cond
+    ((use-region-p) (buffer-substring-no-properties (region-beginning) (region-end)))
+    ((thing-at-point 'symbol t))
+    (t (read-string "Apple docs for: "))
+    )
+  )
+
+(defun dziman/swift-apple-docs (term)
+  "Search developer.apple.com for TERM: the selection, else the symbol at point, else asked for."
+  (interactive (list (dziman/swift--docs-term)))
+  (browse-url (dziman/swift-apple-docs-url term))
+  )
+
+(bind-map dziman/bind-map/swift
+  :keys ("M-p")
+  :major-modes (swift-mode)
+  :bindings (
+              "f" 'dziman/swift-format-buffer
+              "x" 'dziman/swift-open-in-xcode
+              "d" 'dziman/swift-apple-docs
+              )
+  )
+
 (provide 'dz-config-swift)
