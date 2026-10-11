@@ -411,8 +411,6 @@ Interactively: the selection, else the symbol at point, else asked for."
   )
 
 ;;;;;;;; Menu (`C-. h')
-;; Lets visiting this file apply the footer's setting without a prompt, bytecomp or not loaded
-(put 'byte-compile-docstring-max-column 'safe-local-variable #'natnump)
 (use-package major-mode-hydra)
 (require 'hydra)
 (major-mode-hydra-define swift-mode
