@@ -69,6 +69,8 @@ alone needs only the small package-activate.el."
 (require 'dz-config-completion)
 (require 'dz-config-vertico)
 (require 'dz-config-prog-languages)
+(require 'dz-config-eglot)
+(require 'dz-config-swift)
 (require 'dz-config-ibuffer)
 (require 'dz-config-ace)
 (require 'dz-config-appearance)

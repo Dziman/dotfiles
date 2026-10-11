@@ -116,4 +116,55 @@ Other project commands keep their usual root."
   (add-hook 'project-find-functions #'dziman/swift-project-find)
   )
 
+;;;;;;;; Tools
+(defconst dziman/swift--xcrun-tools '(sourcekit-lsp swift-format)
+  "Tools that ship with Xcode and are found with `xcrun --find' rather than on PATH.")
+
+(defvar dziman/swift--tool-paths nil
+  "Alist of tool symbol to its path, nil when missing. Filled on first lookup of each tool.")
+
+(defun dziman/swift--locate-tool (tool)
+  "Path of TOOL, or nil when it is not installed."
+  (let ((name (symbol-name tool)))
+    (if (memq tool dziman/swift--xcrun-tools)
+      (condition-case nil
+        (let ((path (car (process-lines "xcrun" "--find" name))))
+          (and path (not (string-empty-p path)) path)
+          )
+        ;; xcrun exits non-zero for an unknown tool and is missing without Xcode's command line tools
+        (error nil)
+        )
+      (executable-find name)
+      )
+    )
+  )
+
+(defun dziman/swift-tool-available-p (tool)
+  "Path of TOOL (a symbol such as `swiftlint'), or nil when it is not installed.
+Looked up once per session."
+  (let ((cached (assq tool dziman/swift--tool-paths)))
+    (if cached
+      (cdr cached)
+      (let ((path (dziman/swift--locate-tool tool)))
+        (push (cons tool path) dziman/swift--tool-paths)
+        path
+        )
+      )
+    )
+  )
+
+(defun dziman/swift-start-eglot ()
+  "Start eglot in a Swift buffer when Apple's language server is installed."
+  (when (dziman/swift-tool-available-p 'sourcekit-lsp)
+    (eglot-ensure)
+    )
+  )
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '(swift-mode . dziman/swift-eglot-contact))
+  )
+
+(add-hook 'swift-mode-hook #'dziman/swift-start-eglot)
+(add-hook 'swift-mode-hook #'flycheck-mode)
+
 (provide 'dz-config-swift)

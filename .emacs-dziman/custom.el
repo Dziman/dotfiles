@@ -11,9 +11,7 @@
  '(safe-local-variable-values
     '((web-mode-indent-style . 2) (web-mode-block-padding . 2)
        (web-mode-script-padding . 2) (web-mode-style-padding . 2)
-       (rustic-indent-offset . 2)
-       (eval dziman/register-swift-lsp-client "macosx")
-       (eval dziman/register-swift-lsp-client "iphoneos"))))
+       (rustic-indent-offset . 2))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
