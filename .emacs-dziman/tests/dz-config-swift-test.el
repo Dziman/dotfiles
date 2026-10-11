@@ -184,7 +184,8 @@
   )
 
 (ert-deftest dziman-swift-server/package-inside-app-gets-its-own-folder ()
-  (dziman-swift-test-with-project '("App/buildServer.json" "App/Packages/Kit/Package.swift" "App/Packages/Kit/Sources/X.swift")
+  (dziman-swift-test-with-project
+    '("App/buildServer.json" "App/Packages/Kit/Package.swift" "App/Packages/Kit/Sources/X.swift")
     (should (dziman-swift-test-same-dir-p
               (dziman/swift-package-root (expand-file-name "App/Packages/Kit/Sources/" root))
               (expand-file-name "App/Packages/Kit/" root)))
@@ -196,7 +197,9 @@
     (with-temp-buffer
       (setq-local major-mode 'swift-mode)
       (let ((eglot-lsp-context t))
-        (should (dziman-swift-test-same-dir-p (cdr (dziman/swift-project-find (expand-file-name "Sources/" root))) root))
+        (should (dziman-swift-test-same-dir-p
+                  (cdr (dziman/swift-project-find (expand-file-name "Sources/" root)))
+                  root))
         )
       )
     )
