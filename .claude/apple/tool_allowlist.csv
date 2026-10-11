@@ -1,0 +1,27 @@
+xcodebuild
+ac-sign
+git
+gradle
+mvn
+crux
+
+npx -y @apple/pkl-mcp@latest,exact_match,Added 2026-05-19T22:13:34.185Z - Unsandboxed from command log (exact_match)
+npx chrome-devtools-mcp@latest --no-usage-statistics --autoConnect,exact_match,Added 2026-05-19T22:13:46.318Z - Unsandboxed from command log (exact_match)
+uvx --from apple-splunk-mcp==1.3.0 --index https://pypi.apple.com/simple splunk-mcp-server,exact_match,Added 2026-05-19T22:14:04.318Z - Unsandboxed from command log (exact_match)
+
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks claude session-start",exact_match,Added 2026-06-11T02:30:06.015Z - Unsandboxed from command log (exact_match)
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks claude session-end",exact_match,Added 2026-06-11T02:30:06.015Z - Unsandboxed from command log (exact_match)
+
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks claude notification",exact_match,Added 2026-06-11T03:43:33.291Z - Unsandboxed from command log (exact_match)
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks *",contains_match,Added 2026-06-11T03:43:53.429Z - Unsandboxed from command log (contains_match)
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks feed --source claude",exact_match,Added 2026-06-11T04:33:11.416Z - Unsandboxed from command log (exact_match)
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks claude stop",contains_match,Added 2026-06-11T04:38:30.590Z - Unsandboxed from command log (contains_match)
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks claude prompt-submit",exact_match,Added 2026-06-11T04:53:39.576Z - Unsandboxed from command log (exact_match)
+FORCE_COLOR=3 node /opt/homebrew/lib/node_modules/@apple/cc-statusline/dist/statusline.js,exact_match,Added 2026-06-11T04:53:46.746Z - Unsandboxed from command log (exact_match)
+/Users/dziman/.config/iterm2/cc-status,exact_match,Added 2026-06-11T04:58:00.088Z - Unsandboxed from command log (exact_match)
+"bash ""/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-tool-audit.sh""",exact_match,Added 2026-06-11T05:04:57.490Z - Unsandboxed from command log (exact_match)
+"bash ""/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-use-xargs-over-exec.sh""",exact_match,Added 2026-06-11T05:05:05.583Z - Unsandboxed from command log (exact_match)
+"bash ""/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-use-rg-over-grep.sh""",exact_match,Added 2026-06-11T05:05:34.063Z - Unsandboxed from command log (exact_match)
+"""${CMUX_CLAUDE_HOOK_CMUX_BIN:-cmux}"" hooks claude pre-tool-use",exact_match,Added 2026-06-11T05:05:43.202Z - Unsandboxed from command log (exact_match)
+"bash ""/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-use-fd-over-find.sh""",exact_match,Added 2026-06-11T05:05:53.262Z - Unsandboxed from command log (exact_match)
+"bash ""/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/stop-session-log.sh""",exact_match,Added 2026-06-11T20:52:31.545Z - Unsandboxed from command log (exact_match)

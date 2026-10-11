@@ -1,0 +1,462 @@
+{
+  "apiKeyHelper": "/Users/dziman/.claude/apple/get-apple-token.sh",
+  "appleClaudeCodeAvailableModelsHash": "69242d66bb07af3ea3dcaa5025d229cec116ef3e0f5a5ce2b11d09062b0d5778",
+  "askUserQuestionTimeout": "never",
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "autoMemoryDirectory": "~/claude/memory",
+  "autoMemoryEnabled": true,
+  "availableModels": [
+    "haiku",
+    "opus",
+    "sonnet"
+  ],
+  "companyAnnouncements": [
+    "\u001b[1;38;2;185;201;75m✻ Apple Claude Code\u001b[0m\u001b[2m · Floodgate access, firewall, and sandbox\n\u001b[2mDocs: \u001b]8;;https://at.apple.com/AppleClaudeCode\u001b\\https://at.apple.com/AppleClaudeCode\u001b]8;;\u001b\\ · Marketplace: \u001b]8;;https://genai.apple.com/marketplace/\u001b\\https://genai.apple.com/marketplace/\u001b]8;;\u001b\\ · Support: \u001b]8;;https://apple.enterprise.slack.com/archives/C096JK8MZJ6\u001b\\#help-apple-claude-code\u001b]8;;\u001b\\\u001b[0m"
+  ],
+  "disableAgentView": true,
+  "editorMode": "normal",
+  "effortLevel": "xhigh",
+  "enabledMcpjsonServers": [
+    "radar-mcp-server"
+  ],
+  "enabledPlugins": {
+    "agent-builder@ai-for-devs-community": false,
+    "agent-skills@ai-for-devs-community": false,
+    "anthropic-claude-md-management@ai-for-devs-community": true,
+    "anthropic-code-simplifier@ai-for-devs-community": true,
+    "anthropic-commit-commands@ai-for-devs-community": true,
+    "anthropic-feature-dev@ai-for-devs-community": true,
+    "anthropic-plugin-dev@ai-for-devs-community": true,
+    "anthropic-pr-review-toolkit@ai-for-devs-community": true,
+    "anthropic-rust-analyzer-lsp@ai-for-devs-community": true,
+    "anthropic-skill-creator@ai-for-devs-community": false,
+    "apple-claude-code@acc-bundled": true,
+    "apple-connect@ai-for-devs-community": true,
+    "artifactory-at-apple@ai-for-devs-community": false,
+    "captains-chair@captains-chair": true,
+    "commit-formatter@ai-for-devs-community": true,
+    "dz-code-conventions@personal-ai-marketplace": true,
+    "dz-decision-log@personal-ai-marketplace": true,
+    "dz-dev-team@personal-ai-marketplace": true,
+    "dz-git-conventions@personal-ai-marketplace": true,
+    "dz-hooks@personal-ai-marketplace": true,
+    "dz-learnings@personal-ai-marketplace": true,
+    "dz-make-green@personal-ai-marketplace": true,
+    "dz-mtree@personal-ai-marketplace": true,
+    "dz-pr@personal-ai-marketplace": true,
+    "dz-session-recap@personal-ai-marketplace": true,
+    "dz-ship-check@personal-ai-marketplace": true,
+    "dz-start-task@personal-ai-marketplace": true,
+    "github-pullrequest@ai-for-devs-community": true,
+    "keynote-slide-generator@ai-for-devs-community": true,
+    "logbook@ai-for-devs-community": true,
+    "marketplace-builder@ai-for-devs-community": true,
+    "mermaid@ai-for-devs-community": false,
+    "pkl-lsp@ai-for-devs-community": true,
+    "pkl@ai-for-devs-community": true,
+    "plugin-builder@ai-for-devs-community": false,
+    "radar@ai-for-devs-community": true,
+    "session-history@ai-for-devs-community": true,
+    "superpowers@superpowers-dev": true,
+    "trailing-newline@ai-for-devs-community": true
+  },
+  "enableWorkflows": false,
+  "env": {
+    "ANTHROPIC_CUSTOM_HEADERS": "User-Agent: Apple-Claude-Code/1.13.2",
+    "APPLE_SETUP_COMPLETED": "true",
+    "BASH_DEFAULT_TIMEOUT_MS": "900000",
+    "BASH_MAX_TIMEOUT_MS": "900000",
+    "CLAUDE_CODE_API_KEY_HELPER_TTL_MS": "3300000",
+    "CLAUDE_CODE_DISABLE_FAST_MODE": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL": "1",
+    "CLAUDE_CODE_DISABLE_SANDBOX": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_SHELL_PREFIX": "/Users/dziman/.claude/apple/scripts/shell-command-checker-wrapper.sh",
+    "DISABLE_AUTOUPDATER": "1",
+    "DISABLE_BUG_COMMAND": "1",
+    "DISABLE_COST_WARNINGS": "1",
+    "DISABLE_DOCTOR_COMMAND": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_INSTALL_GITHUB_APP_COMMAND": "1",
+    "DISABLE_INSTALLATION_CHECKS": "1",
+    "DISABLE_LOGIN_COMMAND": "1",
+    "DISABLE_LOGOUT_COMMAND": "1",
+    "DISABLE_MIGRATE_INSTALLER_COMMAND": "1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "0",
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_UPDATES": "1",
+    "DISABLE_UPGRADE_COMMAND": "1",
+    "ENABLE_TOOL_SEARCH": "true",
+    "FORCE_AUTOUPDATE_PLUGINS": "1",
+    "NPM_CONFIG_REGISTRY": "https://npm.apple.com",
+    "UV_DEFAULT_INDEX": "https://pypi.apple.com/simple",
+    "UV_INDEX_URL": "https://pypi.apple.com/simple"
+  },
+  "extraKnownMarketplaces": {
+    "acc-bundled": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/dziman/.claude/apple/plugins"
+      }
+    },
+    "ai-for-devs-community": {
+      "source": {
+        "source": "git",
+        "url": "git@github.pie.apple.com:AI-for-Devs-Community/claude-code-marketplace.git"
+      }
+    },
+    "ai-toolkit": {
+      "source": {
+        "source": "git",
+        "url": "git@github.pie.apple.com:reas-merchandising/ai-toolkit.git"
+      }
+    },
+    "captains-chair": {
+      "source": {
+        "source": "git",
+        "url": "git@github.pie.apple.com:drichman/captains-chair.git"
+      }
+    },
+    "genai-marketplace": {
+      "source": {
+        "source": "git",
+        "url": "https://api.genai.apple.com/marketplace/39c5fb750326ee36b0c7b6f7ba62b30d41255fd34c9dcdf749f542ac67c034bd.git"
+      }
+    },
+    "personal-ai-marketplace": {
+      "source": {
+        "source": "git",
+        "url": "git@github.pie.apple.com:drusak/personal-ai-marketplace.git"
+      }
+    },
+    "superpowers-dev": {
+      "source": {
+        "source": "git",
+        "url": "git@github.pie.apple.com:AI-for-Devs-Community/superpowers.git"
+      }
+    }
+  },
+  "hooks": {
+    "MessageDisplay": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/apple/scripts/message-display.sh\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": []
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "Bash|Read|Grep|Glob|Skill|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/permission-reviewer.py\"",
+            "timeout": 30,
+            "statusMessage": "Reviewing permission with Opus..."
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "env CLAUDE_HOOK_TYPE=PostToolUse bash \"/Users/dziman/.claude/apple/scripts/tool-call-monitor.sh\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-tool-audit.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-use-rg-over-grep.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-use-fd-over-find.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-use-xargs-over-exec.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/pre-use-sd-over-sed-awk.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/hooks/agent-model-suffix.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "env CLAUDE_HOOK_TYPE=PreToolUse bash \"/Users/dziman/.claude/apple/scripts/tool-call-monitor.sh\""
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/dziman/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/stop-session-log.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/Users/dziman/.claude/plugins/cache/personal-ai-marketplace/dz-hooks/current/hooks/stop-git-status.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": []
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "opus[1m]",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.pie.apple.com)",
+      "Bash(mkdir -p /tmp/jspecify-migration)",
+      "Bash(gradle compileJava)",
+      "Bash(git stash *)",
+      "Bash(gradle :reas-merch-core-utils:compileJava -Dorg.gradle.jvmargs=\"-Xmx4g\")",
+      "Bash(gradle :store-pricing:compileJava -Dorg.gradle.jvmargs=\"-Xmx4g\")",
+      "Bash(gradle :store-pricing:compileJava --rerun-tasks -Dorg.gradle.jvmargs=\"-Xmx6g\")",
+      "Bash(gradle --stop)",
+      "Bash(gradle :store-pricing:compileJava -Dorg.gradle.jvmargs=\"-Xmx8g -Xms2g\" --rerun-tasks)",
+      "Bash(gradle :store-pricing:compileJava --rerun-tasks -Dorg.gradle.jvmargs=\"-Xmx8g\")",
+      "Bash(gradle compileJava -Dorg.gradle.jvmargs=\"-Xmx8g\")",
+      "Bash(gradle compileTestJava -Dorg.gradle.jvmargs=\"-Xmx8g\")",
+      "Bash(xargs -I{} sh -c 'grep -H \"^import org.jetbrains.annotations\\\\.\" \"$1\"' _ {})",
+      "Bash(xargs -I{} sh -c 'unzip -l \"{}\" 2>/dev/null | grep -l DeviceCondition.class 2>/dev/null && echo \"{}\"')",
+      "Bash(mkdir -p ~/temp/claude-reports/tradein-service-decomposition-2026-05-20)",
+      "Bash(cp /Users/dziman/.claude/plans/there-is-tradeinservice-class-curious-feather.md ~/temp/claude-reports/tradein-service-decomposition-2026-05-20/plan.md)",
+      "Read(//Users/dziman/temp/claude-reports/**)",
+      "Bash(gradle :reas-merch-tradein:test --tests \"com.apple.reas.merch.tradein.TradeInServiceTest\")",
+      "Read(//Users/dziman/src/apple/reas-merchandising/merchandising-claude/reas-merch-tradein/build/test-results/test/**)",
+      "Bash(gradle build *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(gradle :reas-merch-tradein:test --tests \"com.apple.reas.merch.tradein.TradeInServiceTest\" -Dlocal.settings.skip=true)",
+      "Bash(gradle :reas-merch-tradein:spotlessApply -Dlocal.settings.skip=true)",
+      "Bash(gradle :reas-merch-tradein:spotlessApply :reas-merch-tradein:test --tests \"com.apple.reas.merch.tradein.TradeInServiceTest\" -Dlocal.settings.skip=true)",
+      "Bash(gradle :reas-merch-tradein:spotlessApply :reas-merch-tradein:test -Dlocal.settings.skip=true)",
+      "Bash(gradle :reas-merch-tradein:checkstyleMain -Dlocal.settings.skip=true)",
+      "Bash(gradle :reas-merch-tradein:test -Dlocal.settings.skip=true)"
+    ],
+    "ask": [
+      "Bash(claude acc-diagnose --confirm*)"
+    ],
+    "defaultMode": "auto",
+    "deny": [
+      "WebSearch"
+    ]
+  },
+  "preferredNotifChannel": "iterm2",
+  "prefersReducedMotion": true,
+  "promptSuggestionEnabled": true,
+  "sandbox": {
+    "enabled": false
+  },
+  "showClearContextOnPlanAccept": true,
+  "skipWebFetchPreflight": true,
+  "skipWorkflowUsageWarning": true,
+  "spinnerTipsEnabled": true,
+  "statusLine": {
+    "command": "FORCE_COLOR=3 node /opt/homebrew/lib/node_modules/@apple/cc-statusline/dist/statusline.js",
+    "padding": 0,
+    "type": "command"
+  },
+  "statusLineConfig": {
+    "colorTheme": "everforest",
+    "components": [
+      "model",
+      "effort",
+      "context",
+      "cost",
+      "quota",
+      "---",
+      "directory",
+      "git",
+      "pr-url"
+    ],
+    "contextStyle": "blocks",
+    "directoryStyle": "full",
+    "iconSet": "nerd-font",
+    "lines": 2,
+    "modelStyle": "short",
+    "prUrlFormat": "url",
+    "separator": "│",
+    "style": "powerline",
+    "truncation": "none"
+  },
+  "strictKnownMarketplaces": [
+    {
+      "source": "hostPattern",
+      "hostPattern": ".*\\.apple\\.com$"
+    }
+  ],
+  "teammateMode": "in-process",
+  "terminalTitleFromRename": false,
+  "theme": "dark",
+  "tui": "fullscreen",
+  "workflowKeywordTriggerEnabled": false,
+  "worktree": {
+    "baseRef": "fresh"
+  }
+}
