@@ -1,0 +1,31 @@
+{
+  "haikuBlockTriggers": [
+    {
+      "id": "trigger_1",
+      "pattern": "Analyze if this message indicates a new conversation topic",
+      "enabled": false,
+      "description": "Blocks conversation topic analysis requests",
+      "createdAt": "2026-04-02T22:56:12.848Z",
+      "blockedCount": 0
+    },
+    {
+      "id": "trigger_2",
+      "pattern": "Analyze this message and come up with a single positive",
+      "enabled": false,
+      "description": "Blocks positive message analysis requests",
+      "createdAt": "2026-04-02T22:56:12.848Z",
+      "blockedCount": 0
+    },
+    {
+      "id": "trigger_3",
+      "pattern": "Please write a 5-10 word title the following conversation",
+      "enabled": false,
+      "description": "Blocks title generation requests",
+      "createdAt": "2026-04-02T22:56:12.848Z",
+      "blockedCount": 0
+    }
+  ],
+  "globalEnabled": false,
+  "lastModified": "2026-04-02T22:56:12.939Z",
+  "configVersion": 2
+}
