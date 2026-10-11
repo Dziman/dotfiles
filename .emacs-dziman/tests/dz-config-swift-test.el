@@ -824,4 +824,15 @@ Events are (shutdown SERVER) and (normal-mode DIRECTORY), in order."
     )
   )
 
+;;;;;;;; Menu
+(ert-deftest dziman-swift-menu/swift-mode-menu-offers-the-swift-commands ()
+  (let ((commands (mapcar #'cadr (symbol-value 'major-mode-hydras/swift-mode/heads))))
+    (dolist (command '(eglot-rename eglot-code-actions consult-eglot-symbols
+                        dziman/swift-format-buffer dziman/swift-open-in-xcode
+                        dziman/swift-apple-docs dziman/swift-reload-platform consult-flycheck))
+      (should (memq command commands))
+      )
+    )
+  )
+
 (provide 'dz-config-swift-test)

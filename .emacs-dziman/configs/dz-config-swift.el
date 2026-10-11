@@ -171,6 +171,10 @@ Looked up once per session."
 
 (declare-function eglot-current-server "eglot")
 (declare-function eglot-shutdown "eglot")
+(declare-function eglot-rename "eglot")
+(declare-function eglot-code-actions "eglot")
+(declare-function consult-eglot-symbols "consult-eglot")
+(declare-function consult-flycheck "consult-flycheck")
 
 (defun dziman/swift-reload-platform ()
   "Apply a changed `dziman/swift-platform' to this buffer's package or app folder.
@@ -404,6 +408,37 @@ Interactively: the selection, else the symbol at point, else asked for."
               "x" 'dziman/swift-open-in-xcode
               "d" 'dziman/swift-apple-docs
               )
+  )
+
+;;;;;;;; Menu (`C-. h')
+(use-package major-mode-hydra)
+(require 'hydra)
+;; The generated docstring's separator line is measured in bytes (UTF-8 box characters)
+;; and trips the 80-column docstring check
+(eval-when-compile (require 'bytecomp) (setq byte-compile-docstring-max-column 200))
+(major-mode-hydra-define swift-mode
+  (:color blue)
+  (
+    "Code"
+    (
+      ("r" eglot-rename "rename")
+      ("a" eglot-code-actions "code actions")
+      ("s" consult-eglot-symbols "go to symbol")
+      ("f" dziman/swift-format-buffer "format file")
+      )
+
+    "Xcode"
+    (
+      ("x" dziman/swift-open-in-xcode "open in Xcode")
+      ("d" dziman/swift-apple-docs "Apple docs")
+      ("p" dziman/swift-reload-platform "reload platform")
+      )
+
+    "Errors"
+    (
+      ("e" consult-flycheck "error list")
+      )
+    )
   )
 
 (provide 'dz-config-swift)

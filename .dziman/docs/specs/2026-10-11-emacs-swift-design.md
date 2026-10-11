@@ -184,6 +184,8 @@ prog-mode map's `U` (probed).
 
 `M-.`, `M-,` and `M-?` stay the standard xref keys; eglot backs them.
 
+`C-. h` opens a Swift major-mode menu (Code, Xcode, Errors) with these commands, `dziman/swift-reload-platform` and `consult-flycheck`.
+
 ## Files
 
 | File | Change |

@@ -58,7 +58,8 @@ xcode-build-server config -scheme <name> -project <file>.xcodeproj   # or -works
 | `M-p d` | Apple docs for the selection, else the symbol at point, else asks; blank is refused |
 | `M-.` / `M-,` / `M-?` | definition / back / references |
 
-`M-x dziman/swift-reload-platform` (no key) restarts the language server of
+`C-. h` opens the Swift menu with all of the above plus `p` (reload platform) and
+`e` (error list). `M-x dziman/swift-reload-platform` (also on the menu) restarts the language server of
 the current package with a changed platform.
 
 `M-p r`, `a`, `s` exist only in buffers with a running language server.
