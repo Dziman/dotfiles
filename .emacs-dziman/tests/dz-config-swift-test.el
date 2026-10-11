@@ -379,6 +379,45 @@
     )
   )
 
+(ert-deftest dziman-swift-lint/non-json-output-is-a-checker-failure ()
+  (with-temp-buffer
+    (should-error (dziman/swift-swiftlint-parse "error: Invalid configuration" 'swift-swiftlint (current-buffer))
+      :type 'json-parse-error)
+    )
+  )
+
+(ert-deftest dziman-swift-lint/buffer-without-file-is-not-linted ()
+  (require 'flycheck)
+  (with-temp-buffer
+    (should-not (funcall (flycheck-checker-get 'swift-swiftlint 'predicate)))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/file-without-swiftlint-config-is-not-linted ()
+  (require 'flycheck)
+  (dziman-swift-test-with-project '("Sources/A/X.swift")
+    (with-temp-buffer
+      (setq buffer-file-name (expand-file-name "Sources/A/X.swift" root)
+        default-directory (expand-file-name "Sources/A/" root))
+      (should-not (funcall (flycheck-checker-get 'swift-swiftlint 'predicate)))
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-lint/file-under-swiftlint-config-is-linted-from-topmost-config ()
+  (require 'flycheck)
+  (dziman-swift-test-with-project '(".swiftlint.yml" "Sources/A/.swiftlint.yml" "Sources/A/X.swift")
+    (with-temp-buffer
+      (setq buffer-file-name (expand-file-name "Sources/A/X.swift" root)
+        default-directory (expand-file-name "Sources/A/" root))
+      (should (funcall (flycheck-checker-get 'swift-swiftlint 'predicate)))
+      (should (dziman-swift-test-same-dir-p
+                (funcall (flycheck-checker-get 'swift-swiftlint 'working-directory) 'swift-swiftlint)
+                root))
+      )
+    )
+  )
+
 (ert-deftest dziman-swift-lint/checker-runs-in-swift-buffers-first ()
   ;; flycheck-eglot chains the first checker in `flycheck-checkers' that supports the mode;
   ;; flycheck's own `swift' checker (swiftc -parse) must not be that one

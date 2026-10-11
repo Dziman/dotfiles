@@ -3,6 +3,7 @@
 ;;;;;; Swift editing: sourcekit-lsp through eglot, SwiftLint, formatting, Xcode helpers.
 ;;;;;; Xcode builds and runs the apps.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'subr-x)
 (use-package swift-mode :defer t)
 
 ;;;;;;;; Language server
@@ -168,8 +169,6 @@ Looked up once per session."
 (add-hook 'swift-mode-hook #'flycheck-mode)
 
 ;;;;;;;; SwiftLint
-(require 'subr-x)
-
 (defun dziman/swift-lint-root (directory)
   "Topmost directory at or above DIRECTORY holding .swiftlint.yml, or nil when there is none.
 SwiftLint run from there applies that config and every nested one down to the file."
@@ -186,7 +185,9 @@ SwiftLint run from there applies that config and every nested one down to the fi
   )
 
 (defun dziman/swift-swiftlint-parse (output checker buffer)
-  "Flycheck errors for BUFFER from SwiftLint's JSON reporter OUTPUT."
+  "Flycheck errors for BUFFER from SwiftLint's JSON reporter OUTPUT.
+Output that is not JSON signals `json-parse-error', which flycheck reports as a checker failure;
+that is how SwiftLint's configuration errors surface."
   (unless (string-blank-p output)
     (mapcar
       (lambda (violation)
