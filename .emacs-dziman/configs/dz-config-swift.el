@@ -411,11 +411,10 @@ Interactively: the selection, else the symbol at point, else asked for."
   )
 
 ;;;;;;;; Menu (`C-. h')
+;; Lets visiting this file apply the footer's setting without a prompt, bytecomp or not loaded
+(put 'byte-compile-docstring-max-column 'safe-local-variable #'natnump)
 (use-package major-mode-hydra)
 (require 'hydra)
-;; The generated docstring's separator line is measured in bytes (UTF-8 box characters)
-;; and trips the 80-column docstring check
-(eval-when-compile (require 'bytecomp) (setq byte-compile-docstring-max-column 200))
 (major-mode-hydra-define swift-mode
   (:color blue)
   (
@@ -442,3 +441,9 @@ Interactively: the selection, else the symbol at point, else asked for."
   )
 
 (provide 'dz-config-swift)
+
+;; The hydra macro's generated docstring has a separator line of UTF-8 box characters,
+;; measured in bytes, which trips the 80-column docstring check of the byte-compiler
+;; Local Variables:
+;; byte-compile-docstring-max-column: 200
+;; End:
