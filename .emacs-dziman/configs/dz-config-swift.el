@@ -224,4 +224,70 @@ that is how SwiftLint's configuration errors surface."
   (add-to-list 'flycheck-checkers 'swift-swiftlint)
   )
 
+;;;;;;;; Formatting
+(use-package reformatter :defer t)
+
+(defconst dziman/swift-formatter-configs
+  '((".swiftformat" . swiftformat) (".swift-format" . swift-format))
+  "Formatter config file names and the formatter each selects; earlier entries win a tie.")
+
+(defconst dziman/swift-formatter-names
+  '((swiftformat . "SwiftFormat") (swift-format . "Apple swift-format"))
+  "Display name of each formatter."
+  )
+
+(defun dziman/swift-formatter-config (directory)
+  "(FORMATTER . CONFIG-DIR) for the formatter config nearest DIRECTORY, or nil when there is none."
+  (let ((nearest nil))
+    (dolist (entry dziman/swift-formatter-configs nearest)
+      (let ((dir (locate-dominating-file directory (car entry))))
+        ;; Both are ancestors of DIRECTORY, so the longer path is the nearer one
+        (when (and dir (or (null nearest) (> (length (expand-file-name dir)) (length (expand-file-name (cdr nearest))))))
+          (setq nearest (cons (cdr entry) dir))
+          )
+        )
+      )
+    )
+  )
+
+(defun dziman/swift-formatter (directory)
+  "Formatter for Swift files under DIRECTORY: the configured one, else Apple swift-format."
+  (or (car (dziman/swift-formatter-config directory)) 'swift-format)
+  )
+
+(reformatter-define dziman/swift-swiftformat
+  :program "swiftformat"
+  :args (append '("stdin" "--quiet") (and buffer-file-name (list "--stdin-path" buffer-file-name)))
+  :mode nil
+  )
+
+(reformatter-define dziman/swift-apple-format
+  :program "xcrun"
+  :args (append '("swift-format" "format") (and buffer-file-name (list "--assume-filename" buffer-file-name)) '("-"))
+  :mode nil
+  )
+
+(defun dziman/swift-format-buffer ()
+  "Reformat the buffer with the project's Swift formatter; see `dziman/swift-formatter'."
+  (interactive)
+  (let ((formatter (dziman/swift-formatter default-directory)))
+    (cond
+      ((not (dziman/swift-tool-available-p formatter))
+        (message "%s is not installed; buffer not formatted" (alist-get formatter dziman/swift-formatter-names))
+        )
+      ((eq formatter 'swiftformat) (dziman/swift-swiftformat-buffer t))
+      (t (dziman/swift-apple-format-buffer t))
+      )
+    )
+  )
+
+(defun dziman/swift-format-on-save-setup ()
+  "Format on save in projects that have a formatter config."
+  (when (and buffer-file-name (dziman/swift-formatter-config default-directory))
+    (add-hook 'before-save-hook #'dziman/swift-format-buffer nil t)
+    )
+  )
+
+(add-hook 'swift-mode-hook #'dziman/swift-format-on-save-setup)
+
 (provide 'dz-config-swift)
