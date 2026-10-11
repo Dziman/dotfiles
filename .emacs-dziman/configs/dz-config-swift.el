@@ -1,0 +1,112 @@
+;;; -*- lexical-binding: t -*-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;; Swift editing: sourcekit-lsp through eglot, SwiftLint, formatting, Xcode helpers.
+;;;;;; Xcode builds and runs the apps.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package swift-mode :defer t)
+
+;;;;;;;; Language server
+(defconst dziman/swift-platforms
+  '(
+     (ios      . ("iphoneos"  . "ios"))
+     (tvos     . ("appletvos" . "tvos"))
+     (watchos  . ("watchos"   . "watchos"))
+     (visionos . ("xros"      . "xros"))
+     )
+  "Platform switch value to (SDK-NAME . TARGET-OS). Mac is the absence of a value.")
+
+(defvar-local dziman/swift-platform nil
+  "Apple platform a Swift package is checked against: a key of `dziman/swift-platforms', nil for Mac.
+Set it in the package's .dir-locals.el. After a change, open buffers need `normal-mode'
+to re-read it, then `eglot-reconnect'. Ignored in folders with buildServer.json.")
+
+(put 'dziman/swift-platform 'safe-local-variable
+  (lambda (value) (and (assq value dziman/swift-platforms) t))
+  )
+
+(defun dziman/swift--sdk (sdk-name)
+  "Return (PATH . VERSION) of the Xcode SDK SDK-NAME, or nil when that SDK is not installed."
+  (ignore-errors
+    (cons
+      (car (process-lines "xcrun" "--sdk" sdk-name "--show-sdk-path"))
+      (car (process-lines "xcrun" "--sdk" sdk-name "--show-sdk-version"))
+      )
+    )
+  )
+
+(defun dziman/swift-platform-server-args (target-os sdk-path sdk-version)
+  "sourcekit-lsp arguments that check a Swift package against SDK-PATH for TARGET-OS SDK-VERSION."
+  ;; Without -isysroot, SwiftPM (Swift 6.4) keeps the Mac SDK for Clang modules: "Cannot load underlying module"
+  (list
+    "-Xswiftc" "-sdk" "-Xswiftc" sdk-path
+    "-Xswiftc" "-target" "-Xswiftc" (format "arm64-apple-%s%s" target-os sdk-version)
+    "-Xcc" "-isysroot" "-Xcc" sdk-path
+    )
+  )
+
+(defun dziman/swift-server-command (&optional root)
+  "sourcekit-lsp command for the current buffer's `dziman/swift-platform'.
+ROOT is the server's folder; one holding buildServer.json takes its platform from Xcode's build settings.
+Unknown platforms and platforms without an installed SDK fall back to Mac, with a message."
+  (let* (
+          (mac (list "xcrun" "sourcekit-lsp"))
+          (xcode-project (and root (file-exists-p (expand-file-name "buildServer.json" root))))
+          (platform (and dziman/swift-platform (alist-get dziman/swift-platform dziman/swift-platforms)))
+          (sdk (and platform (not xcode-project) (dziman/swift--sdk (car platform))))
+          )
+    (cond
+      ((or (null dziman/swift-platform) xcode-project) mac)
+      ((null platform)
+        (message "Unknown dziman/swift-platform %S; checking against the Mac SDK" dziman/swift-platform)
+        mac
+        )
+      ((null sdk)
+        (message "SDK %s is not installed; checking against the Mac SDK" (car platform))
+        mac
+        )
+      (t (append mac (dziman/swift-platform-server-args (cdr platform) (car sdk) (cdr sdk))))
+      )
+    )
+  )
+
+(defun dziman/swift-eglot-contact (_interactive project)
+  "Eglot server contact for Swift buffers; see `dziman/swift-server-command'."
+  (dziman/swift-server-command (and project (project-root project)))
+  )
+
+(defun dziman/swift-package-root (directory)
+  "Nearest directory at or above DIRECTORY holding Package.swift or buildServer.json, or nil."
+  (locate-dominating-file directory
+    (lambda (dir)
+      (or
+        (file-exists-p (expand-file-name "Package.swift" dir))
+        (file-exists-p (expand-file-name "buildServer.json" dir))
+        )
+      )
+    )
+  )
+
+(defvar eglot-lsp-context)
+
+(defun dziman/swift-project-find (directory)
+  "Eglot's project for a Swift buffer: the package or app folder around DIRECTORY.
+Other project commands keep their usual root."
+  (when-let* (
+               ((bound-and-true-p eglot-lsp-context))
+               ((derived-mode-p 'swift-mode))
+               (root (dziman/swift-package-root directory))
+               )
+    (cons 'dziman-swift root)
+    )
+  )
+
+;; Inside the after-load: adding to `project-find-functions' before project.el defines it
+;; would leave out project.el's default VC finder
+(with-eval-after-load 'project
+  (cl-defmethod project-root ((project (head dziman-swift)))
+    (cdr project)
+    )
+  (add-hook 'project-find-functions #'dziman/swift-project-find)
+  )
+
+(provide 'dz-config-swift)
