@@ -1,53 +1,288 @@
 #!/bin/sh
-# Select the dotfiles profile of this machine.
+# Select the dotfiles profile of this machine and link its files into $HOME.
 #
-#   config-profile <name>   point ~/.dziman/profile at ~/.dziman/profiles/<name>
-#   config-profile --show   print the active profile name
+#   config-profile <name>             activate ~/.dziman/profiles/<name>
+#   config-profile --show             print the active profile name
+#   config-profile status             state of the active profile's links
+#   config-profile adopt <path>...    move a file or directory into the active profile and link it
+#   config-profile unadopt <path>...  move it back into $HOME (still tracked, at that path)
 #
-# Every shared config file refers to ~/.dziman/profile/..., so this symlink is
-# the only per-machine state. Profiles live in ~/.dziman/profiles/<name>/ and
-# mirror the $HOME layout (e.g. profiles/apple/.gitconfig, profiles/ai/.dziman-zsh/).
+# ~/.dziman/profile -> profiles/<name> is the only per-machine state; shared config
+# reads profile parts through it. Profiles mirror the $HOME layout. The paths in
+# profiles/<name>/links (one $HOME-relative file or directory per line) are
+# symlinked into $HOME on activation, one link per file so untracked neighbours
+# stay untouched; the links point through ~/.dziman/profile, never at a profile
+# by name, and are listed in the repo's info/exclude so `config status` stays clean.
 set -eu
 
 profiles_dir="$HOME/.dziman/profiles"
 link="$HOME/.dziman/profile"
+git_dir=${DZIMAN_DOTFILES:-$HOME/.dziman-dotfiles}
+exclude_begin='# config-profile links (managed, do not edit)'
+exclude_end='# end config-profile links'
 
 usage() {
-  echo "usage: config-profile <name> | --show" >&2
+  echo "usage: config-profile <name> | --show | status | adopt <path>... | unadopt <path>..." >&2
   echo "profiles: $(ls "$profiles_dir" | tr '\n' ' ')" >&2
   exit 2
 }
 
-[ $# -eq 1 ] || usage
+die() { echo "config-profile: $*" >&2; exit 1; }
 
-if [ "$1" = "--show" ]; then
-  target=$(readlink "$link" 2>/dev/null) || { echo "config-profile: no profile set" >&2; exit 1; }
-  basename "$target"
-  exit 0
-fi
+cfg() { git -C "$HOME" --git-dir="$git_dir" --work-tree="$HOME" "$@"; }
 
-name=$1
-case $name in
-  ''|*/*|.*) echo "config-profile: invalid profile name: '$name'" >&2; usage ;;
-esac
-if [ ! -d "$profiles_dir/$name" ]; then
-  echo "config-profile: no such profile: $name" >&2
-  usage
-fi
+has_repo() { [ -d "$git_dir" ]; }
 
-# Hide directories that exist for other profiles only (patterns in profiles/<name>/sparse).
-# Local repo state, applied idempotently; absent file = full checkout.
-git_dir=${DZIMAN_DOTFILES:-$HOME/.dziman-dotfiles}
-if [ -d "$git_dir" ]; then
-  sparse="$profiles_dir/$name/sparse"
-  if [ -r "$sparse" ]; then
-    git --git-dir="$git_dir" --work-tree="$HOME" sparse-checkout set --no-cone --stdin < "$sparse"
+active() { basename "$(readlink "$link" 2>/dev/null || true)"; }
+
+require_active() {
+  name=$(active)
+  [ -n "$name" ] || die "no profile set"
+}
+
+manifest() { echo "$profiles_dir/$1/links"; }
+
+# Manifest lines without comments, blanks and trailing slashes.
+manifest_entries() {
+  [ -r "$(manifest "$1")" ] || return 0
+  grep -v '^[[:space:]]*\(#\|$\)' "$(manifest "$1")" | sed 's|/*$||' || true
+}
+
+is_listed() { # profile path
+  grep -qxF -- "$2" "$(manifest "$1")" 2>/dev/null
+}
+
+# Every file below $profiles_dir/<profile>/<entry>, as $HOME-relative paths; a missing
+# entry is passed through so its link can still be reported or removed.
+files_of_entry() { # profile entry
+  src="$profiles_dir/$1/$2"
+  if [ -d "$src" ] && [ ! -L "$src" ]; then
+    find "$src" \( -type f -o -type l \) | while read -r f; do printf '%s\n' "${f#"$profiles_dir/$1/"}"; done
   else
-    git --git-dir="$git_dir" --work-tree="$HOME" sparse-checkout disable
+    printf '%s\n' "$2"
   fi
-fi
+}
 
-# The symlink switches last, so a failed sparse step leaves the previous profile intact.
-ln -sfn "profiles/$name" "$link"
+profile_files() { # profile
+  manifest_entries "$1" | while read -r entry; do files_of_entry "$1" "$entry"; done
+}
 
-echo "profile: $name"
+# Relative target from $HOME/<path> to ~/.dziman/profile/<path>.
+link_target() {
+  up=$(printf '%s' "$1" | awk -F/ '{ for (i = 1; i < NF; i++) printf "../" }')
+  printf '%s\n' "${up}.dziman/profile/$1"
+}
+
+is_profile_link() {
+  [ -L "$1" ] || return 1
+  case $(readlink "$1") in .dziman/profile/*|*/.dziman/profile/*) return 0 ;; esac
+  return 1
+}
+
+remove_links() { # $HOME-relative paths on stdin
+  while read -r p; do
+    if is_profile_link "$HOME/$p"; then rm "$HOME/$p"; fi
+  done
+}
+
+# Links every path on stdin; a real file in the way is reported and kept. Returns 1 if any was.
+make_links() {
+  skipped=0
+  while read -r p; do
+    dst="$HOME/$p"
+    if [ ! -e "$link/$p" ] && [ ! -L "$link/$p" ]; then
+      echo "config-profile: not linked, no such file in the profile: $p" >&2
+      skipped=1
+      continue
+    fi
+    if [ -e "$dst" ] || [ -L "$dst" ]; then
+      if ! is_profile_link "$dst"; then
+        echo "config-profile: not linked, a file is in the way: ~/$p" >&2
+        skipped=1
+        continue
+      fi
+    fi
+    mkdir -p "$(dirname "$dst")"
+    ln -sfn "$(link_target "$p")" "$dst"
+  done
+  [ $skipped -eq 0 ]
+}
+
+exclude_file() { printf '%s\n' "$git_dir/info/exclude"; }
+
+# Link paths recorded in info/exclude by the last activation ($HOME-relative).
+recorded_links() {
+  has_repo && [ -f "$(exclude_file)" ] || return 0
+  awk -v b="$exclude_begin" -v e="$exclude_end" '$0 == e { exit } on { print } $0 == b { on = 1 }' "$(exclude_file)" \
+    | sed 's|^/||; s|\\\(.\)|\1|g'
+}
+
+# Rewrites the managed block of info/exclude with the profile's link paths, as
+# literal gitignore patterns anchored to the root. Lines outside the block stay.
+write_exclude() { # profile
+  has_repo || return 0
+  mkdir -p "$git_dir/info"
+  [ -f "$(exclude_file)" ] || : > "$(exclude_file)"
+  tmp=$(mktemp)
+  {
+    awk -v b="$exclude_begin" -v e="$exclude_end" '$0 == b { skip = 1 } !skip { print } $0 == e { skip = 0 }' "$(exclude_file)"
+    echo "$exclude_begin"
+    profile_files "$1" | sed 's|[][*?\\!#]|\\&|g; s|^|/|'
+    echo "$exclude_end"
+  } > "$tmp"
+  cat "$tmp" > "$(exclude_file)"
+  rm -f "$tmp"
+}
+
+activate() {
+  name=$1
+  case $name in
+    ''|*/*|.*) echo "config-profile: invalid profile name: '$name'" >&2; usage ;;
+  esac
+  [ -d "$profiles_dir/$name" ] || { echo "config-profile: no such profile: $name" >&2; usage; }
+
+  recorded_links | remove_links
+  old=$(active)
+  if [ -n "$old" ] && [ -d "$profiles_dir/$old" ]; then profile_files "$old" | remove_links; fi
+  ln -sfn "profiles/$name" "$link"
+  write_exclude "$name"
+  if profile_files "$name" | make_links; then
+    echo "profile: $name"
+  else
+    echo "profile: $name (some links skipped)" >&2
+    exit 1
+  fi
+}
+
+status() {
+  require_active
+  echo "profile: $name"
+  profile_files "$name" | while read -r p; do
+    dst="$HOME/$p"
+    if is_profile_link "$dst"; then
+      if [ -e "$dst" ]; then state=ok; else state=broken; fi
+    elif [ -e "$dst" ] || [ -L "$dst" ]; then
+      state=shadowed
+    else
+      state=missing
+    fi
+    printf '%-9s ~/%s\n' "$state" "$p"
+  done
+  has_repo || return 0
+  cfg ls-files --others --exclude-standard -- ".dziman/profiles/$name" | sed 's/^/untracked /'
+}
+
+# $HOME-relative path of an existing file or directory, or failure when outside $HOME.
+home_relative() {
+  p=${1%/}
+  case $(basename "$p") in .|..) return 1 ;; esac
+  abs=$(cd "$(dirname "$p")" 2>/dev/null && pwd)/$(basename "$p")
+  case $abs in
+    "$HOME"/.dziman/profile/*|"$HOME"/.dziman/profiles/*) return 1 ;;
+    "$HOME"/*) echo "${abs#"$HOME"/}" ;;
+    *) return 1 ;;
+  esac
+}
+
+# Fails when a directory on the way to profiles/<profile>/<path> is a symlink (main's
+# .claude points at ai's): moving through it would change another profile.
+require_direct() { # profile path
+  dir="$profiles_dir/$1"
+  rest=$2
+  while [ "$rest" != "${rest#*/}" ]; do
+    dir="$dir/${rest%%/*}"
+    rest=${rest#*/}
+    [ -L "$dir" ] && die "$2 lies behind a symlink in profile $1 (${dir#"$profiles_dir/"}); adopt it in that profile"
+  done
+  return 0
+}
+
+# A tracked file is shared by every machine; moving it is a deliberate choice, so ask.
+confirm_move() { # path
+  cat >&2 <<EOF
+config-profile: ~/$1 is tracked for every machine. Adopting moves it into profile
+$name; the other profiles lose it at their next switch. If only part of it
+differs per machine, keep it shared and put the difference in a profile part
+that the shared file includes.
+EOF
+  printf 'move ~/%s into profile %s? [y/N] ' "$1" "$name" >&2
+  read -r answer || answer=
+  case $answer in y|Y|yes) return 0 ;; *) return 1 ;; esac
+}
+
+manifest_add() { # profile path
+  is_listed "$1" "$2" || printf '%s\n' "$2" >> "$(manifest "$1")"
+  if has_repo; then cfg add -- ".dziman/profiles/$1/links"; fi
+}
+
+manifest_remove() { # profile path
+  tmp=$(mktemp)
+  grep -vxF -- "$2" "$(manifest "$1")" > "$tmp" || true
+  mv "$tmp" "$(manifest "$1")"
+  if has_repo; then cfg add -- ".dziman/profiles/$1/links"; fi
+}
+
+adopt() {
+  require_active
+  for p; do
+    rel=$(home_relative "$p") || die "not a file under \$HOME: $p"
+    src="$HOME/$rel"
+    dst="$profiles_dir/$name/$rel"
+    [ -L "$src" ] && die "already a link: ~/$rel"
+    [ -e "$src" ] || die "no such file: ~/$rel"
+    [ -e "$dst" ] && die "already in profile $name: $rel"
+    require_direct "$name" "$rel"
+    if has_repo && cfg check-ignore -q -- ".dziman/profiles/$name/$rel"; then die "ignored by .gitignore: $rel"; fi
+    mkdir -p "$(dirname "$dst")"
+    if has_repo && cfg ls-files --error-unmatch -- "$rel" >/dev/null 2>&1; then
+      confirm_move "$rel" || die "not adopted: ~/$rel"
+      cfg mv -- "$rel" ".dziman/profiles/$name/$rel"
+    else
+      mv "$src" "$dst"
+      if has_repo; then cfg add -- ".dziman/profiles/$name/$rel"; fi
+    fi
+    manifest_add "$name" "$rel"
+    files_of_entry "$name" "$rel" | make_links
+    write_exclude "$name"
+    echo "adopted: ~/$rel"
+  done
+}
+
+unadopt() {
+  require_active
+  for p; do
+    rel=$(home_relative "$p") || die "not a file under \$HOME: $p"
+    is_listed "$name" "$rel" || die "not listed in profiles/$name/links: $rel"
+    src="$profiles_dir/$name/$rel"
+    [ -e "$src" ] || [ -L "$src" ] || die "not in profile $name: $rel"
+    require_direct "$name" "$rel"
+    files_of_entry "$name" "$rel" | while read -r f; do
+      if [ -e "$HOME/$f" ] || [ -L "$HOME/$f" ]; then
+        is_profile_link "$HOME/$f" || die "a file is in the way, nothing moved: ~/$f"
+      fi
+    done
+    tracked=0
+    if has_repo && cfg ls-files --error-unmatch -- ".dziman/profiles/$name/$rel" >/dev/null 2>&1; then tracked=1; fi
+    files_of_entry "$name" "$rel" | remove_links
+    if [ $tracked -eq 1 ]; then cfg rm -r -q --cached -- ".dziman/profiles/$name/$rel"; fi
+    files_of_entry "$name" "$rel" | while read -r f; do
+      mkdir -p "$(dirname "$HOME/$f")"
+      mv "$profiles_dir/$name/$f" "$HOME/$f"
+    done
+    if [ -d "$src" ]; then find "$src" -depth -type d | while read -r d; do rmdir "$d"; done; fi
+    (cd "$profiles_dir/$name" && rmdir -p "$(dirname "$rel")" 2>/dev/null || true)
+    manifest_remove "$name" "$rel"
+    write_exclude "$name"
+    if [ $tracked -eq 1 ]; then cfg add -- "$rel"; fi
+    echo "unadopted: ~/$rel"
+  done
+}
+
+case ${1-} in
+  --show) [ $# -eq 1 ] || usage; require_active; echo "$name" ;;
+  status) [ $# -eq 1 ] || usage; status ;;
+  adopt) [ $# -ge 2 ] || usage; shift; adopt "$@" ;;
+  unadopt) [ $# -ge 2 ] || usage; shift; unadopt "$@" ;;
+  '') usage ;;
+  *) [ $# -eq 1 ] || usage; activate "$1" ;;
+esac
