@@ -5,7 +5,7 @@
 ################################################################################
 
 function open-idea() {
-  open -na "IntelliJ IDEA 2026.x EAP" --args "$@"
+  open -na "IntelliJ IDEA" --args "$@"
 }
 
 alias idea=open-idea

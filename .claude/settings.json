@@ -1,0 +1,210 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/agent-model-tag.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/dziman/.config/iterm2/cc-status"
+          }
+        ]
+      }
+    ]
+  },
+  "worktree": {
+    "baseRef": "fresh"
+  },
+  "disableAgentView": true,
+  "teammateMode": "auto",
+  "workflowKeywordTriggerEnabled": false,
+  "statusLine": {
+    "type": "command",
+    "command": "bunx -y ccstatusline@latest",
+    "padding": 0,
+    "refreshInterval": 10
+  },
+  "subagentStatusLine": {
+    "type": "command",
+    "command": "~/.claude/subagent-statusline.sh"
+  },
+  "enabledPlugins": {
+    "chrome-devtools-mcp@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "kotlin-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "stripe@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    }
+  },
+  "promptSuggestionEnabled": false,
+  "askUserQuestionTimeout": "never",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "editorMode": "normal",
+  "preferredNotifChannel": "iterm2",
+  "remoteControlAtStartup": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Bash(fd:*) — read-only file discovery in the finhea repo, used in place of find per the user's global CLAUDE.md",
+      "Bash(xcodebuild:*) — local iOS build/test of finhea-ios on this machine",
+      "Bash(swiftlint:*) and Bash(swiftformat:*) — local lint/format of finhea-ios sources",
+      "Bash(make lint:*), Bash(make format:*), Bash(make check:*), Bash(make build:*) — local Makefile targets in finhea-infra"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(fj:*) subcommands that delete, merge, or force-push on git.blakitka.home — repository-mutating forge operations should be confirmed",
+      "Bash(make clean:*), Bash(make clean-derived:*), Bash(make clean-simulators:*), Bash(make down:*) — destructive local teardown targets"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured — personal/hobby project (`dziman/finhea`, self-hosted forge)",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: Not queryable via gh (origin is a self-hosted SSH forge at `git.blakitka.home:2422`, not a plain owner/repo host) — assume private; README states \"Proprietary — internal project\"",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured — README notes `default.env` holds safe local defaults with no secrets; overrides come from the shell or `--env-file custom.env`",
+      "**Default / protected branches**: Default branch `develop`; no protected-branch or ruleset data available (gh could not query this self-hosted host)",
+      "**CI/CD deploy targets**: None configured — local Docker Compose stack under `finhea-infra/` is the only observed target",
+      "**Network posture**: None configured — observed traffic is limited to the home LAN hosts `git.blakitka.home` and `yt.blakitka.home`",
+      "**Source control**: The trusted repo and its remote(s) only (no additional orgs configured) — `ssh://git.blakitka.home:2422/ai-mirrors/finhea.git`",
+      "**Trusted internal domains**: `git.blakitka.home` (git remote, 6x in transcripts), `yt.blakitka.home` (13x in transcripts)",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: `git.blakitka.home:2422` (self-hosted git forge); local dev endpoints `http://localhost:5173` (web) and `http://localhost:8080` (API)",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar — note this is a personal finance application, so account, balance and credit-card data are sensitive by default",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development — Kotlin/Ktor API, Vue 3 web SPA, SwiftUI/SwiftData iOS app, and Docker Compose infrastructure in the `finhea` monorepo"
+    ]
+  }
+}

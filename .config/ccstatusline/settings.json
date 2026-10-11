@@ -1,0 +1,97 @@
+{
+  "version": 4,
+  "lines": [
+    [
+      {
+        "id": "1",
+        "type": "model",
+        "color": "cyan",
+        "rawValue": true
+      },
+      {
+        "id": "9ca384f2-5d3d-4da8-896e-84ee0308ddd4",
+        "type": "thinking-effort",
+        "rawValue": true
+      },
+      {
+        "id": "834162d9-1921-4505-81e0-1266daf34494",
+        "type": "context-bar",
+        "rawValue": true
+      },
+      {
+        "id": "92222348-14db-4d3c-ac84-1d3c9a99c42b",
+        "type": "session-cost",
+        "rawValue": true
+      },
+      {
+        "id": "api-cost-inline",
+        "type": "custom-command",
+        "commandPath": "bun /Users/dziman/src/ai/ai-cost/adapters/claude-cost-widget.ts"
+      },
+      {
+        "id": "5",
+        "type": "git-branch",
+        "color": "magenta"
+      },
+      {
+        "id": "7",
+        "type": "git-changes",
+        "color": "yellow"
+      }
+    ],
+    [
+      {
+        "id": "f48e562e-905a-4f07-b36a-b1db61e1d78f",
+        "type": "session-usage",
+        "rawValue": true
+      },
+      {
+        "id": "4aa5d987-2ecd-4708-8f68-55e9384ba3dd",
+        "type": "reset-timer",
+        "rawValue": true
+      },
+      {
+        "id": "ee99b0ee-24b5-44d3-b32c-4c1087be0d5e",
+        "type": "weekly-usage",
+        "rawValue": true
+      },
+      {
+        "id": "7dbd1285-c130-401e-bb53-10a4b394d107",
+        "type": "weekly-reset-timer",
+        "rawValue": true
+      }
+    ],
+    []
+  ],
+  "flexMode": "full",
+  "compactThreshold": 60,
+  "colorLevel": 3,
+  "defaultPadding": " ",
+  "defaultPaddingSide": "both",
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "gitCacheTtlSeconds": 5,
+  "minimalistMode": false,
+  "powerline": {
+    "enabled": true,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [
+      ""
+    ],
+    "endCaps": [
+      ""
+    ],
+    "theme": "nord-aurora",
+    "autoAlign": true,
+    "continueThemeAcrossLines": false
+  },
+  "installation": {
+    "method": "auto-update",
+    "packageManager": "bun"
+  }
+}

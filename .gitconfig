@@ -3,13 +3,15 @@
   email = dzmitry.rusak@gmail.com
 [includeIf "gitdir:~/src/oss/"]
   path = ~/.gitconfig-oss
+[includeIf "gitdir:~/src/ai/"]
+  path = ~/.gitconfig-ai
 
 [color]
   status = auto
   branch = auto
   ui = true
 [core]
-  editor = emacsclient --tty --socket-name git-editor-emacs
+  editor = emacsclient --tty --socket-name git-editor
   excludesfile = ~/.gitignore
   autocrlf = input
 [alias]

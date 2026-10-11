@@ -221,8 +221,12 @@ if [[ -o interactive ]]; then
   # Highlight syntax in prompt
   ################################################################################
   if [ -f $HOMEBREW_PREFIX/share/zsh-f-sy-h/F-Sy-H.plugin.zsh ]; then
-    source $HOMEBREW_PREFIX/share/zsh-f-sy-h/F-Sy-H.plugin.zsh
-    fast-theme -q spa
+    # Function scope so F-Sy-H's `emulate -L zsh` reverts on exit instead of
+    # permanently resetting global options (e.g. autocd) when sourced bare.
+    () {
+      source $HOMEBREW_PREFIX/share/zsh-f-sy-h/F-Sy-H.plugin.zsh
+      fast-theme -q spa
+    }
   fi
   ################################################################################
 
