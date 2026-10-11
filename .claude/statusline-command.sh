@@ -1,1 +1,0 @@
-../.dziman/profile/.claude/statusline-command.sh

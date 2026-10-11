@@ -1,0 +1,17 @@
+#compdef config-profile
+
+local -a profiles subcommands
+profiles=( ${(f)"$(command ls ~/.dziman/profiles 2>/dev/null)"} )
+subcommands=(
+  'status:links of the active profile and their state'
+  'adopt:move a file or directory into the active profile and link it'
+  'unadopt:move it back into $HOME'
+  '--show:print the active profile name'
+)
+
+if (( CURRENT == 2 )); then
+  _describe -t profiles 'profile' profiles
+  _describe -t subcommands 'subcommand' subcommands
+elif [[ $words[2] == (adopt|unadopt) ]]; then
+  _files
+fi

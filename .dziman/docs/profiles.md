@@ -14,8 +14,11 @@ identical on all machines. Profiles: `main` (personal main machine), `apple`
 ## Switch
 
 ```
-config-profile <name>     # set the symlink, apply the profile's sparse-checkout list
-config-profile --show     # print the active profile
+config-profile <name>             # set the symlink, link the profile's files into $HOME
+config-profile --show             # print the active profile
+config-profile status             # each link: ok / broken / shadowed / missing; untracked profile files
+config-profile adopt <path>...    # move a file or directory into the active profile, list and link it
+config-profile unadopt <path>...  # move it back into $HOME, tracked there (config rm --cached to untrack)
 ```
 
 `DZIMAN_PROFILE` holds the name in zsh (empty when no profile is set). Shared
@@ -33,27 +36,55 @@ A profile directory mirrors `$HOME`: the part for `~/.gitconfig` is
 | git | `[include] path = ~/.dziman/profile/.gitconfig` | `.gitconfig`, `.gitconfig-apple*` |
 | tmux | `source-file -q ~/.dziman/profile/.tmux.conf` | `.tmux.conf` |
 | omp | the `omp` shell function adds `--config <profile config>`; the overlay outranks the shared file, so change models in the profile overlay. `/model` and preset saves inside omp write `modelRoles` into the shared `~/.omp/agent/config.yml`: they last one session and leave `config status` dirty; revert them there | `.omp/agent/config.yml` (models, presets, services), `.omp/agent/models.yml` |
-| ssh, pip, maven, gradle, navi | tracked symlinks in `$HOME` point into the profile (dangling on other profiles) | `.ssh/config`, `.pip/pip.conf`, `.m2/settings.xml`, `.gradle/init.d/`, `.navi/cheats/apple.src.cheat` |
+| ssh, pip, maven, gradle, navi, omp extras | whole files: linked into `$HOME` by `config-profile` (see below) | `.ssh/config`, `.pip/pip.conf`, `.m2/settings.xml`, `.gradle/init.d/`, `.navi/cheats/apple.src.cheat`, `.omp/agent/{lsp.json,bin/,rules/zmx-session-safety.md}` |
 | zsh prompt | `right-prompt` calls `profile-prompt-status` when the profile defines it | `.dziman-zsh/910_prompt.zsh` |
-| Claude Code | `~/.claude/CLAUDE.md` ends with `@~/.dziman/profile/.claude/CLAUDE.md`; `~/.claude/settings.json`, `~/.claude/skills/dz-git-forge-workflow`, `~/.claude/statusline-command.sh`, `~/.claude/dz-session-recap.local.md` and `~/.claude/apple/{filters-config.json,tool_allowlist.csv}` are symlinks into the profile (no layering in Claude Code) | `.claude/CLAUDE.md`, `.claude/settings.json`, `.claude/skills/dz-git-forge-workflow/` (main's are symlinks to ai's); apple only: `.claude/statusline-command.sh`, `.claude/dz-session-recap.local.md`, `.claude/apple/` |
+| Claude Code | `~/.claude/CLAUDE.md` ends with `@~/.dziman/profile/.claude/CLAUDE.md`; settings, the forge skill and the apple-only files are linked into `~/.claude/` by `config-profile` (no layering in Claude Code) | `.claude/CLAUDE.md`, `.claude/settings.json`, `.claude/skills/dz-git-forge-workflow/` (main's `.claude` is a symlink to ai's); apple only: `.claude/statusline-command.sh`, `.claude/dz-session-recap.local.md`, `.claude/apple/` |
+| work-machine data | linked the same way | `Local/AS/`, `src/apple/` (module lists) |
 
-Files that exist for one profile only (`Local/AS`, `src/apple`, omp's Java LSP)
-are tracked as is; `profiles/<p>/sparse` lists what the *other* profiles
-hide (git sparse-checkout, applied by `config-profile`).
+Two kinds of profile file:
 
-Missing profile parts are no-ops everywhere: an absent include file, a dangling
-symlink, an empty zsh glob.
+- **Parts** that a shared file includes through `~/.dziman/profile/...` (zsh
+  extensions, emacs configs, `.gitconfig`, `.tmux.conf`, omp overlay, Claude
+  rules). Nothing links them; an absent part is a no-op.
+- **Whole files** that must appear at their `$HOME` path (`~/.ssh/config`,
+  `~/.claude/settings.json`, `~/Local/AS/...`). `profiles/<p>/links` lists
+  them, one `$HOME`-relative file or directory per line. `config-profile <p>`
+  makes one symlink per file, through `~/.dziman/profile/...` so every link is
+  the same on every machine, removes the previous profile's links first, and
+  lists the link paths in the bare repo's `info/exclude` so `config status`
+  stays clean. A directory entry links each file inside it, so untracked
+  neighbours in `$HOME` are untouched; a file added to the directory on the
+  profile side is linked on the next `config-profile <p>`, one that appears in
+  `$HOME` needs `adopt`. A real file already at a link's path is kept and
+  reported (exit 1), as is a listed file missing from the profile.
+
+`config-profile adopt ~/.foo/bar.conf` does the move for you: into
+`profiles/<active>/.foo/bar.conf`, a line in `links`, the link. A file that is
+tracked (shared by every machine) is moved with `git mv` after a y/N prompt,
+since the other profiles lose it; when only part of it differs, keep it shared
+and put the difference in a profile part instead. `unadopt` moves it back and leaves it
+tracked at the `$HOME` path. Both refuse a path that runs through a symlinked
+profile directory (main's `.claude` is ai's): adopt such a file in ai.
+
+A tool that replaces a file by rename turns the link back into a real file;
+`config-profile status` shows it as `shadowed`. Recover with
+
+```
+diff ~/.foo/bar.conf ~/.dziman/profile/.foo/bar.conf
+mv ~/.foo/bar.conf ~/.dziman/profile/.foo/bar.conf   # keep the newer one
+config-profile <p>
+```
 
 ## Add a profile
 
 ```
 mkdir ~/.dziman/profiles/<name>
 echo '# <name> profile — <description>' > ~/.dziman/profiles/<name>/README.md
-cp ~/.dziman/profiles/main/sparse ~/.dziman/profiles/<name>/sparse   # if it should hide the apple-only dirs
 config-profile <name>
 ```
 
-Then add parts under the same relative paths as in `$HOME`.
+Then add parts under the same relative paths as in `$HOME`, and `config-profile
+adopt` the whole files that belong to it.
 
 ## Rollout on a machine
 
@@ -71,6 +102,12 @@ config ls-tree -r --name-only origin/unified | while read -r p; do
 done
 ```
 
+Linked files (`profiles/<p>/links`) are not tracked at their `$HOME` path, so
+the check above does not list them; `config-profile` reports each one it finds
+in the way (`~/.ssh/config` on a machine that had its own) and leaves it alone.
+Diff it against the profile's copy, then move it aside and run `config-profile`
+again.
+
 Then (full path: `~/.local/bin` is not on PATH until the new zsh config runs):
 
 ```
@@ -79,10 +116,10 @@ config switch unified
 exec zsh
 ```
 
-Check `config status` is clean afterwards. `config-profile` enables
-sparse-checkout in the bare repo for profiles that have a `sparse` file; git
-records that in the repo config (`extensions.worktreeConfig`, `core.sparseCheckout`). Files that were tracked on the old
-branch and are not on `unified` disappear from `$HOME` on switch:
+Check `config status` is clean afterwards, and `config-profile status` shows
+every link `ok`. Files that were tracked on the old branch and are not on
+`unified` disappear from `$HOME` on switch (the apple-only ones among them come
+back as links):
 
 - from `main-computer`: `.dziman-zsh/.editorconfig`, `.dziman-zsh/578_swift.enabled.zsh`
 - from `work-computer`: `.dziman-zsh/550_aws.enabled.zsh`, `.dziman-zsh/577_js.enabled.zsh`,

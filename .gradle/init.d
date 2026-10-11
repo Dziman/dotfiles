@@ -1,1 +1,0 @@
-../.dziman/profile/.gradle/init.d

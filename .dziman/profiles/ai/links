@@ -1,0 +1,5 @@
+# $HOME-relative paths linked into $HOME by config-profile (one link per file)
+.claude/settings.json
+.claude/skills/dz-git-forge-workflow
+.omp/agent/models.yml
+.ssh/config

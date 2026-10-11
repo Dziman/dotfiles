@@ -1,0 +1,16 @@
+# $HOME-relative paths linked into $HOME by config-profile (one link per file)
+.claude/apple
+.claude/dz-session-recap.local.md
+.claude/settings.json
+.claude/statusline-command.sh
+.gradle/init.d
+.m2/settings.xml
+.navi/cheats/apple.src.cheat
+.omp/agent/bin
+.omp/agent/lsp.json
+.omp/agent/models.yml
+.omp/agent/rules/zmx-session-safety.md
+.pip/pip.conf
+.ssh/config
+Local/AS
+src/apple
