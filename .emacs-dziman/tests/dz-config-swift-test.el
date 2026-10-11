@@ -598,6 +598,57 @@
     )
   )
 
+(ert-deftest dziman-swift-helpers/apple-docs-looks-up-the-selection ()
+  (let ((opened nil))
+    (with-temp-buffer
+      (insert "let navigationStack = 1")
+      (transient-mark-mode 1)
+      (set-mark 5)
+      (goto-char 20)
+      (cl-letf (((symbol-function 'browse-url) (lambda (url &rest _) (setq opened url))))
+        (call-interactively #'dziman/swift-apple-docs)
+        )
+      )
+    (should (equal opened "https://developer.apple.com/search/?q=navigationStack"))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/apple-docs-asks-when-nothing-is-under-the-cursor ()
+  (let ((opened nil))
+    (with-temp-buffer
+      (cl-letf (((symbol-function 'read-string) (lambda (&rest _) "List"))
+                 ((symbol-function 'browse-url) (lambda (url &rest _) (setq opened url))))
+        (call-interactively #'dziman/swift-apple-docs)
+        )
+      )
+    (should (equal opened "https://developer.apple.com/search/?q=List"))
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/apple-docs-refuses-an-empty-lookup ()
+  (let ((opened nil))
+    (with-temp-buffer
+      (cl-letf (((symbol-function 'read-string) (lambda (&rest _) ""))
+                 ((symbol-function 'browse-url) (lambda (url &rest _) (setq opened url))))
+        (should-error (call-interactively #'dziman/swift-apple-docs) :type 'user-error)
+        )
+      )
+    (should-not opened)
+    )
+  )
+
+(ert-deftest dziman-swift-helpers/open-in-xcode-needs-xcode-installed ()
+  (with-temp-buffer
+    (setq buffer-file-name "/p/X.swift")
+    (unwind-protect
+      (cl-letf (((symbol-function 'dziman/swift-tool-available-p) (lambda (_tool) nil)))
+        (should-error (dziman/swift-open-in-xcode) :type 'user-error)
+        )
+      (setq buffer-file-name nil)
+      )
+    )
+  )
+
 (ert-deftest dziman-swift-helpers/open-in-xcode-needs-a-file ()
   (with-temp-buffer
     (should-error (dziman/swift-open-in-xcode) :type 'user-error)
@@ -612,11 +663,13 @@
       (goto-char (point-min))
       (forward-line 2)
       (set-buffer-modified-p nil)
-      (cl-letf (((symbol-function 'dziman/swift-tool-available-p) (lambda (_tool) "/usr/bin/xed"))
-                 ((symbol-function 'call-process) (lambda (&rest call) (setq args call) 0)))
-        (dziman/swift-open-in-xcode)
+      (unwind-protect
+        (cl-letf (((symbol-function 'dziman/swift-tool-available-p) (lambda (_tool) "/usr/bin/xed"))
+                   ((symbol-function 'call-process) (lambda (&rest call) (setq args call) 0)))
+          (dziman/swift-open-in-xcode)
+          )
+        (setq buffer-file-name nil)
         )
-      (setq buffer-file-name nil)
       )
     (should (equal args '("/usr/bin/xed" nil 0 nil "--line" "3" "/p/X.swift")))
     )
@@ -627,12 +680,14 @@
     (with-temp-buffer
       (setq buffer-file-name "/p/X.swift")
       (insert "a\n")
-      (cl-letf (((symbol-function 'dziman/swift-tool-available-p) (lambda (_tool) "/usr/bin/xed"))
-                 ((symbol-function 'save-buffer) (lambda (&rest _) (setq saved t) (set-buffer-modified-p nil)))
-                 ((symbol-function 'call-process) (lambda (&rest _) 0)))
-        (dziman/swift-open-in-xcode)
+      (unwind-protect
+        (cl-letf (((symbol-function 'dziman/swift-tool-available-p) (lambda (_tool) "/usr/bin/xed"))
+                   ((symbol-function 'save-buffer) (lambda (&rest _) (setq saved t) (set-buffer-modified-p nil)))
+                   ((symbol-function 'call-process) (lambda (&rest _) 0)))
+          (dziman/swift-open-in-xcode)
+          )
+        (setq buffer-file-name nil)
         )
-      (setq buffer-file-name nil)
       )
     (should saved)
     )
@@ -660,6 +715,7 @@
   (require 'eglot)
   (with-temp-buffer
     (let ((swift-mode-hook nil)) (swift-mode))
+    ;; Stands in for a live server connection: the minor mode whose keymap is `eglot-mode-map'
     (setq-local eglot--managed-mode t)
     (should (equal (list (key-binding (kbd "M-p r")) (key-binding (kbd "M-p a")) (key-binding (kbd "M-p s")))
               '(eglot-rename eglot-code-actions consult-eglot-symbols)))
