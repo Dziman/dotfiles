@@ -251,7 +251,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"/Users/dziman/.claude/hooks/agent-model-suffix.sh\""
+            "command": "~/.claude/hooks/agent-model-tag.sh"
           }
         ]
       },
@@ -421,6 +421,10 @@
     "command": "FORCE_COLOR=3 node /opt/homebrew/lib/node_modules/@apple/cc-statusline/dist/statusline.js",
     "padding": 0,
     "type": "command"
+  },
+  "subagentStatusLine": {
+    "type": "command",
+    "command": "~/.claude/subagent-statusline.sh"
   },
   "statusLineConfig": {
     "colorTheme": "everforest",
