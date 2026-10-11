@@ -78,8 +78,7 @@ Out:
   Values `ios`, `tvos`, `watchos`, `visionos`; unset means Mac. The variable is
   marked safe for those values. It is ignored in a folder with `buildServer.json`,
   where Xcode's build settings already name the platform. After editing it, run
-  `M-x normal-mode` in open Swift buffers (or reopen them) so they re-read it, then
-  `M-x eglot-reconnect`.
+  `M-x dziman/swift-reload-platform`.
 - For a platform, the server command gets these arguments, with `<sdk>` from
   `xcrun --sdk <name> --show-sdk-path` and `<version>` from
   `xcrun --sdk <name> --show-sdk-version`:

@@ -751,4 +751,77 @@
     )
   )
 
+;;;;;;;; Reloading the platform
+(defmacro dziman-swift-test-reloading (buffers &rest body)
+  "Run BODY, then return the events recorded by stubbed eglot calls.
+BUFFERS are (DIRECTORY . SERVER) specs of Swift buffers; the first is current.
+Events are (shutdown SERVER) and (normal-mode DIRECTORY), in order."
+  (declare (indent 1))
+  `(let ((events nil) (live nil))
+     (unwind-protect
+       (progn
+         (dolist (spec ,buffers)
+           (let ((buffer (generate-new-buffer " dz-swift-reload")))
+             (with-current-buffer buffer
+               (setq major-mode 'swift-mode
+                 default-directory (car spec))
+               )
+             (push buffer live)
+             )
+           )
+         (cl-letf (((symbol-function 'eglot-current-server) (lambda () (cdr (car ,buffers))))
+                    ((symbol-function 'eglot-shutdown)
+                      (lambda (server) (push (list 'shutdown server) events)))
+                    ((symbol-function 'normal-mode)
+                      (lambda (&rest _) (push (list 'normal-mode default-directory) events))))
+           (with-current-buffer (car (last live))
+             ,@body
+             )
+           )
+         (nreverse events)
+         )
+       (mapc #'kill-buffer live)
+       )
+     )
+  )
+
+(ert-deftest dziman-swift-reload/server-stops-before-locals-are-re-read ()
+  (dziman-swift-test-with-project '("Package.swift")
+    (let ((events (dziman-swift-test-reloading (list (cons root 'server))
+                    (dziman/swift-reload-platform))))
+      (should (equal (mapcar #'car events) '(shutdown normal-mode)))
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-reload/locals-are-re-read-in-every-buffer-of-the-package ()
+  (dziman-swift-test-with-project '("Package.swift" "Sources/A/a.swift")
+    (let* ((sources (expand-file-name "Sources/A/" root))
+            (events (dziman-swift-test-reloading (list (cons root nil) (cons sources nil))
+                      (dziman/swift-reload-platform))))
+      (should (equal (sort (mapcar #'cadr (cl-remove 'shutdown events :key #'car)) #'string<)
+                (sort (list root sources) #'string<)))
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-reload/buffers-of-other-packages-are-left-alone ()
+  (dziman-swift-test-with-project '("Package.swift" "Other/Package.swift")
+    (let* ((other (expand-file-name "Other/" root))
+            (events (dziman-swift-test-reloading (list (cons root nil) (cons other nil))
+                      (dziman/swift-reload-platform))))
+      (should (equal (mapcar #'cadr events) (list root)))
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-reload/no-running-server-still-re-reads-locals ()
+  (dziman-swift-test-with-project '("Package.swift")
+    (let ((events (dziman-swift-test-reloading (list (cons root nil))
+                    (dziman/swift-reload-platform))))
+      (should (equal events (list (list 'normal-mode root))))
+      )
+    )
+  )
+
 (provide 'dz-config-swift-test)

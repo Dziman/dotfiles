@@ -20,8 +20,8 @@ Mac is the absence of a value.")
 (defvar-local dziman/swift-platform nil
   "Apple platform a Swift package is checked against; nil for Mac.
 A key of `dziman/swift-platforms'.  Set it in the package's .dir-locals.el.
-After a change, open buffers need `normal-mode' to re-read it, then
-`eglot-reconnect'.  Ignored in folders with buildServer.json.")
+After a change, run `dziman/swift-reload-platform'.
+Ignored in folders with buildServer.json.")
 
 (put 'dziman/swift-platform 'safe-local-variable
   (lambda (value) (and (assq value dziman/swift-platforms) t))
@@ -100,6 +100,8 @@ with a message."
   )
 
 (defvar eglot-lsp-context)
+(defvar eglot-server-programs)
+(defvar flycheck-checkers)
 
 (defun dziman/swift-project-find (directory)
   "Eglot's project for a Swift buffer: the package or app folder of DIRECTORY.
@@ -164,6 +166,31 @@ Looked up once per session."
   "Start eglot in a Swift buffer when Apple's language server is installed."
   (when (dziman/swift-tool-available-p 'sourcekit-lsp)
     (eglot-ensure)
+    )
+  )
+
+(declare-function eglot-current-server "eglot")
+(declare-function eglot-shutdown "eglot")
+
+(defun dziman/swift-reload-platform ()
+  "Apply a changed `dziman/swift-platform' to this buffer's package or app folder.
+Shuts down the folder's language server, then re-reads .dir-locals.el in every
+live Swift buffer of that folder, which starts a server with the new command.
+eglot-reconnect would not do: it reuses the command captured at first start."
+  (interactive)
+  (let ((root (dziman/swift-package-root default-directory))
+         (server (eglot-current-server)))
+    (when server
+      (eglot-shutdown server)
+      )
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (and (derived-mode-p 'swift-mode)
+                (equal root (dziman/swift-package-root default-directory)))
+          (normal-mode)
+          )
+        )
+      )
     )
   )
 

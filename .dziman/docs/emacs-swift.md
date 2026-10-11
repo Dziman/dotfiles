@@ -23,8 +23,7 @@ platform-only frameworks (UIKit, …), add to its `.dir-locals.el`:
 ```
 
 Values: `ios`, `tvos`, `watchos`, `visionos`. After editing it, run
-`M-x normal-mode` in open Swift buffers (or reopen them), then
-`M-x eglot-reconnect`. Folders with `buildServer.json` ignore it.
+`M-x dziman/swift-reload-platform`. Folders with `buildServer.json` ignore it.
 
 Each folder holding `Package.swift` or `buildServer.json` gets its own language
 server, so references stay inside that package or app.
@@ -58,6 +57,9 @@ xcode-build-server config -scheme <name> -project <file>.xcodeproj   # or -works
 | `M-p x` | open in Xcode at this line |
 | `M-p d` | Apple docs for the selection, else the symbol at point, else asks; blank is refused |
 | `M-.` / `M-,` / `M-?` | definition / back / references |
+
+`M-x dziman/swift-reload-platform` (no key) restarts the language server of
+the current package with a changed platform.
 
 `M-p r`, `a`, `s` exist only in buffers with a running language server.
 Indexing progress shows as a percentage in the mode line.
