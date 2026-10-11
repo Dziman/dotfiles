@@ -39,7 +39,7 @@ to re-read it, then `eglot-reconnect'. Ignored in folders with buildServer.json.
   )
 
 (defun dziman/swift-platform-server-args (target-os sdk-path sdk-version)
-  "Return sourcekit-lsp arguments that check a Swift package against SDK-PATH for TARGET-OS SDK-VERSION."
+  "Return sourcekit-lsp arguments checking a package against SDK-PATH for TARGET-OS SDK-VERSION."
   ;; Without -isysroot, SwiftPM (Swift 6.4) keeps the Mac SDK for Clang modules: "Cannot load underlying module"
   (list
     "-Xswiftc" "-sdk" "-Xswiftc" sdk-path
@@ -52,28 +52,25 @@ to re-read it, then `eglot-reconnect'. Ignored in folders with buildServer.json.
   "Return the sourcekit-lsp command for the current buffer's `dziman/swift-platform'.
 ROOT is the server's folder; one holding buildServer.json takes its platform from Xcode's build settings.
 Unknown platforms and platforms without an installed SDK fall back to Mac, with a message."
-  (let ((mac (list "xcrun" "sourcekit-lsp")))
-    (if (or
-          (null dziman/swift-platform)
-          (and root (file-exists-p (expand-file-name "buildServer.json" root)))
+  (let* (
+          (mac (list "xcrun" "sourcekit-lsp"))
+          (platform (alist-get dziman/swift-platform dziman/swift-platforms))
+          sdk
           )
-      mac
-      (let ((platform (alist-get dziman/swift-platform dziman/swift-platforms)))
-        (if (null platform)
-          (progn
-            (message "Unknown dziman/swift-platform %S; checking against the Mac SDK" dziman/swift-platform)
-            mac
-            )
-          (let ((sdk (dziman/swift--sdk (car platform))))
-            (if (null sdk)
-              (progn
-                (message "SDK %s is not installed; checking against the Mac SDK" (car platform))
-                mac
-                )
-              (append mac (dziman/swift-platform-server-args (cdr platform) (car sdk) (cdr sdk)))
-              )
-            )
-          )
+    (cond
+      ((null dziman/swift-platform) mac)
+      ((and root (file-exists-p (expand-file-name "buildServer.json" root))) mac)
+      ((null platform)
+        (message "Unknown dziman/swift-platform %S; checking against the Mac SDK" dziman/swift-platform)
+        mac
+        )
+      ;; The SDK lookup runs xcrun, so it is tried only once the earlier clauses have not decided
+      ((setq sdk (dziman/swift--sdk (car platform)))
+        (append mac (dziman/swift-platform-server-args (cdr platform) (car sdk) (cdr sdk)))
+        )
+      (t
+        (message "SDK %s is not installed; checking against the Mac SDK" (car platform))
+        mac
         )
       )
     )
