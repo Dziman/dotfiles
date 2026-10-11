@@ -6,6 +6,8 @@
 #   config-profile status             state of the active profile's links
 #   config-profile adopt <path>...    move a file or directory into the active profile and link it
 #   config-profile unadopt <path>...  move it back into $HOME (still tracked, at that path)
+#   config-profile rollout <ref> <name>  first switch of a machine: back up files in the way,
+#                                     switch the dotfiles branch to <ref>, activate <name>
 #   config-profile --help             how profiles work and how to make a file profile-specific
 #
 # ~/.dziman/profile -> profiles/<name> is the only per-machine state; shared config
@@ -21,9 +23,10 @@ link="$HOME/.dziman/profile"
 git_dir=${DZIMAN_DOTFILES:-$HOME/.dziman-dotfiles}
 exclude_begin='# config-profile links (managed, do not edit)'
 exclude_end='# end config-profile links'
+backup_dir=            # set by rollout: files in the way move here instead of blocking
 
 usage() {
-  echo "usage: config-profile <name> | --show | status | adopt <path>... | unadopt <path>... | --help" >&2
+  echo "usage: config-profile <name> | --show | status | adopt <path>... | unadopt <path>... | rollout <remote>/<branch> <name> | --help" >&2
   echo "profiles: $(ls "$profiles_dir" | tr '\n' ' ')" >&2
   exit 2
 }
@@ -38,6 +41,8 @@ config-profile: per-machine profile of the dotfiles
                                     plus untracked files inside the profile directory
   config-profile adopt <path>...    make a file or directory profile-specific (see below)
   config-profile unadopt <path>...  undo that: back into \$HOME, tracked there
+  config-profile rollout <remote>/<branch> <name>
+                                    first switch of a machine (see below)
   config-profile --help, -h         this text
 
 Profiles:         ${profiles_dir#"$HOME"/}/<name>/   ($(ls "$profiles_dir" | tr '\n' ' '))
@@ -81,6 +86,16 @@ Troubleshooting:  "a file is in the way: ~/x" at activation: a real file sits wh
                   remove the \$HOME copy, run config-profile <name> again.
                   "shadowed" in status: a tool replaced the link by a real file (same recipe).
                   "broken": the profile lost the file; "missing": run config-profile <name>.
+
+Rollout:          first switch of a machine, run from \$HOME after \`config fetch <remote> <branch>\`:
+                    config-profile rollout <remote>/<branch> <name>
+                  Refuses while tracked files are modified. Untracked files the branch
+                  tracks, and real files sitting at link paths, move to
+                  ~/.dziman/rollout-backup/<time>/<path> (diff them afterwards); then the
+                  branch is switched, the profile activated, ~/.zcompdump and emptied
+                  directories removed. Before the script exists on the machine:
+                    config show <remote>/<branch>:.local/bin/config-profile > /tmp/config-profile
+                    sh /tmp/config-profile rollout <remote>/<branch> <name>
 
 More:             ~/.dziman/docs/profiles.md
 EOF
@@ -156,9 +171,13 @@ make_links() {
     fi
     if [ -e "$dst" ] || [ -L "$dst" ]; then
       if ! is_profile_link "$dst"; then
-        echo "config-profile: not linked, a file is in the way: ~/$p" >&2
-        skipped=1
-        continue
+        if [ -n "$backup_dir" ]; then
+          back_up "$p"
+        else
+          echo "config-profile: not linked, a file is in the way: ~/$p" >&2
+          skipped=1
+          continue
+        fi
       fi
     fi
     mkdir -p "$(dirname "$dst")"
@@ -174,6 +193,13 @@ recorded_links() {
   has_repo && [ -f "$(exclude_file)" ] || return 0
   awk -v b="$exclude_begin" -v e="$exclude_end" '$0 == e { exit } on { print } $0 == b { on = 1 }' "$(exclude_file)" \
     | sed 's|^/||; s|\\\(.\)|\1|g'
+}
+
+# Moves $HOME/<path> under $backup_dir, keeping the relative path.
+back_up() { # path
+  mkdir -p "$backup_dir/$(dirname "$1")"
+  mv "$HOME/$1" "$backup_dir/$1"
+  printf '%s\n' "$1" >> "$backup_dir/.list"
 }
 
 # Rewrites the managed block of info/exclude with the profile's link paths, as
@@ -337,8 +363,55 @@ unadopt() {
   done
 }
 
+# Removes a directory and its parents while they are empty, never $HOME itself.
+rmdir_empty_up() { # $HOME-relative directory
+  d="$HOME/$1"
+  while [ "$d" != "$HOME" ] && [ -d "$d" ] && rmdir "$d" 2>/dev/null; do d=$(dirname "$d"); done
+  return 0
+}
+
+rollout() { # ref profile
+  ref=$1
+  name=$2
+  [ "$(pwd -P)" = "$(cd "$HOME" && pwd -P)" ] || { echo "config-profile rollout: run it from \$HOME (cd ~)" >&2; exit 2; }
+  case $name in ''|*/*|.*) echo "config-profile: invalid profile name: '$name'" >&2; usage ;; esac
+  has_repo || die "no dotfiles repo at $git_dir"
+  cfg rev-parse --verify -q "$ref^{commit}" >/dev/null || die "unknown ref: $ref (config fetch <remote> <branch> first)"
+  cfg ls-tree -d "$ref" -- ".dziman/profiles/$name" | grep -q . || die "no profile $name on $ref"
+  modified=$( { cfg diff --name-only; cfg diff --cached --name-only; } | sort -u)
+  [ -z "$modified" ] || die "commit or discard local edits first:
+$modified"
+
+  backup_dir="$HOME/.dziman/rollout-backup/$(date +%Y%m%d-%H%M%S)"
+  old_head=$(cfg rev-parse HEAD)
+  cfg ls-tree -r --full-tree --name-only "$ref" | while read -r p; do
+    { [ -e "$HOME/$p" ] || [ -L "$HOME/$p" ]; } || continue
+    cfg ls-files --error-unmatch -- ":/$p" >/dev/null 2>&1 && continue
+    back_up "$p"
+  done
+
+  branch=${ref##*/}
+  if cfg show-ref --verify -q "refs/heads/$branch"; then
+    cfg switch -q "$branch"
+    cfg merge -q --ff-only "$ref"
+  else
+    cfg switch -q -c "$branch" "$ref"
+    cfg branch -q --set-upstream-to="$ref" 2>/dev/null || true
+  fi
+
+  activate "$name"
+  rm -f "$HOME"/.zcompdump*
+  cfg diff --name-only --diff-filter=D "$old_head" HEAD | while read -r p; do rmdir_empty_up "$(dirname "$p")"; done
+
+  if [ -f "$backup_dir/.list" ]; then
+    echo "backed up, diff each against the new copy:"
+    while read -r p; do echo "  diff ${backup_dir#"$HOME"/}/$p $p"; done < "$backup_dir/.list"
+  fi
+}
+
 case ${1-} in
   --help|-h|help) help ;;
+  rollout) [ $# -eq 3 ] || usage; rollout "$2" "$3" ;;
   --show) [ $# -eq 1 ] || usage; require_active; echo "$name" ;;
   status) [ $# -eq 1 ] || usage; status ;;
   adopt) [ $# -ge 2 ] || usage; shift; adopt "$@" ;;

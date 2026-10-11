@@ -186,4 +186,43 @@ assert "and the profile link" grep -qF '~/.dziman/profile' "$tmp/out"
 run -h
 assert "-h is the same" test $? -eq 0 -a -s "$tmp/out"
 
+echo "# rollout"
+# fixture: a source repo with branch old (checked out in a second HOME) and branch new
+src="$tmp/src"; git init -q -b old "$src"
+( cd "$src" && echo shared > .shared && mkdir -p .oldzsh && echo x > .oldzsh/a.zsh && git add -A && git commit -q -m old \
+  && git switch -q -c new && git rm -q -r .oldzsh && echo new > .newfile && mkdir -p .dziman/profiles/one/.ssh \
+  && echo one > .dziman/profiles/one/.ssh/config && printf '.ssh/config\n' > .dziman/profiles/one/links \
+  && printf '.dziman/profile\n.dziman/rollout-backup/\n' > .gitignore \
+  && git add -A && git commit -q -m new && git switch -q old )
+git clone -q --bare "$src" "$tmp/roll.git"
+H2="$tmp/home2"; mkdir -p "$H2"
+git --git-dir="$tmp/roll.git" --work-tree="$H2" checkout -q old
+echo mine > "$H2/.newfile"; mkdir -p "$H2/.ssh"; echo LOCAL > "$H2/.ssh/config"; : > "$H2/.zcompdump"
+roll() { HOME="$H2" DZIMAN_DOTFILES="$tmp/roll.git" "$script" "$@" >"$tmp/out" 2>"$tmp/err"; }
+r2() { git -C "$H2" --git-dir="$tmp/roll.git" --work-tree="$H2" "$@"; }
+( cd "$tmp" && roll rollout new one )
+assert "refused outside \$HOME" test $? -eq 2
+assert "with a message naming \$HOME" grep -q 'from \$HOME' "$tmp/err"
+echo edit >> "$H2/.shared"
+( cd "$H2" && roll rollout new one )
+assert "refused while a tracked file is modified" test $? -eq 1
+assert "naming it" grep -q '\.shared' "$tmp/err"
+assert "and nothing moved" test "$(cat "$H2/.newfile")" = mine -a "$(r2 branch --show-current)" = old
+r2 checkout -q -- .shared
+( cd "$H2" && roll rollout nope one )
+assert "unknown ref is refused" test $? -eq 1
+( cd "$H2" && roll rollout new one )
+assert "rollout succeeds" test $? -eq 0
+assert "branch switched" test "$(r2 branch --show-current)" = new
+assert "profile active" test "$(readlink "$H2/.dziman/profile")" = profiles/one
+backup=$(ls -d "$H2"/.dziman/rollout-backup/* | head -1)
+assert "the untracked file in the way is backed up" test "$(cat "$backup/.newfile")" = mine
+assert "and the tracked one checked out" test "$(cat "$H2/.newfile")" = new
+assert "the real file at a link path is backed up" test "$(cat "$backup/.ssh/config")" = LOCAL
+assert "and linked" links_to "$H2/.ssh/config" "../.dziman/profile/.ssh/config"
+assert "the backups are listed" grep -q 'rollout-backup' "$tmp/out"
+assert "zcompdump removed" test ! -e "$H2/.zcompdump"
+assert "an emptied old directory is removed" test ! -d "$H2/.oldzsh"
+assert "status is clean" test -z "$(r2 status --porcelain)"
+
 exit $failed

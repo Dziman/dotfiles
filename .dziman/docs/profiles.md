@@ -90,43 +90,38 @@ adopt` the whole files that belong to it.
 
 ## Rollout on a machine
 
-First list untracked files in `$HOME` that `unified` tracks; git refuses to
-overwrite them, and a plain `-f` would discard the machine's own copies
-(`~/.ssh/config`, an edited omp theme, ...). Move each aside, or into the profile
-where it belongs. Also commit or discard local edits to tracked files (Claude Code
-edits `~/.claude/settings.json` itself); on the apple machine diff the live
-`~/.claude/settings.json` against the profile's before moving it aside:
+One command, run from `$HOME`, after fetching the branch from your remote
+(`config remote -v` tells its name; `origin` below):
 
 ```
-config fetch origin unified     # origin = whatever your bare repo calls git.nasha.casa (config remote -v)
-config ls-tree -r --full-tree --name-only origin/unified | while read -r p; do
-  { [ -e "$HOME/$p" ] || [ -L "$HOME/$p" ]; } && ! config ls-files --error-unmatch -- ":/$p" >/dev/null 2>&1 && echo "$p"
-done
-```
-
-`--full-tree` matters: without it `ls-tree` lists only the subtree under the
-current directory, so run from anywhere but `$HOME` the loop prints nothing.
-
-Linked files (`profiles/<p>/links`) are not tracked at their `$HOME` path, so
-the check above does not list them; `config-profile` reports each one it finds
-in the way (`~/.ssh/config` on a machine that had its own) and leaves it alone.
-Diff it against the profile's copy, then move it aside and run `config-profile`
-again.
-
-Then (full path: `~/.local/bin` is not on PATH until the new zsh config runs):
-
-```
-config switch unified
-~/.local/bin/config-profile <name>
-rm -f ~/.zcompdump      # compinit trusts a dump younger than 24 h; new completions need a rescan
+config fetch origin unified
+config show origin/unified:.local/bin/config-profile > /tmp/config-profile   # the script is not on the old branch yet
+sh /tmp/config-profile rollout origin/unified <name>
 exec zsh
 ```
 
-Check `config status` is clean afterwards, and `config-profile status` shows
-every link `ok`. Files that were tracked on the old branch and are not on
-`unified` disappear from `$HOME` on switch (the apple-only ones among them come
-back as links). The zsh extensions move from `~/.dziman-zsh/` to
-`~/.zsh-dziman/`; delete the old directory if untracked files linger in it:
+What `rollout` does, in order:
+
+1. Refuses unless run from `$HOME`, and while `config status` shows modified
+   tracked files (commit or discard them; Claude Code edits
+   `~/.claude/settings.json` itself, so on the apple machine diff the live one
+   against the profile's first).
+2. Moves every untracked file that the branch tracks to
+   `~/.dziman/rollout-backup/<time>/<same path>` (git would refuse to overwrite
+   it, and `-f` would lose the machine's copy: `~/.ssh/config`, an edited omp
+   theme, the cmux config).
+3. Switches the dotfiles checkout to the branch.
+4. Activates the profile; a real file sitting at a link path is backed up the
+   same way instead of blocking.
+5. Removes `~/.zcompdump` and directories the old branch left empty, then
+   prints one `diff` line per backup so you can compare and carry over what
+   matters. Delete the backup directory when done.
+
+Afterwards `config status` is clean and `config-profile status` shows every
+link `ok`. Files that were tracked on the old branch and are not on `unified`
+disappear from `$HOME` on switch (the apple-only ones among them come back as
+links). The zsh extensions move from `~/.dziman-zsh/` to `~/.zsh-dziman/`; the
+old directory stays only if untracked files linger in it:
 
 - from `main-computer`: `.dziman-zsh/.editorconfig`, `.dziman-zsh/578_swift.enabled.zsh`
 - from `work-computer`: `.dziman-zsh/550_aws.enabled.zsh`, `.dziman-zsh/577_js.enabled.zsh`,

@@ -31,3 +31,5 @@ venv/
 
 # Active machine profile (symlink made by `config-profile`)
 .dziman/profile
+# Files moved aside by `config-profile rollout`
+.dziman/rollout-backup/
