@@ -223,6 +223,34 @@ prepended to the element after the #+HEADER: tag."
     )
   )
 
+(defun dziman/org-parent-headings ()
+  "Ancestors of the heading at point, nearest first, as (\"** Title\" . POSITION).
+Empty at top level and before the first heading."
+  (save-excursion
+    (unless (org-before-first-heading-p)
+      (org-back-to-heading t)
+      (let ((parents nil))
+        (while (org-up-heading-safe)
+          (push (cons (concat (make-string (org-current-level) ?*) " " (org-get-heading t t t t)) (point)) parents)
+          )
+        (nreverse parents)
+        )
+      )
+    )
+  )
+
+(defun dziman/org-jump-to-parent-heading ()
+  "Jump to an ancestor of the heading at point, picked from a list, nearest first."
+  (interactive)
+  (let ((parents (dziman/org-parent-headings)))
+    (unless parents
+      (user-error "No parent heading here")
+      )
+    (goto-char (cdr (assoc (completing-read "Parent heading: " parents nil t nil nil (caar parents)) parents)))
+    (org-fold-show-context)
+    )
+  )
+
 (use-package major-mode-hydra) ;; FIXME
 (major-mode-hydra-define org-mode
   (:color blue)
@@ -233,12 +261,12 @@ prepended to the element after the #+HEADER: tag."
       ("i" org-indent-mode "toggle indent view" :toggle t)
       )
 
-;    "Browse"
-;    (
-;      ("b h a" helm-org-agenda-files-headings "All headings")
-;      ("b h b" helm-org-in-buffer-headings "Buffer headings")
-;      ("b h p" helm-org-parent-headings "Parent headings")
-;      )
+    "Browse"
+    (
+      ("b a" consult-org-agenda "agenda headings")
+      ("b b" consult-org-heading "buffer headings")
+      ("b p" dziman/org-jump-to-parent-heading "parent headings")
+      )
 
     "Capture"
     (
