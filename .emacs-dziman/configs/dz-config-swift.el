@@ -167,4 +167,60 @@ Looked up once per session."
 (add-hook 'swift-mode-hook #'dziman/swift-start-eglot)
 (add-hook 'swift-mode-hook #'flycheck-mode)
 
+;;;;;;;; SwiftLint
+(require 'subr-x)
+
+(defun dziman/swift-lint-root (directory)
+  "Topmost directory at or above DIRECTORY holding .swiftlint.yml, or nil when there is none.
+SwiftLint run from there applies that config and every nested one down to the file."
+  (let ((dir (locate-dominating-file directory ".swiftlint.yml"))
+         (root nil))
+    (while dir
+      (setq root dir)
+      (let ((parent (file-name-directory (directory-file-name dir))))
+        (setq dir (and (not (equal parent dir)) (locate-dominating-file parent ".swiftlint.yml")))
+        )
+      )
+    root
+    )
+  )
+
+(defun dziman/swift-swiftlint-parse (output checker buffer)
+  "Flycheck errors for BUFFER from SwiftLint's JSON reporter OUTPUT."
+  (unless (string-blank-p output)
+    (mapcar
+      (lambda (violation)
+        (let ((rule (alist-get 'rule_id violation)))
+          (flycheck-error-new-at
+            (alist-get 'line violation)
+            (alist-get 'character violation)
+            (if (equal (alist-get 'severity violation) "Error") 'error 'warning)
+            (format "%s [%s]" (alist-get 'reason violation) rule)
+            :id rule
+            :checker checker
+            :buffer buffer
+            :filename (buffer-file-name buffer)
+            )
+          )
+        )
+      (json-parse-string output :object-type 'alist :array-type 'list :null-object nil)
+      )
+    )
+  )
+
+(declare-function flycheck-define-command-checker "flycheck")
+(declare-function flycheck-error-new-at "flycheck")
+
+(with-eval-after-load 'flycheck
+  (flycheck-define-command-checker 'swift-swiftlint
+    "SwiftLint, in projects that have a .swiftlint.yml."
+    :command '("swiftlint" "lint" "--quiet" "--reporter" "json" source-inplace)
+    :error-parser #'dziman/swift-swiftlint-parse
+    :working-directory (lambda (_checker) (dziman/swift-lint-root default-directory))
+    :predicate (lambda () (and buffer-file-name (dziman/swift-lint-root default-directory)))
+    :modes '(swift-mode)
+    )
+  (add-to-list 'flycheck-checkers 'swift-swiftlint)
+  )
+
 (provide 'dz-config-swift)

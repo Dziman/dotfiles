@@ -315,4 +315,76 @@
   (should (memq #'flycheck-mode swift-mode-hook))
   )
 
+;;;;;;;; SwiftLint
+(defconst dziman-swift-test-force-cast-json
+  "[{\"character\":11,\"file\":\"/p/X.swift\",\"line\":3,\"reason\":\"Force casts should be avoided\",\"rule_id\":\"force_cast\",\"severity\":\"Error\",\"type\":\"Force Cast\"}]"
+  "SwiftLint 0.65 JSON reporter output for one error.")
+
+(defun dziman-swift-test-error-summary (errors)
+  (mapcar
+    (lambda (e) (list (flycheck-error-line e) (flycheck-error-column e) (flycheck-error-level e) (flycheck-error-message e)))
+    errors
+    )
+  )
+
+(ert-deftest dziman-swift-lint/project-without-swiftlint-config-is-not-linted ()
+  (dziman-swift-test-with-project '("Sources/A/X.swift")
+    (should-not (dziman/swift-lint-root (expand-file-name "Sources/A/" root)))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/file-below-config-runs-from-config-folder ()
+  (dziman-swift-test-with-project '(".swiftlint.yml" "Sources/A/X.swift")
+    (should (dziman-swift-test-same-dir-p (dziman/swift-lint-root (expand-file-name "Sources/A/" root)) root))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/nested-config-runs-from-topmost-config ()
+  (dziman-swift-test-with-project '(".swiftlint.yml" "Sources/A/.swiftlint.yml" "Sources/A/X.swift")
+    (should (dziman-swift-test-same-dir-p (dziman/swift-lint-root (expand-file-name "Sources/A/" root)) root))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/violation-is-reported-with-its-rule ()
+  (require 'flycheck)
+  (with-temp-buffer
+    (should (equal
+              (dziman-swift-test-error-summary
+                (dziman/swift-swiftlint-parse dziman-swift-test-force-cast-json 'swift-swiftlint (current-buffer)))
+              '((3 11 error "Force casts should be avoided [force_cast]"))))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/warning-without-column-stays-a-warning ()
+  (require 'flycheck)
+  (with-temp-buffer
+    (should (equal
+              (dziman-swift-test-error-summary
+                (dziman/swift-swiftlint-parse
+                  "[{\"character\":null,\"line\":1,\"reason\":\"Line should be 120 characters or less\",\"rule_id\":\"line_length\",\"severity\":\"Warning\"}]"
+                  'swift-swiftlint (current-buffer)))
+              '((1 nil warning "Line should be 120 characters or less [line_length]"))))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/clean-file-has-no-errors ()
+  (with-temp-buffer
+    (should-not (dziman/swift-swiftlint-parse "[\n\n]\n" 'swift-swiftlint (current-buffer)))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/silent-swiftlint-has-no-errors ()
+  (with-temp-buffer
+    (should-not (dziman/swift-swiftlint-parse "" 'swift-swiftlint (current-buffer)))
+    )
+  )
+
+(ert-deftest dziman-swift-lint/checker-runs-in-swift-buffers-first ()
+  ;; flycheck-eglot chains the first checker in `flycheck-checkers' that supports the mode;
+  ;; flycheck's own `swift' checker (swiftc -parse) must not be that one
+  (require 'flycheck)
+  (should (eq (cl-find-if (lambda (c) (flycheck-checker-supports-major-mode-p c 'swift-mode)) flycheck-checkers)
+            'swift-swiftlint))
+  )
+
 (provide 'dz-config-swift-test)
