@@ -20,12 +20,14 @@ is_profile_link() {
   return 1
 }
 
-# Rewrites "<profile_dir>/<path>" to "~/<path>" for each linked path on stdin.
+# Rewrites "<profile_dir>/<path>" to "~/<path>" for each linked path on stdin. A
+# path ends at whitespace, a quote, the line end or an escape (color codes).
 rewrite_status() {
+  esc=$(printf '\033')
   script=$(g profile links 2>/dev/null | while read -r p; do
     pat=$(printf '%s/%s' "$profile_dir" "$p" | sed 's/[][\.*^$/(){}+?|]/\\&/g')
     rep=$(printf '~/%s' "$p" | sed 's/[&/]/\\&/g')
-    printf 's/(^|[[:space:]"'"'"'])%s([[:space:]"'"'"']|$)/\\1%s\\2/g\n' "$pat" "$rep"
+    printf 's/(^|[[:space:]"'"'"'%s])%s([[:space:]"'"'"'%s]|$)/\\1%s\\2/g\n' "$esc" "$pat" "$esc" "$rep"
   done)
   if [ -n "$script" ]; then sed -E "$script"; else cat; fi
 }
@@ -42,8 +44,13 @@ while [ $n -gt 0 ]; do
   n=$((n - 1))
 done
 
+# The subcommand: the first argument that is not a global option (-c/-C take a value).
 sub=
-for a; do case $a in -*) ;; *) sub=$a; break ;; esac; done
+skip=0
+for a; do
+  if [ $skip -eq 1 ]; then skip=0; continue; fi
+  case $a in -c|-C) skip=1 ;; -*) ;; *) sub=$a; break ;; esac
+done
 porcelain=0
 for a; do case $a in -z|--porcelain*) porcelain=1 ;; esac; done
 

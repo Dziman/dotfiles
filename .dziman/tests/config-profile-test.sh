@@ -201,6 +201,10 @@ assert "status names a linked file by its \$HOME path" grep -qx ' M ~/.ssh/confi
 assert "and leaves other paths alone" sh -c "echo x >> '$HOME/.shared'; '$config' status --porcelain | grep -qx ' M .shared'"
 cfgw status
 assert "long status too" grep -q 'modified:   ~/.ssh/config' "$tmp/out"
+cfgw -c color.status=always status
+assert "colored status too" grep -q 'modified:   ~/.ssh/config' "$tmp/out"
+cfgw -c color.status=always status --short
+assert "colored short status too" grep -q '~/.ssh/config' "$tmp/out"
 cfgw add "$HOME/.ssh/config"
 assert "a link argument is translated to the tracked file" is_staged .dziman/profiles/one/.ssh/config
 cfgw status --porcelain
