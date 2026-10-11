@@ -55,12 +55,12 @@ bindkey '\e[3~' delete-char
 export DZIMAN_PROFILE="${$(readlink ~/.dziman/profile 2>/dev/null):t}"
 
 # Include all enabled extensions
-for extension_file in ~/.dziman-zsh/*.enabled.zsh; do
+for extension_file in ~/.zsh-dziman/*.enabled.zsh; do
     source "$extension_file"
 done
 
 # Profile-specific extensions, sourced last so they can override shared ones
-for extension_file in ~/.dziman/profile/.dziman-zsh/*.zsh(N); do
+for extension_file in ~/.dziman/profile/.zsh-dziman/*.zsh(N); do
     source "$extension_file"
 done
 ################################################################################

@@ -37,7 +37,7 @@ zstyle ':completion:*' word true
 # custom completion scripts
 fpath=($HOMEBREW_PREFIX/share/zsh-completions $fpath)
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
-fpath=($HOME/.dziman-zsh/completions $fpath)
+fpath=($HOME/.zsh-dziman/completions $fpath)
 fpath=($HOME/.orbstack/shell/completions/zsh $fpath)
 
 # Rebuilding ~/.zcompdump takes ~0.15 s, so trust it and do the full check only once it is

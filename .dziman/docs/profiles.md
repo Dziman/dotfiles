@@ -31,13 +31,13 @@ A profile directory mirrors `$HOME`: the part for `~/.gitconfig` is
 
 | app | shared file includes | profile part |
 |---|---|---|
-| zsh | `.zshrc` sources them after the shared extensions | `.dziman-zsh/*.zsh` |
+| zsh | `.zshrc` sources them after the shared extensions | `.zsh-dziman/*.zsh` |
 | emacs | `dz-config-profile.el`, required last from `.emacs` | `.emacs-dziman/configs/*.el` (+ `org-templates/`) |
 | git | `[include] path = ~/.dziman/profile/.gitconfig` | `.gitconfig`, `.gitconfig-apple*` |
 | tmux | `source-file -q ~/.dziman/profile/.tmux.conf` | `.tmux.conf` |
 | omp | the `omp` shell function adds `--config <profile config>`; the overlay outranks the shared file, so change models in the profile overlay. `/model` and preset saves inside omp write `modelRoles` into the shared `~/.omp/agent/config.yml`: they last one session and leave `config status` dirty; revert them there | `.omp/agent/config.yml` (models, presets, services), `.omp/agent/models.yml` |
 | ssh, pip, maven, gradle, navi, omp extras | whole files: linked into `$HOME` by `config-profile` (see below) | `.ssh/config`, `.pip/pip.conf`, `.m2/settings.xml`, `.gradle/init.d/`, `.navi/cheats/apple.src.cheat`, `.omp/agent/{lsp.json,bin/,rules/zmx-session-safety.md}` |
-| zsh prompt | `right-prompt` calls `profile-prompt-status` when the profile defines it | `.dziman-zsh/910_prompt.zsh` |
+| zsh prompt | `right-prompt` calls `profile-prompt-status` when the profile defines it | `.zsh-dziman/910_prompt.zsh` |
 | Claude Code | `~/.claude/CLAUDE.md` ends with `@~/.dziman/profile/.claude/CLAUDE.md`; settings, the forge skill and the apple-only files are linked into `~/.claude/` by `config-profile` (no layering in Claude Code) | `.claude/CLAUDE.md`, `.claude/settings.json`, `.claude/skills/dz-git-forge-workflow/` (main's `.claude` is a symlink to ai's); apple only: `.claude/statusline-command.sh`, `.claude/dz-session-recap.local.md`, `.claude/apple/` |
 | work-machine data | linked the same way | `Local/AS/`, `src/apple/` (module lists) |
 
@@ -119,7 +119,8 @@ exec zsh
 Check `config status` is clean afterwards, and `config-profile status` shows
 every link `ok`. Files that were tracked on the old branch and are not on
 `unified` disappear from `$HOME` on switch (the apple-only ones among them come
-back as links):
+back as links). The zsh extensions move from `~/.dziman-zsh/` to
+`~/.zsh-dziman/`; delete the old directory if untracked files linger in it:
 
 - from `main-computer`: `.dziman-zsh/.editorconfig`, `.dziman-zsh/578_swift.enabled.zsh`
 - from `work-computer`: `.dziman-zsh/550_aws.enabled.zsh`, `.dziman-zsh/577_js.enabled.zsh`,
