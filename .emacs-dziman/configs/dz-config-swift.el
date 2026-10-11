@@ -14,19 +14,21 @@
      (watchos  . ("watchos"   . "watchos"))
      (visionos . ("xros"      . "xros"))
      )
-  "Platform switch value to (SDK-NAME . TARGET-OS). Mac is the absence of a value.")
+  "Platform switch value to (SDK-NAME . TARGET-OS).
+Mac is the absence of a value.")
 
 (defvar-local dziman/swift-platform nil
-  "Apple platform a Swift package is checked against: a key of `dziman/swift-platforms', nil for Mac.
-Set it in the package's .dir-locals.el. After a change, open buffers need `normal-mode'
-to re-read it, then `eglot-reconnect'. Ignored in folders with buildServer.json.")
+  "Apple platform a Swift package is checked against; nil for Mac.
+A key of `dziman/swift-platforms'.  Set it in the package's .dir-locals.el.
+After a change, open buffers need `normal-mode' to re-read it, then
+`eglot-reconnect'.  Ignored in folders with buildServer.json.")
 
 (put 'dziman/swift-platform 'safe-local-variable
   (lambda (value) (and (assq value dziman/swift-platforms) t))
   )
 
 (defun dziman/swift--sdk (sdk-name)
-  "Return (PATH . VERSION) of the Xcode SDK SDK-NAME, or nil when that SDK is not installed."
+  "Return (PATH . VERSION) of the Xcode SDK SDK-NAME, or nil when not installed."
   (condition-case nil
     (when-let* (
                  (path (car (process-lines "xcrun" "--sdk" sdk-name "--show-sdk-path")))
@@ -40,7 +42,8 @@ to re-read it, then `eglot-reconnect'. Ignored in folders with buildServer.json.
   )
 
 (defun dziman/swift-platform-server-args (target-os sdk-path sdk-version)
-  "Return sourcekit-lsp arguments checking a package against SDK-PATH for TARGET-OS SDK-VERSION."
+  "Return sourcekit-lsp arguments checking a package against SDK-PATH.
+TARGET-OS and SDK-VERSION name the target triple."
   ;; Without -isysroot, SwiftPM (Swift 6.4) keeps the Mac SDK for Clang modules: "Cannot load underlying module"
   (list
     "-Xswiftc" "-sdk" "-Xswiftc" sdk-path
@@ -50,9 +53,11 @@ to re-read it, then `eglot-reconnect'. Ignored in folders with buildServer.json.
   )
 
 (defun dziman/swift-server-command (&optional root)
-  "Return the sourcekit-lsp command for the current buffer's `dziman/swift-platform'.
-ROOT is the server's folder; one holding buildServer.json takes its platform from Xcode's build settings.
-Unknown platforms and platforms without an installed SDK fall back to Mac, with a message."
+  "Return the sourcekit-lsp command for the buffer's `dziman/swift-platform'.
+ROOT is the server's folder; one holding buildServer.json takes its platform
+from Xcode's build settings.
+Unknown platforms and platforms without an installed SDK fall back to Mac,
+with a message."
   (let* (
           (mac (list "xcrun" "sourcekit-lsp"))
           (platform (alist-get dziman/swift-platform dziman/swift-platforms))
@@ -83,7 +88,7 @@ Unknown platforms and platforms without an installed SDK fall back to Mac, with 
   )
 
 (defun dziman/swift-package-root (directory)
-  "Nearest directory at or above DIRECTORY holding Package.swift or buildServer.json, or nil."
+  "Nearest directory at or above DIRECTORY with Package.swift or buildServer.json."
   (locate-dominating-file directory
     (lambda (dir)
       (or
@@ -97,7 +102,7 @@ Unknown platforms and platforms without an installed SDK fall back to Mac, with 
 (defvar eglot-lsp-context)
 
 (defun dziman/swift-project-find (directory)
-  "Eglot's project for a Swift buffer: the package or app folder around DIRECTORY.
+  "Eglot's project for a Swift buffer: the package or app folder of DIRECTORY.
 Other project commands keep their usual root."
   (when-let* (
                ((bound-and-true-p eglot-lsp-context))
@@ -119,10 +124,11 @@ Other project commands keep their usual root."
 
 ;;;;;;;; Tools
 (defconst dziman/swift--xcrun-tools '(sourcekit-lsp swift-format)
-  "Tools that ship with Xcode and are found with `xcrun --find' rather than on PATH.")
+  "Tools that ship with Xcode, found with `xcrun --find' rather than on PATH.")
 
 (defvar dziman/swift--tool-paths nil
-  "Alist of tool symbol to its path, nil when missing. Filled on first lookup of each tool.")
+  "Alist of tool symbol to its path, nil when missing.
+Filled on first lookup of each tool.")
 
 (defun dziman/swift--locate-tool (tool)
   "Path of TOOL, or nil when it is not installed."
@@ -170,8 +176,9 @@ Looked up once per session."
 
 ;;;;;;;; SwiftLint
 (defun dziman/swift-lint-root (directory)
-  "Topmost directory at or above DIRECTORY holding .swiftlint.yml, or nil when there is none.
-SwiftLint run from there applies that config and every nested one down to the file."
+  "Topmost directory at or above DIRECTORY holding .swiftlint.yml, or nil.
+SwiftLint run from there applies that config and every nested one down to
+the file."
   (let ((dir (locate-dominating-file directory ".swiftlint.yml"))
          (root nil))
     (while dir
@@ -186,8 +193,8 @@ SwiftLint run from there applies that config and every nested one down to the fi
 
 (defun dziman/swift-swiftlint-parse (output checker buffer)
   "Flycheck errors for BUFFER from SwiftLint's JSON reporter OUTPUT.
-Output that is not JSON signals `json-parse-error', which flycheck reports as a checker failure;
-that is how SwiftLint's configuration errors surface."
+Output that is not JSON signals `json-parse-error', which flycheck reports
+as a checker failure; that is how SwiftLint's configuration errors surface."
   (unless (string-blank-p output)
     (mapcar
       (lambda (violation)
@@ -211,6 +218,9 @@ that is how SwiftLint's configuration errors surface."
 
 (declare-function flycheck-define-command-checker "flycheck")
 (declare-function flycheck-error-new-at "flycheck")
+(declare-function evil-normalize-keymaps "evil")
+(declare-function reformatter--do-region "reformatter")
+(declare-function reformatter--make-temp-file "reformatter")
 
 (with-eval-after-load 'flycheck
   (flycheck-define-command-checker 'swift-swiftlint
@@ -229,7 +239,8 @@ that is how SwiftLint's configuration errors surface."
 
 (defconst dziman/swift-formatter-configs
   '((".swiftformat" . swiftformat) (".swift-format" . swift-format))
-  "Formatter config file names and the formatter each selects; earlier entries win a tie.")
+  "Formatter config file names and the formatter each selects.
+Earlier entries win a tie.")
 
 (defconst dziman/swift-formatter-names
   '((swiftformat . "SwiftFormat") (swift-format . "Apple swift-format"))
@@ -237,7 +248,7 @@ that is how SwiftLint's configuration errors surface."
   )
 
 (defun dziman/swift-formatter-config (directory)
-  "(FORMATTER . CONFIG-DIR) for the formatter config nearest DIRECTORY, or nil when there is none."
+  "(FORMATTER . CONFIG-DIR) for the formatter config nearest DIRECTORY, or nil."
   (let ((nearest nil))
     (dolist (entry dziman/swift-formatter-configs nearest)
       (let ((dir (locate-dominating-file directory (car entry))))
@@ -251,7 +262,7 @@ that is how SwiftLint's configuration errors surface."
   )
 
 (defun dziman/swift-formatter (directory)
-  "Formatter for Swift files under DIRECTORY: the configured one, else Apple swift-format."
+  "Formatter for Swift files under DIRECTORY: configured, else Apple swift-format."
   (or (car (dziman/swift-formatter-config directory)) 'swift-format)
   )
 
@@ -272,7 +283,8 @@ that is how SwiftLint's configuration errors surface."
   )
 
 (defun dziman/swift--run-formatter (formatter)
-  "Reformat the buffer with FORMATTER; a failing formatter leaves the buffer as is and shows its output."
+  "Reformat the buffer with FORMATTER.
+A failing formatter leaves the buffer as is and shows its output."
   ;; Only reformatter's own "Formatting buffer" echo is silenced; errors go to its error buffer
   (let ((inhibit-message t))
     (if (eq formatter 'swiftformat)
@@ -283,7 +295,7 @@ that is how SwiftLint's configuration errors surface."
   )
 
 (defun dziman/swift-format-buffer ()
-  "Reformat the buffer with the project's Swift formatter; see `dziman/swift-formatter'."
+  "Reformat the buffer with the project's `dziman/swift-formatter'."
   (interactive)
   (let ((formatter (dziman/swift-formatter default-directory)))
     (if (dziman/swift-tool-available-p formatter)
@@ -294,7 +306,8 @@ that is how SwiftLint's configuration errors surface."
   )
 
 (defun dziman/swift--format-before-save ()
-  "`dziman/swift-format-buffer' for `before-save-hook'; a missing-formatter note outlasts the save's own message."
+  "`dziman/swift-format-buffer' for `before-save-hook'.
+A missing-formatter note is deferred so it outlasts the save's own message."
   (let ((formatter (dziman/swift-formatter default-directory)))
     (if (dziman/swift-tool-available-p formatter)
       (dziman/swift--run-formatter formatter)
@@ -343,7 +356,8 @@ that is how SwiftLint's configuration errors surface."
   )
 
 (defun dziman/swift-apple-docs (term)
-  "Search developer.apple.com for TERM: the selection, else the symbol at point, else asked for."
+  "Search developer.apple.com for TERM.
+Interactively: the selection, else the symbol at point, else asked for."
   (interactive (list (dziman/swift--docs-term)))
   (when (string-blank-p term)
     (user-error "Nothing to look up")
