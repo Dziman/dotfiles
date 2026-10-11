@@ -218,9 +218,6 @@ as a checker failure; that is how SwiftLint's configuration errors surface."
 
 (declare-function flycheck-define-command-checker "flycheck")
 (declare-function flycheck-error-new-at "flycheck")
-(declare-function evil-normalize-keymaps "evil")
-(declare-function reformatter--do-region "reformatter")
-(declare-function reformatter--make-temp-file "reformatter")
 
 (with-eval-after-load 'flycheck
   (flycheck-define-command-checker 'swift-swiftlint
@@ -265,6 +262,10 @@ Earlier entries win a tie.")
   "Formatter for Swift files under DIRECTORY: configured, else Apple swift-format."
   (or (car (dziman/swift-formatter-config directory)) 'swift-format)
   )
+
+;; Called by the `reformatter-define' expansions below
+(declare-function reformatter--do-region "reformatter")
+(declare-function reformatter--make-temp-file "reformatter")
 
 (reformatter-define dziman/swift-swiftformat
   :program "swiftformat"
@@ -364,6 +365,9 @@ Interactively: the selection, else the symbol at point, else asked for."
     )
   (browse-url (dziman/swift-apple-docs-url term))
   )
+
+;; Called by the `bind-map' expansion
+(declare-function evil-normalize-keymaps "evil")
 
 (bind-map dziman/bind-map/swift
   :keys ("M-p")
