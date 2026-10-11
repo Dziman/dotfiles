@@ -479,6 +479,10 @@
     )
   )
 
+(ert-deftest dziman-swift-format/swift-buffers-set-up-format-on-save ()
+  (should (memq #'dziman/swift-format-on-save-setup swift-mode-hook))
+  )
+
 (ert-deftest dziman-swift-format/missing-formatter-leaves-buffer-unchanged ()
   (dziman-swift-test-with-project '()
     (with-temp-buffer
@@ -530,10 +534,6 @@
     )
   )
 
-(ert-deftest dziman-swift-format/swift-buffers-set-up-format-on-save ()
-  (should (memq #'dziman/swift-format-on-save-setup swift-mode-hook))
-  )
-
 (ert-deftest dziman-swift-format/apple-formatter-reformats-a-scratch-buffer ()
   (skip-unless (dziman/swift-tool-available-p 'swift-format))
   (dziman-swift-test-with-project '()
@@ -556,6 +556,7 @@
         (progn
           (dziman-swift-test-capturing-messages (dziman/swift-format-buffer))
           (should (equal (buffer-string) "let a=[1,\n"))
+          (should (get-buffer "*dziman/swift-apple-format errors*"))
           (should (> (buffer-size (get-buffer "*dziman/swift-apple-format errors*")) 0))
           )
         (kill-buffer "*dziman/swift-apple-format errors*")
