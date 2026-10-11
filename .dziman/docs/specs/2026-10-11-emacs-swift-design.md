@@ -30,6 +30,8 @@ Out:
 - A command that writes an Xcode app project's `buildServer.json`; projects get it
   by other means.
 - Making Emacs the default macOS app for `.swift` files.
+- References across packages in a monorepo (e.g. kucha through lspx); the
+  monorepo language-server setup is a separate effort.
 
 ## Success criteria
 
@@ -58,8 +60,11 @@ Out:
 ### Language server
 
 - `swift-mode` (MELPA) for `.swift` files, loaded on the first Swift file.
-- eglot (built in) starts `xcrun sourcekit-lsp` for the file's project, one server
-  per project.
+- eglot (built in) starts `xcrun sourcekit-lsp` once per package or app: the
+  nearest folder holding `Package.swift` or `buildServer.json`. A
+  `project-find-functions` entry gives eglot that folder as the project, only for
+  eglot in Swift buffers; other project commands keep the usual root. Files outside
+  any such folder use the usual project root.
 - eglot starts only when `xcrun --find sourcekit-lsp` succeeds, checked once per
   session. Otherwise Swift buffers get syntax colors only and no message.
 - Xcode app projects: with `buildServer.json` in the project, the server takes
@@ -71,7 +76,10 @@ Out:
   ```
 
   Values `ios`, `tvos`, `watchos`, `visionos`; unset means Mac. The variable is
-  marked safe for those values. Changing it takes effect after `M-x eglot-reconnect`.
+  marked safe for those values. It is ignored in a folder with `buildServer.json`,
+  where Xcode's build settings already name the platform. After editing it, run
+  `M-x normal-mode` in open Swift buffers (or reopen them) so they re-read it, then
+  `M-x eglot-reconnect`.
 - For a platform, the server command gets these arguments, with `<sdk>` from
   `xcrun --sdk <name> --show-sdk-path` and `<version>` from
   `xcrun --sdk <name> --show-sdk-version`:
@@ -108,12 +116,17 @@ Out:
 
 ### Errors and SwiftLint
 
-- `flycheck-eglot` (MELPA) feeds the server's diagnostics into flycheck instead of
-  flymake, so margin marks, `flycheck-inline` and `M-g e` work as for other languages.
+- `flycheck-eglot` (MELPA, `global-flycheck-eglot-mode`) feeds the server's
+  diagnostics into flycheck instead of flymake and turns `flycheck-mode` on in eglot
+  buffers; Swift buffers also turn it on themselves, so SwiftLint runs without a
+  server. Nothing in the current config enables flycheck for other languages. With
+  it on, margin marks, `flycheck-inline` and `M-g e` work in Swift buffers.
 - SwiftLint: a flycheck checker defined in `dz-config-swift.el`, chained after the
-  eglot checker. It runs `swiftlint lint --use-stdin --quiet --reporter json` from
-  the file's directory, so SwiftLint resolves the project's config (nested ones
-  included) as it does in a terminal.
+  eglot checker. It lints a temp copy of the buffer next to the file
+  (`swiftlint lint --quiet --reporter json <copy>`), run from the topmost folder
+  holding a `.swiftlint.yml`, so the root config and every nested one apply.
+  Probed: with `--use-stdin` SwiftLint applies only the config in its working
+  directory.
 - Enabled only when `.swiftlint.yml` exists in the file's directory or a parent,
   and `swiftlint` is installed. Otherwise skipped silently.
 - Each message ends with the rule id, e.g. `[force_unwrapping]`.
@@ -123,7 +136,7 @@ Out:
 ### Formatting
 
 Formatter per file; the nearest config file in the file's directory or a parent
-decides:
+decides, and SwiftFormat wins when both sit in the same folder:
 
 | Found | Formatter | Format on save |
 |---|---|---|
@@ -155,7 +168,7 @@ decides:
 
 ### Keys
 
-In the existing `M-p` prog-mode map (`dziman/bind-map/prog`):
+Under the `M-p` prefix, next to the existing prog-mode `M-p U`:
 
 | Key | Command | Where |
 |---|---|---|
@@ -165,6 +178,10 @@ In the existing `M-p` prog-mode map (`dziman/bind-map/prog`):
 | `M-p f` | format file | Swift buffers |
 | `M-p x` | open in Xcode | Swift buffers |
 | `M-p d` | Apple docs for symbol | Swift buffers |
+
+The eglot keys go in eglot's own key map (`eglot-mode-map`), the Swift keys in a
+`swift-mode` map. Emacs merges `M-p` prefix maps, so both work next to the
+prog-mode map's `U` (probed).
 
 `M-.`, `M-,` and `M-?` stay the standard xref keys; eglot backs them.
 
@@ -179,7 +196,9 @@ In the existing `M-p` prog-mode map (`dziman/bind-map/prog`):
 | `.dziman/docs/emacs-swift.md` | new: tools table, platform switch, manual `xcode-build-server config -scheme <name> -project <file>` line, keys |
 | `.emacs-dziman/tests/dz-config-swift-test.el` | new: ERT tests |
 
-Neither config goes into `dziman/preload-features`. No profile files.
+Neither config goes into `dziman/preload-features`. No profile files. Loading
+`dz-config-swift.el` loads `reformatter` at startup (about 2 ms), because its
+`reformatter-define` macro is autoloaded.
 
 New MELPA packages, installed by `use-package` on first start: `swift-mode`,
 `flycheck-eglot`, `consult-eglot`, `reformatter`.
@@ -198,7 +217,9 @@ New MELPA packages, installed by `use-package` on first start: `swift-mode`,
 
 - ERT, run with `emacs --batch`, in `.emacs-dziman/tests/dz-config-swift-test.el`
   (the repo's first Emacs tests):
-  - server arguments for each platform value and for Mac
+  - server arguments for each platform value and for Mac; none in a
+    `buildServer.json` folder
+  - the eglot project is the nearest `Package.swift` / `buildServer.json` folder
   - formatter choice and format-on-save for each config-file case
   - SwiftLint enabled or not by `.swiftlint.yml`
   - missing tools degrade without errors
