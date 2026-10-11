@@ -35,6 +35,18 @@
   (and dir (file-equal-p dir expected))
   )
 
+(defmacro dziman-swift-test-capturing-messages (&rest body)
+  "Run BODY and return the list of messages it issued, oldest first."
+  (declare (indent 0))
+  `(let ((messages nil))
+     (cl-letf (((symbol-function 'message)
+                 (lambda (format-string &rest args) (push (apply #'format format-string args) messages))))
+       ,@body
+       )
+     (nreverse messages)
+     )
+  )
+
 ;;;;;;;; Language server command
 (ert-deftest dziman-swift-server/mac-is-the-default-platform ()
   (with-temp-buffer
@@ -79,7 +91,11 @@
   (with-temp-buffer
     (setq dziman/swift-platform 'visionos)
     (cl-letf (((symbol-function 'dziman/swift--sdk) #'ignore))
-      (should (equal (dziman/swift-server-command) '("xcrun" "sourcekit-lsp")))
+      (let (command)
+        (should (equal (dziman-swift-test-capturing-messages (setq command (dziman/swift-server-command)))
+                  '("SDK xros is not installed; checking against the Mac SDK")))
+        (should (equal command '("xcrun" "sourcekit-lsp")))
+        )
       )
     )
   )
@@ -87,10 +103,26 @@
 (ert-deftest dziman-swift-server/unknown-platform-falls-back-to-mac ()
   (with-temp-buffer
     (setq dziman/swift-platform 'iphone)
-    (should (equal (dziman/swift-server-command) '("xcrun" "sourcekit-lsp")))
+    (let (command)
+      (should (equal (dziman-swift-test-capturing-messages (setq command (dziman/swift-server-command)))
+                '("Unknown dziman/swift-platform iphone; checking against the Mac SDK")))
+      (should (equal command '("xcrun" "sourcekit-lsp")))
+      )
     )
   )
 
+(ert-deftest dziman-swift-server/xcode-app-folder-ignores-platform-switch ()
+  (dziman-swift-test-with-project '("buildServer.json")
+    (with-temp-buffer
+      (setq dziman/swift-platform 'ios)
+      (cl-letf (((symbol-function 'dziman/swift--sdk) (lambda (_sdk-name) '("/SDKs/iPhoneOS.sdk" . "27.0"))))
+        (should (equal (dziman/swift-server-command root) '("xcrun" "sourcekit-lsp")))
+        )
+      )
+    )
+  )
+
+;;;;;;;; Platform switch in .dir-locals.el
 (ert-deftest dziman-swift-server/platform-switch-is-safe-for-known-platforms ()
   (should (safe-local-variable-p 'dziman/swift-platform 'visionos))
   )
@@ -99,6 +131,7 @@
   (should-not (safe-local-variable-p 'dziman/swift-platform 'iphone))
   )
 
+;;;;;;;; Installed SDK lookup
 (ert-deftest dziman-swift-server/installed-sdk-reports-path-and-version ()
   (skip-unless (executable-find "xcrun"))
   (let ((sdk (dziman/swift--sdk "macosx")))
@@ -111,20 +144,16 @@
   (should-not (dziman/swift--sdk "no-such-sdk"))
   )
 
-(ert-deftest dziman-swift-server/eglot-contact-is-the-server-command ()
-  (with-temp-buffer
-    (should (equal (dziman/swift-eglot-contact nil nil) '("xcrun" "sourcekit-lsp")))
+(ert-deftest dziman-swift-server/sdk-without-xcrun-output-reports-nothing ()
+  (cl-letf (((symbol-function 'process-lines) (lambda (&rest _args) nil)))
+    (should-not (dziman/swift--sdk "iphoneos"))
     )
   )
 
-(ert-deftest dziman-swift-server/xcode-app-folder-ignores-platform-switch ()
-  (dziman-swift-test-with-project '("buildServer.json")
-    (with-temp-buffer
-      (setq dziman/swift-platform 'ios)
-      (cl-letf (((symbol-function 'dziman/swift--sdk) (lambda (_sdk-name) '("/SDKs/iPhoneOS.sdk" . "27.0"))))
-        (should (equal (dziman/swift-server-command root) '("xcrun" "sourcekit-lsp")))
-        )
-      )
+;;;;;;;; Eglot server contact
+(ert-deftest dziman-swift-server/eglot-contact-is-the-server-command ()
+  (with-temp-buffer
+    (should (equal (dziman/swift-eglot-contact nil nil) '("xcrun" "sourcekit-lsp")))
     )
   )
 
@@ -186,9 +215,29 @@
   (should (equal (project-root '(dziman-swift . "/p/Kit/")) "/p/Kit/"))
   )
 
-(ert-deftest dziman-swift-server/git-projects-still-found ()
-  ;; Adding the Swift finder must keep project.el's own VC finder
+(ert-deftest dziman-swift-server/swift-finder-is-registered-beside-vc-finder ()
+  ;; Registering the Swift finder must keep project.el's own VC finder
+  (should (memq #'dziman/swift-project-find project-find-functions))
   (should (memq #'project-try-vc project-find-functions))
+  )
+
+(ert-deftest dziman-swift-server/file-outside-any-package-has-no-package-folder ()
+  (dziman-swift-test-with-project '("Loose/X.swift")
+    (let ((default-directory root))
+      (should-not (dziman/swift-package-root (expand-file-name "Loose/" root)))
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-server/file-outside-any-package-gets-no-eglot-project ()
+  (dziman-swift-test-with-project '("Loose/X.swift")
+    (with-temp-buffer
+      (setq-local major-mode 'swift-mode)
+      (let ((eglot-lsp-context t))
+        (should-not (dziman/swift-project-find (expand-file-name "Loose/" root)))
+        )
+      )
+    )
   )
 
 (provide 'dz-config-swift-test)
