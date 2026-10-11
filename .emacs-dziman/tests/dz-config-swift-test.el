@@ -271,7 +271,9 @@
 
 (ert-deftest dziman-swift-start/path-tool-found-on-path ()
   (let ((dziman/swift--tool-paths nil))
-    (should (dziman/swift-tool-available-p 'emacs))
+    (cl-letf (((symbol-function 'executable-find) (lambda (_name &rest _) "/usr/local/bin/swiftlint")))
+      (should (equal (dziman/swift-tool-available-p 'swiftlint) "/usr/local/bin/swiftlint"))
+      )
     )
   )
 
@@ -282,9 +284,10 @@
   )
 
 (ert-deftest dziman-swift-start/missing-xcode-tool-is-unavailable ()
-  (let ((dziman/swift--tool-paths nil)
-         (dziman/swift--xcrun-tools '(no-such-swift-tool)))
-    (should-not (dziman/swift-tool-available-p 'no-such-swift-tool))
+  (let ((dziman/swift--tool-paths nil))
+    (cl-letf (((symbol-function 'process-lines) (lambda (&rest _args) (error "xcrun failed"))))
+      (should-not (dziman/swift-tool-available-p 'sourcekit-lsp))
+      )
     )
   )
 
@@ -305,6 +308,11 @@
       (should-not (dziman/swift-tool-available-p 'sourcekit-lsp))
       )
     )
+  )
+
+(ert-deftest dziman-swift-start/swift-buffers-start-eglot-and-flycheck ()
+  (should (memq #'dziman/swift-start-eglot swift-mode-hook))
+  (should (memq #'flycheck-mode swift-mode-hook))
   )
 
 (provide 'dz-config-swift-test)
