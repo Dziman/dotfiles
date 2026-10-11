@@ -1,0 +1,57 @@
+#!/bin/sh
+# git for the dotfiles repo: ~/.dziman-dotfiles with $HOME as work tree.
+#
+#   config <git args...>      plain git on that repo
+#   config status ...         names files the active profile links by their $HOME path
+#   config profile ...        the profile tool (git-profile)
+#
+# A profile link given as an argument (config add ~/.ssh/config) is translated to
+# the tracked file, so paths from `config status` can be passed back.
+set -eu
+
+git_dir=${DZIMAN_DOTFILES:-$HOME/.dziman-dotfiles}
+profile_dir=.dziman/profiles/$(basename "$(readlink "$HOME/.dziman/profile" 2>/dev/null || true)")
+
+g() { git --git-dir="$git_dir" --work-tree="$HOME" "$@"; }
+
+is_profile_link() {
+  [ -L "$1" ] || return 1
+  case $(readlink "$1") in .dziman/profile/*|*/.dziman/profile/*) return 0 ;; esac
+  return 1
+}
+
+# Rewrites "<profile_dir>/<path>" to "~/<path>" for each linked path on stdin.
+rewrite_status() {
+  script=$(g profile links 2>/dev/null | while read -r p; do
+    pat=$(printf '%s/%s' "$profile_dir" "$p" | sed 's/[][\.*^$/(){}+?|]/\\&/g')
+    rep=$(printf '~/%s' "$p" | sed 's/[&/]/\\&/g')
+    printf 's/(^|[[:space:]"'"'"'])%s([[:space:]"'"'"']|$)/\\1%s\\2/g\n' "$pat" "$rep"
+  done)
+  if [ -n "$script" ]; then sed -E "$script"; else cat; fi
+}
+
+# Arguments: a profile link becomes its tracked path.
+n=$#
+while [ $n -gt 0 ]; do
+  a=$1; shift
+  if is_profile_link "$a"; then
+    abs=$(cd "$(dirname "$a")" && pwd)/$(basename "$a")
+    case $abs in "$HOME"/*) a="$HOME/$profile_dir/${abs#"$HOME"/}" ;; esac
+  fi
+  set -- "$@" "$a"
+  n=$((n - 1))
+done
+
+sub=
+for a; do case $a in -*) ;; *) sub=$a; break ;; esac; done
+porcelain=0
+for a; do case $a in -z|--porcelain*) porcelain=1 ;; esac; done
+
+if [ "$sub" = status ] && [ $porcelain -eq 0 ] && [ -t 1 ]; then
+  g -c color.status=always "$@" | rewrite_status
+elif [ "$sub" = status ]; then
+  case " $* " in *" -z "*) exec git --git-dir="$git_dir" --work-tree="$HOME" "$@" ;; esac
+  g "$@" | rewrite_status
+else
+  exec git --git-dir="$git_dir" --work-tree="$HOME" "$@"
+fi

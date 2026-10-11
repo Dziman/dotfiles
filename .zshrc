@@ -51,7 +51,7 @@ bindkey '\e[3~' delete-char
 # Extensions
 ################################################################################
 
-# Machine profile, selected with `config-profile <name>` (~/.dziman/profile -> profiles/<name>)
+# Machine profile, selected with `config profile <name>` (~/.dziman/profile -> profiles/<name>)
 export DZIMAN_PROFILE="${$(readlink ~/.dziman/profile 2>/dev/null):t}"
 
 # Include all enabled extensions

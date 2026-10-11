@@ -23,7 +23,7 @@ function print-color-palette() {
 # Snapshots of this machine go to its profile (~/.dziman/profiles/<p>/.dziman/).
 function list-installed() {
   local out=~/.dziman/profile/.dziman
-  [[ -d ~/.dziman/profile ]] || { echo "list-installed: no profile set (config-profile <name>)" >&2; return 1; }
+  [[ -d ~/.dziman/profile ]] || { echo "list-installed: no profile set (config profile <name>)" >&2; return 1; }
   mkdir -p $out
   brew list --formulae >$out/brew.packages
   brew list --cask >$out/brew.cask.packages

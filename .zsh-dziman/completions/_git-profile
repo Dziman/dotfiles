@@ -1,4 +1,4 @@
-#compdef config-profile
+#compdef git-profile
 
 local -a profiles subcommands
 profiles=( ${(f)"$(command ls ~/.dziman/profiles 2>/dev/null)"} )

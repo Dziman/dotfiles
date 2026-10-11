@@ -1,14 +1,17 @@
 #!/bin/sh
 # Select the dotfiles profile of this machine and link its files into $HOME.
+# A git subcommand: `config profile ...` (git-profile on PATH; git hands over
+# GIT_DIR and GIT_WORK_TREE, which must be the dotfiles repo with $HOME as work tree).
 #
-#   config-profile <name>             activate ~/.dziman/profiles/<name>
-#   config-profile --show             print the active profile name
-#   config-profile status             state of the active profile's links
-#   config-profile adopt <path>...    move a file or directory into the active profile and link it
-#   config-profile unadopt <path>...  move it back into $HOME (still tracked, at that path)
-#   config-profile rollout <ref> <name>  first switch of a machine: back up files in the way,
+#   config profile <name>             activate ~/.dziman/profiles/<name>
+#   config profile --show             print the active profile name
+#   config profile status             state of the active profile's links
+#   config profile links              the active profile's linked files, $HOME-relative
+#   config profile adopt <path>...    move a file or directory into the active profile and link it
+#   config profile unadopt <path>...  move it back into $HOME (still tracked, at that path)
+#   config profile rollout <ref> <name>  first switch of a machine: back up files in the way,
 #                                     switch the dotfiles branch to <ref>, activate <name>
-#   config-profile --help             how profiles work and how to make a file profile-specific
+#   config profile --help             how profiles work and how to make a file profile-specific
 #
 # ~/.dziman/profile -> profiles/<name> is the only per-machine state; shared config
 # reads profile parts through it. Profiles mirror the $HOME layout. The paths in
@@ -20,34 +23,35 @@ set -eu
 
 profiles_dir="$HOME/.dziman/profiles"
 link="$HOME/.dziman/profile"
-git_dir=${DZIMAN_DOTFILES:-$HOME/.dziman-dotfiles}
+git_dir=${DZIMAN_DOTFILES:-${GIT_DIR:-$HOME/.dziman-dotfiles}}
 exclude_begin='# config-profile links (managed, do not edit)'
 exclude_end='# end config-profile links'
 backup_dir=            # set by rollout: files in the way move here instead of blocking
 
 usage() {
-  echo "usage: config-profile <name> | --show | status | adopt <path>... | unadopt <path>... | rollout <remote>/<branch> <name> | --help" >&2
+  echo "usage: config profile <name> | --show | status | links | adopt <path>... | unadopt <path>... | rollout <remote>/<branch> <name> | --help" >&2
   echo "profiles: $(ls "$profiles_dir" | tr '\n' ' ')" >&2
   exit 2
 }
 
 help() {
   cat <<EOF
-config-profile: per-machine profile of the dotfiles
+config profile: per-machine profile of the dotfiles
 
-  config-profile <name>             activate profile <name>
-  config-profile --show             print the active profile name
-  config-profile status             each link of the active profile: ok / broken / shadowed / missing,
+  config profile <name>             activate profile <name>
+  config profile --show             print the active profile name
+  config profile status             each link of the active profile: ok / broken / shadowed / missing,
                                     plus untracked files inside the profile directory
-  config-profile adopt <path>...    make a file or directory profile-specific (see below)
-  config-profile unadopt <path>...  undo that: back into \$HOME, tracked there
-  config-profile rollout <remote>/<branch> <name>
+  config profile links              the active profile's linked files
+  config profile adopt <path>...    make a file or directory profile-specific (see below)
+  config profile unadopt <path>...  undo that: back into \$HOME, tracked there
+  config profile rollout <remote>/<branch> <name>
                                     first switch of a machine (see below)
-  config-profile --help, -h         this text
+  config profile --help, -h         this text
 
 Profiles:         ${profiles_dir#"$HOME"/}/<name>/   ($(ls "$profiles_dir" | tr '\n' ' '))
 Active profile:   $(active | grep . || echo "none set")
-Switch:           config-profile <name>; then exec zsh. Shared config reads the profile
+Switch:           config profile <name>; then exec zsh. Shared config reads the profile
                   through the symlink ~/.dziman/profile -> profiles/<name>, the only
                   per-machine state. DZIMAN_PROFILE holds the name in zsh.
 
@@ -69,39 +73,40 @@ profiles/<name>/.gitconfig. Two kinds of file live there:
               profiles/<name>/links (one \$HOME-relative file or directory per line). On
               activation each file gets a symlink in \$HOME, through ~/.dziman/profile, one
               link per file so untracked neighbours stay. The link paths go into the bare
-              repo's info/exclude, so \`config status\` stays clean.
+              repo's info/exclude, so \`config status\` stays clean and names them by
+              their \$HOME path.
 
 Make a file profile-specific:
-  config-profile adopt ~/.foo/bar.conf      moves it to profiles/<active>/.foo/bar.conf,
+  config profile adopt ~/.foo/bar.conf      moves it to profiles/<active>/.foo/bar.conf,
                                             adds the line to links, makes the link, stages it
   A file tracked for every machine is moved only after a y/N prompt: the other profiles lose
   it. When only part of it differs, keep it shared and write the difference as a part instead.
   Directories adopt whole; a file the directory gains later in \$HOME needs its own adopt.
   Then: config commit.
 
-Undo:             config-profile unadopt ~/.foo/bar.conf   (refuses to overwrite a real file)
+Undo:             config profile unadopt ~/.foo/bar.conf   (refuses to overwrite a real file)
 
 Troubleshooting:  "a file is in the way: ~/x" at activation: a real file sits where a link
                   should be. Diff it against ~/.dziman/profile/x, keep the right one there,
-                  remove the \$HOME copy, run config-profile <name> again.
+                  remove the \$HOME copy, run config profile <name> again.
                   "shadowed" in status: a tool replaced the link by a real file (same recipe).
-                  "broken": the profile lost the file; "missing": run config-profile <name>.
+                  "broken": the profile lost the file; "missing": run config profile <name>.
 
 Rollout:          first switch of a machine, run from \$HOME after \`config fetch <remote> <branch>\`:
-                    config-profile rollout <remote>/<branch> <name>
+                    config profile rollout <remote>/<branch> <name>
                   Refuses while tracked files are modified. Untracked files the branch
                   tracks, and real files sitting at link paths, move to
                   ~/.dziman/rollout-backup/<time>/<path> (diff them afterwards); then the
                   branch is switched, the profile activated, ~/.zcompdump and emptied
                   directories removed. Before the script exists on the machine:
-                    config show <remote>/<branch>:.local/bin/config-profile > /tmp/config-profile
-                    sh /tmp/config-profile rollout <remote>/<branch> <name>
+                    config show <remote>/<branch>:.local/bin/git-profile > /tmp/git-profile
+                    sh /tmp/git-profile rollout <remote>/<branch> <name>
 
 More:             ~/.dziman/docs/profiles.md
 EOF
 }
 
-die() { echo "config-profile: $*" >&2; exit 1; }
+die() { echo "config profile: $*" >&2; exit 1; }
 
 cfg() { git -C "$HOME" --git-dir="$git_dir" --work-tree="$HOME" "$@"; }
 
@@ -111,7 +116,7 @@ active() { basename "$(readlink "$link" 2>/dev/null || true)"; }
 
 require_active() {
   name=$(active)
-  [ -n "$name" ] || die "no profile set"
+  [ -n "$name" ] || die "no profile set (config profile <name>)"
 }
 
 manifest() { echo "$profiles_dir/$1/links"; }
@@ -165,7 +170,7 @@ make_links() {
   while read -r p; do
     dst="$HOME/$p"
     if [ ! -e "$link/$p" ] && [ ! -L "$link/$p" ]; then
-      echo "config-profile: not linked, no such file in the profile: $p" >&2
+      echo "config profile: not linked, no such file in the profile: $p" >&2
       skipped=1
       continue
     fi
@@ -174,7 +179,7 @@ make_links() {
         if [ -n "$backup_dir" ]; then
           back_up "$p"
         else
-          echo "config-profile: not linked, a file is in the way: ~/$p" >&2
+          echo "config profile: not linked, a file is in the way: ~/$p" >&2
           skipped=1
           continue
         fi
@@ -222,9 +227,9 @@ write_exclude() { # profile
 activate() {
   name=$1
   case $name in
-    ''|*/*|.*) echo "config-profile: invalid profile name: '$name'" >&2; usage ;;
+    ''|*/*|.*) echo "config profile: invalid profile name: '$name'" >&2; usage ;;
   esac
-  [ -d "$profiles_dir/$name" ] || { echo "config-profile: no such profile: $name" >&2; usage; }
+  [ -d "$profiles_dir/$name" ] || { echo "config profile: no such profile: $name" >&2; usage; }
 
   recorded_links | remove_links
   old=$(active)
@@ -285,7 +290,7 @@ require_direct() { # profile path
 # A tracked file is shared by every machine; moving it is a deliberate choice, so ask.
 confirm_move() { # path
   cat >&2 <<EOF
-config-profile: ~/$1 is tracked for every machine. Adopting moves it into profile
+config profile: ~/$1 is tracked for every machine. Adopting moves it into profile
 $name; the other profiles lose it at their next switch. If only part of it
 differs per machine, keep it shared and put the difference in a profile part
 that the shared file includes.
@@ -373,8 +378,8 @@ rmdir_empty_up() { # $HOME-relative directory
 rollout() { # ref profile
   ref=$1
   name=$2
-  [ "$(pwd -P)" = "$(cd "$HOME" && pwd -P)" ] || { echo "config-profile rollout: run it from \$HOME (cd ~)" >&2; exit 2; }
-  case $name in ''|*/*|.*) echo "config-profile: invalid profile name: '$name'" >&2; usage ;; esac
+  [ "$(pwd -P)" = "$(cd "$HOME" && pwd -P)" ] || { echo "config profile rollout: run it from \$HOME (cd ~)" >&2; exit 2; }
+  case $name in ''|*/*|.*) echo "config profile: invalid profile name: '$name'" >&2; usage ;; esac
   has_repo || die "no dotfiles repo at $git_dir"
   cfg rev-parse --verify -q "$ref^{commit}" >/dev/null || die "unknown ref: $ref (config fetch <remote> <branch> first)"
   cfg ls-tree -d "$ref" -- ".dziman/profiles/$name" | grep -q . || die "no profile $name on $ref"
@@ -409,8 +414,13 @@ $modified"
   fi
 }
 
+if [ -n "${GIT_WORK_TREE-}" ] && [ "$(cd "$GIT_WORK_TREE" 2>/dev/null && pwd -P)" != "$(cd "$HOME" && pwd -P)" ]; then
+  die "works on the dotfiles repo only (work tree \$HOME); use \`config profile\`"
+fi
+
 case ${1-} in
   --help|-h|help) help ;;
+  links) [ $# -eq 1 ] || usage; name=$(active); [ -n "$name" ] && profile_files "$name"; exit 0 ;;
   rollout) [ $# -eq 3 ] || usage; rollout "$2" "$3" ;;
   --show) [ $# -eq 1 ] || usage; require_active; echo "$name" ;;
   status) [ $# -eq 1 ] || usage; status ;;

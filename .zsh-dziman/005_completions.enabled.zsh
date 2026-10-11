@@ -52,5 +52,7 @@ else
 fi
 unset fresh_zcompdump
 
+compdef config=git   # ~/.local/bin/config: git on the dotfiles repo; `config profile` completes via _git-profile
+
 autoload -U +X bashcompinit && bashcompinit -u
 complete -o nospace -C $HOMEBREW_PREFIX/bin/terraform terraform # TODO Move to Terraform specific file?

@@ -25,4 +25,3 @@ if [[ ! -v commands[code] && -x '/Applications/Visual Studio Code.app/Contents/R
 fi
 
 # command to track dotfiles by git
-alias config='git --git-dir=$HOME/.dziman-dotfiles/ --work-tree=$HOME'

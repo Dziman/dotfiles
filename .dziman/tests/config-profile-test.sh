@@ -1,9 +1,13 @@
 #!/bin/sh
-# Tests for ~/.local/bin/config-profile in a throwaway $HOME with its own bare repo.
+# Tests for ~/.local/bin/git-profile and the ~/.local/bin/config wrapper, in a
+# throwaway $HOME with its own bare repo.
 # Run: sh ~/.dziman/tests/config-profile-test.sh
 set -u
 
-script=$(cd "$(dirname "$0")/../.." && pwd)/.local/bin/config-profile
+bin=$(cd "$(dirname "$0")/../.." && pwd)/.local/bin
+script=$bin/git-profile
+config=$bin/config
+PATH="$bin:$PATH"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 export HOME="$tmp/home"
@@ -163,12 +167,13 @@ assert "and the other profile's file stays" test -f "$profiles/one/.ssh/config"
 rm "$HOME/.ssh/new"
 
 echo "# without a bare repo"
-DZIMAN_DOTFILES="$tmp/none" run one
+norepo() { DZIMAN_DOTFILES="$tmp/none" "$script" "$@" >"$tmp/out" 2>"$tmp/err"; }
+norepo one
 assert "activation works" test "$(cat "$HOME/.ssh/config")" = one
 echo r > "$HOME/.norepo"
-DZIMAN_DOTFILES="$tmp/none" run adopt "$HOME/.norepo"
+norepo adopt "$HOME/.norepo"
 assert "adopt works" test -L "$HOME/.norepo" -a -f "$profiles/one/.norepo"
-DZIMAN_DOTFILES="$tmp/none" run unadopt "$HOME/.norepo"
+norepo unadopt "$HOME/.norepo"
 assert "unadopt works" test -f "$HOME/.norepo" -a ! -L "$HOME/.norepo"
 
 echo "# names"
@@ -179,12 +184,36 @@ assert "a path is not a name" test $? -eq 2
 run
 assert "no argument shows usage" test $? -eq 2
 assert "usage points at --help" grep -q -- '--help' "$tmp/err"
+run links
+assert "links lists the active profile's linked files" test "$(cat "$tmp/out")" = "$(printf '.ssh/config\n.gradle/init.d/repos.gradle')"
 run --help
 assert "--help exits 0" test $? -eq 0
 assert "and explains adopt" grep -q 'adopt' "$tmp/out"
 assert "and the profile link" grep -qF '~/.dziman/profile' "$tmp/out"
 run -h
 assert "-h is the same" test $? -eq 0 -a -s "$tmp/out"
+
+echo "# config wrapper"
+cfgw() { "$config" "$@" >"$tmp/out" 2>"$tmp/err"; }
+echo changed >> "$profiles/one/.ssh/config"
+cfgw status --porcelain
+assert "status names a linked file by its \$HOME path" grep -qx ' M ~/.ssh/config' "$tmp/out"
+assert "and leaves other paths alone" sh -c "echo x >> '$HOME/.shared'; '$config' status --porcelain | grep -qx ' M .shared'"
+cfgw status
+assert "long status too" grep -q 'modified:   ~/.ssh/config' "$tmp/out"
+cfgw add "$HOME/.ssh/config"
+assert "a link argument is translated to the tracked file" is_staged .dziman/profiles/one/.ssh/config
+cfgw status --porcelain
+assert "and shows as staged under the \$HOME path" grep -qx 'M  ~/.ssh/config' "$tmp/out"
+cfgw diff --cached --name-only
+assert "other commands are passed through unchanged" grep -qx '.dziman/profiles/one/.ssh/config' "$tmp/out"
+cfgw profile --show
+assert "config profile reaches git-profile" test "$(cat "$tmp/out")" = one
+cfg checkout -q -- .shared; cfg reset -q -- .dziman/profiles/one/.ssh/config; cfg checkout -q -- .dziman/profiles/one/.ssh/config
+
+echo "# through git with another work tree"
+( cd "$tmp" && git --git-dir="$DZIMAN_DOTFILES" --work-tree="$tmp" profile --show >"$tmp/out" 2>"$tmp/err" )
+assert "refused when the work tree is not \$HOME" test $? -eq 1
 
 echo "# rollout"
 # fixture: a source repo with branch old (checked out in a second HOME) and branch new
