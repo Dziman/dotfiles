@@ -37,8 +37,8 @@ A profile directory mirrors `$HOME`: the part for `~/.gitconfig` is
 | zsh prompt | `right-prompt` calls `profile-prompt-status` when the profile defines it | `.dziman-zsh/910_prompt.zsh` |
 | Claude Code | `~/.claude/CLAUDE.md` ends with `@~/.dziman/profile/.claude/CLAUDE.md`; `~/.claude/settings.json`, `~/.claude/skills/dz-git-forge-workflow`, `~/.claude/statusline-command.sh`, `~/.claude/dz-session-recap.local.md` and `~/.claude/apple/{filters-config.json,tool_allowlist.csv}` are symlinks into the profile (no layering in Claude Code) | `.claude/CLAUDE.md`, `.claude/settings.json`, `.claude/skills/dz-git-forge-workflow/` (main's are symlinks to ai's); apple only: `.claude/statusline-command.sh`, `.claude/dz-session-recap.local.md`, `.claude/apple/` |
 
-Files that exist for one profile only (`Local/AS`, `src/apple`, omp's Java LSP,
-`.pi`) are tracked as is; `profiles/<p>/sparse` lists what the *other* profiles
+Files that exist for one profile only (`Local/AS`, `src/apple`, omp's Java LSP)
+are tracked as is; `profiles/<p>/sparse` lists what the *other* profiles
 hide (git sparse-checkout, applied by `config-profile`).
 
 Missing profile parts are no-ops everywhere: an absent include file, a dangling
@@ -86,7 +86,7 @@ branch and are not on `unified` disappear from `$HOME` on switch:
 
 - from `main-computer`: `.dziman-zsh/.editorconfig`, `.dziman-zsh/578_swift.enabled.zsh`
 - from `work-computer`: `.dziman-zsh/550_aws.enabled.zsh`, `.dziman-zsh/577_js.enabled.zsh`,
-  `.dziman/list-installed.sh`, `.emacs-dziman/configs/dz-config-helm.el`,
+  `.dziman/list-installed.sh`, `.pi/agent/settings.json`, `.emacs-dziman/configs/dz-config-helm.el`,
   `.local/share/navi/apple.src.cheat`; moved into the apple profile:
   `.gitconfig-apple*`, `.gradle/init.d/*`, `journal-apple-meeting.tmpl.org`
 - from `mirror/ai-dev`: Kilo (`.config/kilo`, `.kilo`), `.codex/config.toml`,
