@@ -10,6 +10,7 @@ Name things by what they are in the domain — "the iPad on app 1.0", "the Check
 
 - Prefer `rg` (ripgrep) over `grep` and `fd` over `find` for all shell-driven search and file-discovery tasks — they're faster, respect `.gitignore` by default, and produce cleaner output. Fall back to `grep`/`find` only when `rg`/`fd` are unavailable on the host or when a flag/behavior is genuinely missing.
 - Do not use `-exec` (or `-execdir`, `--exec`, `-X`) with `fd` or `find`. Pipe into `xargs` (prefer `xargs -0` with `-print0`/`--print0`) or a `while read -r` loop instead — it's easier to inspect, composes with other shell tooling, and avoids per-file fork overhead.
+- Prefer `sd` over `sed`/`awk` for plain text substitution — it's faster, uses `$1`-style capture groups by default, and edits in place without a separate `-i` flag. Fall back to `sed`/`awk` when `sd` is unavailable, or when the task isn't plain substitution — field/record processing, pattern-action scripts, line-range edits, deletion, or insertion aren't things `sd` does.
 - When a **language server (LSP)** or an IDE's semantic refactoring is available for the project's language, use it for the operations it performs correctly — **symbol rename**,  find-references, go-to-definition, change-signature, extract / inline, move, organize-imports. Prefer it over text manipulation (`grep` / `sed` / `awk` / regex find-replace).
 
 # Skills
