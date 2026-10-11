@@ -1,6 +1,6 @@
 # Machine profiles
 
-One dotfiles branch (`unified`) for every machine. Per-machine differences live
+One dotfiles branch (`main`) for every machine. Per-machine differences live
 in a profile directory; one untracked symlink selects the active profile:
 
 ```
@@ -101,9 +101,9 @@ One command, run from `$HOME`, after fetching the branch from your remote
 (`config remote -v` tells its name; `origin` below):
 
 ```
-config fetch origin unified
-config show origin/unified:.local/bin/git-profile > /tmp/git-profile   # the script is not on the old branch yet
-sh /tmp/git-profile rollout origin/unified <name>
+config fetch origin main
+config show origin/main:.local/bin/git-profile > /tmp/git-profile   # the script is not on the old branch yet
+sh /tmp/git-profile rollout origin/main <name>
 exec zsh
 ```
 
@@ -124,8 +124,11 @@ What `rollout` does, in order:
    prints one `diff` line per backup so you can compare and carry over what
    matters. Delete the backup directory when done.
 
+A machine already on the former `unified` branch moves to `main` with
+`config fetch origin && config switch -C main origin/main && config branch -D unified`.
+
 Afterwards `config status` is clean and `config profile status` shows every
-link `ok`. Files that were tracked on the old branch and are not on `unified`
+link `ok`. Files that were tracked on the old branch and are not on `main`
 disappear from `$HOME` on switch (the apple-only ones among them come back as
 links). The zsh extensions move from `~/.dziman-zsh/` to `~/.zsh-dziman/`; the
 old directory stays only if untracked files linger in it:
