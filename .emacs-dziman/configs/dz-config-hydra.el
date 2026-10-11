@@ -8,6 +8,42 @@
 
 (setq major-mode-hydra-invisible-quit-key "q")
 
+(defun dziman/major-modes ()
+  "Major mode commands known to this Emacs, sorted by name.
+Modes named for file types in `auto-mode-alist' and `interpreter-mode-alist',
+plus loaded modes made by `define-derived-mode', plus `fundamental-mode'."
+  (let ((modes (list 'fundamental-mode)))
+    (dolist (entry (append auto-mode-alist interpreter-mode-alist))
+      (let ((mode (cdr entry)))
+        (when (and (symbolp mode) (fboundp mode))
+          (push mode modes)
+          )
+        )
+      )
+    (mapatoms
+      (lambda (symbol)
+        ;; `define-derived-mode' records the parent, nil included, for every mode it defines
+        (when (and (fboundp symbol) (plist-member (symbol-plist symbol) 'derived-mode-parent))
+          (push symbol modes)
+          )
+        )
+      )
+    (sort (delete-dups modes) #'string<)
+    )
+  )
+
+(defun dziman/switch-major-mode (mode)
+  "Switch the current buffer to major MODE, picked from `dziman/major-modes'."
+  (interactive
+    (list
+      (intern
+        (completing-read "Major mode: " (dziman/major-modes) nil t nil nil (symbol-name major-mode))
+        )
+      )
+    )
+  (funcall mode)
+  )
+
 (defvar dziman/hydra/toggles--title (dziman/with-faicon "toggle-on" "Toggles" 1 -0.05))
 
 (pretty-hydra-define dziman/hydra/toggles
@@ -39,9 +75,8 @@
 
     "All modes"
     (
-      ("M" helm-switch-major-mode "major")
-      ("m e" helm-enable-minor-mode "enable minor")
-      ("m d" helm-disable-minor-mode "disable minor")
+      ("M" dziman/switch-major-mode "major")
+      ("m" consult-minor-mode-menu "minor on/off")
       )
     )
   )
