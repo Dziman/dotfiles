@@ -98,11 +98,14 @@ edits `~/.claude/settings.json` itself); on the apple machine diff the live
 `~/.claude/settings.json` against the profile's before moving it aside:
 
 ```
-config fetch origin unified
-config ls-tree -r --name-only origin/unified | while read -r p; do
+config fetch origin unified     # origin = whatever your bare repo calls git.nasha.casa (config remote -v)
+config ls-tree -r --full-tree --name-only origin/unified | while read -r p; do
   { [ -e "$HOME/$p" ] || [ -L "$HOME/$p" ]; } && ! config ls-files --error-unmatch -- ":/$p" >/dev/null 2>&1 && echo "$p"
 done
 ```
+
+`--full-tree` matters: without it `ls-tree` lists only the subtree under the
+current directory, so run from anywhere but `$HOME` the loop prints nothing.
 
 Linked files (`profiles/<p>/links`) are not tracked at their `$HOME` path, so
 the check above does not list them; `config-profile` reports each one it finds
