@@ -462,7 +462,7 @@
     (with-temp-buffer
       (setq buffer-file-name (expand-file-name "X.swift" root) default-directory root)
       (dziman/swift-format-on-save-setup)
-      (should (memq #'dziman/swift-format-buffer before-save-hook))
+      (should (memq #'dziman/swift--format-before-save before-save-hook))
       (setq buffer-file-name nil)
       )
     )
@@ -473,7 +473,7 @@
     (with-temp-buffer
       (setq buffer-file-name (expand-file-name "X.swift" root) default-directory root)
       (dziman/swift-format-on-save-setup)
-      (should-not (memq #'dziman/swift-format-buffer before-save-hook))
+      (should-not (memq #'dziman/swift--format-before-save before-save-hook))
       (setq buffer-file-name nil)
       )
     )
@@ -502,6 +502,38 @@
     )
   )
 
+(ert-deftest dziman-swift-format/missing-swiftformat-names-it-in-a-note ()
+  (dziman-swift-test-with-project '(".swiftformat")
+    (with-temp-buffer
+      (setq default-directory root)
+      (cl-letf (((symbol-function 'dziman/swift-tool-available-p) #'ignore))
+        (should (equal (dziman-swift-test-capturing-messages (dziman/swift-format-buffer))
+                  '("SwiftFormat is not installed; buffer not formatted")))
+        )
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-format/missing-formatter-on-save-shows-its-note-after-the-save ()
+  (dziman-swift-test-with-project '()
+    (with-temp-buffer
+      (setq default-directory root)
+      (let ((deferred nil))
+        (cl-letf (((symbol-function 'dziman/swift-tool-available-p) #'ignore)
+                   ((symbol-function 'run-at-time) (lambda (&rest args) (setq deferred args))))
+          (should-not (dziman-swift-test-capturing-messages (dziman/swift--format-before-save)))
+          )
+        (should (equal deferred
+                  '(0 nil message "%s" "Apple swift-format is not installed; buffer not formatted")))
+        )
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-format/swift-buffers-set-up-format-on-save ()
+  (should (memq #'dziman/swift-format-on-save-setup swift-mode-hook))
+  )
+
 (ert-deftest dziman-swift-format/apple-formatter-reformats-a-scratch-buffer ()
   (skip-unless (dziman/swift-tool-available-p 'swift-format))
   (dziman-swift-test-with-project '()
@@ -510,6 +542,24 @@
       (insert "let a=[1,2 ,3]\n")
       (dziman-swift-test-capturing-messages (dziman/swift-format-buffer))
       (should (equal (buffer-string) "let a = [1, 2, 3]\n"))
+      )
+    )
+  )
+
+(ert-deftest dziman-swift-format/failing-formatter-leaves-buffer-and-shows-its-output ()
+  (skip-unless (dziman/swift-tool-available-p 'swift-format))
+  (dziman-swift-test-with-project '()
+    (with-temp-buffer
+      (setq default-directory root)
+      (insert "let a=[1,\n")
+      (unwind-protect
+        (progn
+          (dziman-swift-test-capturing-messages (dziman/swift-format-buffer))
+          (should (equal (buffer-string) "let a=[1,\n"))
+          (should (> (buffer-size (get-buffer "*dziman/swift-apple-format errors*")) 0))
+          )
+        (kill-buffer "*dziman/swift-apple-format errors*")
+        )
       )
     )
   )

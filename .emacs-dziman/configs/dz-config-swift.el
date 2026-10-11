@@ -267,16 +267,38 @@ that is how SwiftLint's configuration errors surface."
   :mode nil
   )
 
+(defun dziman/swift--missing-formatter-note (formatter)
+  (format "%s is not installed; buffer not formatted" (alist-get formatter dziman/swift-formatter-names))
+  )
+
+(defun dziman/swift--run-formatter (formatter)
+  "Reformat the buffer with FORMATTER; a failing formatter leaves the buffer as is and shows its output."
+  ;; Only reformatter's own "Formatting buffer" echo is silenced; errors go to its error buffer
+  (let ((inhibit-message t))
+    (if (eq formatter 'swiftformat)
+      (dziman/swift-swiftformat-buffer t)
+      (dziman/swift-apple-format-buffer t)
+      )
+    )
+  )
+
 (defun dziman/swift-format-buffer ()
   "Reformat the buffer with the project's Swift formatter; see `dziman/swift-formatter'."
   (interactive)
   (let ((formatter (dziman/swift-formatter default-directory)))
-    (cond
-      ((not (dziman/swift-tool-available-p formatter))
-        (message "%s is not installed; buffer not formatted" (alist-get formatter dziman/swift-formatter-names))
-        )
-      ((eq formatter 'swiftformat) (dziman/swift-swiftformat-buffer t))
-      (t (dziman/swift-apple-format-buffer t))
+    (if (dziman/swift-tool-available-p formatter)
+      (dziman/swift--run-formatter formatter)
+      (message "%s" (dziman/swift--missing-formatter-note formatter))
+      )
+    )
+  )
+
+(defun dziman/swift--format-before-save ()
+  "`dziman/swift-format-buffer' for `before-save-hook'; a missing-formatter note outlasts the save's own message."
+  (let ((formatter (dziman/swift-formatter default-directory)))
+    (if (dziman/swift-tool-available-p formatter)
+      (dziman/swift--run-formatter formatter)
+      (run-at-time 0 nil #'message "%s" (dziman/swift--missing-formatter-note formatter))
       )
     )
   )
@@ -284,7 +306,7 @@ that is how SwiftLint's configuration errors surface."
 (defun dziman/swift-format-on-save-setup ()
   "Format on save in projects that have a formatter config."
   (when (and buffer-file-name (dziman/swift-formatter-config default-directory))
-    (add-hook 'before-save-hook #'dziman/swift-format-buffer nil t)
+    (add-hook 'before-save-hook #'dziman/swift--format-before-save nil t)
     )
   )
 
