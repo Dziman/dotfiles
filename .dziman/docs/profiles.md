@@ -114,6 +114,7 @@ Then (full path: `~/.local/bin` is not on PATH until the new zsh config runs):
 ```
 config switch unified
 ~/.local/bin/config-profile <name>
+rm -f ~/.zcompdump      # compinit trusts a dump younger than 24 h; new completions need a rescan
 exec zsh
 ```
 
