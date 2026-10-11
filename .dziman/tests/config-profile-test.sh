@@ -178,5 +178,12 @@ run ../x
 assert "a path is not a name" test $? -eq 2
 run
 assert "no argument shows usage" test $? -eq 2
+assert "usage points at --help" grep -q -- '--help' "$tmp/err"
+run --help
+assert "--help exits 0" test $? -eq 0
+assert "and explains adopt" grep -q 'adopt' "$tmp/out"
+assert "and the profile link" grep -qF '~/.dziman/profile' "$tmp/out"
+run -h
+assert "-h is the same" test $? -eq 0 -a -s "$tmp/out"
 
 exit $failed

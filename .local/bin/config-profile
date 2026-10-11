@@ -6,6 +6,7 @@
 #   config-profile status             state of the active profile's links
 #   config-profile adopt <path>...    move a file or directory into the active profile and link it
 #   config-profile unadopt <path>...  move it back into $HOME (still tracked, at that path)
+#   config-profile --help             how profiles work and how to make a file profile-specific
 #
 # ~/.dziman/profile -> profiles/<name> is the only per-machine state; shared config
 # reads profile parts through it. Profiles mirror the $HOME layout. The paths in
@@ -22,9 +23,67 @@ exclude_begin='# config-profile links (managed, do not edit)'
 exclude_end='# end config-profile links'
 
 usage() {
-  echo "usage: config-profile <name> | --show | status | adopt <path>... | unadopt <path>..." >&2
+  echo "usage: config-profile <name> | --show | status | adopt <path>... | unadopt <path>... | --help" >&2
   echo "profiles: $(ls "$profiles_dir" | tr '\n' ' ')" >&2
   exit 2
+}
+
+help() {
+  cat <<EOF
+config-profile: per-machine profile of the dotfiles
+
+  config-profile <name>             activate profile <name>
+  config-profile --show             print the active profile name
+  config-profile status             each link of the active profile: ok / broken / shadowed / missing,
+                                    plus untracked files inside the profile directory
+  config-profile adopt <path>...    make a file or directory profile-specific (see below)
+  config-profile unadopt <path>...  undo that: back into \$HOME, tracked there
+  config-profile --help, -h         this text
+
+Profiles:         ${profiles_dir#"$HOME"/}/<name>/   ($(ls "$profiles_dir" | tr '\n' ' '))
+Active profile:   $(active | grep . || echo "none set")
+Switch:           config-profile <name>; then exec zsh. Shared config reads the profile
+                  through the symlink ~/.dziman/profile -> profiles/<name>, the only
+                  per-machine state. DZIMAN_PROFILE holds the name in zsh.
+
+A profile directory mirrors \$HOME: the profile's part of ~/.gitconfig is
+profiles/<name>/.gitconfig. Two kinds of file live there:
+
+  part        A fragment a shared file includes through ~/.dziman/profile/...:
+              zsh     profiles/<name>/.zsh-dziman/*.zsh          (sourced after the shared ones)
+              emacs   profiles/<name>/.emacs-dziman/configs/*.el (loaded last)
+              git     profiles/<name>/.gitconfig                 ([include] in ~/.gitconfig)
+              tmux    profiles/<name>/.tmux.conf                 (source-file -q)
+              omp     profiles/<name>/.omp/agent/config.yml      (--config overlay)
+              claude  profiles/<name>/.claude/CLAUDE.md          (@import at the end)
+              Put a per-machine difference here when the shared file can include it;
+              an absent part is a no-op. No registration needed.
+
+  whole file  A file that must exist at its \$HOME path (~/.ssh/config, ~/.claude/settings.json,
+              ~/Local/AS/...). It lives at profiles/<name>/<path> and is listed in
+              profiles/<name>/links (one \$HOME-relative file or directory per line). On
+              activation each file gets a symlink in \$HOME, through ~/.dziman/profile, one
+              link per file so untracked neighbours stay. The link paths go into the bare
+              repo's info/exclude, so \`config status\` stays clean.
+
+Make a file profile-specific:
+  config-profile adopt ~/.foo/bar.conf      moves it to profiles/<active>/.foo/bar.conf,
+                                            adds the line to links, makes the link, stages it
+  A file tracked for every machine is moved only after a y/N prompt: the other profiles lose
+  it. When only part of it differs, keep it shared and write the difference as a part instead.
+  Directories adopt whole; a file the directory gains later in \$HOME needs its own adopt.
+  Then: config commit.
+
+Undo:             config-profile unadopt ~/.foo/bar.conf   (refuses to overwrite a real file)
+
+Troubleshooting:  "a file is in the way: ~/x" at activation: a real file sits where a link
+                  should be. Diff it against ~/.dziman/profile/x, keep the right one there,
+                  remove the \$HOME copy, run config-profile <name> again.
+                  "shadowed" in status: a tool replaced the link by a real file (same recipe).
+                  "broken": the profile lost the file; "missing": run config-profile <name>.
+
+More:             ~/.dziman/docs/profiles.md
+EOF
 }
 
 die() { echo "config-profile: $*" >&2; exit 1; }
@@ -279,6 +338,7 @@ unadopt() {
 }
 
 case ${1-} in
+  --help|-h|help) help ;;
   --show) [ $# -eq 1 ] || usage; require_active; echo "$name" ;;
   status) [ $# -eq 1 ] || usage; status ;;
   adopt) [ $# -ge 2 ] || usage; shift; adopt "$@" ;;

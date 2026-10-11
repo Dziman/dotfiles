@@ -7,6 +7,7 @@ subcommands=(
   'adopt:move a file or directory into the active profile and link it'
   'unadopt:move it back into $HOME'
   '--show:print the active profile name'
+  '--help:how profiles work and how to make a file profile-specific'
 )
 
 if (( CURRENT == 2 )); then

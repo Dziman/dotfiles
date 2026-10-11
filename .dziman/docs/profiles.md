@@ -19,6 +19,7 @@ config-profile --show             # print the active profile
 config-profile status             # each link: ok / broken / shadowed / missing; untracked profile files
 config-profile adopt <path>...    # move a file or directory into the active profile, list and link it
 config-profile unadopt <path>...  # move it back into $HOME, tracked there (config rm --cached to untrack)
+config-profile --help             # the gist of this page, with the active profile
 ```
 
 `DZIMAN_PROFILE` holds the name in zsh (empty when no profile is set). Shared
