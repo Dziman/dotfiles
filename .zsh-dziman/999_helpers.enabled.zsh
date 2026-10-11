@@ -20,13 +20,17 @@ function print-color-palette() {
 ################################################################################
 # List all installed packages, extensions
 ################################################################################
+# Snapshots of this machine go to its profile (~/.dziman/profiles/<p>/.dziman/).
 function list-installed() {
-  brew list --formulae >~/.dziman/brew.packages
-  brew list --cask >~/.dziman/brew.cask.packages
-  brew tap >~/.dziman/brew.taps
+  local out=~/.dziman/profile/.dziman
+  [[ -d ~/.dziman/profile ]] || { echo "list-installed: no profile set (config-profile <name>)" >&2; return 1; }
+  mkdir -p $out
+  brew list --formulae >$out/brew.packages
+  brew list --cask >$out/brew.cask.packages
+  brew tap >$out/brew.taps
   code --version >/dev/null 2>&1
   if [[ $? == 0 ]]; then
-    code --list-extensions >~/.dziman/vs.code.extensions
+    code --list-extensions >$out/vs.code.extensions
   fi
 }
 ################################################################################

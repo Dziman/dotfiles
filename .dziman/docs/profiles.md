@@ -40,6 +40,7 @@ A profile directory mirrors `$HOME`: the part for `~/.gitconfig` is
 | zsh prompt | `right-prompt` calls `profile-prompt-status` when the profile defines it | `.zsh-dziman/910_prompt.zsh` |
 | Claude Code | `~/.claude/CLAUDE.md` ends with `@~/.dziman/profile/.claude/CLAUDE.md`; settings, the forge skill and the apple-only files are linked into `~/.claude/` by `config-profile` (no layering in Claude Code) | `.claude/CLAUDE.md`, `.claude/settings.json`, `.claude/skills/dz-git-forge-workflow/` (main's `.claude` is a symlink to ai's); apple only: `.claude/statusline-command.sh`, `.claude/dz-session-recap.local.md`, `.claude/apple/` |
 | work-machine data | linked the same way | `Local/AS/`, `src/apple/` (module lists) |
+| package lists | `list-installed` writes this machine's snapshot into its profile; nothing reads them | `.dziman/brew.packages`, `.dziman/brew.cask.packages`, `.dziman/brew.taps`, `.dziman/vs.code.extensions` |
 
 Two kinds of profile file:
 
@@ -132,6 +133,3 @@ back as links). The zsh extensions move from `~/.dziman-zsh/` to
 
 On the apple machine, iTerm keeps the shared plist; the work-only iTerm profiles
 ("Dziman Claude", "Emacs fonts") and triggers were not carried over.
-
-Deferred: splitting the Homebrew / VS Code package lists into common + per-profile
-sets (`list-installed` still writes the shared files).
