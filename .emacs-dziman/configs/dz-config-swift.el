@@ -345,7 +345,7 @@ that is how SwiftLint's configuration errors surface."
 (defun dziman/swift-apple-docs (term)
   "Search developer.apple.com for TERM: the selection, else the symbol at point, else asked for."
   (interactive (list (dziman/swift--docs-term)))
-  (when (string-empty-p term)
+  (when (string-blank-p term)
     (user-error "Nothing to look up")
     )
   (browse-url (dziman/swift-apple-docs-url term))
