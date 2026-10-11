@@ -10,6 +10,24 @@
   )
 
 (add-hook 'text-mode-hook 'flyspell-mode)
+;; Comments and strings only: checking code itself flags every language keyword
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+(defvar dziman/aspell-personal-dictionary (expand-file-name "aspell.en.pws" dziman/settings-base-dir)
+  "Aspell word list kept with these settings, so every machine accepts the same words.")
+
+(defun dziman/spell-aspell-setup ()
+  "Use the shared word list and split camelCase words when the spell checker is aspell."
+  ;; ispell and hunspell reject --camel-case and read a different word-list format
+  (when (string-match-p "aspell" (file-name-nondirectory ispell-program-name))
+    (setq ispell-personal-dictionary dziman/aspell-personal-dictionary)
+    (add-to-list 'ispell-extra-args "--camel-case")
+    )
+  )
+
+(with-eval-after-load 'ispell
+  (dziman/spell-aspell-setup)
+  )
 
 (eval-after-load "flyspell"
   '(define-key flyspell-mode-map (kbd "C-.") nil)) ;; Remove conflicting keybinding. See `dz-config-hydra`
