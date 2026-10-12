@@ -21,15 +21,57 @@
 
 (defvar dziman/org-directory "~/wiki")
 
-(defun dziman/refresh-agenda-files ()
-  (interactive)
-  ;; TODO Automatically reload on new file created/deleted
-  ;; Original source: https://stackoverflow.com/questions/11384516/how-to-make-all-org-files-under-a-folder-added-in-agenda-list-automatically
-  ;; Could cause performance issues for agenda view. Check https://github.com/nicolas-graves/org-agenda-files-track as potential solution
-  (setq org-agenda-files (directory-files-recursively dziman/org-directory "\\.org$"))
+(defun dziman/agenda-folders-command (root)
+  "Command listing the folders under ROOT, one per line, hidden ones skipped."
+  (let ((fd (executable-find "fd")))
+    (if fd
+      (list fd "--type" "d" "--color" "never" "." root)
+      (list "find" root "-mindepth" "1" "-name" ".*" "-prune" "-o" "-type" "d" "-print")
+      )
+    )
   )
 
-(add-hook 'org-mode-hook 'dziman/refresh-agenda-files)
+(defun dziman/agenda-folders-from-output (root output)
+  "ROOT and the folders named in OUTPUT, sorted.
+OUTPUT is what `dziman/agenda-folders-command' printed."
+  (sort (mapcar #'directory-file-name (cons root (split-string output "\n" t))) #'string<)
+  )
+
+(defun dziman/refresh-agenda-files ()
+  "Set `org-agenda-files' to the folders under `dziman/org-directory'.
+The folders are listed in the background. Org reads the .org files of each
+listed folder whenever it needs them, so only a new folder needs a refresh.
+Returns the listing process, or nil when the folder is missing."
+  (interactive)
+  (let ((root (file-name-as-directory (expand-file-name dziman/org-directory))))
+    (when (file-directory-p root)
+      (let ((default-directory root)
+             (output (generate-new-buffer " *dziman-agenda-folders*" t))
+             (errors (generate-new-buffer " *dziman-agenda-folders-errors*" t)))
+        (make-process
+          :name "dziman-agenda-folders"
+          :buffer output
+          :stderr errors
+          :noquery t
+          :connection-type 'pipe
+          :command (dziman/agenda-folders-command root)
+          :sentinel (lambda (process _event)
+                      (unless (process-live-p process)
+                        (when (zerop (process-exit-status process))
+                          (setq org-agenda-files
+                            (dziman/agenda-folders-from-output root (with-current-buffer output (buffer-string))))
+                          )
+                        (kill-buffer output)
+                        (kill-buffer errors)
+                        )
+                      )
+          )
+        )
+      )
+    )
+  )
+
+(run-with-idle-timer 1 nil #'dziman/refresh-agenda-files)
 
 (add-hook 'org-mode-hook 'org-sticky-header-mode)
 (setq org-sticky-header-full-path 'full)
