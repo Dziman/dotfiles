@@ -8,6 +8,10 @@
 (use-package org-sticky-header :defer t)
 (use-package calfw-org :commands calfw-org-open-calendar)
 
+(declare-function org-read-date "org")
+(declare-function org-tempo-complete-tag "org-tempo")
+(declare-function org-indent-mode "org-indent")
+
 (defun dziman/org/get-formatted-date (&optional date-format)
   (interactive)
   (let* (
@@ -204,6 +208,9 @@ Returns the listing process, or nil when the folder is missing."
 (add-hook 'org-mode-hook 'org-roam-db-autosync-mode)
 
 (use-package pretty-hydra)
+(require 'hydra)
+;; Called by the `bind-map' expansion
+(declare-function evil-normalize-keymaps "evil")
 (pretty-hydra-define dziman/hydra/org-template
   (:color blue :quit-key "q")
   (
@@ -257,13 +264,20 @@ prepended to the element after the #+HEADER: tag."
   (define-key org-mode-map "<"
     (lambda ()
       (interactive)
-      (if (or (region-active-p) (looking-back "^"))
+      (if (or (region-active-p) (bolp))
         (dziman/hydra/org-template/body)
         (self-insert-command 1)
         )
       )
     )
   )
+
+(declare-function org-before-first-heading-p "org")
+(declare-function org-back-to-heading "org")
+(declare-function org-up-heading-safe "org")
+(declare-function org-current-level "org")
+(declare-function org-get-heading "org")
+(declare-function org-fold-show-context "org-fold")
 
 (defun dziman/org-parent-headings ()
   "Ancestors of the heading at point, nearest first, as (\"** Title\" . POSITION).
@@ -365,3 +379,9 @@ Empty at top level and before the first heading."
 (setq calfw-display-calendar-holidays nil)
 
 (provide 'dz-config-org)
+
+;; The hydra macro's generated docstring has a separator line of UTF-8 box characters,
+;; measured in bytes, which trips the 80-column docstring check of the byte-compiler
+;; Local Variables:
+;; byte-compile-docstring-max-column: 200
+;; End:
