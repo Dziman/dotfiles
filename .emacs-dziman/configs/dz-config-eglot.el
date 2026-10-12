@@ -16,7 +16,7 @@
   (eglot-extend-to-xref t)
   )
 
-;; Diagnostics go to flycheck (margin marks, flycheck-inline, `M-g e') instead of flymake.
+;; Diagnostics go to flycheck (fringe marks, flycheck-inline, `M-g e') instead of flymake.
 ;; Not exclusive, so a language's own flycheck checker (e.g. SwiftLint) runs after the server's.
 (use-package flycheck-eglot
   :after eglot
