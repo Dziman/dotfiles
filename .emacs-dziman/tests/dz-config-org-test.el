@@ -86,15 +86,31 @@
     )
   )
 
-(ert-deftest dziman-org-agenda/listing-uses-fd-when-installed ()
-  (cl-letf (((symbol-function 'executable-find) (lambda (name &rest _) (and (equal name "fd") "/opt/homebrew/bin/fd"))))
-    (should (equal (car (dziman/agenda-folders-command "/wiki/")) "/opt/homebrew/bin/fd"))
+(ert-deftest dziman-org-agenda/unreadable-folder-keeps-the-readable-ones ()
+  ;; find exits 1 after one unreadable folder but still lists every other one
+  (dziman-org-test-with-wiki
+    (cl-letf (((symbol-function 'dziman/agenda-folders-command)
+                (lambda (root) (list "sh" "-c" (format "echo %sprojects/; echo denied >&2; exit 1" root)))))
+      (dziman-org-test-refresh-and-wait)
+      )
+    (should (member (expand-file-name "projects" wiki) org-agenda-files))
     )
   )
 
-(ert-deftest dziman-org-agenda/listing-falls-back-to-find-without-fd ()
-  (cl-letf (((symbol-function 'executable-find) (lambda (_name &rest _) nil)))
-    (should (equal (car (dziman/agenda-folders-command "/wiki/")) "find"))
+(ert-deftest dziman-org-agenda/wiki-without-subfolders-is-itself-the-agenda-folder ()
+  (dziman-org-test-with-wiki
+    (dziman-org-test-refresh-and-wait)
+    (should (equal org-agenda-files (list (directory-file-name wiki))))
+    )
+  )
+
+(ert-deftest dziman-org-agenda/folders-named-in-ignore-files-are-listed ()
+  ;; Notes are not build output: a wiki's .gitignore or .ignore must not hide them
+  (dziman-org-test-with-wiki
+    (make-directory (expand-file-name "archive" wiki))
+    (write-region "archive/\n" nil (expand-file-name ".ignore" wiki))
+    (dziman-org-test-refresh-and-wait)
+    (should (member (expand-file-name "archive" wiki) org-agenda-files))
     )
   )
 

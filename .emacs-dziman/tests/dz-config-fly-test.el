@@ -82,6 +82,14 @@
   (should (dziman-fly-test-spell-checked-p 'dziman-fly-test-string-face))
   )
 
+(defface dziman-fly-test-regexp-face '((t :inherit font-lock-string-face))
+  "Regex literal face, painted like a string.")
+
+(ert-deftest dziman-fly-faces/regex-literals-are-not-checked ()
+  ;; Character classes like [a-z] are not words
+  (should-not (dziman-fly-test-spell-checked-p 'dziman-fly-test-regexp-face))
+  )
+
 (ert-deftest dziman-fly-faces/code-face-is-not-checked ()
   (should-not (dziman-fly-test-spell-checked-p 'font-lock-keyword-face))
   )

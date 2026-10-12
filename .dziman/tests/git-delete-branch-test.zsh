@@ -37,6 +37,8 @@ make_repo() {
     git init -q -b main "$tmp/$name"
     git -C "$tmp/$name" remote add origin "$tmp/$name.git"
     git -C "$tmp/$name" fetch -q origin
+    # git 2.48+ records the default branch on fetch; forget it like an older clone would
+    git -C "$tmp/$name" remote set-head origin -d
     git -C "$tmp/$name" switch -q main
   fi
   git -C "$tmp/$name" switch -q -c feature/x
@@ -52,6 +54,7 @@ assert "deleted branch is gone on the remote" not has_remote_branch feature/x
 
 make_repo pushed push
 cd "$tmp/pushed"
+assert "fixture: the default branch is not recorded yet" not git rev-parse -q --verify refs/remotes/origin/HEAD
 git-delete-branch feature/x >/dev/null 2>&1
 assert "remote's default branch is found even when the clone never recorded it" current_branch_is main
 

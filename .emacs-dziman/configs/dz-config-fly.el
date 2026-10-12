@@ -29,7 +29,11 @@ The inheritance may go through other faces."
   (require 'flyspell)
   (let ((base-faces (default-value 'flyspell-prog-text-faces)))
     (setq-local flyspell-prog-text-faces
-      (seq-filter (lambda (face) (dziman/spell-face-inherits-p face base-faces)) (face-list)))
+      (seq-filter (lambda (face)
+                    ;; Regex literal faces inherit the string face, but hold no words
+                    (and (not (string-match-p "regex" (symbol-name face)))
+                      (dziman/spell-face-inherits-p face base-faces)))
+        (face-list)))
     )
   )
 

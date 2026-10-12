@@ -29,7 +29,7 @@
   "Command listing the folders under ROOT, one per line, hidden ones skipped."
   (let ((fd (executable-find "fd")))
     (if fd
-      (list fd "--type" "d" "--color" "never" "." root)
+      (list fd "--type" "d" "--no-ignore" "--color" "never" "." root)
       (list "find" root "-mindepth" "1" "-name" ".*" "-prune" "-o" "-type" "d" "-print")
       )
     )
@@ -61,9 +61,14 @@ Returns the listing process, or nil when the folder is missing."
           :command (dziman/agenda-folders-command root)
           :sentinel (lambda (process _event)
                       (unless (process-live-p process)
-                        (when (zerop (process-exit-status process))
-                          (setq org-agenda-files
-                            (dziman/agenda-folders-from-output root (with-current-buffer output (buffer-string))))
+                        (let ((listing (with-current-buffer output (buffer-string))))
+                          (unless (zerop (process-exit-status process))
+                            (message "Agenda folders: %s" (string-trim (with-current-buffer errors (buffer-string))))
+                            )
+                          ;; find exits 1 after one unreadable folder but still lists the others
+                          (when (or (zerop (process-exit-status process)) (not (string-empty-p listing)))
+                            (setq org-agenda-files (dziman/agenda-folders-from-output root listing))
+                            )
                           )
                         (kill-buffer output)
                         (kill-buffer errors)
