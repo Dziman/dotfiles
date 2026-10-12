@@ -76,4 +76,11 @@
     )
   )
 
+(ert-deftest dziman-org-hydra/link-view-toggle-shows-whether-links-are-rendered ()
+  (let ((hint (symbol-value 'major-mode-hydras/org-mode/hint)))
+    (should-not (equal (let ((org-link-descriptive t)) (eval hint t))
+                  (let ((org-link-descriptive nil)) (eval hint t))))
+    )
+  )
+
 (provide 'dz-config-org-test)

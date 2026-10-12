@@ -161,7 +161,7 @@
 (setq org-roam-db-location (concat org-roam-directory "/.org-roam/org-roam-sqlite-database.db"))
 (add-hook 'org-mode-hook 'org-roam-db-autosync-mode)
 
-(use-package pretty-hydra) ;; FIXME
+(use-package pretty-hydra)
 (pretty-hydra-define dziman/hydra/org-template
   (:color blue :quit-key "q")
   (
@@ -251,13 +251,13 @@ Empty at top level and before the first heading."
     )
   )
 
-(use-package major-mode-hydra) ;; FIXME
+(use-package major-mode-hydra)
 (major-mode-hydra-define org-mode
   (:color blue)
   (
     "View"
     (
-      ("l" org-toggle-link-display "toggle link view" :toggle t) ;; TODO Write wrapper function so that toggle status works
+      ("l" org-toggle-link-display "toggle link view" :toggle org-link-descriptive)
       ("i" org-indent-mode "toggle indent view" :toggle t)
       )
 
