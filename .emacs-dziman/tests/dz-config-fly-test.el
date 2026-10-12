@@ -45,6 +45,65 @@
     )
   )
 
+;;;;;;;; Spelling in a mode's own comment and string faces
+(defface dziman-fly-test-comment-face '((t :inherit font-lock-comment-face))
+  "Comment face of a mode that names its own faces.")
+
+(defface dziman-fly-test-doc-face '((t :inherit dziman-fly-test-comment-face))
+  "Face two steps away from the comment face.")
+
+(defface dziman-fly-test-string-face '((t :inherit (bold font-lock-string-face)))
+  "Face inheriting from several faces, one of them the string face.")
+
+(defun dziman-fly-test-spell-checked-p (face)
+  "Whether spell checking in a code buffer looks at a word painted with FACE."
+  (with-temp-buffer
+    (let ((prog-mode-hook nil)) (prog-mode))
+    (dziman/spell-prog-text-faces-setup)
+    (insert (propertize "mispeled" 'face face))
+    (goto-char (point-min))
+    (flyspell-generic-progmode-verify)
+    )
+  )
+
+(ert-deftest dziman-fly-faces/standard-comment-face-is-checked ()
+  (should (dziman-fly-test-spell-checked-p 'font-lock-comment-face))
+  )
+
+(ert-deftest dziman-fly-faces/mode-comment-face-is-checked ()
+  (should (dziman-fly-test-spell-checked-p 'dziman-fly-test-comment-face))
+  )
+
+(ert-deftest dziman-fly-faces/face-inheriting-through-another-face-is-checked ()
+  (should (dziman-fly-test-spell-checked-p 'dziman-fly-test-doc-face))
+  )
+
+(ert-deftest dziman-fly-faces/face-inheriting-from-several-faces-is-checked ()
+  (should (dziman-fly-test-spell-checked-p 'dziman-fly-test-string-face))
+  )
+
+(ert-deftest dziman-fly-faces/code-face-is-not-checked ()
+  (should-not (dziman-fly-test-spell-checked-p 'font-lock-keyword-face))
+  )
+
+(ert-deftest dziman-fly-faces/code-buffers-set-up-the-faces ()
+  (should (memq 'dziman/spell-prog-text-faces-setup prog-mode-hook))
+  )
+
+(ert-deftest dziman-fly-faces/swift-comments-are-checked ()
+  ;; A real mode that paints comments with its own face
+  (skip-unless (require 'swift-mode nil t))
+  (with-temp-buffer
+    (let ((swift-mode-hook nil)) (swift-mode))
+    (dziman/spell-prog-text-faces-setup)
+    (insert "// a mispeled note\n")
+    (font-lock-ensure)
+    (goto-char (point-min))
+    (search-forward "mispel")
+    (should (flyspell-generic-progmode-verify))
+    )
+  )
+
 ;;;;;;;; Aspell settings
 (ert-deftest dziman-fly-aspell/aspell-splits-camel-case-and-uses-the-shared-word-list ()
   (let ((ispell-program-name "/opt/homebrew/bin/aspell")

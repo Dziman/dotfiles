@@ -45,6 +45,7 @@ xcode-build-server config -scheme <name> -project <file>.xcodeproj   # or -works
 - No config → `M-p f` formats with Apple swift-format defaults; saving does not.
 - SwiftLint runs only under a `.swiftlint.yml`, from the topmost one, so nested
   configs apply.
+- Spelling is checked in comments, doc comments and strings; code is not.
 
 ## Keys
 
