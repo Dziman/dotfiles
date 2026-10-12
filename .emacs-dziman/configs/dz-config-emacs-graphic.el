@@ -10,9 +10,6 @@
   ;; Show top menu
   (menu-bar-mode t)
 
-  ;; Use icons in LSP breadcrumbs
-  (setq lsp-headerline-breadcrumb-icons-enable t)
-
   ;; ------------------------------------------------------------
   ;; Platform-Specific Configuration
   ;; ------------------------------------------------------------
