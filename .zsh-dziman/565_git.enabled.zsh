@@ -61,12 +61,17 @@ function git-delete-branch() {
   local remote=${2:-origin}
   local current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
 
-  git push $remote :$branch
-
   if [[ "$branch" == "$current_branch" ]]; then
-    # TODO Use function param or get default branch??
-    git switch develop || git switch master
+    local default_branch=$(git symbolic-ref --short refs/remotes/$remote/HEAD 2>/dev/null)
+    # A repo made with `git init` + push never recorded the remote's default branch
+    if [[ -z "$default_branch" ]]; then
+      git remote set-head $remote --auto >/dev/null || return
+      default_branch=$(git symbolic-ref --short refs/remotes/$remote/HEAD)
+    fi
+    git switch ${default_branch#$remote/} || return
   fi
+
+  git push $remote :$branch
 
   git branch -D $branch
 
