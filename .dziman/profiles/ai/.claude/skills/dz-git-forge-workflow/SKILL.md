@@ -51,7 +51,7 @@ Use `--host git.nasha.casa` when the host is not already configured. Check authe
 | `gh pr merge` | `fj pr merge` |
 | `gh pr checkout` | `fj pr checkout` |
 | `gh pr diff` | `fj pr view <id> diff` |
-| `gh pr review` | No direct equivalent; `fj pr review list` only reads reviews |
+| `gh pr review` | No approve or request-changes; for conversations use `fj pr review conversations`, `show`, `reply`, `resolve`, `unresolve` |
 | `gh release list/view` | `fj release list/view` |
 | `gh release create` | `fj release create` |
 | `gh release edit/delete` | `fj release edit/delete` |
@@ -79,6 +79,11 @@ Use non-interactive body options when available:
     fj pr status <id>
     fj pr status --wait <id>
     fj pr comment <id> '<body>'
+    fj pr review <pr> list --comments --all
+    fj pr review <pr> conversations --unresolved
+    fj pr review <pr> show <comment>
+    fj pr review <pr> reply <comment> --body-file <file>
+    fj pr review <pr> resolve <comment>...
     fj release create --repo <owner/repo> --tag <tag> --body '<body>' '<name>'
     fj actions tasks --repo <owner/repo>
     fj actions dispatch --repo <owner/repo> <workflow> <ref>
@@ -91,7 +96,8 @@ Use non-interactive body options when available:
 
 - `fj pr list` is not a command in the installed CLI; use `fj pr search`.
 - `gh pr checks` maps to `fj pr status`, not `fj pr checks`.
-- `fj pr review` lists reviews; it does not provide the GitHub review-submission workflow.
+- `fj pr review` reads and answers review conversations, but cannot approve or request changes. `reply`, `resolve` and `unresolve` need a server running our Forgejo fork (v16.0.6-dz.1 or later); git.nasha.casa answers that it lacks the API until it runs the fork. Any comment id of a conversation names it, with or without `#`.
+- Up to fj 0.6.0-dz.1, `fj pr create --body` fails with `expected header` in a repo whose PR template is a form. Open the PR by AGit push instead: `git push <remote> <branch>:refs/for/<base> -o topic=<slug> -o title=<title> -o description=<body>`.
 - Do not assume `--title`, `--state`, `--assignee`, or `--generate-notes` exists. Confirm it with leaf help.
 - Use `--body` or `--body-file` where supported to avoid an editor. `fj release create` uses `--body` and has no documented `--body-file`.
 - If no direct `fj` command exists, stop and report that gap. Do not silently fall back to `gh`, `glab`, or an unverified API call.
