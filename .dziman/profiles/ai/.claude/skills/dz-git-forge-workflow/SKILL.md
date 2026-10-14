@@ -79,6 +79,10 @@ Use non-interactive body options when available:
     fj pr status <id>
     fj pr status --wait <id>
     fj pr comment <id> '<body>'
+    fj pr view <pr> --json
+    fj pr review <pr> list --json
+    fj pr review <pr> conversations --unresolved --json
+    fj pr review <pr> create --file review.json
     fj pr review <pr> list --comments --all
     fj pr review <pr> conversations --unresolved
     fj pr review <pr> show <comment>
@@ -96,7 +100,8 @@ Use non-interactive body options when available:
 
 - `fj pr list` is not a command in the installed CLI; use `fj pr search`.
 - `gh pr checks` maps to `fj pr status`, not `fj pr checks`.
-- `fj pr review` reads and answers review conversations, but cannot approve or request changes. `reply`, `resolve` and `unresolve` need a server running our Forgejo fork (v16.0.6-dz.1 or later), as git.nasha.casa does; a stock Forgejo answers that it lacks the API. Any comment id of a conversation names it, with or without `#`.
+- `fj pr review create --file review.json` posts a review in one request: `body`, `event` (`COMMENT`, `APPROVED` or `REQUEST_CHANGES`; fj refuses anything else, since Forgejo would store it as a silent draft), an optional `commit_id` (may be abbreviated to 7 or more characters), and `comments` with `path`, `new_position`/`old_position` and `body`. A comment on a line the diff does not show goes into the review text under "Not placed" instead of failing the review. `reply`, `resolve` and `unresolve` need a server running our Forgejo fork (v16.0.6-dz.1 or later), as git.nasha.casa does; a stock Forgejo answers that it lacks the API. Any comment id of a conversation names it, with or without `#`.
+- `--json` on `pr view`, `pr review list`, `conversations` and `show` prints the server's own objects (conversations: `id`, `review_id`, `path`, `line`, `resolved`, `resolver`, `comments`); read fields from it instead of parsing text.
 - Up to fj 0.6.0-dz.1, `fj pr create --body` fails with `expected header` in a repo whose PR template is a form; 0.6.0-dz.2 fixes it. With an older fj, open the PR by AGit push instead: `git push <remote> <branch>:refs/for/<base> -o topic=<slug> -o title=<title> -o description=<body>`.
 - Do not assume `--title`, `--state`, `--assignee`, or `--generate-notes` exists. Confirm it with leaf help.
 - Use `--body` or `--body-file` where supported to avoid an editor. `fj release create` uses `--body` and has no documented `--body-file`.
