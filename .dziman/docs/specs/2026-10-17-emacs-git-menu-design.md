@@ -1,7 +1,7 @@
 # Emacs git menu — design
 
 Date: 2026-10-17
-Status: approved design, not implemented
+Status: approved design, implemented
 
 ## Goal
 

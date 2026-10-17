@@ -51,7 +51,7 @@ The user's git config and hooks are ignored; buffers BODY opens are killed after
        (unwind-protect
            (progn ,@body)
          (dolist (buffer (buffer-list))
-           (unless (memq buffer ,buffers)
+           (when (and (buffer-live-p buffer) (not (memq buffer ,buffers)))
              (with-current-buffer buffer (set-buffer-modified-p nil))
              (kill-buffer buffer)
              )

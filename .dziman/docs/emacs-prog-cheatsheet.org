@@ -211,7 +211,7 @@ Spelling (comments and strings only):
 | =a=       | add to git (untracked file)                                     |
 | =k=       | discard all changes (asks first)                                |
 | =o=       | open the file as it is on another branch                        |
-| =R= / =K= | rename / delete through git                                     |
+| =R= / =K= | rename / delete through git (delete asks first)                 |
 | =t=       | step through file history                                       |
 | =h=       | changed hunks menu (below)                                      |
 | =#=       | pull request for this line: =l= link, =b= browser, =e= in Emacs |

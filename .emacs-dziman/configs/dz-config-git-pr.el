@@ -34,9 +34,10 @@ Signals `user-error' with the first line of stderr when PROGRAM fails."
     )
   )
 
-(defun dziman/git-pr--fj-hosts ()
-  "Hosts `fj' is logged into; empty when `fj' fails, e.g. logged out."
-  (or dziman/git-pr--fj-hosts-cache
+(defun dziman/git-pr--fj-hosts (&optional reread)
+  "Hosts `fj' is logged into; empty when `fj' fails, e.g. logged out.
+Read once and cached, or read again with REREAD."
+  (when (or reread (not dziman/git-pr--fj-hosts-cache))
     (setq dziman/git-pr--fj-hosts-cache
       (condition-case nil
         (split-string (dziman/git-pr--run "fj" "auth" "list") "\n" t "[ \t]+")
@@ -44,6 +45,7 @@ Signals `user-error' with the first line of stderr when PROGRAM fails."
         )
       )
     )
+  dziman/git-pr--fj-hosts-cache
   )
 
 (defun dziman/git-pr-host-tool (host)
@@ -52,7 +54,10 @@ Signals `user-error' with the first line of stderr when PROGRAM fails."
   (cond
     ((not host) nil)
     ((equal host "github.com") (and (executable-find "gh") 'gh))
-    ((and (executable-find "fj") (member host (dziman/git-pr--fj-hosts))) 'fj)
+    ((and (executable-find "fj")
+       ;; Read again for a host not seen yet: fj may have logged into it since
+       (or (member host (dziman/git-pr--fj-hosts)) (member host (dziman/git-pr--fj-hosts t))))
+      'fj)
     )
   )
 
@@ -102,25 +107,32 @@ Matches \"(#42)\" and \"Merge pull request #42\"."
 
 (defun dziman/git-pr--number-containing (sha heads)
   "Number of the PR in HEADS whose commits include SHA, or nil.
-A later PR built on top of the branch also contains SHA, so the PR whose last
-commit is closest to SHA wins."
-  (let (candidates)
+Only heads on the current branch's history from SHA on count. A later PR built
+on top also contains SHA, so the PR whose last commit is closest to SHA wins."
+  (let ((descendants (cons sha (magit-git-lines "rev-list" "--ancestry-path" "--reverse" (concat sha "..HEAD"))))
+        best best-distance)
     (pcase-dolist (`(,number . ,head) heads)
-      (when (and (magit-commit-p head) (magit-git-success "merge-base" "--is-ancestor" sha head))
-        (push (list (string-to-number (magit-git-string "rev-list" "--count" (concat sha ".." head))) number)
-          candidates)
+      (let ((distance (seq-position descendants head)))
+        (when (and distance (or (not best) (< distance best-distance) (and (= distance best-distance) (< number best))))
+          (setq best number best-distance distance)
+          )
         )
       )
-    (cadr (car (sort candidates (lambda (a b) (or (< (car a) (car b))
-                                                 (and (= (car a) (car b)) (< (cadr a) (cadr b))))))))
+    best
     )
   )
 
+(defvar dziman/git-pr--skipped nil
+  "Lookup steps the last `dziman/git-pr-find' skipped, as \"STEP: REASON\" strings.")
+
 (defun dziman/git-pr--asking (what lookup)
-  "Call LOOKUP, which may reach the network; on failure note it and return nil."
+  "Call LOOKUP, which may reach the network; on failure note it and return :failed."
   (condition-case err
     (funcall lookup)
-    (user-error (message "Skipped %s: %s" what (error-message-string err)) nil)
+    (user-error
+      (push (format "%s: %s" what (error-message-string err)) dziman/git-pr--skipped)
+      :failed
+      )
     )
   )
 
@@ -128,20 +140,27 @@ commit is closest to SHA wins."
   "Number of the pull request that brought commit SHA in, or nil.
 Tries each merge style in turn: squash and merge commits from local history,
 then GitHub's lookup, then the PR heads REMOTE publishes."
-  (let* ((url (and remote (magit-get "remote" remote "url")))
-         (host-and-path (and url (dziman/git-remote-host-and-path url))))
-    (or
-      (dziman/git-pr-number-in-subject (dziman/git-pr--subject sha))
-      (let ((merge (dziman/git-pr--merge-commit sha)))
-        (and merge (dziman/git-pr-number-in-subject (dziman/git-pr--subject merge)))
-        )
-      (and (equal (car host-and-path) "github.com") (eq (dziman/git-pr-host-tool "github.com") 'gh)
-        (dziman/git-pr--asking "GitHub lookup"
-          (lambda () (dziman/git-pr--github-number (cdr host-and-path) sha)))
-        )
-      (and host-and-path
-        (dziman/git-pr--asking "PR heads"
-          (lambda () (dziman/git-pr--number-containing sha (dziman/git-pr--pull-heads remote))))
+  (setq dziman/git-pr--skipped nil)
+  (let* ((url (and remote (magit-git-string "remote" "get-url" remote)))
+         (host-and-path (and url (dziman/git-remote-host-and-path url)))
+         (github (and (equal (car host-and-path) "github.com") (eq (dziman/git-pr-host-tool "github.com") 'gh)))
+         (local (or (dziman/git-pr-number-in-subject (dziman/git-pr--subject sha))
+                  (let ((merge (dziman/git-pr--merge-commit sha)))
+                    (and merge (dziman/git-pr-number-in-subject (dziman/git-pr--subject merge)))
+                    )))
+         (asked-github (and (not local) github
+                         (dziman/git-pr--asking "GitHub lookup"
+                           (lambda () (dziman/git-pr--github-number (cdr host-and-path) sha))))))
+    (cond
+      (local local)
+      ((integerp asked-github) asked-github)
+      ;; GitHub's answer covers every merge style, so its "none" is final
+      ((and github (not (eq asked-github :failed))) nil)
+      (host-and-path
+        (let ((number (dziman/git-pr--asking "PR heads"
+                        (lambda () (dziman/git-pr--number-containing sha (dziman/git-pr--pull-heads remote))))))
+          (and (integerp number) number)
+          )
         )
       )
     )
@@ -158,14 +177,15 @@ then GitHub's lookup, then the PR heads REMOTE publishes."
   "Commit of the current line, or nil when the line is not committed.
 Blames the buffer's text, so unsaved edits do not shift lines."
   (let* ((root (magit-toplevel))
-         (file (file-relative-name buffer-file-name root))
-         (line (line-number-at-pos))
+         (file (file-relative-name (buffer-file-name (buffer-base-buffer)) root))
+         (line (line-number-at-pos nil t))
+         (coding buffer-file-coding-system)
          (text (save-restriction (widen) (buffer-string))))
     (with-temp-buffer
       (insert text)
       (let ((default-directory root))
-        (when (eql 0 (call-process-region (point-min) (point-max) "git" t t nil
-                       "blame" "--porcelain" "-L" (format "%d,%d" line line) "--contents" "-" "--" file))
+        (when (eql 0 (let ((coding-system-for-write coding)) (call-process-region (point-min) (point-max) "git" t t nil
+                       "blame" "--porcelain" "-L" (format "%d,%d" line line) "--contents" "-" "--" file)))
           (goto-char (point-min))
           (let ((sha (current-word)))
             (and sha (not (string-match-p "\\`0+\\'" sha)) sha)
@@ -178,8 +198,7 @@ Blames the buffer's text, so unsaved edits do not shift lines."
 
 ;;;;;;;; PR key and the one-key choice
 (defun dziman/git-pr-available-p ()
-  "True when the menu was opened on a visited tracked file.
-And when a CLI serves the remote's host."
+  "True on a visited tracked file whose remote's host a forge CLI serves."
   (and (dziman/git--ctx :file-buffer) (dziman/git--ctx :tracked)
     (dziman/git-pr-host-tool (dziman/git--ctx :remote-host)))
   )
@@ -187,7 +206,7 @@ And when a CLI serves the remote's host."
 (defun dziman/git-pr-at-line ()
   "Find the pull request that brought in the current line.
 When there is none, offer to show the line's commit instead."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (let ((sha (dziman/git-pr--line-commit)))
     (unless sha
       (user-error "This line is not committed yet")
@@ -202,7 +221,10 @@ When there is none, offer to show the line's commit instead."
         (transient-setup 'dziman/git-pr-choice nil nil
           :scope (list :tool (dziman/git-pr-host-tool host) :root root :host host :repo-path repo-path
                    :remote remote :number number :url (dziman/git-pr-url host repo-path number)))
-        (when (y-or-n-p (format "No pull request found for %s. Show the commit? " (substring sha 0 7)))
+        (when (y-or-n-p (format "No pull request found for %s%s. Show the commit? " (substring sha 0 7)
+                          (if dziman/git-pr--skipped
+                            (format " (skipped %s)" (string-join (reverse dziman/git-pr--skipped) "; "))
+                            "")))
           (let ((default-directory root)) (magit-show-commit sha))
           )
         )
@@ -210,10 +232,15 @@ When there is none, offer to show the line's commit instead."
     )
   )
 
+(defun dziman/git-pr--choice-scope ()
+  "The pull request the choice menu is open for."
+  (or (transient-scope) (user-error "Open it from the git menu's pull request key"))
+  )
+
 (defun dziman/git-pr-copy-link ()
   "Copy the pull request's link."
   (interactive)
-  (let ((url (plist-get (transient-scope) :url)))
+  (let ((url (plist-get (dziman/git-pr--choice-scope) :url)))
     (kill-new url)
     (message "Copied %s" url)
     )
@@ -221,13 +248,13 @@ When there is none, offer to show the line's commit instead."
 
 (defun dziman/git-pr-browse ()
   (interactive)
-  (browse-url (plist-get (transient-scope) :url))
+  (browse-url (plist-get (dziman/git-pr--choice-scope) :url))
   )
 
 (defun dziman/git-pr-show ()
   "Show the pull request in an Emacs buffer."
   (interactive)
-  (dziman/git-pr-view (transient-scope))
+  (dziman/git-pr-view (dziman/git-pr--choice-scope))
   )
 
 (transient-define-prefix dziman/git-pr-choice ()

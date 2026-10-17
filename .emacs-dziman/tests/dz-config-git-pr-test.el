@@ -73,6 +73,13 @@ HANDLER gets the program and its argument list. `gh' and `fj' count as installed
     )
   )
 
+(ert-deftest dziman-git-pr-host/new-fj-login-is-seen-without-restart ()
+  (dziman-git-test-with-cli (lambda (_program _args) "a.example.org\nb.example.org\n")
+    (setq dziman/git-pr--fj-hosts-cache '("a.example.org"))
+    (should (eq (dziman/git-pr-host-tool "b.example.org") 'fj))
+    )
+  )
+
 ;;;;;;;; Finding the PR of a commit
 (ert-deftest dziman-git-pr-find/squash-commit-found-without-network ()
   (dziman-git-test-with-repo
@@ -137,6 +144,17 @@ HANDLER gets the program and its argument list. `gh' and `fj' count as installed
     (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
     (let ((commit (dziman-git-test-commit "b.txt" "b\n" "Add b")))
       (dziman-git-test-with-cli (dziman-git-test-pull-heads 3 "0123456789abcdef0123456789abcdef01234567")
+        (should-not (dziman/git-pr-find commit "origin"))
+        )
+      )
+    )
+  )
+
+(ert-deftest dziman-git-pr-find/github-answer-is-final ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-fake-remote "origin" "git@github.com:me/repo.git")
+    (let ((commit (dziman-git-test-commit "b.txt" "b\n" "Add b")))
+      (dziman-git-test-with-cli (lambda (program args) (if (equal program "gh") "" (dziman-git-test-no-network program args)))
         (should-not (dziman/git-pr-find commit "origin"))
         )
       )
@@ -262,6 +280,32 @@ with the menu context set from that buffer."
     )
   )
 
+(ert-deftest dziman-git-pr-at-line/offline-lookup-says-what-was-skipped ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+    (let (prompt)
+      (cl-letf (((symbol-function 'dziman/git-pr--run)
+                  (lambda (program &rest args)
+                    (if (equal args '("auth" "list")) "git.example.org\n" (user-error "%s failed: Could not resolve host" program))))
+                ((symbol-function 'executable-find) (lambda (name &rest _) name))
+                ((symbol-function 'y-or-n-p) (lambda (question) (setq prompt question) nil)))
+        (setq dziman/git-pr--fj-hosts-cache nil)
+        (with-current-buffer (find-file-noselect (expand-file-name "a.txt"))
+          (setq dziman/git--context (dziman/git-context))
+          (dziman/git-pr-at-line)
+          )
+        )
+      (should (string-match-p "Could not resolve host" (or prompt "")))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-pr-choice/link-outside-the-pr-menu-says-so ()
+  (cl-letf (((symbol-function 'transient-scope) (lambda (&rest _) nil)))
+    (should-error (dziman/git-pr-copy-link) :type 'user-error)
+    )
+  )
+
 (ert-deftest dziman-git-pr-choice/link-is-copied ()
   (cl-letf (((symbol-function 'transient-scope) (lambda (&rest _) dziman-git-test-scope)))
     (dziman/git-pr-copy-link)
@@ -312,6 +356,36 @@ with the menu context set from that buffer."
 (ert-deftest dziman-git-pr-available/visited-file-on-forgejo-has-pr-key ()
   (dziman-git-test-on-a-txt-of-forgejo-repo
     (should (dziman/git-pr-available-p))
+    )
+  )
+
+(ert-deftest dziman-git-pr-line/narrowed-buffer-blames-the-right-line ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-b-txt-commit)
+    (with-current-buffer (find-file-noselect (expand-file-name "b.txt"))
+      (goto-char (point-max))
+      (insert "z\n")
+      (forward-line -1)
+      (narrow-to-region (line-beginning-position) (point-max))
+      (should-not (dziman/git-pr--line-commit))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-pr-line/windows-line-endings-keep-the-commit ()
+  (dziman-git-test-with-repo
+    (let ((coding-system-for-write 'no-conversion))
+      (with-temp-file "w.txt" (insert "x\r\ny\r\n"))
+      )
+    (let ((commit (progn (dziman-git-test-git "add" "w.txt")
+                    (dziman-git-test-git "commit" "-q" "-m" "Add w")
+                    (dziman-git-test-git "rev-parse" "HEAD"))))
+      (with-current-buffer (find-file-noselect (expand-file-name "w.txt"))
+        (goto-char (point-min))
+        (forward-line 1)
+        (should (equal (dziman/git-pr--line-commit) commit))
+        )
+      )
     )
   )
 

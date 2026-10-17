@@ -215,6 +215,77 @@
     )
   )
 
+(ert-deftest dziman-git-context/staged-file-in-empty-repo-can-be-committed ()
+  (dziman-git-test-with-dir
+    (dziman-git-test-git "init" "-q" "-b" "main")
+    (with-temp-file "a.txt" (insert "one\n"))
+    (dziman-git-test-git "add" "a.txt")
+    (let ((context (dziman-git-test-context-of "a.txt")))
+      (should (plist-get context :staged))
+      (should (plist-get context :staged-any))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-context/committed-file-is-in-last-commit ()
+  (dziman-git-test-with-repo
+    (should (plist-get (dziman-git-test-context-of "a.txt") :in-head))
+    )
+  )
+
+(ert-deftest dziman-git-context/newly-added-file-is-not-in-last-commit ()
+  (dziman-git-test-with-repo
+    (with-temp-file "b.txt" (insert "new\n"))
+    (dziman-git-test-git "add" "b.txt")
+    (let ((context (dziman-git-test-context-of "b.txt")))
+      (should (plist-get context :tracked))
+      (should-not (plist-get context :in-head))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-context/git-internal-file-cannot-be-added ()
+  (dziman-git-test-with-repo
+    (should-not (plist-get (dziman-git-test-context-of ".git/config") :untracked))
+    )
+  )
+
+(ert-deftest dziman-git-context/unsaved-new-file-cannot-be-added-yet ()
+  (dziman-git-test-with-repo
+    (should-not (plist-get (dziman-git-test-context-of "c.txt") :untracked))
+    )
+  )
+
+(ert-deftest dziman-git-context/selected-lines-of-new-file-have-no-history ()
+  (dziman-git-test-with-repo
+    (with-temp-file "b.txt" (insert "new\nlines\n"))
+    (with-current-buffer (find-file-noselect (expand-file-name "b.txt"))
+      (transient-mark-mode 1)
+      (push-mark (point-min) t t)
+      (goto-char (point-max))
+      (should-not (plist-get (dziman/git-context) :region))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-context/url-shorthand-resolves-to-its-host ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-git "config" "url.git@github.com:.insteadOf" "gh:")
+    (dziman-git-test-fake-remote "origin" "gh:me/repo.git")
+    (should (equal (plist-get (dziman-git-test-context-of "a.txt") :remote-host) "github.com"))
+    )
+  )
+
+(ert-deftest dziman-git-context/indirect-buffer-gives-its-file ()
+  (dziman-git-test-with-repo
+    (let ((base (find-file-noselect (expand-file-name "a.txt"))))
+      (with-current-buffer (make-indirect-buffer base "a.txt indirect")
+        (should (equal (plist-get (dziman/git-context) :file) (expand-file-name "a.txt")))
+        )
+      )
+    )
+  )
+
 (ert-deftest dziman-git-context/known-forge-host-allows-web-links ()
   (dziman-git-test-with-repo
     (dziman-git-test-fake-remote "origin" "git@github.com:me/repo.git")
@@ -237,20 +308,20 @@
      )
   )
 
-(dziman-git-test-key file-history-needs-a-tracked-file dziman/git--menu "l" dziman/git--tracked-p)
+(dziman-git-test-key file-history-needs-a-committed-file dziman/git--menu "l" dziman/git--in-head-p)
 (dziman-git-test-key lines-history-needs-selected-lines dziman/git--menu "L" dziman/git--region-p)
-(dziman-git-test-key blame-needs-a-tracked-file dziman/git--menu "b" dziman/git--tracked-p)
-(dziman-git-test-key diff-with-last-commit-needs-changes dziman/git--menu "d" dziman/git--modified-p)
-(dziman-git-test-key file-diff-with-default-needs-a-feature-branch dziman/git--menu "D" dziman/git--tracked-off-default-p)
+(dziman-git-test-key blame-needs-a-committed-file dziman/git--menu "b" dziman/git--in-head-p)
+(dziman-git-test-key diff-with-last-commit-needs-changes-to-a-committed-file dziman/git--menu "d" dziman/git--modified-in-head-p)
+(dziman-git-test-key file-diff-with-default-needs-a-feature-branch dziman/git--menu "D" dziman/git--in-head-off-default-p)
 (dziman-git-test-key stage-needs-unstaged-changes dziman/git--menu "s" dziman/git--unstaged-p)
 (dziman-git-test-key unstage-needs-staged-changes dziman/git--menu "u" dziman/git--staged-p)
 (dziman-git-test-key add-needs-an-untracked-file dziman/git--menu "a" dziman/git--untracked-p)
-(dziman-git-test-key discard-needs-changes dziman/git--menu "k" dziman/git--modified-p)
+(dziman-git-test-key discard-needs-changes-to-a-committed-file dziman/git--menu "k" dziman/git--modified-in-head-p)
 (dziman-git-test-key open-from-branch-needs-a-tracked-file dziman/git--menu "o" dziman/git--tracked-p)
 (dziman-git-test-key rename-needs-a-tracked-file dziman/git--menu "R" dziman/git--tracked-p)
 (dziman-git-test-key delete-needs-a-tracked-file dziman/git--menu "K" dziman/git--tracked-p)
-(dziman-git-test-key history-stepping-needs-a-visited-tracked-file dziman/git--menu "t" dziman/git--file-buffer-tracked-p)
-(dziman-git-test-key hunks-need-a-visited-changed-file dziman/git--menu "h" dziman/git--file-buffer-modified-p)
+(dziman-git-test-key history-stepping-needs-a-visited-committed-file dziman/git--menu "t" dziman/git--file-buffer-in-head-p)
+(dziman-git-test-key hunks-need-a-visited-committed-file dziman/git--menu "h" dziman/git--file-buffer-in-head-p)
 (dziman-git-test-key file-link-needs-a-known-forge dziman/git--menu "w f" dziman/git--web-link-p)
 (dziman-git-test-key commit-link-needs-a-commit-at-point dziman/git--menu "w c" dziman/git--commit-at-point-p)
 (dziman-git-test-key home-page-link-needs-a-known-forge dziman/git--menu "w h" dziman/git--web-link-p)
@@ -367,6 +438,38 @@
     )
   )
 
+(ert-deftest dziman-git-menu/delete-asks-first ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-open-menu-context-of "a.txt")
+    (cl-letf (((symbol-function 'yes-or-no-p) (lambda (_prompt) nil)))
+      (dziman/git-file-delete)
+      )
+    (should (file-exists-p "a.txt"))
+    )
+  )
+
+(ert-deftest dziman-git-menu/delete-removes-the-file-from-git ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-open-menu-context-of "a.txt")
+    (cl-letf (((symbol-function 'yes-or-no-p) (lambda (_prompt) t)))
+      (dziman/git-file-delete)
+      )
+    (should-not (file-exists-p "a.txt"))
+    (should (equal (dziman-git-test-git "diff" "--cached" "--name-only") "a.txt"))
+    )
+  )
+
+(ert-deftest dziman-git-menu/command-run-without-menu-uses-current-buffer ()
+  (dziman-git-test-with-repo
+    (with-temp-file "a.txt" (insert "two\n"))
+    (setq dziman/git--context '(:repo "/nonexistent/" :file "/nonexistent/x.txt"))
+    (with-current-buffer (find-file-noselect (expand-file-name "a.txt"))
+      (ignore-errors (call-interactively #'dziman/git-file-stage))
+      )
+    (should (equal (dziman-git-test-git "diff" "--cached" "--name-only") "a.txt"))
+    )
+  )
+
 (ert-deftest dziman-git-menu/refresh-default-asks-remote-for-its-head ()
   (dziman-git-test-with-repo
     (dziman-git-test-on-feature-branch-with-develop-default)
@@ -420,6 +523,13 @@
   )
 
 (dziman-git-test-key pr-key-needs-a-pr-tool dziman/git--menu "#" dziman/git-pr-available-p)
+(ert-deftest dziman-git-conflict/rebase-keep-theirs-keeps-the-branch-rebased-onto ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-rebase-conflict-on-a-txt)
+    (should (equal (dziman-git-test-keep #'dziman/git-conflict-keep-theirs) "mine\n"))
+    )
+  )
+
 (dziman-git-test-key conflict-key-needs-a-conflicted-file dziman/git--menu "!" dziman/git--conflicted-p)
 
 (ert-deftest dziman-git-conflict/every-conflict-key-keeps-the-menu-open ()

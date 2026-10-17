@@ -114,8 +114,10 @@
   )
 
 (defun dziman/git-pr--file-diff (diff path)
-  "The part of DIFF that changes PATH, or nil."
-  (let ((start (string-search (format "diff --git a/%s " path) diff)))
+  "The part of DIFF that changes PATH, or nil.
+A renamed file is found by its new name."
+  (let ((start (and (string-match (format "^diff --git a/.* b/%s$" (regexp-quote path)) diff)
+                 (match-beginning 0))))
     (when start
       (let ((end (string-search "\ndiff --git " diff start)))
         (substring diff start (and end (1+ end)))
@@ -139,7 +141,7 @@
 (defun dziman/git-pr--render-markdown (text)
   "TEXT with Markdown faces, for insertion into a buffer in another mode."
   (with-temp-buffer
-    (insert text)
+    (insert (string-replace "\r\n" "\n" text))
     (delay-mode-hooks (gfm-mode))
     (font-lock-ensure)
     (let ((position (point-min)))

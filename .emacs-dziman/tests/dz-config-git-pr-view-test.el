@@ -143,6 +143,16 @@ new file mode 100644
     )
   )
 
+(ert-deftest dziman-git-pr-view-parse/renamed-file-diff-is-found ()
+  (let ((diff "diff --git a/old.txt b/new.txt\nsimilarity index 100%\nrename from old.txt\nrename to new.txt\n"))
+    (should (equal (dziman/git-pr--file-diff diff "new.txt") diff))
+    )
+  )
+
+(ert-deftest dziman-git-pr-view-parse/windows-line-endings-leave-no-carriage-returns ()
+  (should-not (string-search "\r" (dziman/git-pr--render-markdown "## What\r\nOne link.\r\n")))
+  )
+
 ;;;;;;;; The view buffer
 (ert-deftest dziman-git-pr-view/buffer-shows-title-state-branches-commits-files ()
   (dziman-git-test-in-pr-view

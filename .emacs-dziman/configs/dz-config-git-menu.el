@@ -33,11 +33,12 @@ else `upstream', else `origin'. Nil when none of them exists."
     )
   )
 
-(defun dziman/git-default-branch ()
+(defun dziman/git-default-branch (&optional remote)
   "The default branch as a revision, or nil if none is found.
-The default remote's HEAD as recorded at clone time (\"origin/main\"),
-else the first local `develop', `main' or `master'."
-  (let ((remote (dziman/git-default-remote)))
+REMOTE's HEAD as recorded at clone time (\"origin/main\"), REMOTE
+defaulting to `dziman/git-default-remote'; else the first local `develop',
+`main' or `master'."
+  (let ((remote (or remote (dziman/git-default-remote))))
     (or
       (and remote
         (magit-git-string "symbolic-ref" "--quiet" "--short" (format "refs/remotes/%s/HEAD" remote)))
@@ -62,7 +63,7 @@ The visited file, or the regular file under the dired cursor."
     (let ((file (dired-get-filename nil t)))
       (and file (file-regular-p file) file)
       )
-    buffer-file-name
+    (buffer-file-name (buffer-base-buffer))
     )
   )
 
@@ -87,13 +88,15 @@ Outside a repository only `:repo' is present, and it is nil."
              (default-directory repo)
              (relative (and file (file-in-directory-p file repo) (file-relative-name file repo)))
              (tracked (and relative (magit-file-tracked-p relative)))
-             (untracked (and relative (not tracked) (not (magit-git-success "check-ignore" "-q" relative))))
+             (untracked (and relative (not tracked) (file-exists-p file)
+                          (magit-git-string "ls-files" "--others" "--exclude-standard" "--" relative)))
              (has-commits (and (magit-rev-verify "HEAD") t))
+             (in-head (and tracked has-commits (magit-git-success "cat-file" "-e" (concat "HEAD:" relative))))
              (branch (magit-get-current-branch))
              (remote (dziman/git-default-remote))
-             (host-and-path (and remote (dziman/git-remote-host-and-path (or (magit-get "remote" remote "url") ""))))
+             (host-and-path (and remote (dziman/git-remote-host-and-path (or (magit-git-string "remote" "get-url" remote) ""))))
              (host (car host-and-path))
-             (default-branch (and has-commits (dziman/git-default-branch)))
+             (default-branch (and has-commits (dziman/git-default-branch remote)))
              (web-link (and host (seq-some (lambda (entry) (string-match-p (car entry) host)) git-link-remote-alist) t))
              (off-default (and branch default-branch
                             (not (equal branch (if remote (string-remove-prefix (concat remote "/") default-branch) default-branch)))))
@@ -103,11 +106,12 @@ Outside a repository only `:repo' is present, and it is nil."
           :file (and relative file)
           :file-buffer (and relative file-buffer t)
           :tracked (and tracked t)
+          :in-head (and in-head t)
           :untracked (and untracked t)
           :unstaged (and tracked (magit-anything-unstaged-p nil relative) t)
-          :staged (and tracked has-commits (magit-anything-staged-p nil relative) t)
+          :staged (and tracked (magit-anything-staged-p nil relative) t)
           :conflicted (and relative (member relative (magit-unmerged-files)) t)
-          :region (and relative region t)
+          :region (and in-head region t)
           :branch branch
           :remote remote
           :remote-host host
@@ -116,7 +120,7 @@ Outside a repository only `:repo' is present, and it is nil."
           :off-default (and off-default t)
           :upstream (and branch (magit-get-upstream-branch branch) t)
           :stash (and (magit-rev-verify "refs/stash") t)
-          :staged-any (and has-commits (magit-anything-staged-p) t)
+          :staged-any (and (magit-anything-staged-p) t)
           :modified-any (and has-commits (magit-anything-modified-p) t)
           :has-commits has-commits
           :web-link web-link
@@ -138,6 +142,7 @@ Outside a repository only `:repo' is present, and it is nil."
 (dziman/git--define-flag-predicates
   (dziman/git--repo-p :repo)
   (dziman/git--tracked-p :tracked)
+  (dziman/git--in-head-p :in-head)
   (dziman/git--untracked-p :untracked)
   (dziman/git--unstaged-p :unstaged)
   (dziman/git--staged-p :staged)
@@ -159,16 +164,16 @@ Outside a repository only `:repo' is present, and it is nil."
   (or (dziman/git--unstaged-p) (dziman/git--staged-p))
   )
 
-(defun dziman/git--file-buffer-tracked-p ()
-  (and (dziman/git--ctx :file-buffer) (dziman/git--tracked-p))
+(defun dziman/git--modified-in-head-p ()
+  (and (dziman/git--in-head-p) (dziman/git--modified-p))
   )
 
-(defun dziman/git--file-buffer-modified-p ()
-  (and (dziman/git--ctx :file-buffer) (dziman/git--modified-p))
+(defun dziman/git--file-buffer-in-head-p ()
+  (and (dziman/git--ctx :file-buffer) (dziman/git--in-head-p))
   )
 
-(defun dziman/git--tracked-off-default-p ()
-  (and (dziman/git--tracked-p) (dziman/git--off-default-p))
+(defun dziman/git--in-head-off-default-p ()
+  (and (dziman/git--in-head-p) (dziman/git--off-default-p))
   )
 
 (defun dziman/git--branch-remote-p ()
@@ -176,6 +181,15 @@ Outside a repository only `:repo' is present, and it is nil."
   )
 
 ;;;;;;;; File actions, on the visited file or the one under the dired cursor
+(defun dziman/git--context-outside-menu ()
+  "Read the current buffer's context when a git command runs without the menu.
+For an `interactive' form, so it returns no arguments."
+  (unless transient-current-prefix
+    (setq dziman/git--context (dziman/git-context))
+    )
+  nil
+  )
+
 (defmacro dziman/git--in-repo (&rest body)
   `(let ((default-directory (dziman/git--ctx :repo)))
      ,@body
@@ -183,6 +197,9 @@ Outside a repository only `:repo' is present, and it is nil."
   )
 
 (defun dziman/git--relative-file ()
+  (unless (dziman/git--ctx :file)
+    (user-error "No git file here")
+    )
   (file-relative-name (dziman/git--ctx :file) (dziman/git--ctx :repo))
   )
 
@@ -195,7 +212,7 @@ Outside a repository only `:repo' is present, and it is nil."
 
 (defun dziman/git-file-log ()
   "History of the file, following renames."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (if (dziman/git--ctx :file-buffer)
     (magit-log-buffer-file t)
     (dziman/git--in-repo (magit-log-other '("HEAD") '("--follow") (list (dziman/git--relative-file))))
@@ -203,39 +220,39 @@ Outside a repository only `:repo' is present, and it is nil."
   )
 
 (defun dziman/git-file-blame ()
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--visit-file)
   (call-interactively #'magit-blame-addition)
   )
 
 (defun dziman/git-file-diff-last-commit ()
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo (magit-diff-working-tree "HEAD" nil (list (dziman/git--relative-file))))
   )
 
 (defun dziman/git-file-diff-default ()
   "What this branch changed in the file since it left the default branch."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo
     (magit-diff-range (concat (dziman/git--ctx :default-branch) "...HEAD") nil (list (dziman/git--relative-file)))
     )
   )
 
 (defun dziman/git-file-stage ()
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo (magit-stage-files (list (dziman/git--relative-file))))
   )
 
 (defalias 'dziman/git-file-add #'dziman/git-file-stage)
 
 (defun dziman/git-file-unstage ()
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo (magit-unstage-files (list (dziman/git--relative-file))))
   )
 
 (defun dziman/git-file-discard ()
   "Throw away the file's staged and unstaged changes, after asking."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (let ((relative (dziman/git--relative-file)))
     (when (yes-or-no-p (format "Discard all local changes to %s? " relative))
       (dziman/git--in-repo (magit-file-checkout "HEAD" relative))
@@ -245,14 +262,14 @@ Outside a repository only `:repo' is present, and it is nil."
 
 (defun dziman/git-file-open-from-branch ()
   "Open the file as it is on another branch, read-only."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo
     (magit-find-file (magit-read-branch-or-commit "Open from branch") (dziman/git--relative-file))
     )
   )
 
 (defun dziman/git-file-rename ()
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (let ((file (dziman/git--ctx :file)))
     (magit-file-rename file
       (read-file-name (format "Rename %s to: " (dziman/git--relative-file)) (file-name-directory file)))
@@ -260,31 +277,36 @@ Outside a repository only `:repo' is present, and it is nil."
   )
 
 (defun dziman/git-file-delete ()
-  (interactive)
-  (dziman/git--in-repo (magit-file-delete (list (dziman/git--relative-file))))
+  "Delete the file through git, after asking."
+  (interactive (dziman/git--context-outside-menu))
+  (let ((relative (dziman/git--relative-file)))
+    (when (yes-or-no-p (format "Delete %s from git and disk? " relative))
+      (dziman/git--in-repo (magit-file-delete (list relative)))
+      )
+    )
   )
 
 ;;;;;;;; Repository actions against the default branch
 (defun dziman/git-log-not-on-default ()
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo (magit-log-other (list (concat (dziman/git--ctx :default-branch) "..HEAD"))))
   )
 
 (defun dziman/git-diff-branch-default ()
   "What this branch changed since it left the default branch."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo (magit-diff-range (concat (dziman/git--ctx :default-branch) "...HEAD")))
   )
 
 (defun dziman/git-rebase-onto-default ()
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo (magit-rebase-branch (dziman/git--ctx :default-branch) nil))
   )
 
 (defun dziman/git-refresh-default-branch ()
   "Ask the remote for its default branch again.
 It may have changed since the clone."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--in-repo
     (magit-run-git "remote" "set-head" (dziman/git--ctx :remote) "--auto")
     (message "Default branch: %s" (or (dziman/git-default-branch) "none"))
@@ -328,7 +350,7 @@ commits onto the other branch, so yours is the lower part."
 
 (defun dziman/git-conflicts ()
   "Step through and resolve the merge conflicts of the file."
-  (interactive)
+  (interactive (dziman/git--context-outside-menu))
   (dziman/git--visit-file)
   (smerge-mode 1)
   (transient-setup 'dziman/git-conflict-menu)
@@ -354,20 +376,20 @@ commits onto the other branch, so yours is the lower part."
   "File, repository and pull request actions that apply in the current buffer."
   [(:info "Not a git repo" :if-not dziman/git--repo-p)]
   [["File"
-     ("l" "history" dziman/git-file-log :if dziman/git--tracked-p)
+     ("l" "history" dziman/git-file-log :if dziman/git--in-head-p)
      ("L" "history of selected lines" magit-log-buffer-file :if dziman/git--region-p)
-     ("b" "blame" dziman/git-file-blame :if dziman/git--tracked-p)
-     ("d" "diff with last commit" dziman/git-file-diff-last-commit :if dziman/git--modified-p)
-     ("D" "diff with default branch" dziman/git-file-diff-default :if dziman/git--tracked-off-default-p)
+     ("b" "blame" dziman/git-file-blame :if dziman/git--in-head-p)
+     ("d" "diff with last commit" dziman/git-file-diff-last-commit :if dziman/git--modified-in-head-p)
+     ("D" "diff with default branch" dziman/git-file-diff-default :if dziman/git--in-head-off-default-p)
      ("s" "stage" dziman/git-file-stage :if dziman/git--unstaged-p)
      ("u" "unstage" dziman/git-file-unstage :if dziman/git--staged-p)
      ("a" "add to git" dziman/git-file-add :if dziman/git--untracked-p)
-     ("k" "discard changes" dziman/git-file-discard :if dziman/git--modified-p)
+     ("k" "discard changes" dziman/git-file-discard :if dziman/git--modified-in-head-p)
      ("o" "open from branch" dziman/git-file-open-from-branch :if dziman/git--tracked-p)
      ("R" "rename" dziman/git-file-rename :if dziman/git--tracked-p)
      ("K" "delete" dziman/git-file-delete :if dziman/git--tracked-p)
-     ("t" "step through history" git-timemachine :if dziman/git--file-buffer-tracked-p)
-     ("h" "changed hunks…" dziman/git-hunks-menu :if dziman/git--file-buffer-modified-p)
+     ("t" "step through history" git-timemachine :if dziman/git--file-buffer-in-head-p)
+     ("h" "changed hunks…" dziman/git-hunks-menu :if dziman/git--file-buffer-in-head-p)
      ("#" "pull request for this line" dziman/git-pr-at-line :if dziman/git-pr-available-p)
      ("!" "merge conflicts…" dziman/git-conflicts :if dziman/git--conflicted-p)
      ]
