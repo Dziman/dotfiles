@@ -30,6 +30,11 @@
   (should (eq (lookup-key flyspell-mode-map [remap ispell-word]) 'flyspell-correct-wrapper))
   )
 
+(ert-deftest dziman-fly-spelling/embark-key-reaches-embark-in-flyspell-buffers ()
+  ;; flyspell's own C-; would shadow the global embark-act
+  (should-not (lookup-key flyspell-mode-map (kbd "C-;")))
+  )
+
 (ert-deftest dziman-fly-spelling/code-buffers-check-comments-and-strings ()
   (should (memq 'flyspell-prog-mode prog-mode-hook))
   )

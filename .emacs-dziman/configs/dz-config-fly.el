@@ -59,6 +59,8 @@ Applies only when the spell checker is aspell."
 
 (eval-after-load "flyspell"
   '(define-key flyspell-mode-map (kbd "C-.") nil)) ;; Remove conflicting keybinding. See `dz-config-hydra`
+(eval-after-load "flyspell"
+  '(define-key flyspell-mode-map (kbd "C-;") nil)) ;; Remove conflicting keybinding. See `dz-config-vertico`
 
 ;; The left margin belongs to `git-gutter`
 (setq-default flycheck-indication-mode 'right-fringe)
