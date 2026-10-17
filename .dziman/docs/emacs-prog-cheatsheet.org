@@ -14,6 +14,7 @@ only where they matter for code. Swift setup details: [[file:emacs-swift.md]].
 | =C-c w= | windows                                                      |
 | =C-c p= | project (projectile)                                         |
 | =C-c != | errors (flycheck)                                            |
+| =C-c @= | folding (hideshow)                                           |
 | =C-c s= | ripgrep menu                                                 |
 | =M-s=   | search                                                       |
 | =M-g=   | go to (line, error, outline)                                 |
@@ -42,6 +43,21 @@ only where they matter for code. Swift setup details: [[file:emacs-swift.md]].
 | =M-f= / =M-b=     | word, stops inside camelCase                 | subword-forward / subword-backward   |
 | =C-x n d=         | show only this function                      | narrow-to-defun                      |
 | =C-x n w=         | show whole buffer again                      | widen                                |
+
+* Folding (hideshow)
+Every bracket block can fold. A folded block keeps its first line and shows
+how many lines it hides. Search opens folds it lands in.
+
+| Key                           | Does                                                           | Command                          |
+|-------------------------------+----------------------------------------------------------------+----------------------------------|
+| click triangle in left fringe | fold / unfold that block                                       | hs-indicator-mouse-toggle-hiding |
+| =C-c @ C-c=                   | fold / unfold block at cursor                                  | hs-toggle-hiding                 |
+| =C-c @ TAB=                   | cycle block at cursor through fold levels                      | hs-cycle                         |
+| =C-c @ C-h= / =C-c @ C-s=     | fold / unfold block at cursor                                  | hs-hide-block / hs-show-block    |
+| =C-c @ C-l=                   | fold every block inside this one (e.g. all methods of a class) | hs-hide-level                    |
+| =C-c @ C-M-h= / =C-c @ C-M-s= | fold all / unfold all                                          | hs-hide-all / hs-show-all        |
+| =C-c @ <backtab>=             | fold all / unfold all, toggle                                  | hs-toggle-all                    |
+| =C-x $=                       | hide lines indented deeper than the cursor                     | set-selective-display            |
 
 * Jump
 | Key         | Does                               | Command                 |
@@ -212,6 +228,7 @@ Spelling (comments and strings only):
 | =(= | bracket highlight      |
 | =p= | auto-close brackets    |
 | =f= | error checking         |
+| =z= | folding                |
 | =d= | git change marks       |
 | =M= | switch major mode      |
 | =m= | minor mode on / off    |

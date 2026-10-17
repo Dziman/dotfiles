@@ -65,6 +65,16 @@
 (use-package highlight-parentheses :defer t)
 (add-hook 'prog-mode-hook 'highlight-parentheses-mode)
 
+;;;;;;;; Folding: triangles in the left fringe, which git-gutter leaves free by drawing in the margin
+(defvar hs-show-indicators)
+(defvar hs-indicator-type)
+(defvar hs-display-lines-hidden)
+
+(setq hs-show-indicators t)
+(setq hs-indicator-type 'fringe)
+(setq hs-display-lines-hidden t)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+
 ;;;;;;;;
 (use-package flycheck-inline :defer t)
 (add-hook 'flycheck-mode-hook 'flycheck-inline-mode)

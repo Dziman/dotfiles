@@ -47,4 +47,8 @@
     )
   )
 
+(ert-deftest dziman-hydra-toggles/folding-key-toggles-folding ()
+  (should (eq (cadr (assoc "z" dziman/hydra/toggles/heads)) 'hs-minor-mode))
+  )
+
 (provide 'dz-config-hydra-test)

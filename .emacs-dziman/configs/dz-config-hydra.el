@@ -71,6 +71,7 @@ plus loaded modes made by `define-derived-mode', plus `fundamental-mode'."
       ("P" smartparens-strict-mode "smartparens strict" :toggle t)
       ("S" show-smartparens-mode "show smartparens" :toggle t)
       ("f" flycheck-mode "flycheck" :toggle t)
+      ("z" hs-minor-mode "folding" :toggle t)
       )
 
     "All modes"
