@@ -279,6 +279,16 @@ with the menu context set from that buffer."
     )
   )
 
+(ert-deftest dziman-git-pr-choice/emacs-shows-the-pr-view ()
+  (let (viewed)
+    (cl-letf (((symbol-function 'transient-scope) (lambda (&rest _) dziman-git-test-scope))
+              ((symbol-function 'dziman/git-pr-view) (lambda (scope) (setq viewed scope))))
+      (dziman/git-pr-show)
+      )
+    (should (equal viewed dziman-git-test-scope))
+    )
+  )
+
 (ert-deftest dziman-git-pr-choice/keys-are-link-browser-and-emacs ()
   (dolist (binding '(("l" . dziman/git-pr-copy-link) ("b" . dziman/git-pr-browse) ("e" . dziman/git-pr-show)))
     (should (eq (plist-get (cdr (ignore-errors (transient-get-suffix 'dziman/git-pr-choice (car binding)))) :command)

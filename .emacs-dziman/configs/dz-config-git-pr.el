@@ -5,6 +5,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'dz-config-git-menu)
 
+(autoload 'dziman/git-pr-view "dz-config-git-pr-view")
+
 ;;;;;;;; Forge CLIs
 (defvar dziman/git-pr--fj-hosts-cache nil
   "Hosts `fj' is logged into, read once per session.")
@@ -225,7 +227,7 @@ When there is none, offer to show the line's commit instead."
 (defun dziman/git-pr-show ()
   "Show the pull request in an Emacs buffer."
   (interactive)
-  (message "%s" (plist-get (transient-scope) :url))
+  (dziman/git-pr-view (transient-scope))
   )
 
 (transient-define-prefix dziman/git-pr-choice ()
