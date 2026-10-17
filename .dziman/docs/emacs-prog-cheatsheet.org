@@ -1,0 +1,271 @@
+#+TITLE: Emacs cheat sheet: code buffers and Swift
+#+STARTUP: overview
+#+OPTIONS: toc:nil
+
+Keys as configured in =.emacs-dziman/configs/=. Stock Emacs keys are listed
+only where they matter for code. Swift setup details: [[file:emacs-swift.md]].
+
+* Prefixes
+| Key     | Opens                                                        |
+|---------+--------------------------------------------------------------|
+| =M-p=   | code commands (language server, Swift, case)                 |
+| =C-.=   | menus: =h= mode, =t= toggles, =g= git, =w= windows, =c= crux |
+| =C-c j= | jump (avy, line, window)                                     |
+| =C-c w= | windows                                                      |
+| =C-c p= | project (projectile)                                         |
+| =C-c != | errors (flycheck)                                            |
+| =C-c s= | ripgrep menu                                                 |
+| =M-s=   | search                                                       |
+| =M-g=   | go to (line, error, outline)                                 |
+
+* Help and discovery
+| Key                    | Does                               | Command            |
+|------------------------+------------------------------------+--------------------|
+| (wait)                 | after any prefix, key list pops up | which-key          |
+| =C-h m=                | keys of the current modes          | describe-mode      |
+| =C-h k=                | what a key does                    | helpful-key        |
+| =C-h f=                | describe function                  | helpful-callable   |
+| =C-h v=                | describe variable                  | helpful-variable   |
+| =C-h B=                | searchable list of all keys        | embark-bindings    |
+| =C-h .=                | message at point (error, button)   | display-local-help |
+| =M-x eldoc-doc-buffer= | full doc of symbol at point        | eldoc-doc-buffer   |
+
+* Move inside code
+| Key               | Does                                         | Command                              |
+|-------------------+----------------------------------------------+--------------------------------------|
+| =C-a= / =C-e=     | line start (code first, then column 0) / end | mwim-beginning / mwim-end            |
+| =C-M-f= / =C-M-b= | next / previous balanced expression          | forward-sexp / backward-sexp         |
+| =C-M-u= / =C-M-d= | out of / into brackets                       | backward-up-list / down-list         |
+| =C-M-n= / =C-M-p= | next / previous bracket group                | forward-list / backward-list         |
+| =C-M-a= / =C-M-e= | function start / end                         | beginning-of-defun / end-of-defun    |
+| =M-a= / =M-e=     | statement start / end (Swift)                | backward-sentence / forward-sentence |
+| =M-f= / =M-b=     | word, stops inside camelCase                 | subword-forward / subword-backward   |
+| =C-x n d=         | show only this function                      | narrow-to-defun                      |
+| =C-x n w=         | show whole buffer again                      | widen                                |
+
+* Jump
+| Key         | Does                               | Command                 |
+|-------------+------------------------------------+-------------------------|
+| =C-c j c=   | to a char sequence on screen       | avy-goto-char-timer     |
+| =C-c j w=   | to a word on screen                | avy-goto-word-1         |
+| =C-c j l=   | to a line on screen                | avy-goto-line           |
+| =C-c j n=   | to line number                     | goto-line               |
+| =M-g M-g=   | to line number                     | goto-line               |
+| =M-g i=     | to a symbol in this file (outline) | consult-imenu           |
+| =C-x C-x=   | back to mark (last jump start)     | exchange-point-and-mark |
+| =C-u C-SPC= | back through the mark ring         | set-mark-command        |
+
+* Select and edit
+| Key               | Does                                                      | Command                               |
+|-------------------+-----------------------------------------------------------+---------------------------------------|
+| =C-c e=           | grow selection (repeat =e= to grow more)                  | er/expand-region                      |
+| =C-M-SPC=         | select next expression                                    | mark-sexp                             |
+| =C-M-h=           | select function                                           | mark-defun                            |
+| =M-up= / =M-down= | move line or selection up / down                          | move-text-up / move-text-down         |
+| =C-c C-d=         | duplicate line or selection                               | crux-duplicate-current-line-or-region |
+| =C-RET=           | new line below, keep indent                               | crux-smart-open-line                  |
+| =M-k=             | kill line, then whole line                                | crux-smart-kill-line                  |
+| =C-M-k=           | kill next expression                                      | kill-sexp                             |
+| =DEL= / =C-d=     | delete all whitespace in a run                            | hungry-delete                         |
+| =M-p U=           | cycle case: fooBar → FooBar → foo_bar                     | string-inflection-java-style-cycle    |
+| =M-;=             | comment / uncomment selection, or add end-of-line comment | comment-dwim                          |
+| =C-x C-;=         | comment / uncomment line                                  | comment-line                          |
+| =M-j=             | new line inside a comment, continues it                   | indent-new-comment-line               |
+| =TAB=             | indent line                                               | indent-for-tab-command                |
+| =C-M-\=           | indent selection                                          | indent-region                         |
+| =C-. c I b=       | indent and clean the whole buffer                         | crux-cleanup-buffer-or-region         |
+| =M-y=             | paste from kill history                                   | consult-yank-pop                      |
+| =C-x u=           | undo                                                      | undo-tree-undo                        |
+| =C-x C-u=         | undo history as a tree                                    | undo-tree-visualize                   |
+
+Saving a code buffer deletes trailing whitespace.
+
+* Completion
+Popup opens by itself after 0.2 s of typing.
+
+| Key           | Does                               | Command                       |
+|---------------+------------------------------------+-------------------------------|
+| =C-M-i=       | open completion now                | completion-at-point           |
+| =C-n= / =C-p= | next / previous candidate          | corfu-next / corfu-previous   |
+| =RET=         | insert candidate                   | corfu-insert                  |
+| =TAB=         | complete common part               | corfu-complete                |
+| =M-SPC=       | separator: filter by a second word | corfu-insert-separator        |
+| =M-t=         | show / hide candidate docs         | corfu-popupinfo-toggle        |
+| =M-h=         | candidate docs in a window         | corfu-popupinfo-documentation |
+| =M-g=         | candidate source location          | corfu-popupinfo-location      |
+| =C-g=         | close popup                        | corfu-quit                    |
+| =M-/=         | expand from words in open buffers  | dabbrev-expand                |
+
+* Search
+| Key         | Does                               | Command            |
+|-------------+------------------------------------+--------------------|
+| =M-i=       | lines in this buffer, live         | consult-line       |
+| =M-s r=     | ripgrep in project, live           | consult-ripgrep    |
+| =M-s g=     | git grep in project, live          | consult-git-grep   |
+| =C-c s=     | ripgrep menu (type, dir, literal)  | rg-menu            |
+| =C-c p s r= | ripgrep in project, results buffer | projectile-ripgrep |
+| =C-c p r=   | replace in project                 | projectile-replace |
+| =M-%=       | replace in buffer, asking each     | query-replace      |
+| =C-;=       | act on candidate or thing at point | embark-act         |
+
+* Language server (eglot)
+Starts by itself in Swift buffers. Progress shows in the mode line.
+
+| Key     | Does                          | Command               |
+|---------+-------------------------------+-----------------------|
+| =M-.=   | go to definition              | xref-find-definitions |
+| =M-,=   | go back                       | xref-go-back          |
+| =C-M-,= | go forward again              | xref-go-forward       |
+| =M-?=   | find references               | xref-find-references  |
+| =C-M-.= | find symbol by name pattern   | xref-find-apropos     |
+| =M-p r= | rename symbol                 | eglot-rename          |
+| =M-p a= | code actions / quick fixes    | eglot-code-actions    |
+| =M-p s= | go to symbol in project, live | consult-eglot-symbols |
+
+M-x only:
+| Command                            | Does                              |
+|------------------------------------+-----------------------------------|
+| eglot-find-implementation          | implementations of a protocol     |
+| eglot-find-typeDefinition          | type of the symbol at point       |
+| eglot-code-action-organize-imports | sort and clean imports            |
+| eglot-inlay-hints-mode             | show / hide inferred types inline |
+| eglot-reconnect                    | restart the server                |
+| eglot-shutdown                     | stop the server                   |
+| eglot-events-buffer                | server traffic, for debugging     |
+
+* Errors and lint (flycheck)
+Errors show in the right fringe and inline under the line.
+
+| Key                   | Does                          | Command                                       |
+|-----------------------+-------------------------------+-----------------------------------------------|
+| =M-g e=               | error list, live, jump to one | consult-flycheck                              |
+| =M-g n= / =M-g p=     | next / previous error         | next-error / previous-error                   |
+| =C-c ! n= / =C-c ! p= | next / previous error         | flycheck-next-error / flycheck-previous-error |
+| =C-c ! l=             | error list window             | flycheck-list-errors                          |
+| =C-c ! c=             | check buffer now              | flycheck-buffer                               |
+| =C-c ! e=             | explain error at point        | flycheck-explain-error-at-point               |
+| =C-c ! C-w=           | copy errors at point          | flycheck-copy-errors-as-kill                  |
+| =C-c ! v=             | why a checker runs or not     | flycheck-verify-setup                         |
+| =C-c ! s=             | pick a checker                | flycheck-select-checker                       |
+
+Spelling (comments and strings only):
+| Key   | Does                              | Command                  |
+|-------+-----------------------------------+--------------------------|
+| =C-,= | next spelling error               | flyspell-goto-next-error |
+| =M-$= | fix word at point, pick from list | flyspell-correct-wrapper |
+
+* Project (projectile)
+| Key         | Does                          | Command                                           |
+|-------------+-------------------------------+---------------------------------------------------|
+| =C-c p f=   | find file in project          | consult-projectile                                |
+| =C-x C-d=   | find file in project          | consult-projectile                                |
+| =C-c p p=   | switch project                | projectile-switch-project                         |
+| =C-c p b=   | project buffers               | projectile-switch-to-buffer                       |
+| =C-c p a=   | other file, same name         | projectile-find-other-file                        |
+| =C-c p t=   | toggle code ↔ test            | projectile-toggle-between-implementation-and-test |
+| =C-c p T=   | find test file                | projectile-find-test-file                         |
+| =C-c p s t= | TODOs in project              | projectile-todos                                  |
+| =C-c p D=   | project root in dired         | projectile-dired                                  |
+| =C-c p !=   | shell command in project root | projectile-run-shell-command-in-root              |
+| =C-c p k=   | kill project buffers          | projectile-kill-buffers                           |
+| =C-c p S=   | save project buffers          | projectile-save-project-buffers                   |
+| =C-c p E=   | edit .dir-locals.el           | projectile-edit-dir-locals                        |
+| =C-x C-r=   | recent file                   | consult-recent-file                               |
+| =C-x b=     | switch buffer                 | bufler-switch-buffer                              |
+
+* Git
+| Key       | Does                                    | Command             |
+|-----------+-----------------------------------------+---------------------|
+| =C-x g=   | status                                  | magit-status        |
+| =C-x M-g= | all git commands                        | magit-dispatch      |
+| =C-c M-g= | git commands for this file (blame, log) | magit-file-dispatch |
+| =C-. g=   | hunk menu (below)                       | dziman/hydra/git    |
+
+=C-. g= menu, stays open until =q=:
+| Key       | Does                         |
+|-----------+------------------------------|
+| =n= / =p= | next / previous changed hunk |
+| =d=       | show hunk diff               |
+| =s=       | stage hunk                   |
+| =r=       | revert hunk                  |
+| =t=       | step through file history    |
+| =l f=     | web link to file and line    |
+| =l c=     | web link to commit           |
+
+* Windows
+| Key                   | Does                         | Command                                 |
+|-----------------------+------------------------------+-----------------------------------------|
+| =C-c j W=             | jump to window by letter     | ace-window                              |
+| =C-c w j=             | jump to window               | ace-select-window                       |
+| =C-c w s=             | swap windows                 | ace-swap-window                         |
+| =C-c w k=             | close a window               | ace-delete-window                       |
+| =C-c w f=             | keep only this window        | delete-other-windows                    |
+| =C-c w b= / =C-c w v= | split side by side / stacked | split-window-right / split-window-below |
+
+* Toggles (=C-. t=, stays open until =q=)
+| Key | Toggles                |
+|-----+------------------------|
+| =n= | line numbers           |
+| =w= | visible whitespace     |
+| =l= | current line highlight |
+| =t= | TODO highlight         |
+| =(= | bracket highlight      |
+| =p= | auto-close brackets    |
+| =f= | error checking         |
+| =d= | git change marks       |
+| =M= | switch major mode      |
+| =m= | minor mode on / off    |
+
+* Swift
+** Keys
+| Key     | Does                                          | Command                    |
+|---------+-----------------------------------------------+----------------------------|
+| =C-. h= | Swift menu: all keys below plus =p=, =e=      | major-mode-hydra           |
+| =M-p f= | format file                                   | dziman/swift-format-buffer |
+| =M-p x= | open file in Xcode at this line               | dziman/swift-open-in-xcode |
+| =M-p d= | Apple docs: selection, else symbol, else asks | dziman/swift-apple-docs    |
+| =M-p r= | rename symbol                                 | eglot-rename               |
+| =M-p a= | code actions / quick fixes                    | eglot-code-actions         |
+| =M-p s= | go to symbol in project                       | consult-eglot-symbols      |
+
+=C-. h= extras: =p= reload platform (=dziman/swift-reload-platform=), =e= error list.
+
+** Statements and functions
+Swift-aware versions of the stock keys.
+
+| Key               | Does                        | Command                                                    |
+|-------------------+-----------------------------+------------------------------------------------------------|
+| =C-M-a= / =C-M-e= | function / type start / end | swift-mode:beginning-of-defun / swift-mode:end-of-defun    |
+| =C-M-h=           | select function / type      | swift-mode:mark-defun                                      |
+| =C-x n d=         | show only this function     | swift-mode:narrow-to-defun                                 |
+| =M-a= / =M-e=     | statement start / end       | swift-mode:backward-sentence / swift-mode:forward-sentence |
+| =C-x DEL=         | kill to statement start     | swift-mode:backward-kill-sentence                          |
+| =M-j=             | new line inside a comment   | swift-mode:indent-new-comment-line                         |
+
+** REPL
+| Key       | Does                   | Command                |
+|-----------+------------------------+------------------------|
+| =C-c C-z= | open Swift REPL        | swift-mode:run-repl    |
+| =C-c C-f= | send buffer to REPL    | swift-mode:send-buffer |
+| =C-c C-r= | send selection to REPL | swift-mode:send-region |
+
+** Project setup
+| File in project    | Effect                                                                                                                              |
+|--------------------+-------------------------------------------------------------------------------------------------------------------------------------|
+| =.swiftformat=     | SwiftFormat; saving formats                                                                                                         |
+| =.swift-format=    | Apple swift-format; saving formats                                                                                                  |
+| (neither)          | =M-p f= uses Apple swift-format; saving does not                                                                                    |
+| =.swiftlint.yml=   | SwiftLint runs, from the topmost config                                                                                             |
+| =buildServer.json= | language server uses Xcode build settings                                                                                           |
+| =.dir-locals.el=   | =((swift-mode . ((dziman/swift-platform . ios))))= checks a package against iOS; also =tvos=, =watchos=, =visionos=. Then =C-. h p= |
+
+Create =buildServer.json= once per Xcode app, again after switching scheme, then build once in Xcode:
+#+begin_src bash
+xcode-build-server config -scheme <name> -project <file>.xcodeproj   # or -workspace <file>.xcworkspace
+#+end_src
+
+* Key clashes
+| Key   | Where                 | Goes to                                 |
+|-------+-----------------------+-----------------------------------------|
+| =M-p= | completion popup open | previous candidate, not the code prefix |
+| =M-k= | Swift buffers         | crux kill line, not kill statement      |
