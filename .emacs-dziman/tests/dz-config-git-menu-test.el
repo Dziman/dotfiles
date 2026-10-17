@@ -376,4 +376,56 @@
     )
   )
 
+;;;;;;;; Merge conflicts
+(defun dziman-git-test-rebase-conflict-on-a-txt ()
+  "Make `main' and branch `other' change a.txt differently, then rebase `other' onto `main'."
+  (dziman-git-test-git "switch" "-q" "-c" "other")
+  (dziman-git-test-commit "a.txt" "theirs\n" "Theirs")
+  (dziman-git-test-git "switch" "-q" "main")
+  (dziman-git-test-commit "a.txt" "mine\n" "Mine")
+  (dziman-git-test-git "switch" "-q" "other")
+  (dziman-git-test-git-status "rebase" "main")
+  )
+
+(defun dziman-git-test-keep (command)
+  "Resolve the first conflict in a.txt with COMMAND; return the buffer's text."
+  (with-current-buffer (find-file-noselect (expand-file-name "a.txt"))
+    (smerge-mode 1)
+    (goto-char (point-min))
+    (smerge-next)
+    (funcall command)
+    (buffer-string)
+    )
+  )
+
+(ert-deftest dziman-git-conflict/merge-keep-mine-keeps-current-branch ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-conflict-on-a-txt)
+    (should (equal (dziman-git-test-keep #'dziman/git-conflict-keep-mine) "mine\n"))
+    )
+  )
+
+(ert-deftest dziman-git-conflict/merge-keep-theirs-keeps-merged-branch ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-conflict-on-a-txt)
+    (should (equal (dziman-git-test-keep #'dziman/git-conflict-keep-theirs) "theirs\n"))
+    )
+  )
+
+(ert-deftest dziman-git-conflict/rebase-keep-mine-keeps-the-replayed-commit ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-rebase-conflict-on-a-txt)
+    (should (equal (dziman-git-test-keep #'dziman/git-conflict-keep-mine) "theirs\n"))
+    )
+  )
+
+(dziman-git-test-key conflict-key-needs-a-conflicted-file dziman/git--menu "!" dziman/git--conflicted-p)
+
+(ert-deftest dziman-git-conflict/every-conflict-key-keeps-the-menu-open ()
+  (dolist (key '("n" "p" "m" "t" "a"))
+    (should (equal (list key (plist-get (cdr (ignore-errors (transient-get-suffix 'dziman/git-conflict-menu key))) :transient))
+              (list key t)))
+    )
+  )
+
 (provide 'dz-config-git-menu-test)

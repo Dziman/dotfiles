@@ -6,6 +6,7 @@
 (require 'magit)
 (require 'git-link)
 (require 'dired)
+(require 'smerge-mode)
 
 ;;;;;;;; Remote and default branch
 (defun dziman/git-remote-host-and-path (url)
@@ -287,6 +288,49 @@ It may have changed since the clone."
     )
   )
 
+;;;;;;;; Merge conflicts
+(defun dziman/git-conflict-sides ()
+  "Smerge commands that keep each side of a conflict, as (MINE . THEIRS).
+In a merge, the upper part is the current branch. In a rebase, git replays your
+commits onto the other branch, so yours is the lower part."
+  (if (magit-rebase-in-progress-p)
+    (cons #'smerge-keep-lower #'smerge-keep-upper)
+    (cons #'smerge-keep-upper #'smerge-keep-lower)
+    )
+  )
+
+(defun dziman/git-conflict-keep-mine ()
+  "Resolve the conflict at point with your side."
+  (interactive)
+  (funcall (car (dziman/git-conflict-sides)))
+  )
+
+(defun dziman/git-conflict-keep-theirs ()
+  "Resolve the conflict at point with the other side."
+  (interactive)
+  (funcall (cdr (dziman/git-conflict-sides)))
+  )
+
+(transient-define-prefix dziman/git-conflict-menu ()
+  "Merge conflicts of the visited file. Stays open until q."
+  ["Merge conflicts"
+    ("n" "next" smerge-next :transient t)
+    ("p" "previous" smerge-prev :transient t)
+    ("m" "keep mine" dziman/git-conflict-keep-mine :transient t)
+    ("t" "keep theirs" dziman/git-conflict-keep-theirs :transient t)
+    ("a" "keep both" smerge-keep-all :transient t)
+    ("q" "quit" transient-quit-one)
+    ]
+  )
+
+(defun dziman/git-conflicts ()
+  "Step through and resolve the merge conflicts of the file."
+  (interactive)
+  (dziman/git--visit-file)
+  (smerge-mode 1)
+  (transient-setup 'dziman/git-conflict-menu)
+  )
+
 ;;;;;;;; Menus
 (transient-define-prefix dziman/git-hunks-menu ()
   "Changed hunks of the visited file. Stays open until q."
@@ -321,6 +365,7 @@ It may have changed since the clone."
      ("K" "delete" dziman/git-file-delete :if dziman/git--tracked-p)
      ("t" "step through history" git-timemachine :if dziman/git--file-buffer-tracked-p)
      ("h" "changed hunks…" dziman/git-hunks-menu :if dziman/git--file-buffer-modified-p)
+     ("!" "merge conflicts…" dziman/git-conflicts :if dziman/git--conflicted-p)
      ]
     ["Repository"
       ("g" "status" magit-status :if dziman/git--repo-p)
