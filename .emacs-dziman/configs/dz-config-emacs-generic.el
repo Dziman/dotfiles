@@ -59,9 +59,34 @@
 (setq vc-follow-symlinks t)
 
 ;; Help to learn keys
+;; The delay is read when `which-key-mode' starts
+(setq which-key-idle-delay 0.4)
+(setq which-key-idle-secondary-delay 0.05)
 (which-key-mode)
 (which-key-setup-side-window-bottom)
 (setq which-key-compute-remaps t)
+(setq which-key-show-docstrings t)
+;; A fraction of the popup's width: with docstrings a fixed length cuts most of them
+(setq which-key-max-description-length 0.4)
+(setq which-key-sort-order 'which-key-local-then-key-order)
+(bind-key "C-h M" 'which-key-show-major-mode)
+
+(which-key-add-key-based-replacements
+  "C-x RET" "coding system"
+  "C-x 4"   "other window"
+  "C-x 5"   "other frame"
+  "C-x 8"   "insert character"
+  "C-x a"   "abbrevs"
+  "C-x n"   "narrow"
+  "C-x p"   "project (built-in)"
+  "C-x r"   "registers, rectangles, bookmarks"
+  "C-x t"   "tabs"
+  "C-x v"   "version control"
+  "C-x w"   "window"
+  "C-x x"   "buffer"
+  "M-s h"   "highlight"
+  "C-h 4"   "help in other window"
+  )
 
 (bind-key "C-c e" 'er/expand-region)
 
@@ -90,6 +115,9 @@
   )
 
 (bind-key "w" 'dziman/hydra/window/body dziman/bind-map/hydra)
+(which-key-add-key-based-replacements "C-. w" "window menu")
+;; See the toggles menu in `dz-config-hydra'
+(put 'dziman/hydra/window/body 'function-documentation "Split, jump, swap, close, maximize windows")
 
 (setq abbrev-file-name "~/.emacs-dziman/abbrevs.def")
 (setq-default abbrev-mode t)

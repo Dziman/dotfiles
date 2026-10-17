@@ -3,6 +3,7 @@
 ;;;;;; Fly* packages and their configs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package flycheck :defer t)
+(which-key-add-key-based-replacements "C-c !" "errors")
 (use-package flycheck-color-mode-line :defer t)
 (use-package flyspell-correct
   :after flyspell

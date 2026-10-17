@@ -5,6 +5,7 @@
 (use-package crux :defer t)
 
 (bind-key "C-c C-d" 'crux-duplicate-current-line-or-region)
+(which-key-add-key-based-replacements "C-c C-d" "duplicate line or region")
 (bind-key "C-<return>" 'crux-smart-open-line)
 ;; Disabled for now: it's conflicting with org-mode keybinding and I don't think I'm really using it
 ;; (bind-key "M-<return>" 'crux-smart-open-line-above)
@@ -50,5 +51,8 @@
   )
 
 (bind-key "c" 'dziman/hydra/crux/body dziman/bind-map/hydra)
+(which-key-add-key-based-replacements "C-. c" "file and line menu")
+;; See the toggles menu in `dz-config-hydra'
+(put 'dziman/hydra/crux/body 'function-documentation "Open, rename, delete files; kill, join, duplicate lines")
 
 (provide 'dz-config-crux)

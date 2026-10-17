@@ -20,16 +20,18 @@ only where they matter for code. Swift setup details: [[file:emacs-swift.md]].
 | =M-g=   | go to (line, error, outline)                                 |
 
 * Help and discovery
-| Key                    | Does                               | Command            |
-|------------------------+------------------------------------+--------------------|
-| (wait)                 | after any prefix, key list pops up | which-key          |
-| =C-h m=                | keys of the current modes          | describe-mode      |
-| =C-h k=                | what a key does                    | helpful-key        |
-| =C-h f=                | describe function                  | helpful-callable   |
-| =C-h v=                | describe variable                  | helpful-variable   |
-| =C-h B=                | searchable list of all keys        | embark-bindings    |
-| =C-h .=                | message at point (error, button)   | display-local-help |
-| =M-x eldoc-doc-buffer= | full doc of symbol at point        | eldoc-doc-buffer   |
+| Key                    | Does                                                             | Command                   |
+|------------------------+------------------------------------------------------------------+---------------------------|
+| (wait 0.4 s)           | key list after any prefix; main mode's keys first                | which-key                 |
+| =C-h= in key list      | then =n= / =p= page, =d= descriptions on / off, =u= back one key | which-key-C-h-dispatch    |
+| =C-h M=                | key list of the buffer's main mode                               | which-key-show-major-mode |
+| =C-h m=                | keys of the current modes                                        | describe-mode             |
+| =C-h k=                | what a key does                                                  | helpful-key               |
+| =C-h f=                | describe function                                                | helpful-callable          |
+| =C-h v=                | describe variable                                                | helpful-variable          |
+| =C-h B=                | searchable list of all keys                                      | embark-bindings           |
+| =C-h .=                | message at point (error, button)                                 | display-local-help        |
+| =M-x eldoc-doc-buffer= | full doc of symbol at point                                      | eldoc-doc-buffer          |
 
 * Move inside code
 | Key               | Does                                         | Command                              |

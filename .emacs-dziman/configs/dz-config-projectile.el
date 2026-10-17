@@ -13,6 +13,18 @@
 (autoload 'projectile-command-map "projectile" nil nil 'keymap)
 (global-set-key (kbd "C-c p") 'projectile-command-map)
 
+(which-key-add-key-based-replacements
+  "C-c p"   "project"
+  "C-c p 4" "other window"
+  "C-c p 5" "other frame"
+  "C-c p B" "bookmarks"
+  "C-c p c" "build, test, run"
+  "C-c p n" "sibling projects"
+  "C-c p s" "search"
+  "C-c p w" "sessions"
+  "C-c p x" "shells"
+  )
+
 ;; The projectile backend class lives in `org-projectile', so load it with `org-project-capture'.
 ;; When `org-projectile' is loaded first (only via its obsolete commands), this hook loads it
 ;; a second time from inside its own `require' of `org-project-capture'; harmless, same definitions.
@@ -48,5 +60,10 @@
 (setq projectile-indexing-method 'hybrid)
 
 (bind-key "C-c c p t" 'org-project-capture-project-todo-completing-read)
+(which-key-add-key-based-replacements
+  "C-c c"     "capture"
+  "C-c c p"   "project"
+  "C-c c p t" "project TODO"
+  )
 
 (provide 'dz-config-projectile)

@@ -60,5 +60,8 @@
   )
 
 (bind-key "g" 'dziman/hydra/git/body dziman/bind-map/hydra)
+(which-key-add-key-based-replacements "C-. g" "git menu")
+;; See the toggles menu in `dz-config-hydra'
+(put 'dziman/hydra/git/body 'function-documentation "Changed hunks, file history, web links")
 
 (provide 'dz-config-git)

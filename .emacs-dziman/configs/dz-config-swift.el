@@ -410,6 +410,12 @@ Interactively: the selection, else the symbol at point, else asked for."
               )
   )
 
+(which-key-add-major-mode-key-based-replacements 'swift-mode
+  "M-p f" "format file"
+  "M-p x" "open in Xcode"
+  "M-p d" "Apple docs"
+  )
+
 ;;;;;;;; Menu (`C-. h')
 (use-package major-mode-hydra)
 (require 'hydra)

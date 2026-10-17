@@ -83,6 +83,10 @@ plus loaded modes made by `define-derived-mode', plus `fundamental-mode'."
   )
 
 (bind-key "t" 'dziman/hydra/toggles/body dziman/bind-map/hydra)
+(which-key-add-key-based-replacements "C-. t" "toggles")
+;; which-key shows a command's first docstring line; a hydra's generated one says only
+;; which hydra the key opens, so each menu gets its own
+(put 'dziman/hydra/toggles/body 'function-documentation "Display, highlight and coding modes on or off")
 
 (setq major-mode-hydra-title-generator
   '(lambda (mode)
@@ -97,5 +101,6 @@ plus loaded modes made by `define-derived-mode', plus `fundamental-mode'."
   )
 
 (bind-key "h" 'major-mode-hydra dziman/bind-map/hydra)
+(which-key-add-key-based-replacements "C-. h" "mode menu")
 
 (provide 'dz-config-hydra)

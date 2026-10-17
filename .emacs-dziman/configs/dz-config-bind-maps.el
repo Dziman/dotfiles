@@ -13,4 +13,9 @@
   :keys ("C-c j")
   )
 
+(which-key-add-key-based-replacements
+  "C-."   "menus"
+  "C-c j" "jump"
+  )
+
 (provide 'dz-config-bind-maps)

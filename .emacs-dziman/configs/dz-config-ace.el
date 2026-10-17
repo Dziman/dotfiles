@@ -23,6 +23,8 @@
               )
   )
 
+(which-key-add-key-based-replacements "C-c w" "windows")
+
 (pretty-hydra-define+ dziman/hydra/window
   nil
   (

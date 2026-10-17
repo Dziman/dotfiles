@@ -25,6 +25,11 @@
               )
   )
 
+(which-key-add-key-based-replacements
+  "M-p"   "code"
+  "M-p U" "cycle case"
+  )
+
 ;;;;;;;;
 (use-package hl-todo :defer t)
 (setq hl-todo-keyword-faces
@@ -47,6 +52,7 @@
 ;;;;;;;; TODO Review: do not use it explicitly, but some other packages can provide some functionality because it enabled
 (use-package yasnippet :defer t)
 (add-hook 'prog-mode-hook 'yas-minor-mode)
+(which-key-add-key-based-replacements "C-c &" "snippets")
 
 ;;;;;;;;
 ;; smartparens advises `hippie-expand'; loading hippie-exp after that advice prints an
@@ -74,6 +80,7 @@
 (setq hs-indicator-type 'fringe)
 (setq hs-display-lines-hidden t)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
+(which-key-add-key-based-replacements "C-c @" "fold")
 
 ;;;;;;;;
 (use-package flycheck-inline :defer t)
