@@ -174,4 +174,67 @@ Blames the buffer's text, so unsaved edits do not shift lines."
     )
   )
 
+;;;;;;;; PR key and the one-key choice
+(defun dziman/git-pr-available-p ()
+  "True when the menu was opened on a visited tracked file.
+And when a CLI serves the remote's host."
+  (and (dziman/git--ctx :file-buffer) (dziman/git--ctx :tracked)
+    (dziman/git-pr-host-tool (dziman/git--ctx :remote-host)))
+  )
+
+(defun dziman/git-pr-at-line ()
+  "Find the pull request that brought in the current line.
+When there is none, offer to show the line's commit instead."
+  (interactive)
+  (let ((sha (dziman/git-pr--line-commit)))
+    (unless sha
+      (user-error "This line is not committed yet")
+      )
+    (message "Looking for the pull request…")
+    (let* ((root (dziman/git--ctx :repo))
+           (remote (dziman/git--ctx :remote))
+           (host (dziman/git--ctx :remote-host))
+           (repo-path (dziman/git--ctx :remote-path))
+           (number (let ((default-directory root)) (dziman/git-pr-find sha remote))))
+      (if number
+        (transient-setup 'dziman/git-pr-choice nil nil
+          :scope (list :tool (dziman/git-pr-host-tool host) :root root :host host :repo-path repo-path
+                   :remote remote :number number :url (dziman/git-pr-url host repo-path number)))
+        (when (y-or-n-p (format "No pull request found for %s. Show the commit? " (substring sha 0 7)))
+          (let ((default-directory root)) (magit-show-commit sha))
+          )
+        )
+      )
+    )
+  )
+
+(defun dziman/git-pr-copy-link ()
+  "Copy the pull request's link."
+  (interactive)
+  (let ((url (plist-get (transient-scope) :url)))
+    (kill-new url)
+    (message "Copied %s" url)
+    )
+  )
+
+(defun dziman/git-pr-browse ()
+  (interactive)
+  (browse-url (plist-get (transient-scope) :url))
+  )
+
+(defun dziman/git-pr-show ()
+  "Show the pull request in an Emacs buffer."
+  (interactive)
+  (message "%s" (plist-get (transient-scope) :url))
+  )
+
+(transient-define-prefix dziman/git-pr-choice ()
+  "What to do with the pull request found for the line."
+  [:description (lambda () (format "Pull request #%d" (plist-get (transient-scope) :number)))
+    ("l" "copy link" dziman/git-pr-copy-link)
+    ("b" "open in browser" dziman/git-pr-browse)
+    ("e" "show in Emacs" dziman/git-pr-show)
+    ]
+  )
+
 (provide 'dz-config-git-pr)

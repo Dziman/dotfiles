@@ -8,6 +8,9 @@
 (require 'dired)
 (require 'smerge-mode)
 
+(autoload 'dziman/git-pr-at-line "dz-config-git-pr" "Pull request that brought in the current line." t)
+(autoload 'dziman/git-pr-available-p "dz-config-git-pr")
+
 ;;;;;;;; Remote and default branch
 (defun dziman/git-remote-host-and-path (url)
   "Remote URL as (HOST . \"owner/repo\"), HOST without user or port.
@@ -365,6 +368,7 @@ commits onto the other branch, so yours is the lower part."
      ("K" "delete" dziman/git-file-delete :if dziman/git--tracked-p)
      ("t" "step through history" git-timemachine :if dziman/git--file-buffer-tracked-p)
      ("h" "changed hunks…" dziman/git-hunks-menu :if dziman/git--file-buffer-modified-p)
+     ("#" "pull request for this line" dziman/git-pr-at-line :if dziman/git-pr-available-p)
      ("!" "merge conflicts…" dziman/git-conflicts :if dziman/git--conflicted-p)
      ]
     ["Repository"

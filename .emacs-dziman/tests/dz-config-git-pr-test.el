@@ -206,4 +206,103 @@ HANDLER gets the program and its argument list. `gh' and `fj' count as installed
     )
   )
 
+;;;;;;;; PR key and the one-key choice
+(defconst dziman-git-test-sha "0123456789abcdef0123456789abcdef01234567")
+
+(defconst dziman-git-test-scope
+  '(:tool fj :root "/tmp/repo/" :host "git.example.org" :repo-path "me/repo" :remote "origin"
+     :number 3 :url "https://git.example.org/me/repo/pulls/3"))
+
+(defmacro dziman-git-test-on-a-txt-of-forgejo-repo (&rest body)
+  "Run BODY in a.txt of a repo whose origin is a Forgejo host fj is logged into,
+with the menu context set from that buffer."
+  `(dziman-git-test-with-repo
+     (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+     (dziman-git-test-with-cli (lambda (_program _args) "git.example.org\n")
+       (with-current-buffer (find-file-noselect (expand-file-name "a.txt"))
+         (setq dziman/git--context (dziman/git-context))
+         ,@body
+         )
+       )
+     )
+  )
+
+(ert-deftest dziman-git-pr-at-line/found-pr-opens-the-choice ()
+  (dziman-git-test-on-a-txt-of-forgejo-repo
+    (let (scope)
+      (cl-letf (((symbol-function 'dziman/git-pr--line-commit) (lambda () dziman-git-test-sha))
+                ((symbol-function 'dziman/git-pr-find) (lambda (_sha _remote) 3))
+                ((symbol-function 'transient-setup) (lambda (&rest args) (setq scope (plist-get (cdddr args) :scope)))))
+        (dziman/git-pr-at-line)
+        )
+      (should (equal (plist-get scope :url) "https://git.example.org/me/repo/pulls/3"))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-pr-at-line/no-pr-offers-the-commit ()
+  (dziman-git-test-on-a-txt-of-forgejo-repo
+    (let (shown)
+      (cl-letf (((symbol-function 'dziman/git-pr--line-commit) (lambda () dziman-git-test-sha))
+                ((symbol-function 'dziman/git-pr-find) (lambda (_sha _remote) nil))
+                ((symbol-function 'y-or-n-p) (lambda (_prompt) t))
+                ((symbol-function 'magit-show-commit) (lambda (sha &rest _) (setq shown sha))))
+        (dziman/git-pr-at-line)
+        )
+      (should (equal shown dziman-git-test-sha))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-pr-at-line/uncommitted-line-says-so ()
+  (dziman-git-test-on-a-txt-of-forgejo-repo
+    (cl-letf (((symbol-function 'dziman/git-pr--line-commit) (lambda () nil)))
+      (should-error (dziman/git-pr-at-line) :type 'user-error)
+      )
+    )
+  )
+
+(ert-deftest dziman-git-pr-choice/link-is-copied ()
+  (cl-letf (((symbol-function 'transient-scope) (lambda (&rest _) dziman-git-test-scope)))
+    (dziman/git-pr-copy-link)
+    )
+  (should (equal (car kill-ring) "https://git.example.org/me/repo/pulls/3"))
+  )
+
+(ert-deftest dziman-git-pr-choice/browser-gets-the-link ()
+  (let (opened)
+    (cl-letf (((symbol-function 'transient-scope) (lambda (&rest _) dziman-git-test-scope))
+              ((symbol-function 'browse-url) (lambda (url &rest _) (setq opened url))))
+      (dziman/git-pr-browse)
+      )
+    (should (equal opened "https://git.example.org/me/repo/pulls/3"))
+    )
+  )
+
+(ert-deftest dziman-git-pr-choice/keys-are-link-browser-and-emacs ()
+  (dolist (binding '(("l" . dziman/git-pr-copy-link) ("b" . dziman/git-pr-browse) ("e" . dziman/git-pr-show)))
+    (should (eq (plist-get (cdr (ignore-errors (transient-get-suffix 'dziman/git-pr-choice (car binding)))) :command)
+              (cdr binding)))
+    )
+  )
+
+(ert-deftest dziman-git-pr-available/directory-listing-has-no-pr-key ()
+  (dziman-git-test-with-repo
+    (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+    (dziman-git-test-with-cli (lambda (_program _args) "git.example.org\n")
+      (with-current-buffer (dired-noselect default-directory)
+        (dired-goto-file (expand-file-name "a.txt"))
+        (setq dziman/git--context (dziman/git-context))
+        (should-not (dziman/git-pr-available-p))
+        )
+      )
+    )
+  )
+
+(ert-deftest dziman-git-pr-available/visited-file-on-forgejo-has-pr-key ()
+  (dziman-git-test-on-a-txt-of-forgejo-repo
+    (should (dziman/git-pr-available-p))
+    )
+  )
+
 (provide 'dz-config-git-pr-test)

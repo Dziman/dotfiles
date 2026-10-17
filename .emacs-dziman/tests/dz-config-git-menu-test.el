@@ -419,6 +419,7 @@
     )
   )
 
+(dziman-git-test-key pr-key-needs-a-pr-tool dziman/git--menu "#" dziman/git-pr-available-p)
 (dziman-git-test-key conflict-key-needs-a-conflicted-file dziman/git--menu "!" dziman/git--conflicted-p)
 
 (ert-deftest dziman-git-conflict/every-conflict-key-keeps-the-menu-open ()
