@@ -192,23 +192,74 @@ Spelling (comments and strings only):
 | =C-x b=     | switch buffer                 | bufler-switch-buffer                              |
 
 * Git
-| Key       | Does                                    | Command             |
-|-----------+-----------------------------------------+---------------------|
-| =C-x g=   | status                                  | magit-status        |
-| =C-x M-g= | all git commands                        | magit-dispatch      |
-| =C-c M-g= | git commands for this file (blame, log) | magit-file-dispatch |
-| =C-. g=   | hunk menu (below)                       | dziman/hydra/git    |
+| Key       | Does                                     | Command             |
+|-----------+------------------------------------------+---------------------|
+| =C-x g=   | status                                   | magit-status        |
+| =C-x M-g= | all git commands                         | magit-dispatch      |
+| =C-c M-g= | git commands for this file (blame, log)  | magit-file-dispatch |
+| =C-. g=   | git menu: only what applies here (below) | dziman/git-menu     |
 
-=C-. g= menu, stays open until =q=:
+=C-. g= menu, File keys (on the visited file, or the one under the cursor in dired):
+| Key       | Does                                                            |
+|-----------+-----------------------------------------------------------------|
+| =l=       | history of the file                                             |
+| =L=       | history of the selected lines                                   |
+| =b=       | blame                                                           |
+| =d=       | diff with last commit                                           |
+| =D=       | diff with default branch, since the branch left it              |
+| =s= / =u= | stage / unstage the file                                        |
+| =a=       | add to git (untracked file)                                     |
+| =k=       | discard all changes (asks first)                                |
+| =o=       | open the file as it is on another branch                        |
+| =R= / =K= | rename / delete through git                                     |
+| =t=       | step through file history                                       |
+| =h=       | changed hunks menu (below)                                      |
+| =#=       | pull request for this line: =l= link, =b= browser, =e= in Emacs |
+| =!=       | merge conflicts menu (below)                                    |
+
+Repository keys:
+| Key       | Does                                       |
+|-----------+--------------------------------------------|
+| =g=       | status                                     |
+| =c= / =C= | commit / amend last commit                 |
+| =B= / =N= | switch branch / new branch                 |
+| =f=       | fetch                                      |
+| =F= / =P= | pull / push                                |
+| =z= / =Z= | stash / pop stash                          |
+| =r l=     | branch log                                 |
+| =r m=     | commits not on the default branch          |
+| =r d=     | branch diff with the default branch        |
+| =r r=     | rebase onto the default branch             |
+| =r h=     | refresh the default branch from the remote |
+
+Web link keys:
+| Key   | Does                 |
+|-------+----------------------|
+| =w f= | file and line(s)     |
+| =w c= | commit at point      |
+| =w h= | repository home page |
+
+=h= changed hunks, stays open until =q=:
 | Key       | Does                         |
 |-----------+------------------------------|
 | =n= / =p= | next / previous changed hunk |
+| =e=       | end of hunk                  |
 | =d=       | show hunk diff               |
 | =s=       | stage hunk                   |
 | =r=       | revert hunk                  |
-| =t=       | step through file history    |
-| =l f=     | web link to file and line    |
-| =l c=     | web link to commit           |
+| =R=       | refresh change marks         |
+| =S=       | set start revision           |
+
+=!= merge conflicts, stays open until =q=:
+| Key       | Does                     |
+|-----------+--------------------------|
+| =n= / =p= | next / previous conflict |
+| =m=       | keep mine                |
+| =t=       | keep theirs              |
+| =a=       | keep both                |
+
+Pull request buffer (from =#= then =e=): =RET= on a commit or file opens it,
+=c= loads the conversation, =b= browser, =l= copy link, =g= refresh, =q= close.
 
 * Windows
 | Key                   | Does                         | Command                                 |
