@@ -28,40 +28,8 @@
   (set-face-background 'git-gutter:deleted "#CE7666")
   )
 
-(defvar dziman/hydra/git--title (dziman/with-faicon "git" "Git actions" 1 -0.05))
-
-(pretty-hydra-define dziman/hydra/git
-  (:color amaranth :quit-key "q" :title dziman/hydra/git--title)
-  (
-    "Jump"
-    (
-      ("n" git-gutter:next-hunk "next hunk")
-      ("p" git-gutter:previous-hunk "prev hunk")
-      ("e" git-gutter:end-of-hunk "end of hunk")
-      )
-
-    "Actions"
-    (
-      ("d" git-gutter:popup-hunk "diff hunk")
-      ("s" git-gutter:stage-hunk "stage hunk")
-      ("r" git-gutter:revert-hunk "revert hunk")
-      ("R" git-gutter:update-all-windows "refresh status")
-      ("S" git-gutter:set-start-revision "set start revision")
-      ("t" git-timemachine "timemachine" :color blue)
-      )
-
-    "Links"
-    (
-      ("l f" git-link "Current file and line(s)")
-      ("l c" git-link-commit "Commit at point")
-      ("l h" git-link-homepage "Repo home page")
-      )
-    )
-  )
-
-(bind-key "g" 'dziman/hydra/git/body dziman/bind-map/hydra)
+(autoload 'dziman/git-menu "dz-config-git-menu" "File, repository and pull request actions that apply here." t)
+(bind-key "g" #'dziman/git-menu dziman/bind-map/hydra)
 (which-key-add-key-based-replacements "C-. g" "git menu")
-;; See the toggles menu in `dz-config-hydra'
-(put 'dziman/hydra/git/body 'function-documentation "Changed hunks, file history, web links")
 
 (provide 'dz-config-git)
