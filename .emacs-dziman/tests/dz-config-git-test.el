@@ -22,4 +22,17 @@
   (should-not (fboundp 'dziman/hydra/git/body))
   )
 
+(ert-deftest dziman-git-startup/compiles-without-warnings ()
+  ;; A fresh Emacs: this one has already loaded what the file refers to
+  (let* ((source (locate-library "dz-config-git.el"))
+         (output (with-temp-buffer
+                   (call-process (expand-file-name invocation-name invocation-directory) nil t nil
+                     "--batch" "-f" "package-initialize" "-L" (file-name-directory source)
+                     "--eval" "(setq byte-compile-dest-file-function (lambda (_) (make-temp-file \"dz-git-\" nil \".elc\")))"
+                     "-f" "batch-byte-compile" source)
+                   (buffer-string))))
+    (should-not (string-match-p "Warning" output))
+    )
+  )
+
 (provide 'dz-config-git-test)

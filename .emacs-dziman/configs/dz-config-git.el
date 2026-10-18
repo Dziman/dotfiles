@@ -14,8 +14,6 @@
   :after magit
   :config (magit-todos-mode 1))
 
-(setq magit-last-seen-setup-instructions "1.4.0")
-
 (add-hook 'dziman/first-buffer-hook #'global-git-gutter-mode)
 (setq git-gutter:window-width 1)
 (setq git-gutter:modified-sign " ")
@@ -28,6 +26,7 @@
   (set-face-background 'git-gutter:deleted "#CE7666")
   )
 
+(defvar dziman/bind-map/hydra)
 (autoload 'dziman/git-menu "dz-config-git-menu" "File, repository and pull request actions that apply here." t)
 (bind-key "g" #'dziman/git-menu dziman/bind-map/hydra)
 (which-key-add-key-based-replacements "C-. g" "git menu")
