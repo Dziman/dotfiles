@@ -86,14 +86,51 @@ function right-prompt() {
   # machine profile segment, when the active profile defines `profile-prompt-status`
   (( $+functions[profile-prompt-status] )) && print-right-segment 10 103 "$(profile-prompt-status)"
   print-right-segment 10 216 "$(aws-status)"
-  print-right-segment 10 111 "$(jenv-status)"
-  print-right-segment 10 151 "$(pyenv-status)"
-  print-right-segment 10 103 "$(git-prompt-status)"
+  print-right-segment 10 111 "${ASYNC_SEGMENT_OUTPUT[jenv-status]}"
+  print-right-segment 10 151 "${ASYNC_SEGMENT_OUTPUT[pyenv-status]}"
+  print-right-segment 10 103 "${ASYNC_SEGMENT_OUTPUT[git-prompt-status]}"
   print-right-prompt-end
 }
 
 function update-right-prompt() {
   RPS1="$(right-prompt)%{$reset_color%}"
+}
+
+################################################################################
+# Async segments: slow segment functions run in the background on each prompt,
+# their output lands in ASYNC_SEGMENT_OUTPUT[<function name>] and the prompt is
+# redrawn. They run in a subshell, so they may only print.
+################################################################################
+ASYNC_PROMPT_SEGMENTS=(jenv-status pyenv-status git-prompt-status)
+typeset -gA ASYNC_SEGMENT_OUTPUT
+typeset -gA ASYNC_SEGMENT_FDS # fd => segment function name
+
+function start-async-segments() {
+  local fd segment
+  # Jobs still running from the previous prompt would draw stale output
+  for fd in ${(k)ASYNC_SEGMENT_FDS}; do
+    zle -F $fd
+    exec {fd}<&-
+  done
+  ASYNC_SEGMENT_FDS=()
+  ASYNC_SEGMENT_OUTPUT=()
+
+  for segment in $ASYNC_PROMPT_SEGMENTS; do
+    exec {fd}< <(print -rn -- "$($segment)")
+    ASYNC_SEGMENT_FDS[$fd]=$segment
+    zle -F $fd finish-async-segment
+  done
+}
+
+function finish-async-segment() {
+  local fd=$1 output
+  IFS= read -rd '' -u $fd output
+  ASYNC_SEGMENT_OUTPUT[$ASYNC_SEGMENT_FDS[$fd]]=$output
+  zle -F $fd
+  exec {fd}<&-
+  unset "ASYNC_SEGMENT_FDS[$fd]"
+  update-right-prompt
+  zle reset-prompt
 }
 
 # TODO Parse and butify
@@ -232,6 +269,7 @@ if [[ -o interactive ]]; then
   fi
   ################################################################################
 
+  add-zsh-hook precmd start-async-segments
   add-zsh-hook precmd update-right-prompt
 
   PS1="$icons[MULTILINE_FIRST_PROMPT_PREFIX]$(left-prompt)
