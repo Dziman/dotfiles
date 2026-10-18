@@ -288,15 +288,16 @@ Pull request buffer (from =#= then =e=): =RET= on a commit or file opens it,
 
 * Swift
 ** Keys
-| Key     | Does                                          | Command                    |
-|---------+-----------------------------------------------+----------------------------|
-| =C-. h= | Swift menu: all keys below plus =p=, =e=      | major-mode-hydra           |
-| =M-p f= | format file                                   | dziman/swift-format-buffer |
-| =M-p x= | open file in Xcode at this line               | dziman/swift-open-in-xcode |
-| =M-p d= | Apple docs: selection, else symbol, else asks | dziman/swift-apple-docs    |
-| =M-p r= | rename symbol                                 | eglot-rename               |
-| =M-p a= | code actions / quick fixes                    | eglot-code-actions         |
-| =M-p s= | go to symbol in project                       | consult-eglot-symbols      |
+| Key     | Does                                                    | Command                    |
+|---------+---------------------------------------------------------+----------------------------|
+| =C-. h= | Swift menu: all keys below plus =p=, =e=                | major-mode-hydra           |
+| =M-p f= | format file                                             | dziman/swift-format-buffer |
+| =M-p x= | open file in Xcode at this line                         | dziman/swift-open-in-xcode |
+| =M-p d= | Apple docs: selection, else symbol, else asks           | dziman/swift-apple-docs    |
+| =M-p r= | rename symbol                                           | eglot-rename               |
+| =M-p a= | code actions / quick fixes                              | eglot-code-actions         |
+| =M-p s= | go to symbol in project                                 | consult-eglot-symbols      |
+| =M-p t= | go to type: class, struct, enum, protocol; no test code | dziman/swift-find-type     |
 
 =C-. h= extras: =p= reload platform (=dziman/swift-reload-platform=), =e= error list.
 

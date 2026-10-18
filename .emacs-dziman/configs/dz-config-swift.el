@@ -397,6 +397,76 @@ Interactively: the selection, else the symbol at point, else asked for."
   (browse-url (dziman/swift-apple-docs-url term))
   )
 
+;;;;;;;; Going to a type
+(defconst dziman/swift-type-kinds '(5 10 11 23)
+  "LSP symbol kinds that are Swift types: class, enum, protocol (interface), struct.")
+
+(defvar consult-eglot-narrow)
+(defvar consult-eglot-sort-results)
+(declare-function eglot-uri-to-path "eglot")
+(declare-function eglot--project "eglot")
+(declare-function consult-eglot--servers "consult-eglot")
+(declare-function consult-eglot--make-async-source "consult-eglot")
+(declare-function consult-eglot--transformer "consult-eglot")
+(declare-function consult-eglot--state "consult-eglot")
+(declare-function consult--read "consult")
+(declare-function consult--async-pipeline "consult")
+(declare-function consult--async-min-input "consult")
+(declare-function consult--async-throttle "consult")
+(declare-function consult--async-filter "consult")
+(declare-function consult--async-map "consult")
+(declare-function consult--async-highlight "consult")
+(declare-function consult--lookup-candidate "consult")
+(declare-function consult--type-group "consult")
+(declare-function consult--type-narrow "consult")
+
+(defun dziman/swift-test-file-p (file)
+  "True when FILE, relative to the project root, is test code: in a folder
+whose name ends in Tests, or named *Tests.swift."
+  (and (string-match-p "Tests\\(?:/\\|\\.swift\\'\\)" file) t)
+  )
+
+(defun dziman/swift-type-symbol-p (root symbol-info)
+  "True when SYMBOL-INFO, an LSP SymbolInformation, is a type declared outside
+the test code of the project at ROOT."
+  (and (memq (plist-get symbol-info :kind) dziman/swift-type-kinds)
+    (not (dziman/swift-test-file-p
+           (file-relative-name (eglot-uri-to-path (plist-get (plist-get symbol-info :location) :uri)) root)))
+    )
+  )
+
+(defvar dziman/swift--type-history nil)
+
+(defun dziman/swift-find-type ()
+  "Go to a class, struct, enum or protocol of this project, test code left out.
+The live search of `consult-eglot-symbols', which has no way to filter results."
+  (interactive)
+  (require 'consult-eglot)
+  (let* ((servers (or (consult-eglot--servers) (user-error "No server supporting symbol search")))
+         (root (or (project-root (eglot--project (car servers))) default-directory))
+         (default-directory root)
+         (consult-eglot-narrow '((?c . "Class") (?s . "Struct") (?e . "Enum") (?i . "Interface"))))
+    (consult--read
+      (consult--async-pipeline
+        (consult--async-min-input)
+        (consult--async-throttle)
+        (consult-eglot--make-async-source servers)
+        (consult--async-filter (apply-partially #'dziman/swift-type-symbol-p root))
+        (consult--async-map #'consult-eglot--transformer)
+        (consult--async-highlight))
+      :require-match t
+      :prompt "Type: "
+      :sort (not consult-eglot-sort-results)
+      :history '(:input dziman/swift--type-history)
+      :category 'consult-eglot-symbols
+      :lookup #'consult--lookup-candidate
+      :group (consult--type-group consult-eglot-narrow)
+      :narrow (consult--type-narrow consult-eglot-narrow)
+      :state (consult-eglot--state))
+    (run-hooks 'consult-after-jump-hook)
+    )
+  )
+
 ;; Called by the `bind-map' expansion
 (declare-function evil-normalize-keymaps "evil")
 
@@ -407,6 +477,7 @@ Interactively: the selection, else the symbol at point, else asked for."
               "f" 'dziman/swift-format-buffer
               "x" 'dziman/swift-open-in-xcode
               "d" 'dziman/swift-apple-docs
+              "t" 'dziman/swift-find-type
               )
   )
 
@@ -414,6 +485,7 @@ Interactively: the selection, else the symbol at point, else asked for."
   "M-p f" "format file"
   "M-p x" "open in Xcode"
   "M-p d" "Apple docs"
+  "M-p t" "go to type"
   )
 
 ;;;;;;;; Menu (`C-. h')
@@ -427,6 +499,7 @@ Interactively: the selection, else the symbol at point, else asked for."
       ("r" eglot-rename "rename")
       ("a" eglot-code-actions "code actions")
       ("s" consult-eglot-symbols "go to symbol")
+      ("t" dziman/swift-find-type "go to type")
       ("f" dziman/swift-format-buffer "format file")
       )
 

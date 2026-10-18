@@ -751,6 +751,79 @@
     )
   )
 
+;;;;;;;; Going to a type
+(ert-deftest dziman-swift-type/package-tests-folder-is-test-code ()
+  (should (dziman/swift-test-file-p "Tests/AppTests/Fixtures.swift"))
+  )
+
+(ert-deftest dziman-swift-type/xcode-tests-target-is-test-code ()
+  (should (dziman/swift-test-file-p "MyAppTests/Helpers.swift"))
+  )
+
+(ert-deftest dziman-swift-type/xcode-ui-tests-target-is-test-code ()
+  (should (dziman/swift-test-file-p "MyAppUITests/Screens/LoginScreen.swift"))
+  )
+
+(ert-deftest dziman-swift-type/tests-file-name-is-test-code ()
+  (should (dziman/swift-test-file-p "Sources/App/LoginTests.swift"))
+  )
+
+(ert-deftest dziman-swift-type/app-source-is-not-test-code ()
+  (should-not (dziman/swift-test-file-p "Sources/App/Login.swift"))
+  )
+
+(ert-deftest dziman-swift-type/folder-only-starting-with-tests-is-app-code ()
+  (should-not (dziman/swift-test-file-p "Sources/TestsSupport/Fixture.swift"))
+  )
+
+(defun dziman-swift-test-symbol (kind file)
+  "LSP SymbolInformation of KIND, a symbol kind number, declared in FILE."
+  (list :name "Login" :kind kind
+    :location (list :uri (concat "file://" file)
+                :range '(:start (:line 0 :character 0) :end (:line 0 :character 5))))
+  )
+
+(defmacro dziman-swift-test-type-kind (name kind)
+  "Define a test that symbols of KIND in app code count as types."
+  `(ert-deftest ,(intern (format "dziman-swift-type/%s-is-a-type" name)) ()
+     (should (dziman/swift-type-symbol-p "/work/MyApp/" (dziman-swift-test-symbol ,kind "/work/MyApp/Sources/Login.swift")))
+     )
+  )
+
+(dziman-swift-test-type-kind class 5)
+(dziman-swift-test-type-kind enum 10)
+(dziman-swift-test-type-kind protocol 11)
+(dziman-swift-test-type-kind struct 23)
+
+(ert-deftest dziman-swift-type/method-is-not-a-type ()
+  (should-not (dziman/swift-type-symbol-p "/work/MyApp/" (dziman-swift-test-symbol 6 "/work/MyApp/Sources/Login.swift")))
+  )
+
+(ert-deftest dziman-swift-type/type-in-test-code-is-left-out ()
+  (should-not (dziman/swift-type-symbol-p "/work/MyApp/" (dziman-swift-test-symbol 5 "/work/MyApp/Tests/AppTests/Fake.swift")))
+  )
+
+(ert-deftest dziman-swift-type/tests-folder-above-the-project-does-not-count ()
+  (should (dziman/swift-type-symbol-p "/work/UITests/MyApp/"
+            (dziman-swift-test-symbol 5 "/work/UITests/MyApp/Sources/Login.swift")))
+  )
+
+(ert-deftest dziman-swift-type/needs-a-language-server ()
+  (require 'swift-mode)
+  (with-temp-buffer
+    (let ((swift-mode-hook nil)) (swift-mode))
+    (should-error (dziman/swift-find-type) :type 'user-error)
+    )
+  )
+
+(ert-deftest dziman-swift-type/swift-buffer-has-go-to-type-key ()
+  (require 'swift-mode)
+  (with-temp-buffer
+    (let ((swift-mode-hook nil)) (swift-mode))
+    (should (eq (key-binding (kbd "M-p t")) 'dziman/swift-find-type))
+    )
+  )
+
 ;;;;;;;; Reloading the platform
 (defmacro dziman-swift-test-reloading (buffers &rest body)
   "Run BODY, then return the events recorded by stubbed eglot calls.
@@ -829,7 +902,8 @@ Events are (shutdown SERVER) and (normal-mode DIRECTORY), in order."
   (let ((commands (mapcar #'cadr (symbol-value 'major-mode-hydras/swift-mode/heads))))
     (dolist (command '(eglot-rename eglot-code-actions consult-eglot-symbols
                         dziman/swift-format-buffer dziman/swift-open-in-xcode
-                        dziman/swift-apple-docs dziman/swift-reload-platform consult-flycheck))
+                        dziman/swift-apple-docs dziman/swift-reload-platform consult-flycheck
+                        dziman/swift-find-type))
       (should (memq command commands))
       )
     )
