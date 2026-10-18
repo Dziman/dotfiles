@@ -293,10 +293,66 @@
     )
   )
 
+(defmacro dziman-git-test-with-fj-hosts (hosts &rest body)
+  "Run BODY with `fj' logged into HOSTS only, and git-link's host lists restored after."
+  `(let ((git-link-remote-alist git-link-remote-alist)
+         (git-link-commit-remote-alist git-link-commit-remote-alist)
+         (git-link-homepage-remote-alist git-link-homepage-remote-alist))
+     (cl-letf (((symbol-function 'dziman/git-pr-host-tool) (lambda (host) (and (member host ,hosts) 'fj))))
+       ,@body
+       )
+     )
+  )
+
 (ert-deftest dziman-git-context/unknown-host-has-no-web-links ()
-  (dziman-git-test-with-repo
-    (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
-    (should-not (plist-get (dziman-git-test-context-of "a.txt") :web-link))
+  (dziman-git-test-with-fj-hosts nil
+    (dziman-git-test-with-repo
+      (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+      (should-not (plist-get (dziman-git-test-context-of "a.txt") :web-link))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-context/forgejo-host-fj-knows-allows-web-links ()
+  (dziman-git-test-with-fj-hosts '("git.example.org")
+    (dziman-git-test-with-repo
+      (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+      (should (plist-get (dziman-git-test-context-of "a.txt") :web-link))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-context/forgejo-host-fj-knows-gets-forgejo-links ()
+  (dziman-git-test-with-fj-hosts '("git.example.org")
+    (dziman-git-test-with-repo
+      (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+      (dziman-git-test-context-of "a.txt")
+      (should (equal (list (git-link--handler git-link-remote-alist "git.example.org")
+                       (git-link--handler git-link-commit-remote-alist "git.example.org")
+                       (git-link--handler git-link-homepage-remote-alist "git.example.org"))
+                '(git-link-gitea git-link-commit-gitea git-link-homepage-codeberg)))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-context/forgejo-host-home-page-link ()
+  (dziman-git-test-with-fj-hosts '("git.example.org")
+    (dziman-git-test-with-repo
+      (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+      (dziman-git-test-context-of "a.txt")
+      (should (equal (ignore-error user-error (git-link-homepage "origin") (car kill-ring))
+                "https://git.example.org/me/repo"))
+      )
+    )
+  )
+
+(ert-deftest dziman-git-context/forgejo-lookalike-host-gets-no-links ()
+  (dziman-git-test-with-fj-hosts '("git.example.org")
+    (dziman-git-test-with-repo
+      (dziman-git-test-fake-remote "origin" "ssh://git@git.example.org/me/repo.git")
+      (dziman-git-test-context-of "a.txt")
+      (should-not (git-link--handler git-link-remote-alist "gitXexample.org"))
+      )
     )
   )
 

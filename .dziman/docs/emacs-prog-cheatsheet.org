@@ -232,7 +232,7 @@ Repository keys:
 | =r r=     | rebase onto the default branch             |
 | =r h=     | refresh the default branch from the remote |
 
-Web link keys:
+Web link keys, for hosts git-link knows and Forgejo or Gitea hosts =fj= is logged into:
 | Key   | Does                 |
 |-------+----------------------|
 | =w f= | file and line(s)     |

@@ -10,6 +10,7 @@
 
 (autoload 'dziman/git-pr-at-line "dz-config-git-pr" "Pull request that brought in the current line." t)
 (autoload 'dziman/git-pr-available-p "dz-config-git-pr")
+(autoload 'dziman/git-pr-host-tool "dz-config-git-pr")
 
 ;;;;;;;; Remote and default branch
 (defun dziman/git-remote-host-and-path (url)
@@ -75,6 +76,23 @@ The visited file, or the regular file under the dired cursor."
     )
   )
 
+(defun dziman/git--web-link-host-p (host)
+  "True when git-link can link to HOST.
+A host `fj' is logged into runs Forgejo or Gitea; it is added to git-link's
+host lists on the way, for this session."
+  (cond
+    ((seq-some (lambda (entry) (string-match-p (car entry) host)) git-link-remote-alist) t)
+    ((eq (dziman/git-pr-host-tool host) 'fj)
+      (let ((pattern (concat "\\`" (regexp-quote host) "\\'")))
+        (add-to-list 'git-link-remote-alist (list pattern #'git-link-gitea))
+        (add-to-list 'git-link-commit-remote-alist (list pattern #'git-link-commit-gitea))
+        (add-to-list 'git-link-homepage-remote-alist (list pattern #'git-link-homepage-codeberg))
+        t
+        )
+      )
+    )
+  )
+
 (defun dziman/git-context ()
   "What the git menu needs to know about the current buffer, as a plist.
 Outside a repository only `:repo' is present, and it is nil."
@@ -97,7 +115,7 @@ Outside a repository only `:repo' is present, and it is nil."
              (host-and-path (and remote (dziman/git-remote-host-and-path (or (magit-git-string "remote" "get-url" remote) ""))))
              (host (car host-and-path))
              (default-branch (and has-commits (dziman/git-default-branch remote)))
-             (web-link (and host (seq-some (lambda (entry) (string-match-p (car entry) host)) git-link-remote-alist) t))
+             (web-link (and host (dziman/git--web-link-host-p host)))
              (off-default (and branch default-branch
                             (not (equal branch (if remote (string-remove-prefix (concat remote "/") default-branch) default-branch)))))
              )

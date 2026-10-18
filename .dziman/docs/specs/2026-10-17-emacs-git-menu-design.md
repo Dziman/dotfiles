@@ -76,7 +76,8 @@ Which keys show:
 - **On the default branch:** no diff with default branch, no "commits not on default
   branch", no rebase onto default branch.
 - **No PR tool for the remote's host:** no PR key. See "Forge and CLI per host".
-- **Web links:** shown when git-link knows the remote's host, as today.
+- **Web links:** shown when git-link knows the remote's host, or `fj` is logged into it
+  (Forgejo and Gitea links).
 - **Outside any repo:** the menu says "not a git repo" and nothing else.
 - **File has merge conflicts:** one key opens the conflict menu.
 
